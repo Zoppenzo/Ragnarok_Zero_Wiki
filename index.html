@@ -2253,6 +2253,24 @@ window.RO_DATA = {
 
   skills: [
     {
+      id: "basic-skill", name: "Basic Skill", classId: "novice", maxLevel: 9, type: "Passive", target: "Self", image: null,
+      spCost: 0, castTime: null, cooldown: null,
+      description: { en: "Unlocks core player functions as the Novice raises Basic Skill.", fr: "Débloque les fonctions essentielles du jeu à mesure que le Novice augmente Basic Skill." },
+      prerequisites: [], notes: { en: "Lv.1 Trade; Lv.2 Emotion; Lv.3 Sit; Lv.4 Chat Room; Lv.5 Join Party; Lv.6 Storage; Lv.7 Create Party; Lv.8 has no function recorded in the current Zero database; Lv.9 Job Change.", fr: "Lv.1 Trade ; Lv.2 Emotion ; Lv.3 Sit ; Lv.4 Chat Room ; Lv.5 Join Party ; Lv.6 Storage ; Lv.7 Create Party ; aucune fonction n’est enregistrée pour le Lv.8 dans la base Zero actuelle ; Lv.9 Job Change." }, verified: true
+    },
+    {
+      id: "first-aid", name: "First Aid", classId: "novice", maxLevel: 1, type: "Active / Quest", target: "Self", image: null,
+      spCost: 3, castTime: null, cooldown: null,
+      description: { en: "Recovers 5 HP. Learned as a quest skill and does not consume a normal skill point.", fr: "Récupère 5 HP. S’apprend comme compétence de quête et ne consomme pas de point de compétence normal." },
+      prerequisites: [], notes: { en: "Ragnarok Zero: Global data: Lv.1, 3 SP, self-targeted.", fr: "Donnée Ragnarok Zero: Global : Lv.1, 3 SP, cible personnelle." }, verified: true
+    },
+    {
+      id: "play-dead", name: "Play Dead", classId: "novice", maxLevel: 1, type: "Active / Quest", target: "Self", image: null,
+      spCost: 5, castTime: null, cooldown: null,
+      description: { en: "Feigns death to avoid enemy threats for 30 seconds. The effect ends if hit by area attacks or affected by Provoke, and the skill triggers a cooldown after use.", fr: "Permet de simuler la mort afin d’éviter les menaces ennemies pendant 30 secondes. L’effet prend fin si le personnage est touché par une attaque de zone ou affecté par Provoke, et la compétence déclenche un temps de recharge après utilisation." },
+      prerequisites: [], notes: { en: "Learned as a quest skill and does not consume a normal skill point.", fr: "S’apprend comme compétence de quête et ne consomme pas de point de compétence normal." }, verified: true
+    },
+    {
       id: "envenom", name: "Envenom", classId: "thief", maxLevel: 10, type: "Active", target: "Enemy", image: null,
       spCost: null, castTime: null, cooldown: null,
       description: { en: "Skill entry prepared for Ragnarok Zero data. Values and effects still need verification.", fr: "Entrée de compétence prête pour les données Ragnarok Zero. Les valeurs et effets doivent encore être vérifiés." },
@@ -2273,7 +2291,7 @@ window.RO_DATA = {
   ],
 
   classes: [
-    { id: "novice", name: "Novice", tier: "Starting Class", group: "novice", parentId: null, releaseStatus: "available", image: null, description: { en: "Every character begins as a Novice before choosing a first class.", fr: "Chaque personnage commence Novice avant de choisir une première classe." }, notes: { en: "Currently available in Ragnarok Zero: Global.", fr: "Actuellement disponible dans Ragnarok Zero: Global." } },
+    { id: "novice", name: "Novice", tier: "Base Class", group: "novice", parentId: null, releaseStatus: "available", image: null, description: { en: "Novice is the starting class for every new character in Ragnarok Zero: Global. It introduces the basic game functions before the character chooses a first class.", fr: "Novice est la classe de départ de tous les nouveaux personnages dans Ragnarok Zero: Global. Elle sert à découvrir les fonctions de base du jeu avant de choisir une première classe." }, notes: { en: "At Job Level 10 or higher, a Novice can advance to one of the six first classes currently live on Global: Swordsman, Mage, Archer, Merchant, Thief or Acolyte.", fr: "À partir du Job Level 10, un Novice peut évoluer vers l’une des six premières classes actuellement disponibles sur Global : Swordsman, Mage, Archer, Merchant, Thief ou Acolyte." } },
 
     { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Swordman pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Mage pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
@@ -3301,7 +3319,90 @@ window.RO_DATA = {
     return `${breadcrumbs([{label:t('skills'),href:'#/skills'},{label:s.name}])}${demoAlert()}<article class="article-with-infobox"><div class="article-heading"><h1>${icon('skill')}${esc(s.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox"><div class="infobox-title">${esc(s.name)}<span class="infobox-subtitle">Skill</span></div>${imagePlaceholder('skill')}<table><tbody>${infoRow(t('class'),`<a href="#/classes/${s.classId}">${esc(getClass(s.classId)?.name||s.classId)}</a>`)}${infoRow(t('type'),esc(s.type))}${infoRow(t('target'),esc(s.target||t('unknown')))}${infoRow(t('maxLevel'),String(s.maxLevel))}${infoRow(t('spCost'),esc(val(s.spCost)))}${infoRow(t('castTime'),esc(val(s.castTime)))}${infoRow(t('cooldown'),esc(val(s.cooldown)))}</tbody></table><div class="infobox-footer">${badge(s.verified)}</div></aside><div class="article-body"><p class="article-lead">${esc(txt(s.description))}</p>${toc([{id:'prereq',label:t('prerequisites')},{id:'notes',label:t('notes')}])}<h2 id="prereq">${t('prerequisites')}</h2><div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(s.notes))}</div></div></article>`;
   }
 
+  function noviceDetail() {
+    const c = getClass('novice');
+    const classGenders = classGenderList('novice');
+    const spriteBlock = \`<div class="class-infobox-sprites">\${classGenders.map(g=>\`<div><small>\${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>\${classSpriteSlot('novice',g,false)}</div>\`).join('')}</div>\`;
+    const liveFirst = ['swordman','mage','archer','merchant','thief','acolyte'];
+    const progression = \`<div class="class-directory">\${liveFirst.map(id=>{const next=getClass(id);return \`<a class="class-directory-card" href="#/classes/\${id}">\${icon('class')}<span><strong>\${esc(next.name)}</strong><small>\${navLabel('Available first class · Job Lv 10+','Première classe disponible · Job Lv 10+')}</small></span><span class="class-directory-arrow">→</span></a>\`}).join('')}</div>\`;
+    const basicRows = [
+      [1, navLabel('Trade','Échange'), navLabel('Unlocks trading with other players.','Débloque les échanges avec les autres joueurs.')],
+      [2, navLabel('Emotion','Émotions'), navLabel('Unlocks the use of emotion commands.','Débloque l’utilisation des commandes d’émotions.')],
+      [3, navLabel('Sit','S’asseoir'), navLabel('Unlocks sitting.','Débloque la possibilité de s’asseoir.')],
+      [4, navLabel('Chat Room','Salon de discussion'), navLabel('Unlocks creating a chat room.','Débloque la création d’un salon de discussion.')],
+      [5, navLabel('Join Party','Rejoindre une Party'), navLabel('Unlocks joining a party.','Débloque la possibilité de rejoindre une Party.')],
+      [6, navLabel('Storage','Storage'), navLabel('Unlocks use of storage.','Débloque l’utilisation du Storage.')],
+      [7, navLabel('Create Party','Créer une Party'), navLabel('Unlocks creating a party.','Débloque la création d’une Party.')],
+      [8, '—', navLabel('No function is recorded for this level in the current Ragnarok Zero database.','Aucune fonction n’est enregistrée pour ce niveau dans la base Ragnarok Zero actuelle.')],
+      [9, navLabel('Job Change','Changement de classe'), navLabel('Unlocks the ability to change to a first class.','Débloque la possibilité de passer à une première classe.')]
+    ];
+    const basicTable = \`<div class="table-wrap"><table><thead><tr><th>\${navLabel('Basic Skill level','Niveau de Basic Skill')}</th><th>\${navLabel('Unlock','Déblocage')}</th><th>\${navLabel('Effect','Effet')}</th></tr></thead><tbody>\${basicRows.map(([lv,name,effect])=>\`<tr><td>Lv. \${lv}</td><td><strong>\${esc(String(name))}</strong></td><td>\${esc(String(effect))}</td></tr>\`).join('')}</tbody></table></div>\`;
+    const questSkills = \`<div class="table-wrap"><table><thead><tr><th>\${t('skills')}</th><th>\${navLabel('Type','Type')}</th><th>SP</th><th>\${navLabel('Zero effect','Effet Zero')}</th></tr></thead><tbody>
+      <tr><td><a class="table-link" href="#/skills/first-aid">First Aid</a></td><td>\${navLabel('Quest skill','Compétence de quête')}</td><td>3</td><td>\${navLabel('Recovers 5 HP.','Récupère 5 HP.')}</td></tr>
+      <tr><td><a class="table-link" href="#/skills/play-dead">Play Dead</a></td><td>\${navLabel('Quest skill','Compétence de quête')}</td><td>5</td><td>\${navLabel('Feigns death for 30 seconds to avoid enemy threats. Area attacks or Provoke can end the effect; a cooldown follows use.','Simule la mort pendant 30 secondes afin d’éviter les menaces ennemies. Les attaques de zone ou Provoke peuvent mettre fin à l’effet ; un temps de recharge suit l’utilisation.')}</td></tr>
+    </tbody></table></div>\`;
+    const gear = ['Novice Armlet','Novice Cutter','Novice Falchion','Novice Mace','Novice Main Gauche','Novice Rod'];
+    return \`\${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:'Novice'}])}
+      <article class="article-with-infobox novice-article">
+        <div class="article-heading"><h1>\${icon('class')}Novice</h1><div class="page-subtitle">\${t('fromWiki')}</div></div>
+        <aside class="infobox class-infobox">
+          <div class="infobox-title">Novice<span class="infobox-subtitle">\${navLabel('Base Class','Classe de base')}</span></div>
+          \${spriteBlock}
+          <table><tbody>
+            \${infoRow(t('tier'),navLabel('Base Class','Classe de base'))}
+            \${infoRow(t('status'),navLabel('Available','Disponible'))}
+            \${infoRow(navLabel('Job change','Changement de classe'),'Job Lv 10+')}
+            \${infoRow(t('skills'),'3')}
+            \${infoRow(navLabel('Live first classes','Premières classes disponibles'),'6')}
+          </tbody></table>
+          <div class="infobox-footer">\${badge(true)}</div>
+        </aside>
+        <div class="article-body">
+          <p class="article-lead">\${navLabel('Novice is the starting class for every new character in Ragnarok Zero: Global. Its purpose is to unlock the game’s basic player functions and lead into the first job choice.','Novice est la classe de départ de tous les nouveaux personnages dans Ragnarok Zero: Global. Son rôle est de débloquer les fonctions de base du jeu et de mener au premier choix de classe.')}</p>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>\${navLabel('Ragnarok Zero: Global data only','Données Ragnarok Zero: Global uniquement')}</strong><br>\${navLabel('This page uses Zero-specific class and skill data. No Classic, Pre-Renewal or Renewal gameplay values are used.','Cette page utilise uniquement des données de classe et de compétences propres à Zero. Aucune valeur de gameplay Classic, Pre-Renewal ou Renewal n’est utilisée.')}</div></div>
+          \${toc([
+            {id:'overview',label:navLabel('Overview','Présentation')},
+            {id:'progression',label:navLabel('Class progression','Progression de classe')},
+            {id:'skills',label:t('skills')},
+            {id:'basic-skill',label:'Basic Skill'},
+            {id:'quest-skills',label:navLabel('Quest skills','Compétences de quête')},
+            {id:'equipment',label:navLabel('Recorded equipment','Équipement enregistré')},
+            {id:'sources',label:navLabel('Sources','Sources')}
+          ])}
+          <h2 id="overview">\${navLabel('Overview','Présentation')}</h2>
+          <p>\${navLabel('Every character starts as a Novice. The class has one regular passive skill, Basic Skill, plus two quest skills: First Aid and Play Dead. The Novice itself is not a specialized combat role; it is the common starting point before choosing a first class.','Tous les personnages commencent en Novice. La classe possède une compétence passive normale, Basic Skill, ainsi que deux compétences de quête : First Aid et Play Dead. Le Novice n’est pas une classe de combat spécialisée : il sert de point de départ commun avant le choix d’une première classe.')}</p>
+          <p>\${navLabel('The current Zero database records the first job change as available from Job Level 10 or higher.','La base Zero actuelle indique que le premier changement de classe est disponible à partir du Job Level 10.')}</p>
+          <h2 id="progression">\${navLabel('Class progression','Progression de classe')}</h2>
+          <p>\${navLabel('The six first classes currently available from Novice on Ragnarok Zero: Global are listed below.','Les six premières classes actuellement accessibles depuis Novice sur Ragnarok Zero: Global sont listées ci-dessous.')}</p>
+          \${progression}
+          <h2 id="skills">\${t('skills')}</h2>
+          <div class="wiki-feature-list">
+            <div><strong>\${miniIcon('skill')}<a href="#/skills/basic-skill">Basic Skill</a></strong><p>\${navLabel('Passive · Max Lv 9 · unlocks basic player functions.','Passive · Niveau max 9 · débloque les fonctions de base du joueur.')}</p></div>
+            <div><strong>\${miniIcon('skill')}<a href="#/skills/first-aid">First Aid</a></strong><p>\${navLabel('Active quest skill · Max Lv 1 · 3 SP · recovers 5 HP.','Compétence active de quête · Niveau max 1 · 3 SP · récupère 5 HP.')}</p></div>
+            <div><strong>\${miniIcon('skill')}<a href="#/skills/play-dead">Play Dead</a></strong><p>\${navLabel('Active quest skill · Max Lv 1 · 5 SP · feigns death for 30 seconds.','Compétence active de quête · Niveau max 1 · 5 SP · simule la mort pendant 30 secondes.')}</p></div>
+          </div>
+          <h2 id="basic-skill">Basic Skill</h2>
+          <p>\${navLabel('Basic Skill has a maximum level of 9. Each level unlocks a core game function. Level 8 is deliberately left without an invented function because the current Zero database does not record one.','Basic Skill possède un niveau maximum de 9. Chaque niveau débloque une fonction essentielle du jeu. Le niveau 8 est volontairement laissé sans fonction inventée car la base Zero actuelle n’en enregistre aucune.')}</p>
+          \${basicTable}
+          <h2 id="quest-skills">\${navLabel('Quest skills','Compétences de quête')}</h2>
+          <p>\${navLabel('First Aid and Play Dead are learned as quest skills and do not consume normal skill points.','First Aid et Play Dead s’apprennent comme compétences de quête et ne consomment pas de points de compétence normaux.')}</p>
+          \${questSkills}
+          <h2 id="equipment">\${navLabel('Recorded equipment','Équipement enregistré')}</h2>
+          <p>\${navLabel('The Zero database currently records 75 class-restricted gear entries for Novice. The list below only highlights Novice-named equipment already recorded there; item stats will be added to this wiki when the item database is imported and verified.','La base Zero enregistre actuellement 75 équipements accessibles au Novice. La liste ci-dessous met seulement en avant les équipements portant le nom Novice déjà enregistrés ; leurs statistiques seront ajoutées au wiki lorsque la base d’objets sera importée et vérifiée.')}</p>
+          <ul>\${gear.map(x=>\`<li>\${esc(x)}</li>\`).join('')}</ul>
+          <h2 id="notes">\${t('notes')}</h2>
+          <div class="notes-box">\${navLabel('Taekwon and Super Novice appear in the Zero database as future progression options but are marked not yet live. They are therefore not presented here as currently available Novice job changes.','Taekwon et Super Novice apparaissent dans la base Zero comme options de progression futures mais sont indiqués comme non encore disponibles. Ils ne sont donc pas présentés ici comme changements de classe actuellement accessibles au Novice.')}</div>
+          <h2 id="sources">\${navLabel('Sources','Sources')}</h2>
+          <div class="source-box"><strong>\${navLabel('Ragnarok Zero-specific sources','Sources spécifiques à Ragnarok Zero')}</strong><ul>
+            <li><a href="https://roz.prontera.info/jobs/novice" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero: Global — Novice job database</a></li>
+            <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero: Global — Skill Planner (Novice skill data)</a></li>
+          </ul></div>
+        </div>
+      </article>\`;
+  }
+
   function classDetail(id) {
+    if (id === 'novice') return noviceDetail();
     const c = getClass(id);
     if (!c) return notFound();
     const skills = DATA.skills.filter(s=>s.classId===id);
