@@ -3354,14 +3354,12 @@ window.RO_DATA = {
           <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel('The current Ragnarok Zero database records no named function for Basic Skill Lv.8, so it is left blank instead of importing a value from another RO version.','La base Ragnarok Zero actuelle n’enregistre aucune fonction nommée pour Basic Skill Lv.8 ; ce niveau est donc laissé vide au lieu d’importer une valeur d’une autre version de RO.')}</div></div>
           <h2 id="notes">${t('notes')}</h2>
           <div class="notes-box">${navLabel('Basic Skill reaches level 9. Job Change is recorded at Lv.9 in the Zero skill data.','Basic Skill atteint le niveau 9. Job Change est enregistré au Lv.9 dans les données de compétences Zero.')}</div>
-          ${classSeeAlso(getClass('novice'))}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><ul>
             <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero: Global Skill Planner</a></li>
             <li><a href="https://irowiki.org/wiki/Novice" target="_blank" rel="noopener">iRO Wiki — Novice (skill description wording only)</a></li>
             <li><a href="https://irowiki.org/wiki/Basic_Skill" target="_blank" rel="noopener">iRO Wiki — Basic Skill (description wording only)</a></li>
           </ul></div>
-          ${classSeeAlso(getClass('novice'))}
         </div>
       </article>`;
   }
@@ -3374,7 +3372,6 @@ window.RO_DATA = {
     const media = sk.image ? `<div class="infobox-image" style="height:96px"><img src="${sk.image}" alt="${esc(sk.name)}" width="34" height="34"></div>` : imagePlaceholder('skill');
     return `${breadcrumbs([{label:t('skills'),href:'#/skills'},{label:sk.name}])}<article class="article-with-infobox"><div class="article-heading"><h1>${skillIconImg(sk,32)} ${esc(sk.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox"><div class="infobox-title">${esc(sk.name)}<span class="infobox-subtitle">Skill</span></div>${media}<table><tbody>${infoRow(t('class'),`<a href="#/classes/${sk.classId}">${esc(getClass(sk.classId)?.name||sk.classId)}</a>`)}${infoRow(t('type'),esc(sk.type))}${infoRow(t('target'),esc(sk.target||t('unknown')))}${infoRow(t('maxLevel'),String(sk.maxLevel))}${infoRow(t('spCost'),esc(val(sk.spCost)))}${infoRow(t('castTime'),esc(val(sk.castTime)))}${infoRow(navLabel('Cast Delay','Délai après lancement'),esc(val(sk.castDelay)))}${infoRow(t('cooldown'),esc(val(sk.cooldown)))}</tbody></table><div class="infobox-footer">${badge(sk.verified)}</div></aside><div class="article-body"><p class="article-lead">${esc(txt(sk.description))}</p>${toc([{id:'prereq',label:t('prerequisites')},{id:'notes',label:t('notes')}])}<h2 id="prereq">${t('prerequisites')}</h2><div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(sk.notes))}</div>
       ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
-      ${classSeeAlso(getClass(sk.classId))}
       </div></article>`;
   }
 
@@ -3421,6 +3418,7 @@ window.RO_DATA = {
             </tbody>
           </table></div>
 
+          ${classSeeAlso(getClass('novice'))}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul><li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero: Global Skill Planner</a></li></ul></div>
         </div>
