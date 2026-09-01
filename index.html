@@ -3374,7 +3374,7 @@ window.RO_DATA = {
     return `${breadcrumbs([{label:t('classes')}])}
       <div class="article-heading"><div><span class="eyebrow">${navLabel('Character','Personnage')}</span><h1>${icon('class')}${t('classes')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div></div>
       <p class="article-lead">${navLabel('Click anywhere on a class card — the sprite, background or name — to open its dedicated page. Second classes are already shown as upcoming so the tree is ready for the next update.','Clique n’importe où sur la case d’une classe — sprite, fond ou nom — pour ouvrir sa page dédiée. Les secondes classes sont déjà affichées comme contenu à venir afin que l’arbre soit prêt pour la prochaine mise à jour.')}</p>
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Verified data policy.','Politique de données actuelles uniquement.')}</strong> ${navLabel('The upcoming class pages do not import Classic/Pre-Renewal stats, skills or formulas. They are structural pages until version-specific information is verified.','Les pages des classes à venir n’importent aucune stat, compétence ou formule Classic/Pre-Renewal. Ce sont des pages structurelles tant que les informations propres à Zero ne sont pas vérifiées.')}</div></div>
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Verified data policy.','Politique de données actuelles uniquement.')}</strong> ${navLabel('The upcoming class pages do not import Classic/Pre-Renewal stats, skills or formulas. They are structural pages until version-specific information is verified.','Les pages des classes à venir n’importent aucune stat, compétence ou formule Classic/Pre-Renewal. Ce sont des pages structurelles tant que les informations propres à cette version ne sont pas vérifiées.')}</div></div>
       ${classProgressionTree(false)}
       <h2>${navLabel('Available now','Disponibles actuellement')}</h2>
       <div class="class-directory">${live.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}">${icon('class')}<span><strong>${esc(c.name)}</strong><small>${esc(c.tier)}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
@@ -3468,9 +3468,9 @@ window.RO_DATA = {
         <li>${navLabel('Future roadmap content is not treated as currently playable content.','Le contenu de la roadmap future n’est pas traité comme du contenu actuellement jouable.')}</li>
       </ul>
       ${officialSources([
-        ['Ragnarok Zero: Global — Official site','https://roz.mygnjoy.com/en/main'],
+        ['Official site','https://roz.mygnjoy.com/en/main'],
         ['Official Game Guide','https://roz.mygnjoy.com/en/intro/guide'],
-        ['Ragnarok Zero Guide — Lymd','https://sites.google.com/view/rozeroguide'],
+        ['Lymd — Global Guide','https://sites.google.com/view/rozeroguide'],
         ['Official Global launch notice','https://roz.mygnjoy.com/en/news/notice/42']
       ])}`;
   }
@@ -3670,9 +3670,9 @@ window.RO_DATA = {
       )}</div></div>
 
       ${officialSources([
-        ['Official Ragnarok Zero: Global — Game Guide','https://roz.mygnjoy.com/en/intro/guide'],
-        ['Ragnarok Zero Global Guide — current settings and commands','https://sites.google.com/view/rozeroguide'],
-        ['Ragnarok Zero Tip Box — extracted Zero client tips','https://old.criatura-academy.com/tipbox/ko']
+        ['Official Game Guide','https://roz.mygnjoy.com/en/intro/guide'],
+        ['Lymd — current settings and commands','https://sites.google.com/view/rozeroguide'],
+        ['Ragnarok Zero Tip Box — extracted client tips','https://old.criatura-academy.com/tipbox/ko']
       ])}`;
   }
 
@@ -3780,8 +3780,8 @@ window.RO_DATA = {
       </div>
 
       ${officialSources([
-        ['RO Zero Database — Global release roadmap','https://rozerodb.com/guides/roadmap-update'],
-        ['Ragnarok Zero Global Guide — Lymd','https://sites.google.com/view/rozeroguide'],
+        ['ROZ Database — Global release roadmap','https://rozerodb.com/guides/roadmap-update'],
+        ['Lymd — Global Guide','https://sites.google.com/view/rozeroguide'],
         ['MidgardHub — Complete New Player Guide','https://midgardhub.com/guides/new-player']
       ])}
       <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
@@ -4024,18 +4024,18 @@ window.RO_DATA = {
 
       ${officialSources([
         ['Official GNJOY — EXP requirements / Game Guide 21','https://roz.mygnjoy.com/fr/intro/guide/21'],
-        ['Encyclop’Elvyl — Ragnarok Zero Global database','https://docs.google.com/spreadsheets/d/1nK2jFgMEKa6IYGszbRtAcIp06VhM2sfsUf4kv46gKzI/edit?gid=1921304023#gid=1921304023'],
+        ['Encyclop’Elvyl — Global database','https://docs.google.com/spreadsheets/d/1nK2jFgMEKa6IYGszbRtAcIp06VhM2sfsUf4kv46gKzI/edit?gid=1921304023#gid=1921304023'],
         ['MidgardHub — Essential Package (30 days)','https://midgardhub.com/database/items/17898'],
         ['MidgardHub — Essential Package (7 days)','https://midgardhub.com/database/items/17957'],
         ['MidgardHub — Growth Elixir','https://midgardhub.com/database/items/105671'],
-        ['RO Zero Database — Growth Elixir','https://rozerodb.com/items/105743'],
+        ['ROZ Database — Growth Elixir','https://rozerodb.com/items/105743'],
         ['Official GNJOY — Party EXP Returns notice (25 Aug 2026)','https://roz.mygnjoy.com/en/news/notice/69'],
         ['Official GNJOY — Community Feedback & Party EXP update','https://roz.mygnjoy.com/en/news/notice/70'],
-        ['Ragnarok Zero Global Guide — Lymd','https://sites.google.com/view/rozeroguide'],
+        ['Lymd — Global Guide','https://sites.google.com/view/rozeroguide'],
         ['MidgardHub — Complete New Player Guide','https://midgardhub.com/guides/new-player'],
         ['MidgardHub — Account EXP Buff','https://midgardhub.com/database/items/23463'],
         ['MidgardHub — Hidden World / PvP Maps','https://midgardhub.com/guides/pvp-maps'],
-        ['Ragnarok Zero Wiki — current leveling guide','https://ragnarokzero.wiki/fr/guides/leveling/']
+        ['Community Wiki — current leveling guide','https://ragnarokzero.wiki/fr/guides/leveling/']
       ])}
       <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
         <li><a href="https://irowiki.org/wiki/Experience" target="_blank" rel="noopener">iRO Wiki — Experience</a> — ${navLabel('used only for the article structure (types of EXP, mechanics, party, modifiers); none of its Renewal percentages or tables were imported.','utilisé uniquement pour la structure de l’article (types d’EXP, mécaniques, Party, modificateurs) ; aucun pourcentage ni tableau Renewal n’a été importé.')}</li>
@@ -4294,8 +4294,8 @@ window.RO_DATA = {
       </div>
 
       ${officialSources([
-        ['Prontera.info — Ragnarok Zero Global data & verified formulas','https://roz.prontera.info/mechanics'],
-        ['Ragnarok Zero Global Guide — progression & stat roles','https://roz-global.info/06-progression.html']
+        ['Prontera.info — verified formulas','https://roz.prontera.info/mechanics'],
+        ['Global Guide — progression & stat roles','https://roz-global.info/06-progression.html']
       ])}
       <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
         <li><a href="https://irowiki.org/wiki/Stats" target="_blank" rel="noopener">iRO Wiki — Stats</a> — ${navLabel(
@@ -4713,8 +4713,8 @@ window.RO_DATA = {
       )}</p>
 
       ${officialSources([
-        ['MidgardHub — Zero Global New Player Guide / equipment and affixes','https://midgardhub.com/guides/new-player'],
-        ['Ragnarok Zero Global Guide — Item Safe Lock','https://sites.google.com/view/rozeroguide']
+        ['MidgardHub — New Player Guide / equipment and affixes','https://midgardhub.com/guides/new-player'],
+        ['Global Guide — Item Safe Lock','https://sites.google.com/view/rozeroguide']
       ])}
       <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
         <li><a href="https://irowiki.org/wiki/Items" target="_blank" rel="noopener">iRO Wiki — Items</a> — ${navLabel('used only for the high-level organization into equipment, cards, consumables and miscellaneous items. iRO item values are not imported.','utilisé uniquement pour l’organisation générale en équipement, cartes, consommables et objets divers. Les valeurs des objets iRO ne sont pas importées.')}</li>
@@ -4777,7 +4777,7 @@ window.RO_DATA = {
       )}</div></div>
 
       ${officialSources([
-        ['Official Ragnarok Zero: Global — Cards guide','https://roz.mygnjoy.com/en/intro/guide/7'],
+        ['Official Cards guide','https://roz.mygnjoy.com/en/intro/guide/7'],
         ['MidgardHub — Activation System (cards are preserved during activation)','https://midgardhub.com/guides/activation']
       ])}
       <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
@@ -4843,8 +4843,8 @@ window.RO_DATA = {
       )}</p>
 
       ${officialSources([
-        ['MidgardHub — Ragnarok Zero Global database / map-monster relations','https://midgardhub.com/database/maps'],
-        ['RO Zero Database — Zero Global world map and monster search','https://rozerodb.com/updates/2026-08-23-world-map-overhaul']
+        ['MidgardHub — map-monster relations','https://midgardhub.com/database/maps'],
+        ['ROZ Database — world map and monster search','https://rozerodb.com/updates/2026-08-23-world-map-overhaul']
       ])}
       <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
         <li><a href="https://irowiki.org/wiki/Monster" target="_blank" rel="noopener">iRO Wiki — Monster</a> — ${navLabel('used only as a structural reference for characteristics, properties and boss sections. iRO monster stats and champion-monster rules are not imported.','utilisé uniquement comme référence de structure pour les caractéristiques, propriétés et sections Boss. Les stats de monstres et règles des Champion Monsters d’iRO ne sont pas importées.')}</li>
@@ -5072,13 +5072,13 @@ window.RO_DATA = {
         {id:'usage',label:navLabel('Skill usage phases','Phases d’utilisation')},
         {id:'cast-time',label:'Cast Time'},
         {id:'delay-cooldown',label:navLabel('Cast Delay vs Cooldown','Cast Delay vs Cooldown')},
-        {id:'examples',label:navLabel('Zero examples','Exemples Zero')}
+        {id:'examples',label:navLabel('Examples','Exemples')}
       ])}
 
       <h2 id="types">${navLabel('Skill types','Types de skills')}</h2>
       <p>${navLabel(
-        'At the broadest level, player skills are either Active or Passive. Zero skill pages may also carry more specific combat labels such as Weapon, Magic, Attack, Support or Self depending on what the skill does.',
-        'Au niveau le plus général, les skills de joueur sont soit Actifs, soit Passifs. Les pages Zero peuvent aussi afficher des catégories plus précises comme Weapon, Magic, Attack, Support ou Self selon le fonctionnement du skill.'
+        'At the broadest level, player skills are either Active or Passive. Skill pages may also carry more specific combat labels such as Weapon, Magic, Attack, Support or Self depending on what the skill does.',
+        'Au niveau le plus général, les skills de joueur sont soit Actifs, soit Passifs. Les pages de skills peuvent aussi afficher des catégories plus précises comme Weapon, Magic, Attack, Support ou Self selon le fonctionnement du skill.'
       )}</p>
       <div class="wiki-feature-list">
         <div><strong>${miniIcon('skill')}${navLabel('Active skills','Skills actifs')}</strong><p>${navLabel(
@@ -5110,8 +5110,8 @@ window.RO_DATA = {
 
       <h2 id="cast-time">Cast Time</h2>
       <p>${navLabel(
-        'The game distinguishes Variable Casting Time and Fixed Casting Time as separate modifier categories. Equipment and effects in the Zero client explicitly use both names.',
-        'Le jeu distingue Variable Casting Time et Fixed Casting Time comme deux catégories de modificateurs séparées. Les équipements et effets du client Zero utilisent explicitement ces deux termes.'
+        'The game distinguishes Variable Casting Time and Fixed Casting Time as separate modifier categories. Equipment and effects in the client explicitly use both names.',
+        'Le jeu distingue Variable Casting Time et Fixed Casting Time comme deux catégories de modificateurs séparées. Les équipements et effets du client utilisent explicitement ces deux termes.'
       )}</p>
 
       <h3>Variable Casting Time (VCT)</h3>
@@ -5161,11 +5161,11 @@ window.RO_DATA = {
       </table></div>
 
       ${officialSources([
-        ['Prontera.info — Zero Data & Formulas','https://roz.prontera.info/mechanics'],
-        ['Prontera.info — Zero Skill Planner','https://roz.prontera.info/skills/planner?class=wizard'],
-        ['RO Zero Database — Phen Card','https://rozerodb.com/cards/phen-card'],
-        ['Prontera.info — Zero item casting / Global Delay modifiers','https://roz.prontera.info/guides/bonuses'],
-        ['RO Zero Database — Challenge Drink fixed-cast rule','https://rozerodb.com/cash-shop']
+        ['Prontera.info — Data & Formulas','https://roz.prontera.info/mechanics'],
+        ['Prontera.info — Skill Planner','https://roz.prontera.info/skills/planner?class=wizard'],
+        ['ROZ Database — Phen Card','https://rozerodb.com/cards/phen-card'],
+        ['Prontera.info — casting / Global Delay modifiers','https://roz.prontera.info/guides/bonuses'],
+        ['ROZ Database — Challenge Drink fixed-cast rule','https://rozerodb.com/cash-shop']
       ])}
       <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
         <li><a href="https://irowiki.org/wiki/Skills" target="_blank" rel="noopener">iRO Wiki — Skills</a> — ${navLabel(
@@ -5351,7 +5351,7 @@ window.RO_DATA = {
           ${skillClassNav(sk)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><ul>
-            <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero: Global Skill Planner</a></li>
+            <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Skill Planner</a></li>
             <li><a href="https://irowiki.org/wiki/Novice" target="_blank" rel="noopener">iRO Wiki — Novice (skill description wording only)</a></li>
             <li><a href="https://irowiki.org/wiki/Basic_Skill" target="_blank" rel="noopener">iRO Wiki — Basic Skill (description wording only)</a></li>
           </ul></div>
@@ -5793,8 +5793,8 @@ window.RO_DATA = {
       },
       'heal': {
         formula: 'Damage vs Undead = 50% × Heal Effect',
-        en: 'Heal Effect scales with Skill Lv., caster Base Lv., total INT and the base/refined MATK of the weapon. The verified Zero sources used here do not expose a complete closed coefficient, so it is not invented.',
-        fr: 'L’effet de Heal dépend du niveau de compétence, du Base Lv. du lanceur, de son INT totale et de la MATK de base/raffinée de l’arme. Les sources Zero vérifiées utilisées ici n’exposent pas un coefficient fermé complet, donc il n’est pas inventé.'
+        en: 'Heal Effect scales with Skill Lv., caster Base Lv., total INT and the base/refined MATK of the weapon. The verified sources used here do not expose a complete closed coefficient, so it is not invented.',
+        fr: 'L’effet de Heal dépend du niveau de compétence, du Base Lv. du lanceur, de son INT totale et de la MATK de base/raffinée de l’arme. Les sources vérifiées utilisées ici n’exposent pas un coefficient fermé complet, donc il n’est pas inventé.'
       },
       'mace-mastery': {
         formula: 'Bonus Damage = 3 × Skill Lv.',
@@ -5873,7 +5873,7 @@ window.RO_DATA = {
     const data = skillDamageFormulaData(sk);
     if (data.type === 'unverified') {
       return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
-        <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero verification pending','Vérification the current server en attente')}</strong><br>${navLabel(data.en,data.fr)}</div></div>`;
+        <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Verification pending','Vérification en attente')}</strong><br>${navLabel(data.en,data.fr)}</div></div>`;
     }
     if (data.type === 'none') {
       return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
@@ -5991,10 +5991,10 @@ window.RO_DATA = {
           ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
 
           ${hasDetailedLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
-            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
-            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://rz.fharr.com/db/skilltree':(sk.classId==='thief'?'https://roz.prontera.info/skills/planner?class=assassin':(sk.classId==='acolyte'?'https://roz.prontera.info/skills/planner?class=high-priest':'https://roz.prontera.info/skills/planner?class=crusader'))))}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
+            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
+            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://rz.fharr.com/db/skilltree':(sk.classId==='thief'?'https://roz.prontera.info/skills/planner?class=assassin':(sk.classId==='acolyte'?'https://roz.prontera.info/skills/planner?class=high-priest':'https://roz.prontera.info/skills/planner?class=crusader'))))}" target="_blank" rel="noopener">Prontera.info — Skill Planner</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero extracted skill tree reference</a></li>
-            ${sk.classId==='mage' ? '<li><a href="https://ragnaplace.com/en/rozg-en/skill/16/stone-curse" target="_blank" rel="noopener">RagnaPlace — Ragnarok Zero Global fixed / variable / global delay tables</a></li>' : ''}
+            ${sk.classId==='mage' ? '<li><a href="https://ragnaplace.com/en/rozg-en/skill/16/stone-curse" target="_blank" rel="noopener">RagnaPlace — fixed / variable / global delay tables</a></li>' : ''}
           </ul></div>` : ''}
 
           ${skillClassNav(sk)}
@@ -6040,14 +6040,14 @@ window.RO_DATA = {
           <div class="table-wrap"><table class="novice-skill-table">
             <thead><tr><th style="width:180px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th><th style="width:150px">${navLabel('Base Level Requirement','Niveau de base requis')}</th><th style="width:150px">${navLabel('Quest','Quête')}</th></tr></thead>
             <tbody>
-              <tr><td>${skillNameCell(aid)}</td><td>${navLabel('Consume 3 SP to restore 5 HP.','Consomme 3 SP pour restaurer 5 HP.')}</td><td style="text-align:center">1</td><td style="background:#d8fbfb">Supportive</td><td><span class="badge unverified">${navLabel('Needs verification','À vérifier')}</span></td><td><span class="badge unverified">${navLabel('Pending Zero quest data','Données de quête Zero à vérifier')}</span></td></tr>
-              <tr><td>${skillNameCell(dead)}</td><td>${navLabel('Pretend to fall dead on the ground, becoming immune from all attacks from Players and monsters.','Fait semblant de tomber mort au sol, rendant le personnage immunisé aux attaques des joueurs et des monstres.')}</td><td style="text-align:center">1</td><td style="background:#d8fbfb">Supportive</td><td><span class="badge unverified">${navLabel('Needs verification','À vérifier')}</span></td><td><span class="badge unverified">${navLabel('Pending Zero quest data','Données de quête Zero à vérifier')}</span></td></tr>
+              <tr><td>${skillNameCell(aid)}</td><td>${navLabel('Consume 3 SP to restore 5 HP.','Consomme 3 SP pour restaurer 5 HP.')}</td><td style="text-align:center">1</td><td style="background:#d8fbfb">Supportive</td><td><span class="badge unverified">${navLabel('Needs verification','À vérifier')}</span></td><td><span class="badge unverified">${navLabel('Pending quest data','Données de quête à vérifier')}</span></td></tr>
+              <tr><td>${skillNameCell(dead)}</td><td>${navLabel('Pretend to fall dead on the ground, becoming immune from all attacks from Players and monsters.','Fait semblant de tomber mort au sol, rendant le personnage immunisé aux attaques des joueurs et des monstres.')}</td><td style="text-align:center">1</td><td style="background:#d8fbfb">Supportive</td><td><span class="badge unverified">${navLabel('Needs verification','À vérifier')}</span></td><td><span class="badge unverified">${navLabel('Pending quest data','Données de quête à vérifier')}</span></td></tr>
             </tbody>
           </table></div>
 
           ${classSeeAlso(getClass('novice'))}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
-          <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul><li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero: Global Skill Planner</a></li></ul></div>
+          <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul><li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Skill Planner</a></li></ul></div>
         </div>
       </article>`;
   }
@@ -6131,7 +6131,7 @@ window.RO_DATA = {
           ${classSeeAlso(c)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
-            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
+            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
             <li><a href="https://midgardhub.com/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Skill Database</a></li>
             <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Skill Planner — Knight / Swordsman line</a></li>
           </ul></div>
@@ -6204,7 +6204,7 @@ window.RO_DATA = {
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
             <li><a href="https://roz.prontera.info/jobs/mage" target="_blank" rel="noopener">Prontera.info — Mage — Ragnarok Zero: Global</a></li>
             <li><a href="https://roz.prontera.info/skills/planner?class=wizard" target="_blank" rel="noopener">Prontera.info — Mage/Wizard Skill Planner</a></li>
-            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
+            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero skill-tree reference</a></li>
           </ul></div>
         </div>
@@ -6352,7 +6352,7 @@ window.RO_DATA = {
             <li><a href="https://rozerodb.com/player-skills/axe-mastery" target="_blank" rel="noopener">RO Zero Database — Axe Mastery</a></li>
             <li><a href="https://rozerodb.com/player-skills/cart-boost" target="_blank" rel="noopener">RO Zero Database — Cart Boost</a></li>
             <li><a href="https://rozerodb.com/player-skills/cart-revolution" target="_blank" rel="noopener">RO Zero Database — Cart Revolution</a></li>
-            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
+            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — Zero skill-tree reference</a></li>
           </ul></div>
         </div>
@@ -6557,7 +6557,7 @@ window.RO_DATA = {
         <thead><tr><th colspan="2" style="text-align:center"><em>${esc(c.name)}</em></th></tr></thead>
         <tbody>
           <tr><th style="width:170px">${navLabel('Skills','Compétences')}</th><td>${skillLinks}</td></tr>
-          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — Zero verification pending','Détails des quêtes de compétences Novice — vérification the current server en attente') : navLabel('No verified class quest page added yet','Aucune page de quête de classe vérifiée pour le moment')}</td></tr>
+          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — Verification pending','Détails des quêtes de compétences Novice — vérification the current server en attente') : navLabel('No verified class quest page added yet','Aucune page de quête de classe vérifiée pour le moment')}</td></tr>
           <tr><th>${navLabel('Weapons','Armes')}</th><td>${esc(weapons)}</td></tr>
         </tbody>
       </table></div>
@@ -6606,8 +6606,8 @@ window.RO_DATA = {
       : navLabel('No skills listed','Aucune compétence listée');
     const weapons = (weaponsByClass[c.id] || []).join(' • ') || navLabel('Not listed yet','Pas encore renseigné');
     const questText = c.id==='novice'
-      ? navLabel('Novice skill quest details — Zero verification pending','Détails des quêtes de compétences Novice — vérification the current server en attente')
-      : navLabel('Class quest details — Zero verification pending','Détails des quêtes de classe — vérification the current server en attente');
+      ? navLabel('Novice skill quest details — Verification pending','Détails des quêtes de compétences Novice — vérification the current server en attente')
+      : navLabel('Class quest details — Verification pending','Détails des quêtes de classe — vérification the current server en attente');
 
     return `
       <h2 id="skill-see-also">${navLabel('See Also','Voir aussi')}</h2>
