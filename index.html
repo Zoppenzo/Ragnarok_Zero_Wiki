@@ -3492,13 +3492,15 @@ window.RO_DATA = {
 
   function databaseCategoryRows() {
     const rows = [
-      ['#/monsters','assets/database/monster-poring.gif',navLabel('Monsters','Monstres'),navLabel('Monster database, drops and spawn locations.','Base des monstres, drops et lieux d’apparition.')],
-      ['#/items','assets/database/item-ui.png',navLabel('Items','Objets'),navLabel('Equipment, consumables and miscellaneous items.','Équipements, consommables et objets divers.')],
-      ['#/cards','assets/database/card.png',navLabel('Cards','Cartes'),navLabel('Card effects, slots and monster sources.','Effets des cartes, emplacements et monstres sources.')],
+      ['#/monsters','assets/database/monster-poring.gif',navLabel('Monster','Monstre'),navLabel('Monster database, drops and spawn locations.','Base des monstres, drops et lieux d’apparition.')],
+      ['#/items','assets/database/item-ui.png',navLabel('Item','Objet'),navLabel('Equipment, consumables and miscellaneous items.','Équipements, consommables et objets divers.')],
+      ['#/cards','assets/database/card.png',navLabel('Card','Card'),navLabel('Card effects, slots and monster sources.','Effets des cartes, emplacements et monstres sources.')],
+      ['#/affixes','assets/database/item-ui.png',navLabel('Affix','Affix'),navLabel('Equipment affixes, option slots and value ranges.','Affixes d’équipement, slots d’options et plages de valeurs.')],
+      ['#/memorial-dungeons','assets/database/map.png',navLabel('Memorial Dungeon','Mémorial Donjon'),navLabel('Memorial Dungeon database and documented entries.','Base des Mémorial Donjons et entrées documentées.')],
       ['#/maps','assets/database/map.png',navLabel('Maps','Maps'),navLabel('Fields, towns, dungeons, monsters and NPCs.','Champs, villes, donjons, monstres et NPCs.')],
-      ['#/skills','assets/database/skill.png',navLabel('Skills','Compétences'),navLabel('Player skills, prerequisites and class links.','Compétences, prérequis et classes associées.')],
+      ['#/skills','assets/database/skill.png',navLabel('Skill','Compétence'),navLabel('Player skills, prerequisites and class links.','Compétences, prérequis et classes associées.')],
       ['#/quests','assets/database/quest.png',navLabel('Quests','Quêtes'),navLabel('Quest index, requirements, steps and rewards.','Index des quêtes, prérequis, étapes et récompenses.')],
-      ['#/npcs','assets/database/npc.png',navLabel('NPCs','NPCs'),navLabel('NPC locations, services and related quests.','Localisation des NPCs, services et quêtes associées.')]
+      ['#/npcs','assets/database/npc.png',navLabel('NPC','NPC'),navLabel('NPC locations, services and related quests.','Localisation des NPCs, services et quêtes associées.')]
     ];
     return `<div class="database-category-list">${rows.map(([href,img,title,desc])=>`<a class="database-category-row" href="${href}"><span class="database-category-sprite"><img src="${asset(img)}" alt=""></span><span class="database-category-copy"><strong>${title}</strong><small>${desc}</small></span><span class="database-category-arrow">→</span></a>`).join('')}</div>`;
   }
