@@ -2271,6 +2271,72 @@ window.RO_DATA = {
       prerequisites: [], notes: { en: "Learned as a quest skill and does not consume a normal skill point.", fr: "S’apprend comme compétence de quête et ne consomme pas de point de compétence normal." }, verified: true
     },
     {
+      id: "sword-mastery", name: "Sword Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/2.png",
+      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Increases physical damage dealt with one-handed swords and daggers, with the bonus scaling by skill level.", fr: "Augmente les dégâts physiques infligés avec les épées à une main et les dagues, avec un bonus qui augmente selon le niveau de la compétence." },
+      prerequisites: [], notes: { en: "Ragnarok Zero: Global first-job skill. MidgardHub lists Max Lv.10.", fr: "Compétence de première classe de Ragnarok Zero: Global. MidgardHub indique un niveau max de 10." }, verified: true
+    },
+    {
+      id: "increase-hp-recovery", name: "Increase HP Recovery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/4.png",
+      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Improves natural HP recovery while standing still. The recovered amount scales with a fixed value and a percentage of Max HP.", fr: "Améliore la récupération naturelle de HP lorsque le personnage reste immobile. La quantité récupérée augmente avec une valeur fixe et un pourcentage des HP max." },
+      prerequisites: [], notes: { en: "HP recovery does not occur while moving or while recovery is blocked by weight penalties.", fr: "La récupération de HP ne se produit pas en mouvement ni lorsque les pénalités de poids empêchent la récupération." }, verified: true
+    },
+    {
+      id: "bash", name: "Bash", classId: "swordman", maxLevel: 10, type: "Active", target: "Enemy", image: "https://static.divine-pride.net/images/skill/5.png",
+      spCost: null, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Hits one target with a powerful melee strike. From Bash Lv.6 onward, Fatal Blow can add a chance to inflict Stun.", fr: "Frappe une cible avec une puissante attaque de mêlée. À partir de Bash Lv.6, Fatal Blow peut ajouter une chance d'infliger Stun." },
+      prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
+    },
+    {
+      id: "provoke", name: "Provoke", classId: "swordman", maxLevel: 10, type: "Active", target: "Enemy", image: "https://static.divine-pride.net/images/skill/6.png",
+      spCost: null, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Provokes a target, lowering its defense while increasing its attack power. On monsters, it also draws aggression toward the caster. It does not affect Undead or boss monsters.", fr: "Provoque une cible, réduisant sa défense tout en augmentant sa puissance d'attaque. Sur les monstres, la compétence attire aussi leur agressivité vers le lanceur. Elle ne fonctionne pas sur les monstres Undead ni les boss." },
+      prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
+    },
+    {
+      id: "berserk-swordman", name: "Berserk", classId: "swordman", maxLevel: 1, type: "Passive / Free", target: "Self", image: "https://static.divine-pride.net/images/skill/146.png",
+      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Automatically enters a berserk state when HP falls to 25% or lower, applying an effect equivalent to Provoke Lv.10 until the critical condition ends.", fr: "Fait automatiquement entrer le personnage en état Berserk lorsque ses HP tombent à 25 % ou moins, avec un effet équivalent à Provoke Lv.10 jusqu'à la fin de l'état critique." },
+      prerequisites: [], notes: { en: "Listed as FREE by MidgardHub.", fr: "Indiquée comme FREE par MidgardHub." }, verified: true
+    },
+    {
+      id: "hp-recovery-while-moving", name: "HP Recovery While Moving", classId: "swordman", maxLevel: 1, type: "Passive / Free", target: "Self", image: "https://static.divine-pride.net/images/skill/144.png",
+      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Allows HP recovery while moving at 25% of the normal standing recovery rate. It does not receive the bonus from Increase HP Recovery.", fr: "Permet de récupérer des HP en mouvement à 25 % du taux normal de récupération à l'arrêt. Le bonus de Increase HP Recovery ne s'applique pas." },
+      prerequisites: [], notes: { en: "Listed as FREE by MidgardHub.", fr: "Indiquée comme FREE par MidgardHub." }, verified: true
+    },
+    {
+      id: "fatal-blow", name: "Fatal Blow", classId: "swordman", maxLevel: 1, type: "Passive / Free", target: "Self", image: "https://static.divine-pride.net/images/skill/145.png",
+      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Adds a chance for Bash Lv.6 or higher to inflict Stun. The chance increases with the Bash level used and the character's level.", fr: "Ajoute une chance pour Bash Lv.6 ou plus d'infliger Stun. La chance augmente avec le niveau de Bash utilisé et le niveau du personnage." },
+      prerequisites: [], notes: { en: "Listed as FREE by MidgardHub.", fr: "Indiquée comme FREE par MidgardHub." }, verified: true
+    },
+    {
+      id: "spear-mastery", name: "Spear Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/55.png",
+      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Increases physical damage dealt with spears. The bonus is further increased while mounted.", fr: "Augmente les dégâts physiques infligés avec les lances. Le bonus est encore augmenté lorsque le personnage est monté." },
+      prerequisites: [], notes: { en: "MidgardHub places this in the Ragnarok Zero first-job skill set for the Swordman branch.", fr: "MidgardHub place cette compétence dans l'ensemble de compétences de première classe de la branche Swordman sur Ragnarok Zero." }, verified: true
+    },
+    {
+      id: "two-handed-sword-mastery", name: "Two Handed Sword Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/3.png",
+      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Increases physical damage dealt while using a two-handed sword, with the bonus scaling by skill level.", fr: "Augmente les dégâts physiques infligés avec une épée à deux mains, avec un bonus qui augmente selon le niveau de la compétence." },
+      prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
+    },
+    {
+      id: "magnum-break", name: "Magnum Break", classId: "swordman", maxLevel: 10, type: "Active", target: "Self / Area", image: "https://static.divine-pride.net/images/skill/7.png",
+      spCost: null, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Deals Fire-property physical damage in a 5×5 area around the caster, knocks enemies back by 2 cells, and temporarily adds Fire-property weapon damage.", fr: "Inflige des dégâts physiques de propriété Fire dans une zone de 5×5 autour du lanceur, repousse les ennemis de 2 cellules et ajoute temporairement des dégâts d'arme de propriété Fire." },
+      prerequisites: [{ skillId: "bash", level: 5, verified: true }], notes: { en: "MidgardHub lists Bash Lv.5 as the first-job prerequisite and Max Lv.10.", fr: "MidgardHub indique Bash Lv.5 comme prérequis de première classe et un niveau max de 10." }, verified: true
+    },
+    {
+      id: "endure", name: "Endure", classId: "swordman", maxLevel: 10, type: "Active", target: "Self", image: "https://static.divine-pride.net/images/skill/8.png",
+      spCost: null, castTime: null, castDelay: null, cooldown: null,
+      description: { en: "Lets the caster keep moving and attacking while taking normal hit stun for a limited duration. The effect ends after enough hits and does not apply in Siege.", fr: "Permet au lanceur de continuer à se déplacer et à attaquer malgré les coups reçus pendant une durée limitée. L'effet prend fin après un certain nombre de coups et ne s'applique pas en Siege." },
+      prerequisites: [{ skillId: "provoke", level: 5, verified: true }], notes: { en: "MidgardHub lists Provoke Lv.5 as the first-job prerequisite and Max Lv.10.", fr: "MidgardHub indique Provoke Lv.5 comme prérequis de première classe et un niveau max de 10." }, verified: true
+    },
+    {
       id: "envenom", name: "Envenom", classId: "thief", maxLevel: 10, type: "Active", target: "Enemy", image: null,
       spCost: null, castTime: null, cooldown: null,
       description: { en: "Skill entry prepared for Ragnarok Zero data. Values and effects still need verification.", fr: "Entrée de compétence prête pour les données Ragnarok Zero. Les valeurs et effets doivent encore être vérifiés." },
@@ -2293,7 +2359,7 @@ window.RO_DATA = {
   classes: [
     { id: "novice", name: "Novice", tier: "Base Class", group: "novice", parentId: null, releaseStatus: "available", image: null, description: { en: "Novice is the starting class for every new character in Ragnarok Zero: Global. It introduces the basic game functions before the character chooses a first class.", fr: "Novice est la classe de départ de tous les nouveaux personnages dans Ragnarok Zero: Global. Elle sert à découvrir les fonctions de base du jeu avant de choisir une première classe." }, notes: { en: "At Job Level 10 or higher, a Novice can advance to one of the six first classes currently live on Global: Swordsman, Mage, Archer, Merchant, Thief or Acolyte.", fr: "À partir du Job Level 10, un Novice peut évoluer vers l’une des six premières classes actuellement disponibles sur Global : Swordsman, Mage, Archer, Merchant, Thief ou Acolyte." } },
 
-    { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Swordman pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
+    { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman is the melee-focused first class of Ragnarok Zero: Global, built around weapon mastery, strong single-target attacks, survivability and close-range utility.", fr: "Swordman est la première classe orientée mêlée de Ragnarok Zero: Global, centrée sur les maîtrises d'armes, les attaques puissantes sur cible unique, la survie et les outils de combat rapproché." }, notes: { en: "MidgardHub currently lists 11 first-job Swordman skills: eight point-based skills and three FREE skills.", fr: "MidgardHub liste actuellement 11 compétences de première classe pour Swordman : huit compétences à points et trois compétences FREE." } },
     { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Mage pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Archer pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Merchant pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
@@ -3428,6 +3494,77 @@ window.RO_DATA = {
   }
 
 
+
+  function swordmanDetail() {
+    const c = getClass('swordman');
+    const regularIds = ['sword-mastery','increase-hp-recovery','bash','provoke','spear-mastery','two-handed-sword-mastery','magnum-break','endure'];
+    const freeIds = ['berserk-swordman','hp-recovery-while-moving','fatal-blow'];
+    const regular = regularIds.map(getSkill).filter(Boolean);
+    const free = freeIds.map(getSkill).filter(Boolean);
+    const classGenders = classGenderList('swordman');
+    const spriteBlock = `<div class="class-infobox-sprites">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot('swordman',g,false)}</div>`).join('')}</div>`;
+    const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
+    const typeColor = type => type.includes('Passive') ? '#eef5ff' : '#fff';
+    const regularRows = regular.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${typeColor(sk.type)}">${esc(sk.type)}</td>
+    </tr>`).join('');
+    const freeRows = free.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:#d8fbfb">${navLabel('FREE','FREE')}</td>
+      <td><span class="badge unverified">${navLabel('Quest details pending','Détails de quête à vérifier')}</span></td>
+    </tr>`).join('');
+
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:'Swordman'}])}
+      <article class="article-with-infobox">
+        <div class="article-heading"><h1>${icon('class')}Swordman</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+        <aside class="infobox class-infobox">
+          <div class="infobox-title">Swordman<span class="infobox-subtitle">${navLabel('First Class','Première classe')}</span></div>
+          ${spriteBlock}
+          <table><tbody>
+            ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
+            ${infoRow(t('status'),navLabel('Available','Disponible'))}
+            ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
+            ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/knight">Knight</a> / <a href="#/classes/crusader">Crusader</a>')}
+            ${infoRow(t('skills'),String(regular.length + free.length))}
+          </tbody></table>
+          <div class="infobox-footer">${badge(true)}</div>
+        </aside>
+
+        <div class="article-body">
+          <p class="article-lead">${esc(txt(c.description))}</p>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok Zero: Global data','Données Ragnarok Zero: Global')}</strong><br>${navLabel('The Swordman skill list, max levels, Zero effects and skill icons on this page are based on MidgardHub’s Ragnarok Zero Global skill database.','La liste des compétences Swordman, leurs niveaux max, leurs effets Zero et leurs icônes sur cette page sont basés sur la base de compétences Ragnarok Zero Global de MidgardHub.')}</div></div>
+
+          <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
+          <p>${navLabel('Swordman develops into Knight or Crusader. These second classes are kept in the wiki as upcoming Global content.','Swordman évolue vers Knight ou Crusader. Ces secondes classes sont conservées dans le wiki comme contenu Global à venir.')}</p>
+          <div class="related-list"><a href="#/classes/knight">Knight</a> · <a href="#/classes/crusader">Crusader</a></div>
+
+          <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:115px">${navLabel('Type','Type')}</th></tr></thead>
+            <tbody>${regularRows}</tbody>
+          </table></div>
+
+          <h3 id="quest-skills" style="font-size:21px;margin-top:30px">${navLabel('Quest / Free Skills','Compétences de quête / Free')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:90px">${navLabel('Type','Type')}</th><th style="width:185px">${navLabel('Quest','Quête')}</th></tr></thead>
+            <tbody>${freeRows}</tbody>
+          </table></div>
+
+          ${classSeeAlso(c)}
+          <h2 id="sources">${navLabel('Sources','Sources')}</h2>
+          <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
+            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
+            <li><a href="https://midgardhub.com/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Skill Database</a></li>
+          </ul></div>
+        </div>
+      </article>`;
+  }
+
   function classSeeAlso(c) {
     const skills = DATA.skills.filter(sk=>sk.classId===c.id);
     const skillLinks = skills.length
@@ -3540,6 +3677,7 @@ window.RO_DATA = {
 
   function classDetail(id) {
     if (id === 'novice') return noviceDetail();
+    if (id === 'swordman') return swordmanDetail();
     const c = getClass(id);
     if (!c) return notFound();
     const skills = DATA.skills.filter(s=>s.classId===id);
