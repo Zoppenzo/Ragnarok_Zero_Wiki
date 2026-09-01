@@ -2272,68 +2272,62 @@ window.RO_DATA = {
     },
     {
       id: "sword-mastery", name: "Sword Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/2.png",
-      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Increases physical damage dealt with one-handed swords and daggers, with the bonus scaling by skill level.", fr: "Augmente les dégâts physiques infligés avec les épées à une main et les dagues, avec un bonus qui augmente selon le niveau de la compétence." },
       prerequisites: [], notes: { en: "Ragnarok Zero: Global first-job skill. MidgardHub lists Max Lv.10.", fr: "Compétence de première classe de Ragnarok Zero: Global. MidgardHub indique un niveau max de 10." }, verified: true
     },
     {
       id: "increase-hp-recovery", name: "Increase HP Recovery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/4.png",
-      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Improves natural HP recovery while standing still. The recovered amount scales with a fixed value and a percentage of Max HP.", fr: "Améliore la récupération naturelle de HP lorsque le personnage reste immobile. La quantité récupérée augmente avec une valeur fixe et un pourcentage des HP max." },
       prerequisites: [], notes: { en: "HP recovery does not occur while moving or while recovery is blocked by weight penalties.", fr: "La récupération de HP ne se produit pas en mouvement ni lorsque les pénalités de poids empêchent la récupération." }, verified: true
     },
     {
       id: "bash", name: "Bash", classId: "swordman", maxLevel: 10, type: "Active", target: "Enemy", image: "https://static.divine-pride.net/images/skill/5.png",
-      spCost: null, castTime: null, castDelay: null, cooldown: null,
+      spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Hits one target with a powerful melee strike. From Bash Lv.6 onward, Fatal Blow can add a chance to inflict Stun.", fr: "Frappe une cible avec une puissante attaque de mêlée. À partir de Bash Lv.6, Fatal Blow peut ajouter une chance d'infliger Stun." },
       prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
     },
     {
       id: "provoke", name: "Provoke", classId: "swordman", maxLevel: 10, type: "Active", target: "Enemy", image: "https://static.divine-pride.net/images/skill/6.png",
-      spCost: null, castTime: null, castDelay: null, cooldown: null,
+      spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Provokes a target, lowering its defense while increasing its attack power. On monsters, it also draws aggression toward the caster. It does not affect Undead or boss monsters.", fr: "Provoque une cible, réduisant sa défense tout en augmentant sa puissance d'attaque. Sur les monstres, la compétence attire aussi leur agressivité vers le lanceur. Elle ne fonctionne pas sur les monstres Undead ni les boss." },
       prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
     },
     {
-      id: "berserk-swordman", name: "Berserk", classId: "swordman", maxLevel: 1, type: "Passive / Free", target: "Self", image: "https://static.divine-pride.net/images/skill/146.png",
-      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      id: "berserk-swordman", name: "Berserk", classId: "swordman", maxLevel: 1, type: "Quest / Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/146.png",
+      spCost: 1, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Automatically enters a berserk state when HP falls to 25% or lower, applying an effect equivalent to Provoke Lv.10 until the critical condition ends.", fr: "Fait automatiquement entrer le personnage en état Berserk lorsque ses HP tombent à 25 % ou moins, avec un effet équivalent à Provoke Lv.10 jusqu'à la fin de l'état critique." },
-      prerequisites: [], notes: { en: "Listed as FREE by MidgardHub.", fr: "Indiquée comme FREE par MidgardHub." }, verified: true
+      prerequisites: [], notes: { en: "Quest skill; learned without spending a normal job skill point.", fr: "Compétence de quête ; elle s'apprend sans dépenser de point de compétence de Job normal." }, verified: true
     },
     {
-      id: "hp-recovery-while-moving", name: "HP Recovery While Moving", classId: "swordman", maxLevel: 1, type: "Passive / Free", target: "Self", image: "https://static.divine-pride.net/images/skill/144.png",
-      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      id: "hp-recovery-while-moving", name: "HP Recovery While Moving", classId: "swordman", maxLevel: 1, type: "Quest / Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/144.png",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Allows HP recovery while moving at 25% of the normal standing recovery rate. It does not receive the bonus from Increase HP Recovery.", fr: "Permet de récupérer des HP en mouvement à 25 % du taux normal de récupération à l'arrêt. Le bonus de Increase HP Recovery ne s'applique pas." },
-      prerequisites: [], notes: { en: "Listed as FREE by MidgardHub.", fr: "Indiquée comme FREE par MidgardHub." }, verified: true
+      prerequisites: [], notes: { en: "Quest skill; learned without spending a normal job skill point.", fr: "Compétence de quête ; elle s'apprend sans dépenser de point de compétence de Job normal." }, verified: true
     },
     {
-      id: "fatal-blow", name: "Fatal Blow", classId: "swordman", maxLevel: 1, type: "Passive / Free", target: "Self", image: "https://static.divine-pride.net/images/skill/145.png",
-      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      id: "fatal-blow", name: "Fatal Blow", classId: "swordman", maxLevel: 1, type: "Quest / Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/145.png",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Adds a chance for Bash Lv.6 or higher to inflict Stun. The chance increases with the Bash level used and the character's level.", fr: "Ajoute une chance pour Bash Lv.6 ou plus d'infliger Stun. La chance augmente avec le niveau de Bash utilisé et le niveau du personnage." },
-      prerequisites: [], notes: { en: "Listed as FREE by MidgardHub.", fr: "Indiquée comme FREE par MidgardHub." }, verified: true
-    },
-    {
-      id: "spear-mastery", name: "Spear Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/55.png",
-      spCost: 0, castTime: null, castDelay: null, cooldown: null,
-      description: { en: "Increases physical damage dealt with spears. The bonus is further increased while mounted.", fr: "Augmente les dégâts physiques infligés avec les lances. Le bonus est encore augmenté lorsque le personnage est monté." },
-      prerequisites: [], notes: { en: "MidgardHub places this in the Ragnarok Zero first-job skill set for the Swordman branch.", fr: "MidgardHub place cette compétence dans l'ensemble de compétences de première classe de la branche Swordman sur Ragnarok Zero." }, verified: true
+      prerequisites: [], notes: { en: "Quest skill; learned without spending a normal job skill point.", fr: "Compétence de quête ; elle s'apprend sans dépenser de point de compétence de Job normal." }, verified: true
     },
     {
       id: "two-handed-sword-mastery", name: "Two Handed Sword Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/3.png",
-      spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       levels: null,
       description: { en: "Increases physical damage dealt while using a two-handed sword, with the bonus scaling by skill level.", fr: "Augmente les dégâts physiques infligés avec une épée à deux mains, avec un bonus qui augmente selon le niveau de la compétence." },
       prerequisites: [{ skillId: "sword-mastery", level: 1, verified: true }], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
     },
     {
       id: "magnum-break", name: "Magnum Break", classId: "swordman", maxLevel: 10, type: "Active", target: "Self / Area", image: "https://static.divine-pride.net/images/skill/7.png",
-      spCost: null, castTime: null, castDelay: null, cooldown: null,
+      spCost: 30, castTime: "None", castDelay: "0.3 s", cooldown: "2 s",
       description: { en: "Deals Fire-property physical damage in a 5×5 area around the caster, knocks enemies back by 2 cells, and temporarily adds Fire-property weapon damage.", fr: "Inflige des dégâts physiques de propriété Fire dans une zone de 5×5 autour du lanceur, repousse les ennemis de 2 cellules et ajoute temporairement des dégâts d'arme de propriété Fire." },
       prerequisites: [{ skillId: "bash", level: 5, verified: true }], notes: { en: "MidgardHub lists Bash Lv.5 as the first-job prerequisite and Max Lv.10.", fr: "MidgardHub indique Bash Lv.5 comme prérequis de première classe et un niveau max de 10." }, verified: true
     },
     {
       id: "endure", name: "Endure", classId: "swordman", maxLevel: 10, type: "Active", target: "Self", image: "https://static.divine-pride.net/images/skill/8.png",
-      spCost: null, castTime: null, castDelay: null, cooldown: null,
+      spCost: 10, castTime: "None", castDelay: "None", cooldown: "10 s",
       description: { en: "Lets the caster keep moving and attacking while taking normal hit stun for a limited duration. The effect ends after enough hits and does not apply in Siege.", fr: "Permet au lanceur de continuer à se déplacer et à attaquer malgré les coups reçus pendant une durée limitée. L'effet prend fin après un certain nombre de coups et ne s'applique pas en Siege." },
       prerequisites: [{ skillId: "provoke", level: 5, verified: true }], notes: { en: "MidgardHub lists Provoke Lv.5 as the first-job prerequisite and Max Lv.10.", fr: "MidgardHub indique Provoke Lv.5 comme prérequis de première classe et un niveau max de 10." }, verified: true
     },
@@ -2360,7 +2354,7 @@ window.RO_DATA = {
   classes: [
     { id: "novice", name: "Novice", tier: "Base Class", group: "novice", parentId: null, releaseStatus: "available", image: null, description: { en: "Novice is the starting class for every new character in Ragnarok Zero: Global. It introduces the basic game functions before the character chooses a first class.", fr: "Novice est la classe de départ de tous les nouveaux personnages dans Ragnarok Zero: Global. Elle sert à découvrir les fonctions de base du jeu avant de choisir une première classe." }, notes: { en: "At Job Level 10 or higher, a Novice can advance to one of the six first classes currently live on Global: Swordsman, Mage, Archer, Merchant, Thief or Acolyte.", fr: "À partir du Job Level 10, un Novice peut évoluer vers l’une des six premières classes actuellement disponibles sur Global : Swordsman, Mage, Archer, Merchant, Thief ou Acolyte." } },
 
-    { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman is the melee-focused first class of Ragnarok Zero: Global, built around weapon mastery, strong single-target attacks, survivability and close-range utility.", fr: "Swordman est la première classe orientée mêlée de Ragnarok Zero: Global, centrée sur les maîtrises d'armes, les attaques puissantes sur cible unique, la survie et les outils de combat rapproché." }, notes: { en: "MidgardHub currently lists 11 first-job Swordman skills: eight point-based skills and three FREE skills.", fr: "MidgardHub liste actuellement 11 compétences de première classe pour Swordman : huit compétences à points et trois compétences FREE." } },
+    { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman is the melee-focused first class of Ragnarok Zero: Global, built around weapon mastery, strong single-target attacks, survivability and close-range utility.", fr: "Swordman est la première classe orientée mêlée de Ragnarok Zero: Global, centrée sur les maîtrises d'armes, les attaques puissantes sur cible unique, la survie et les outils de combat rapproché." }, notes: { en: "Ragnarok Zero: Global lists 10 Swordman skills: seven normal first-job skills and three quest skills.", fr: "Ragnarok Zero: Global liste 10 compétences Swordman : sept compétences normales de première classe et trois compétences de quête." } },
     { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Mage pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Archer pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Merchant pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
@@ -3434,41 +3428,38 @@ window.RO_DATA = {
 
 
   function swordmanSkillLevelData(id) {
+    const N = 'None';
     const rows = {
       'sword-mastery': [
-        [1,'Damage +4',0,1,'—'],[2,'Damage +8',0,1,'—'],[3,'Damage +12',0,1,'—'],[4,'Damage +16',0,1,'—'],[5,'Damage +20',0,1,'—'],
-        [6,'Damage +24',0,1,'—'],[7,'Damage +28',0,1,'—'],[8,'Damage +32',0,1,'—'],[9,'Damage +36',0,1,'—'],[10,'Damage +40',0,1,'—']
+        [1,'Damage +4',0,1,N,N,N],[2,'Damage +8',0,1,N,N,N],[3,'Damage +12',0,1,N,N,N],[4,'Damage +16',0,1,N,N,N],[5,'Damage +20',0,1,N,N,N],
+        [6,'Damage +24',0,1,N,N,N],[7,'Damage +28',0,1,N,N,N],[8,'Damage +32',0,1,N,N,N],[9,'Damage +36',0,1,N,N,N],[10,'Damage +40',0,1,N,N,N]
       ],
       'increase-hp-recovery': [
-        [1,'HP / 10 sec: +(5 + 0.2% MHP)',0,1,'—'],[2,'HP / 10 sec: +(10 + 0.4% MHP)',0,1,'—'],[3,'HP / 10 sec: +(15 + 0.6% MHP)',0,1,'—'],[4,'HP / 10 sec: +(20 + 0.8% MHP)',0,1,'—'],[5,'HP / 10 sec: +(25 + 1.0% MHP)',0,1,'—'],
-        [6,'HP / 10 sec: +(30 + 1.2% MHP)',0,1,'—'],[7,'HP / 10 sec: +(35 + 1.4% MHP)',0,1,'—'],[8,'HP / 10 sec: +(40 + 1.6% MHP)',0,1,'—'],[9,'HP / 10 sec: +(45 + 1.8% MHP)',0,1,'—'],[10,'HP / 10 sec: +(50 + 2.0% MHP)',0,1,'—']
+        [1,'HP / 10 sec: +(5 + 0.2% MHP)',0,1,N,N,N],[2,'HP / 10 sec: +(10 + 0.4% MHP)',0,1,N,N,N],[3,'HP / 10 sec: +(15 + 0.6% MHP)',0,1,N,N,N],[4,'HP / 10 sec: +(20 + 0.8% MHP)',0,1,N,N,N],[5,'HP / 10 sec: +(25 + 1.0% MHP)',0,1,N,N,N],
+        [6,'HP / 10 sec: +(30 + 1.2% MHP)',0,1,N,N,N],[7,'HP / 10 sec: +(35 + 1.4% MHP)',0,1,N,N,N],[8,'HP / 10 sec: +(40 + 1.6% MHP)',0,1,N,N,N],[9,'HP / 10 sec: +(45 + 1.8% MHP)',0,1,N,N,N],[10,'HP / 10 sec: +(50 + 2.0% MHP)',0,1,N,N,N]
       ],
       'bash': [
-        [1,'ATK 130% · Accuracy +5%',8,1,'—'],[2,'ATK 160% · Accuracy +10%',8,1,'—'],[3,'ATK 190% · Accuracy +15%',8,1,'—'],[4,'ATK 220% · Accuracy +20%',8,1,'—'],[5,'ATK 250% · Accuracy +25%',8,1,'—'],
-        [6,'ATK 280% · Accuracy +30%',15,1,'—'],[7,'ATK 310% · Accuracy +35%',15,1,'—'],[8,'ATK 340% · Accuracy +40%',15,1,'—'],[9,'ATK 370% · Accuracy +45%',15,1,'—'],[10,'ATK 400% · Accuracy +50%',15,1,'—']
+        [1,'ATK 130% · Accuracy +5%',8,1,N,N,N],[2,'ATK 160% · Accuracy +10%',8,1,N,N,N],[3,'ATK 190% · Accuracy +15%',8,1,N,N,N],[4,'ATK 220% · Accuracy +20%',8,1,N,N,N],[5,'ATK 250% · Accuracy +25%',8,1,N,N,N],
+        [6,'ATK 280% · Accuracy +30%',15,1,N,N,N],[7,'ATK 310% · Accuracy +35%',15,1,N,N,N],[8,'ATK 340% · Accuracy +40%',15,1,N,N,N],[9,'ATK 370% · Accuracy +45%',15,1,N,N,N],[10,'ATK 400% · Accuracy +50%',15,1,N,N,N]
       ],
       'provoke': [
-        [1,'Enemy damage +5% · Enemy DEF -10%',4,9,'—'],[2,'Enemy damage +8% · Enemy DEF -15%',5,9,'—'],[3,'Enemy damage +11% · Enemy DEF -20%',6,9,'—'],[4,'Enemy damage +14% · Enemy DEF -25%',7,9,'—'],[5,'Enemy damage +17% · Enemy DEF -30%',8,9,'—'],
-        [6,'Enemy damage +20% · Enemy DEF -35%',9,9,'—'],[7,'Enemy damage +23% · Enemy DEF -40%',10,9,'—'],[8,'Enemy damage +26% · Enemy DEF -45%',11,9,'—'],[9,'Enemy damage +29% · Enemy DEF -50%',12,9,'—'],[10,'Enemy damage +32% · Enemy DEF -55%',13,9,'—']
+        [1,'Enemy damage +5% · Enemy DEF -10%',4,9,N,N,N],[2,'Enemy damage +8% · Enemy DEF -15%',5,9,N,N,N],[3,'Enemy damage +11% · Enemy DEF -20%',6,9,N,N,N],[4,'Enemy damage +14% · Enemy DEF -25%',7,9,N,N,N],[5,'Enemy damage +17% · Enemy DEF -30%',8,9,N,N,N],
+        [6,'Enemy damage +20% · Enemy DEF -35%',9,9,N,N,N],[7,'Enemy damage +23% · Enemy DEF -40%',10,9,N,N,N],[8,'Enemy damage +26% · Enemy DEF -45%',11,9,N,N,N],[9,'Enemy damage +29% · Enemy DEF -50%',12,9,N,N,N],[10,'Enemy damage +32% · Enemy DEF -55%',13,9,N,N,N]
       ],
-      'berserk-swordman': [[1,'Activates automatically at ≤25% HP · effect equivalent to Provoke Lv.10',1,1,'—']],
-      'hp-recovery-while-moving': [[1,'Recover HP while moving at 25% of normal standing recovery',0,1,'—']],
+      'berserk-swordman': [[1,'Automatically activates at ≤25% HP · effect equivalent to Provoke Lv.10',1,1,N,N,N]],
+      'hp-recovery-while-moving': [[1,'Recover HP while moving at 25% of normal standing recovery',0,1,N,N,N]],
+      'fatal-blow': [[1,'Bash Lv.6+ can inflict Stun; chance scales with Bash level and character level',0,1,N,N,N]],
       'two-handed-sword-mastery': [
-        [1,'Damage +4',0,1,'—'],[2,'Damage +8',0,1,'—'],[3,'Damage +12',0,1,'—'],[4,'Damage +16',0,1,'—'],[5,'Damage +20',0,1,'—'],
-        [6,'Damage +24',0,1,'—'],[7,'Damage +28',0,1,'—'],[8,'Damage +32',0,1,'—'],[9,'Damage +36',0,1,'—'],[10,'Damage +40',0,1,'—']
+        [1,'Damage +4',0,1,N,N,N],[2,'Damage +8',0,1,N,N,N],[3,'Damage +12',0,1,N,N,N],[4,'Damage +16',0,1,N,N,N],[5,'Damage +20',0,1,N,N,N],
+        [6,'Damage +24',0,1,N,N,N],[7,'Damage +28',0,1,N,N,N],[8,'Damage +32',0,1,N,N,N],[9,'Damage +36',0,1,N,N,N],[10,'Damage +40',0,1,N,N,N]
       ],
       'magnum-break': [
-        [1,'ATK 120%',30,1,'2 sec'],[2,'ATK 140%',30,1,'2 sec'],[3,'ATK 160%',30,1,'2 sec'],[4,'ATK 180%',30,1,'2 sec'],[5,'ATK 200%',30,1,'2 sec'],
-        [6,'ATK 220%',30,1,'2 sec'],[7,'ATK 240%',30,1,'2 sec'],[8,'ATK 260%',30,1,'2 sec'],[9,'ATK 280%',30,1,'2 sec'],[10,'ATK 300%',30,1,'2 sec']
+        [1,'ATK 120%',30,1,N,'0.3 s','2 s'],[2,'ATK 140%',30,1,N,'0.3 s','2 s'],[3,'ATK 160%',30,1,N,'0.3 s','2 s'],[4,'ATK 180%',30,1,N,'0.3 s','2 s'],[5,'ATK 200%',30,1,N,'0.3 s','2 s'],
+        [6,'ATK 220%',30,1,N,'0.3 s','2 s'],[7,'ATK 240%',30,1,N,'0.3 s','2 s'],[8,'ATK 260%',30,1,N,'0.3 s','2 s'],[9,'ATK 280%',30,1,N,'0.3 s','2 s'],[10,'ATK 300%',30,1,N,'0.3 s','2 s']
       ],
       'endure': [
-        [1,'Duration 10 sec · MDEF +1',10,1,'10 sec'],[2,'Duration 13 sec · MDEF +2',10,1,'10 sec'],[3,'Duration 16 sec · MDEF +3',10,1,'10 sec'],[4,'Duration 19 sec · MDEF +4',10,1,'10 sec'],[5,'Duration 22 sec · MDEF +5',10,1,'10 sec'],
-        [6,'Duration 25 sec · MDEF +6',10,1,'10 sec'],[7,'Duration 28 sec · MDEF +7',10,1,'10 sec'],[8,'Duration 31 sec · MDEF +8',10,1,'10 sec'],[9,'Duration 34 sec · MDEF +9',10,1,'10 sec'],[10,'Duration 37 sec · MDEF +10',10,1,'10 sec']
-      ],
-      'fatal-blow': [[1,'Bash Lv.6+ can inflict Stun; chance scales with Bash level and character level',0,1,'—']],
-      'spear-mastery': [
-        [1,'Damage +4 · Mounted +5',0,1,'—'],[2,'Damage +8 · Mounted +10',0,1,'—'],[3,'Damage +12 · Mounted +15',0,1,'—'],[4,'Damage +16 · Mounted +20',0,1,'—'],[5,'Damage +20 · Mounted +25',0,1,'—'],
-        [6,'Damage +24 · Mounted +30',0,1,'—'],[7,'Damage +28 · Mounted +35',0,1,'—'],[8,'Damage +32 · Mounted +40',0,1,'—'],[9,'Damage +36 · Mounted +45',0,1,'—'],[10,'Damage +40 · Mounted +50',0,1,'—']
+        [1,'Duration 10 sec · MDEF +1',10,1,N,N,'10 s'],[2,'Duration 13 sec · MDEF +2',10,1,N,N,'10 s'],[3,'Duration 16 sec · MDEF +3',10,1,N,N,'10 s'],[4,'Duration 19 sec · MDEF +4',10,1,N,N,'10 s'],[5,'Duration 22 sec · MDEF +5',10,1,N,N,'10 s'],
+        [6,'Duration 25 sec · MDEF +6',10,1,N,N,'10 s'],[7,'Duration 28 sec · MDEF +7',10,1,N,N,'10 s'],[8,'Duration 31 sec · MDEF +8',10,1,N,N,'10 s'],[9,'Duration 34 sec · MDEF +9',10,1,N,N,'10 s'],[10,'Duration 37 sec · MDEF +10',10,1,N,N,'10 s']
       ]
     };
     return rows[id] || null;
@@ -3497,14 +3488,16 @@ window.RO_DATA = {
       <h2 id="levels">${navLabel('Level-by-level effects','Effets par niveau')}</h2>
       <div class="table-wrap"><table class="skill-level-table">
         <thead><tr>
-          <th style="width:80px">${navLabel('Level','Niveau')}</th>
+          <th style="width:75px">${navLabel('Level','Niveau')}</th>
           <th>${navLabel('Effect','Effet')}</th>
-          <th style="width:80px">SP</th>
-          <th style="width:90px">${navLabel('Range','Portée')}</th>
-          <th style="width:110px">${navLabel('Cooldown','Recharge')}</th>
+          <th style="width:70px">SP</th>
+          <th style="width:80px">${navLabel('Range','Portée')}</th>
+          <th style="width:100px">${navLabel('Cast Time','Temps de cast')}</th>
+          <th style="width:105px">${navLabel('Cast Delay','Délai après cast')}</th>
+          <th style="width:95px">${navLabel('Cooldown','Recharge')}</th>
         </tr></thead>
         <tbody>
-          ${rows.map(([lv,effect,sp,range,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${esc(effect)}</td><td>${sp}</td><td>${range}</td><td>${esc(cd)}</td></tr>`).join('')}
+          ${rows.map(([lv,effect,sp,range,cast,delay,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${esc(effect)}</td><td>${sp}</td><td>${range}</td><td>${esc(cast)}</td><td>${esc(delay)}</td><td>${esc(cd)}</td></tr>`).join('')}
         </tbody>
       </table></div>`;
   }
@@ -3526,7 +3519,9 @@ window.RO_DATA = {
     const rows = swordmanSkillLevelData(sk.id);
     const inferredSP = rows ? [...new Set(rows.map(r=>r[2]))].join(' / ') : val(sk.spCost);
     const inferredRange = rows ? [...new Set(rows.map(r=>r[3]))].join(' / ') : val(sk.range);
-    const inferredCooldown = rows ? [...new Set(rows.map(r=>r[4]).filter(x=>x && x!=='—'))].join(' / ') || 'None' : val(sk.cooldown);
+    const inferredCast = rows ? [...new Set(rows.map(r=>r[4]))].join(' / ') : val(sk.castTime);
+    const inferredDelay = rows ? [...new Set(rows.map(r=>r[5]))].join(' / ') : val(sk.castDelay);
+    const inferredCooldown = rows ? [...new Set(rows.map(r=>r[6]))].join(' / ') : val(sk.cooldown);
 
     return `${breadcrumbs([{label:t('skills'),href:'#/skills'},{label:sk.name}])}
       <article class="article-with-infobox">
@@ -3570,6 +3565,8 @@ window.RO_DATA = {
           ${hasSwordmanLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
             <li><a href="https://roz.prontera.info/skills/planner?class=crusader" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/skill/7/magnum-break" target="_blank" rel="noopener">RagnaPlace — Zero Global skill delay data</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero extracted skill tree reference</a></li>
           </ul></div>` : ''}
 
           ${skillClassNav(sk)}
@@ -3631,7 +3628,7 @@ window.RO_DATA = {
 
   function swordmanDetail() {
     const c = getClass('swordman');
-    const regularIds = ['sword-mastery','increase-hp-recovery','bash','provoke','spear-mastery','two-handed-sword-mastery','magnum-break','endure'];
+    const regularIds = ['sword-mastery','increase-hp-recovery','bash','provoke','two-handed-sword-mastery','magnum-break','endure'];
     const freeIds = ['berserk-swordman','hp-recovery-while-moving','fatal-blow'];
     const regular = regularIds.map(getSkill).filter(Boolean);
     const free = freeIds.map(getSkill).filter(Boolean);
