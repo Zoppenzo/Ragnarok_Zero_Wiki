@@ -3305,7 +3305,6 @@ window.RO_DATA = {
       )}</p>
       ${toc([
         {id:'what-is-zero',label:navLabel('What is Ragnarok Zero: Global?','Qu’est-ce que Ragnarok Zero: Global ?')},
-        {id:'current-content',label:navLabel('Current Global content','Contenu Global actuel')},
         {id:'zero-systems',label:navLabel('Notable Zero systems','Systèmes Zero notables')},
         {id:'about-wiki',label:navLabel('About this wiki','À propos de ce wiki')}
       ])}
@@ -3316,28 +3315,48 @@ window.RO_DATA = {
         'Les joueurs créent un personnage, commencent en Novice, explorent les villes et les zones extérieures, combattent des monstres, accomplissent des quêtes, améliorent leur équipement, apprennent des compétences et progressent dans le système de classes. La progression du personnage repose à la fois sur le Base Level et le Job Level, avec les caractéristiques STR, AGI, VIT, INT, DEX et LUK.'
       )}</p>
       <p>${navLabel(
-        'The official Global guide documents its own controls, status system, cards, navigation, party, guild, refinement and other mechanics. This wiki therefore treats Ragnarok Zero: Global as its own ruleset instead of copying values from another Ragnarok database.',
-        'Le guide officiel Global documente ses propres contrôles, statistiques, cartes, navigation, groupes, guildes, raffinements et autres mécaniques. Ce wiki traite donc Ragnarok Zero: Global comme un jeu avec ses propres règles, sans recopier les valeurs d’une autre base Ragnarok.'
+        'Ragnarok Zero modifies and extends many familiar Ragnarok systems, so this wiki treats the Global service as its own ruleset instead of automatically reusing Classic, Pre-Renewal or Renewal data.',
+        'Ragnarok Zero modifie et étend de nombreux systèmes connus de Ragnarok ; ce wiki traite donc le service Global comme un ruleset propre au lieu de réutiliser automatiquement les données Classic, Pre-Renewal ou Renewal.'
       )}</p>
-
-      <h2 id="current-content">${navLabel('Current Global content','Contenu Global actuel')}</h2>
-      <p>${navLabel(
-        'The live Global release currently starts with Novice and the six original first classes. Content announced for later updates is deliberately kept out of the active wiki categories until it is actually released.',
-        'La version Global actuellement en ligne commence avec Novice et les six premières classes d’origine. Le contenu annoncé pour de futures mises à jour est volontairement exclu des catégories actives du wiki tant qu’il n’est pas réellement disponible.'
-      )}</p>
-      <div class="wiki-link-grid">
-        <a href="#/classes">${miniIcon('class')}<span><strong>${navLabel('Classes','Classes')}</strong><small>${navLabel('Novice and currently available first jobs','Novice et premières classes actuellement disponibles')}</small></span></a>
-        <a href="#/quests">${miniIcon('quest')}<span><strong>${navLabel('Quests','Quêtes')}</strong><small>${navLabel('Quest database for Global content','Base des quêtes du contenu Global')}</small></span></a>
-        <a href="#/monsters">${miniIcon('monster')}<span><strong>${navLabel('Monsters','Monstres')}</strong><small>${navLabel('Zero-specific monster data','Données monstres spécifiques à Zero')}</small></span></a>
-        <a href="#/items">${miniIcon('item')}<span><strong>${navLabel('Items','Objets')}</strong><small>${navLabel('Equipment, materials and consumables','Équipements, matériaux et consommables')}</small></span></a>
-      </div>
 
       <h2 id="zero-systems">${navLabel('Notable Zero systems','Systèmes Zero notables')}</h2>
       <div class="wiki-feature-list">
-        <div><strong>${miniIcon('tools')}Auto-Hunt</strong><p>${navLabel('A built-in hunting feature provided by the game. It must not be confused with third-party bots or macros.','Une fonction de chasse automatique intégrée au jeu. Elle ne doit pas être confondue avec des bots ou macros externes.')}</p></div>
-        <div><strong>${miniIcon('monster')}MVP Raid</strong><p>${navLabel('Party-oriented content built around fighting MVP monsters for rewards and loot.','Un contenu orienté groupe autour de combats contre des monstres MVP pour obtenir des récompenses et du butin.')}</p></div>
-        <div><strong>${miniIcon('monster')}Get Poring</strong><p>${navLabel('A companion side-game connected to the Global service, centered on raising and evolving Porings.','Un jeu compagnon lié au service Global, centré sur l’élevage et l’évolution de Porings.')}</p></div>
-        <div><strong>${miniIcon('tools')}RO Factory</strong><p>${navLabel('A Global feature for creating and sharing custom cosmetic footprint effects and related creations.','Une fonctionnalité Global permettant de créer et partager des effets cosmétiques de traces de pas et d’autres créations associées.')}</p></div>
+        <div><strong>${miniIcon('map')}${navLabel('PvE & PvP Channels','Canaux PvE et PvP')}</strong><p>${navLabel(
+          'Maps use multiple PvE channels to spread players across copies of the same field. Hidden World also provides dedicated PvP channels with their own access rules and bonuses.',
+          'Les maps utilisent plusieurs canaux PvE afin de répartir les joueurs sur différentes copies d’une même zone. Le Hidden World propose aussi des canaux PvP dédiés avec leurs propres règles d’accès et bonus.'
+        )}</p></div>
+        <div><strong>${miniIcon('class')}${navLabel('Rebalanced Classes','Classes rééquilibrées')}</strong><p>${navLabel(
+          'Classes and skills are rebalanced for Zero. Skill trees, prerequisites, damage values, cast times and even which skills belong to a first job can differ from other Ragnarok versions.',
+          'Les classes et compétences sont rééquilibrées pour Zero. Les arbres de skills, prérequis, dégâts, temps de cast et même les compétences appartenant à une première classe peuvent différer des autres versions de Ragnarok.'
+        )}</p></div>
+        <div><strong>${miniIcon('tools')}Auto-Hunt</strong><p>${navLabel(
+          'A built-in hunting system that can automate targeting, skills, movement, pickups and other farming behavior according to the player settings.',
+          'Un système de chasse automatique intégré qui peut gérer les cibles, compétences, déplacements, ramassage et autres comportements de farm selon les réglages du joueur.'
+        )}</p></div>
+        <div><strong>${miniIcon('tools')}Auto Pot</strong><p>${navLabel(
+          'A separate automatic HP/SP potion mode that can also be used while manually hunting, using the potion settings configured for Auto-Hunt.',
+          'Un mode automatique séparé pour les potions HP/SP, utilisable également pendant la chasse manuelle avec les réglages de potions configurés pour l’Auto-Hunt.'
+        )}</p></div>
+        <div><strong>${miniIcon('quest')}${navLabel('Main Story Quest','Story Quest principale')}</strong><p>${navLabel(
+          'Zero Global includes an ongoing main story quest line with level-gated chapters, experience rewards and progression that expands with later patches.',
+          'Zero Global possède une quête principale scénarisée avec des chapitres débloqués selon le niveau, des récompenses d’expérience et une progression étendue au fil des patchs.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}${navLabel('Equipment Affixes / Options','Affixes / options d’équipement')}</strong><p>${navLabel(
+          'Dropped equipment can come with random affixes or options. These additional stats are a major part of Zero gearing and make two copies of the same weapon or armor potentially very different.',
+          'Les équipements obtenus peuvent posséder des affixes ou options aléatoires. Ces statistiques supplémentaires sont centrales dans l’équipement Zero et peuvent rendre deux exemplaires d’une même arme ou armure très différents.'
+        )}</p></div>
+        <div><strong>${miniIcon('monster')}MVP Raid</strong><p>${navLabel(
+          'Party-oriented content built around fighting MVP monsters for rewards and loot.',
+          'Un contenu orienté groupe autour de combats contre des monstres MVP pour obtenir des récompenses et du butin.'
+        )}</p></div>
+        <div><strong>${miniIcon('monster')}Get Poring</strong><p>${navLabel(
+          'A companion side-game connected to the Global service, centered on raising and evolving Porings.',
+          'Un jeu compagnon lié au service Global, centré sur l’élevage et l’évolution de Porings.'
+        )}</p></div>
+        <div><strong>${miniIcon('tools')}RO Factory</strong><p>${navLabel(
+          'A Global feature for creating and sharing custom cosmetic footprint effects and related creations.',
+          'Une fonctionnalité Global permettant de créer et partager des effets cosmétiques de traces de pas et d’autres créations associées.'
+        )}</p></div>
       </div>
 
       <h2 id="about-wiki">${navLabel('About this wiki','À propos de ce wiki')}</h2>
@@ -3350,6 +3369,7 @@ window.RO_DATA = {
       ${officialSources([
         ['Ragnarok Zero: Global — Official site','https://roz.mygnjoy.com/en/main'],
         ['Official Game Guide','https://roz.mygnjoy.com/en/intro/guide'],
+        ['Ragnarok Zero Guide — Lymd','https://sites.google.com/view/rozeroguide'],
         ['Official Global launch notice','https://roz.mygnjoy.com/en/news/notice/42']
       ])}`;
   }
@@ -3436,65 +3456,142 @@ window.RO_DATA = {
 
   function basicControlsPage(topic) {
     const controlRows = [
-      [navLabel('Move','Se déplacer'), navLabel('Left-click a reachable point on the ground. The official guide indicates valid movement cells with a green square.','Clique gauche sur un point accessible au sol. Le guide officiel indique les cases de déplacement valides avec un carré vert.')],
-      [navLabel('Rotate camera','Tourner la caméra'), navLabel('Right-click to change the cursor, then move the mouse left or right to rotate the view.','Clique droit pour changer le curseur, puis déplace la souris vers la gauche ou la droite pour faire tourner la vue.')],
-      [navLabel('Basic attack','Attaque de base'), navLabel('When the cursor indicates an attackable target, click the target to attack it.','Lorsque le curseur indique une cible attaquable, clique sur la cible pour l’attaquer.')],
-      [navLabel('Pick up an item','Ramasser un objet'), navLabel('Click a dropped item when the pickup cursor is displayed. The official guide notes that items are picked up one at a time.','Clique sur un objet au sol lorsque le curseur de ramassage apparaît. Le guide officiel précise que les objets sont ramassés un par un.')],
-      [navLabel('Talk / investigate','Parler / examiner'), navLabel('Click NPCs or interactive map objects when the interaction cursor appears. This is also used for some quest investigation objectives.','Clique sur les NPC ou objets interactifs de la map lorsque le curseur d’interaction apparaît. Il sert aussi pour certains objectifs d’enquête de quêtes.')]
+      [navLabel('Move','Se déplacer'), navLabel('Left-click a reachable point on the ground.','Clique gauche sur un point accessible au sol.')],
+      [navLabel('Attack','Attaquer'), navLabel('Left-click an attackable monster. Skills can be dragged to a hotbar and activated with their assigned key.','Clique gauche sur un monstre attaquable. Les skills peuvent être placés dans une barre de raccourcis et utilisés avec la touche assignée.')],
+      [navLabel('Talk / interact','Parler / interagir'), navLabel('Left-click an NPC, portal or interactive object.','Clique gauche sur un NPC, un portail ou un objet interactif.')],
+      [navLabel('Pick up loot','Ramasser le loot'), navLabel('Left-click an item on the ground.','Clique gauche sur un objet au sol.')],
+      [navLabel('Rotate camera','Tourner la caméra'), navLabel('Hold right-click and move the mouse horizontally.','Maintiens le clic droit et déplace la souris horizontalement.')],
+      [navLabel('Zoom','Zoomer / dézoomer'), navLabel('Use the mouse wheel. Additional zoom-out distance can be enabled in Game Settings.','Utilise la molette de la souris. Une distance de dézoom supplémentaire peut être activée dans Game Settings.')],
+      [navLabel('Cancel / close','Annuler / fermer'), navLabel('Esc closes many windows or opens the game/settings menu when no modal window is active.','Échap ferme de nombreuses fenêtres ou ouvre le menu du jeu / des paramètres lorsqu’aucune fenêtre modale n’est active.')]
     ];
+
+    const fixedShortcuts = [
+      ['Enter', navLabel('Open / close chat input and send messages','Ouvrir / fermer la saisie du chat et envoyer les messages')],
+      ['F10', navLabel('Resize the chat window','Redimensionner la fenêtre de chat')],
+      ['Ctrl + B', navLabel('Open the account-wide Zeny Bank','Ouvrir la banque de Zeny partagée sur le compte')],
+      ['Esc', navLabel('Close windows / open Game Settings menu','Fermer les fenêtres / ouvrir le menu Game Settings')]
+    ];
+
+    const configurableActions = [
+      navLabel('Skill and item hotbar slots','Slots de barre de skills et d’objets'),
+      navLabel('Switch between the first and second skill bars','Basculer entre la première et la seconde barre de skills'),
+      navLabel('Inventory','Inventaire'),
+      navLabel('Character / status information','Informations personnage / statistiques'),
+      navLabel('Equipment window','Fenêtre d’équipement'),
+      navLabel('Skill window','Fenêtre des compétences'),
+      navLabel('Quest window','Fenêtre des quêtes'),
+      navLabel('Party window','Fenêtre de Party'),
+      navLabel('Guild window','Fenêtre de guilde'),
+      navLabel('Friends / social windows','Fenêtres amis / social'),
+      navLabel('World Map / Navigation','World Map / Navigation'),
+      navLabel('Auto-Hunt toggle','Activation / désactivation Auto-Hunt'),
+      navLabel('Auto Pot toggle','Activation / désactivation Auto Pot'),
+      navLabel('Equipment set / Key Bind Switch','Changement de set d’équipement / Key Bind Switch')
+    ];
+
+    const chatCommands = [
+      ['/help or /h', navLabel('Show the client command list','Afficher la liste des commandes du client')],
+      ['/nc', navLabel('Toggle no-control continuous normal attacks','Activer / désactiver les attaques normales continues sans maintenir Ctrl')],
+      ['/ns', navLabel('Toggle no-shift targeting behavior for skills that normally require Shift','Modifier le ciblage sans Shift pour les compétences qui nécessitent normalement Shift')],
+      ['/quake', navLabel('Toggle screen-shake effects','Activer / désactiver les tremblements d’écran')],
+      ['/stateinfo', navLabel('Show additional status / buff information and timers','Afficher davantage d’informations et de durées sur les statuts / buffs')],
+      ['/showname', navLabel('Toggle the alternate / classic character-name display','Basculer l’affichage alternatif / classique des noms de personnages')],
+      ['/navi map x/y', navLabel('Start navigation to a map coordinate, for example /navi prontera 138/125','Lancer la navigation vers des coordonnées, par exemple /navi prontera 138/125')]
+    ];
+
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
-        'Ragnarok Zero: Global uses the mouse for most basic movement and interaction. The chat and navigation windows add a few important keyboard shortcuts.',
-        'Ragnarok Zero: Global utilise la souris pour la majorité des déplacements et interactions de base. Les fenêtres de chat et de navigation ajoutent quelques raccourcis clavier importants.'
+        'Ragnarok Zero: Global has a modernized key-binding system. Many actions can be rebound in Game Settings, and the current default layout does not rely on the old ALT combinations. Players who prefer the classic Ragnarok shortcuts can enable the legacy key-combination behavior in the settings.',
+        'Ragnarok Zero: Global possède un système de raccourcis modernisé. De nombreuses actions peuvent être réassignées dans Game Settings et la configuration actuelle par défaut ne repose pas sur les anciennes combinaisons avec ALT. Les joueurs qui préfèrent les raccourcis classiques de Ragnarok peuvent réactiver ce comportement dans les paramètres.'
       )}</p>
+
       ${toc([
         {id:'mouse',label:navLabel('Mouse controls','Contrôles souris')},
-        {id:'chat',label:navLabel('Chat controls','Contrôles du chat')},
-        {id:'navigation',label:'Navigation'},
-        {id:'shortcuts',label:navLabel('Useful confirmed shortcuts','Raccourcis confirmés utiles')}
+        {id:'fixed-shortcuts',label:navLabel('Confirmed shortcuts','Raccourcis confirmés')},
+        {id:'configurable',label:navLabel('Important configurable binds','Raccourcis configurables importants')},
+        {id:'hotbars',label:navLabel('Hotbars & combat','Barres de skills & combat')},
+        {id:'chat',label:navLabel('Chat & commands','Chat & commandes')},
+        {id:'navigation',label:'Navigation'}
       ])}
 
       <h2 id="mouse">${navLabel('Mouse controls','Contrôles souris')}</h2>
-      <div class="table-wrap"><table class="controls-table"><thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('How it works','Fonctionnement')}</th></tr></thead><tbody>
-        ${controlRows.map(([a,b])=>`<tr><th>${a}</th><td>${b}</td></tr>`).join('')}
-      </tbody></table></div>
+      <div class="table-wrap"><table class="controls-table">
+        <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Control','Contrôle')}</th></tr></thead>
+        <tbody>${controlRows.map(([a,b])=>`<tr><th>${a}</th><td>${b}</td></tr>`).join('')}</tbody>
+      </table></div>
 
-      <h2 id="chat">${navLabel('Chat controls','Contrôles du chat')}</h2>
+      <h2 id="fixed-shortcuts">${navLabel('Confirmed shortcuts','Raccourcis confirmés')}</h2>
+      <div class="table-wrap"><table class="controls-table">
+        <thead><tr><th style="width:170px">${navLabel('Key','Touche')}</th><th>${navLabel('Action','Action')}</th></tr></thead>
+        <tbody>${fixedShortcuts.map(([key,desc])=>`<tr><th>${keycap(key)}</th><td>${desc}</td></tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="configurable">${navLabel('Important configurable binds','Raccourcis configurables importants')}</h2>
+      <p>${navLabel(
+        'These actions are important enough to deserve a key, but their exact key can differ because Zero Global lets you change the bindings. Check Esc → Game Settings and assign them to keys that fit your setup.',
+        'Ces actions sont suffisamment importantes pour mériter une touche, mais leur touche exacte peut varier puisque Zero Global permet de modifier les raccourcis. Vérifie Échap → Game Settings et assigne-les selon ta configuration.'
+      )}</p>
+      <div class="shortcut-grid">
+        ${configurableActions.map(action=>`<div><span>${keycap(navLabel('Configurable','À assigner'))}</span><strong>${action}</strong></div>`).join('')}
+      </div>
+
+      <div class="wiki-callout">${navLabel(
+        'Important: the new Global UI changed the default shortcuts and removes the need for ALT combinations by default. Do not assume an old iRO / Classic ALT shortcut is your current key. The classic behavior can be enabled in Game Settings if you want it.',
+        'Important : la nouvelle interface Global a modifié les raccourcis par défaut et n’utilise plus les combinaisons ALT par défaut. Ne pars donc pas du principe qu’un ancien raccourci ALT d’iRO / Classic correspond à ta touche actuelle. Le comportement classique peut être réactivé dans Game Settings si tu le souhaites.'
+      )}</div>
+
+      <h2 id="hotbars">${navLabel('Hotbars & combat','Barres de skills & combat')}</h2>
       <ul>
-        <li>${keycap('Enter')} — ${navLabel('activate or deactivate the chat input; press it again to send the written message.','active ou désactive la saisie du chat ; appuie de nouveau pour envoyer le message écrit.')}</li>
-        <li>${navLabel('The buttons on the right side of the chat window switch between','Les boutons à droite de la fenêtre de chat permettent de choisir')} <strong>All</strong>, <strong>Party</strong> ${navLabel('and','et')} <strong>Guild</strong>.</li>
-        <li>${navLabel('For a private whisper, enter the target character name in the name field and write the message in the message field.','Pour un message privé, saisis le nom du personnage cible dans le champ de nom puis écris le message dans le champ de message.')}</li>
-        <li>${keycap('F10')} — ${navLabel('resize the chat window; it can also be resized with the mouse.','redimensionne la fenêtre de chat ; elle peut aussi être redimensionnée à la souris.')}</li>
-        <li>${navLabel('The + button adds chat tabs, and the chat filter button controls which message types are displayed.','Le bouton + ajoute des onglets de chat, et le bouton de filtre permet de choisir quels types de messages sont affichés.')}</li>
+        <li>${navLabel(
+          'Skills and consumable items can be placed on hotbar slots and each slot can be assigned a key. Many players use function keys or number keys, but the important point on Zero Global is that the bindings are configurable.',
+          'Les compétences et consommables peuvent être placés dans les slots de la barre de raccourcis et chaque slot peut recevoir une touche. Beaucoup de joueurs utilisent les touches de fonction ou les chiffres, mais le point important sur Zero Global est que ces raccourcis sont configurables.'
+        )}</li>
+        <li>${navLabel(
+          'Zero Global supports a second skill bar. The two bars can use the same bindings or different bindings depending on your setup.',
+          'Zero Global possède une seconde barre de skills. Les deux barres peuvent utiliser les mêmes touches ou des touches différentes selon ta configuration.'
+        )}</li>
+        <li>${navLabel(
+          'Auto-Hunt and Auto Pot each support an assignable toggle key in Game Settings.',
+          'Auto-Hunt et Auto Pot peuvent chacun recevoir une touche d’activation / désactivation dans Game Settings.'
+        )}</li>
+        <li>${navLabel(
+          'Key Bind Switch lets you assign a key or key combination to swap between two equipment sets; the documented switch has a 10-second interval.',
+          'Key Bind Switch permet d’assigner une touche ou combinaison pour basculer entre deux sets d’équipement ; le changement documenté possède un intervalle de 10 secondes.'
+        )}</li>
       </ul>
+
+      <h2 id="chat">${navLabel('Chat & useful commands','Chat & commandes utiles')}</h2>
+      <ul>
+        <li>${keycap('Enter')} — ${navLabel('activate chat input; press again to send the message.','active la saisie du chat ; appuie de nouveau pour envoyer le message.')}</li>
+        <li>${navLabel('The chat window can be filtered into All, Party, Guild and custom tabs.','La fenêtre de chat peut être filtrée avec All, Party, Guild et des onglets personnalisés.')}</li>
+        <li>${navLabel('For a private whisper, enter the character name in the whisper/name field and then send the message.','Pour un message privé, saisis le nom du personnage dans le champ de whisper / nom puis envoie le message.')}</li>
+      </ul>
+      <div class="table-wrap"><table class="controls-table">
+        <thead><tr><th style="width:180px">${navLabel('Command','Commande')}</th><th>${navLabel('Use','Utilité')}</th></tr></thead>
+        <tbody>${chatCommands.map(([cmd,desc])=>`<tr><th><code>${esc(cmd)}</code></th><td>${desc}</td></tr>`).join('')}</tbody>
+      </table></div>
+      <p>${navLabel(
+        'Use /help or /h in game whenever you want the complete command list available in your current client.',
+        'Utilise /help ou /h en jeu lorsque tu veux afficher la liste complète des commandes disponibles dans ton client actuel.'
+      )}</p>
 
       <h2 id="navigation">Navigation</h2>
       <p>${navLabel(
-        'The built-in Navigation window can search for a destination, share a location into chat and provide route guidance. Shared location tags in chat can be clicked to receive directions.',
-        'La fenêtre Navigation intégrée peut rechercher une destination, partager une position dans le chat et fournir un itinéraire. Les balises de position partagées dans le chat peuvent être cliquées pour recevoir un guidage.'
+        'The built-in Navigation window can search for NPCs, monsters and destinations, share a location into chat and provide route guidance. Shared navigation tags in chat can also be clicked to start guidance.',
+        'La fenêtre Navigation intégrée peut rechercher des NPC, monstres et destinations, partager une position dans le chat et fournir un itinéraire. Les balises Navigation partagées dans le chat peuvent aussi être cliquées pour lancer le guidage.'
       )}</p>
       <ul>
-        <li>${navLabel('You can choose between several guidance icons.','Tu peux choisir parmi plusieurs icônes de guidage.')}</li>
-        <li>${navLabel('Navigation can automatically minimize while guiding you.','Navigation peut se réduire automatiquement pendant le guidage.')}</li>
-        <li>${navLabel('The official guide includes an option for routes that avoid Zeny-consuming services, although they can take longer.','Le guide officiel propose une option d’itinéraire évitant les services consommant des Zeny, même si le trajet peut être plus long.')}</li>
+        <li>${navLabel('Follow the arrows displayed on the ground to reach the selected destination.','Suis les flèches affichées au sol pour atteindre la destination sélectionnée.')}</li>
+        <li>${navLabel('Navigation can minimize itself while guiding you.','Navigation peut se réduire automatiquement pendant le guidage.')}</li>
+        <li>${navLabel('The /navi command is useful when a guide gives you an exact map and coordinate.','La commande /navi est utile lorsqu’un guide donne une map et des coordonnées exactes.')}</li>
       </ul>
-
-      <h2 id="shortcuts">${navLabel('Useful confirmed shortcuts','Raccourcis confirmés utiles')}</h2>
-      <div class="shortcut-grid">
-        <div><span>${keycap('Enter')}</span><strong>${navLabel('Chat input','Saisie du chat')}</strong></div>
-        <div><span>${keycap('F10')}</span><strong>${navLabel('Resize chat','Redimensionner le chat')}</strong></div>
-        <div><span>${keycap('Alt + G')}</span><strong>${navLabel('Guild window','Fenêtre de guilde')}</strong></div>
-      </div>
-      <div class="wiki-callout">${navLabel(
-        'Only shortcuts confirmed in the current official Global guide are listed here. More hotkeys will be added when they are verified for the live client.',
-        'Seuls les raccourcis confirmés dans le guide officiel Global actuel sont listés ici. D’autres raccourcis seront ajoutés lorsqu’ils seront vérifiés dans le client en ligne.'
-      )}</div>
 
       ${officialSources([
         ['Official Basic Controls guide','https://roz.mygnjoy.com/en/intro/guide/6'],
         ['Official Basic conversations guide','https://roz.mygnjoy.com/en/intro/guide/5'],
         ['Official Navigation guide','https://roz.mygnjoy.com/en/intro/guide/10'],
-        ['Official Guild guide','https://roz.mygnjoy.com/en/intro/guide/18']
+        ['Ragnarok Zero Guide — Lymd','https://sites.google.com/view/rozeroguide'],
+        ['MidgardHub — Complete New Player Guide by Lymd','https://midgardhub.com/guides/new-player']
       ])}`;
   }
 
