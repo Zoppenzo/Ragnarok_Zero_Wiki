@@ -3708,6 +3708,35 @@ window.RO_DATA = {
       ]
     ];
 
+    const baseExpRows = [
+      [1,0],[2,2500],[3,3000],[4,3600],[5,4300],[6,5100],[7,6100],[8,7300],[9,8700],[10,10400],
+      [11,12400],[12,14800],[13,17700],[14,21200],[15,25400],[16,30400],[17,36400],[18,43600],[19,52300],[20,62700],
+      [21,75200],[22,90200],[23,108200],[24,129800],[25,155700],[26,186800],[27,224100],[28,268900],[29,322600],[30,387100],
+      [31,464500],[32,557400],[33,668800],[34,802500],[35,963000],[36,1155600],[37,1386700],[38,1664000],[39,1996800],[40,2396100],
+      [41,2875300],[42,3450300],[43,4140300],[44,4968300],[45,5961900],[46,7154200],[47,8585000],[48,10302000],[49,12362400],[50,14834800]
+    ];
+
+    const noviceJobExpRows = [
+      [1,5],[2,12],[3,22],[4,35],[5,50],[6,113],[7,188],[8,256],[9,335],[10,425]
+    ];
+
+    const firstClassJobExpRows = [
+      [1,150],[2,340],[3,550],[4,760],[5,990],[6,1250],[7,1600],[8,1980],[9,2340],[10,2740],
+      [11,3140],[12,3950],[13,4510],[14,5210],[15,5950],[16,7000],[17,8150],[18,9130],[19,10220],[20,11480],
+      [21,12780],[22,14090],[23,15560],[24,16980],[25,18620],[26,20280],[27,21780],[28,24510],[29,27000],[30,29000],
+      [31,31000],[32,36000],[33,39000],[34,41000],[35,45000],[36,49000],[37,51900],[38,55000],[39,59450],[40,64630],
+      [41,70030],[42,74940],[43,79800],[44,84630],[45,89610],[46,95170],[47,100420],[48,107250],[49,112070],[50,118120]
+    ];
+
+    const pairedExpRows = rows => {
+      const half = Math.ceil(rows.length / 2);
+      const left = rows.slice(0, half);
+      const right = rows.slice(half);
+      return left.map((entry, index) => [entry, right[index] || null]);
+    };
+
+    const expNumber = value => Number(value).toLocaleString(lang === 'fr' ? 'fr-FR' : 'en-US');
+
     const modifiers = [
       [
         'Account EXP Buff',
@@ -3794,24 +3823,48 @@ window.RO_DATA = {
       )}</p>
       <div class="hero-actions"><a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Open Zero monster database','Ouvrir la base de monstres Zero')}</a><a class="button" href="#/leveling">${miniIcon('level')}${navLabel('Leveling Finder','Leveling Finder')}</a></div>
 
-      <h2 id="exp-requirements">${navLabel('Base EXP required per level','Base EXP requise par niveau')}</h2>
+      <h2 id="exp-requirements">${navLabel('EXP tables by level','Tables d’EXP par niveau')}</h2>
       <p>${navLabel(
-        'For Ragnarok Zero: Global, the EXP requirement table must come from the official GNJOY Game Guide 21. Older iRO, kRO Zero or Taiwan Zero EXP tables are not substituted here because Global progression values can differ.',
-        'Pour Ragnarok Zero: Global, le tableau d’EXP nécessaire doit provenir du Guide du jeu officiel GNJOY n°21. Les anciennes tables iRO, kRO Zero ou Taiwan Zero ne sont pas utilisées à leur place car les valeurs de progression de Global peuvent être différentes.'
+        'The tables below reproduce the Ragnarok Zero Global LV / EXP values supplied by Encyclop’Elvyl. They are used as a community data source alongside the official GNJOY Game Guide 21. No iRO, Classic, Pre-Renewal or Renewal EXP table has been substituted.',
+        'Les tableaux ci-dessous reprennent les valeurs LV / EXP de Ragnarok Zero Global fournies par Encyclop’Elvyl. Elles sont utilisées comme source communautaire en complément du Guide du jeu officiel GNJOY n°21. Aucun tableau d’EXP iRO, Classic, Pre-Renewal ou Renewal n’a été substitué.'
       )}</p>
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Official source','Source officielle')}</strong><br><a href="https://roz.mygnjoy.com/fr/intro/guide/21" target="_blank" rel="noopener">GNJOY — Guide du jeu 21</a><br>${navLabel(
-        'The official page is the authoritative source for the level-by-level table. It is currently region-restricted from the wiki verification environment, so values are not guessed or filled from another RO version.',
-        'Cette page officielle est la référence pour le tableau niveau par niveau. Elle est actuellement bloquée régionalement depuis l’environnement de vérification du wiki ; les valeurs manquantes ne sont donc ni inventées ni complétées avec une autre version de RO.'
-      )}</div></div>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Sources used','Sources utilisées')}</strong><br>
+        <a href="https://roz.mygnjoy.com/fr/intro/guide/21" target="_blank" rel="noopener">GNJOY — Guide du jeu 21</a><br>
+        <a href="https://docs.google.com/spreadsheets/d/1nK2jFgMEKa6IYGszbRtAcIp06VhM2sfsUf4kv46gKzI/edit?gid=1921304023#gid=1921304023" target="_blank" rel="noopener">Encyclop’Elvyl — Google Sheets</a>
+      </div></div>
+
+      <h3>${navLabel('Base Level EXP — Lv. 1 to 50','Base Level EXP — Nv. 1 à 50')}</h3>
       <div class="table-wrap"><table>
-        <thead><tr><th>${navLabel('Target Base Level','Base Level cible')}</th><th>${navLabel('EXP required','EXP requise')}</th><th>${navLabel('Verification','Vérification')}</th></tr></thead>
-        <tbody>
-          <tr><th>50</th><td><strong>14,834,800</strong></td><td>${navLabel('Confirmed from a current Global community mirror explicitly citing official Guide 21.','Confirmé via un miroir communautaire Global actuel citant explicitement le Guide officiel 21.')}</td></tr>
-        </tbody>
+        <thead><tr><th>LV</th><th>EXP</th><th>LV</th><th>EXP</th></tr></thead>
+        <tbody>${pairedExpRows(baseExpRows).map(([left,right])=>`<tr>
+          <th>${left[0]}</th><td>${expNumber(left[1])}</td>
+          <th>${right ? right[0] : ''}</th><td>${right ? expNumber(right[1]) : ''}</td>
+        </tr>`).join('')}</tbody>
       </table></div>
+
+      <h3>${navLabel('Novice Job EXP — Job Lv. 1 to 10','Job EXP Novice — Job Nv. 1 à 10')}</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Job LV</th><th>EXP</th></tr></thead>
+        <tbody>${noviceJobExpRows.map(([lv,exp])=>`<tr><th>${lv}</th><td>${expNumber(exp)}</td></tr>`).join('')}</tbody>
+      </table></div>
+
+      <h3>${navLabel('First Class Job EXP — Job Lv. 1 to 50','Job EXP des premières classes — Job Nv. 1 à 50')}</h3>
       <p class="muted-note">${navLabel(
-        'Only the value that can currently be independently verified is reproduced. The complete 1–50 table should be copied directly from Guide 21 once the official table can be read, rather than importing an older EXP table.',
-        'Seule la valeur actuellement vérifiable indépendamment est reproduite. Le tableau complet 1–50 doit être recopié directement depuis le Guide 21 dès que la table officielle peut être lue, plutôt que d’importer une ancienne table d’EXP.'
+        'This table applies to the currently available first classes: Swordman, Mage, Archer, Merchant, Thief and Acolyte.',
+        'Ce tableau s’applique aux premières classes actuellement disponibles : Swordman, Mage, Archer, Merchant, Thief et Acolyte.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Job LV</th><th>EXP</th><th>Job LV</th><th>EXP</th></tr></thead>
+        <tbody>${pairedExpRows(firstClassJobExpRows).map(([left,right])=>`<tr>
+          <th>${left[0]}</th><td>${expNumber(left[1])}</td>
+          <th>${right ? right[0] : ''}</th><td>${right ? expNumber(right[1]) : ''}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+
+      <p class="muted-note">${navLabel(
+        'The numbers are reproduced exactly from the supplied Zero database table. They are displayed as LV / EXP values without reinterpreting them through an iRO formula.',
+        'Les nombres sont reproduits exactement depuis le tableau de la base Zero fourni. Ils sont affichés comme valeurs LV / EXP sans être réinterprétés à travers une formule iRO.'
       )}</p>
 
       <h2 id="party-exp">${navLabel('Party experience','Expérience en Party')}</h2>
@@ -3859,6 +3912,7 @@ window.RO_DATA = {
 
       ${officialSources([
         ['Official GNJOY — EXP requirements / Game Guide 21','https://roz.mygnjoy.com/fr/intro/guide/21'],
+        ['Encyclop’Elvyl — Ragnarok Zero Global database','https://docs.google.com/spreadsheets/d/1nK2jFgMEKa6IYGszbRtAcIp06VhM2sfsUf4kv46gKzI/edit?gid=1921304023#gid=1921304023'],
         ['MidgardHub — Essential Package (30 days)','https://midgardhub.com/database/items/17898'],
         ['MidgardHub — Essential Package (7 days)','https://midgardhub.com/database/items/17957'],
         ['Official GNJOY — Party EXP Returns notice (25 Aug 2026)','https://roz.mygnjoy.com/en/news/notice/69'],
