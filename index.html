@@ -4935,6 +4935,18 @@ window.RO_DATA = {
   function statusEffectsPage(topic) {
     const statuses = [
       {
+        id:'bleeding', icon:'🩸', name:'Bleeding',
+        summary:navLabel('Causes continuous HP loss and disables natural regeneration. Unlike Poison, Bleeding can kill the affected target.','Provoque une perte continue de HP et désactive la régénération naturelle. Contrairement à Poison, Bleeding peut tuer la cible affectée.'),
+        effects:[
+          navLabel('Causes repeated HP loss over time.','Inflige régulièrement une perte de HP au fil du temps.'),
+          navLabel('Unlike Poison, the HP loss from Bleeding can reduce the target to 0 HP and kill it.','Contrairement à Poison, la perte de HP de Bleeding peut faire tomber la cible à 0 HP et la tuer.'),
+          navLabel('Natural HP regeneration is disabled.','La régénération naturelle de HP est désactivée.'),
+          navLabel('Natural SP regeneration is disabled.','La régénération naturelle de SP est désactivée.')
+        ],
+        confirmed:navLabel('Confirmed by direct in-game observation on the current Global server.','Confirmé par observation directe en jeu sur le serveur Global actuel.'),
+        recovery:navLabel('The currently available Global methods for removing or preventing Bleeding still need to be documented separately.','Les moyens actuellement disponibles sur Global pour retirer ou empêcher Bleeding restent à documenter séparément.')
+      },
+      {
         id:'blind', icon:'👁️', name:'Blind',
         summary:navLabel('Reduces accuracy and evasion and darkens the visible area.','Réduit la précision et l’esquive et assombrit la zone visible.'),
         effects:[
