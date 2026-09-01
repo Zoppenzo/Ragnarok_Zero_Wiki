@@ -3162,6 +3162,9 @@ window.RO_DATA = {
     '#/wiki/monster-races': {
       'race-overview':'complete', 'race-list':'complete', 'race-effects':'complete'
     },
+    '#/wiki/status-effects': {
+      'status-list':'complete', 'status-details':'complete', 'status-notes':'complete'
+    },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
       materials:'complete', drops:'complete'
@@ -4929,6 +4932,180 @@ window.RO_DATA = {
       </div>`;
   }
 
+  function statusEffectsPage(topic) {
+    const statuses = [
+      {
+        id:'blind', icon:'👁️', name:'Blind',
+        summary:navLabel('Reduces accuracy and evasion and darkens the visible area.','Réduit la précision et l’esquive et assombrit la zone visible.'),
+        effects:[
+          navLabel('HIT and FLEE are reduced by 25%.','HIT et FLEE sont réduits de 25 %.'),
+          navLabel('The visible range is graphically reduced.','La portée de vision est graphiquement réduite.')
+        ],
+        confirmed:navLabel('Confirmed by Sand Attack / Stone Fling and by current cards such as Familiar Card, Martin Card and Deviruchi Card.','Confirmé par Sand Attack / Stone Fling et par des cartes actuelles comme Familiar Card, Martin Card et Deviruchi Card.'),
+        recovery:navLabel('Cure removes Blind.','Cure retire Blind.')
+      },
+      {
+        id:'confusion', icon:'❓', name:'Confusion',
+        alias:navLabel('Also called Chaos','Aussi appelé Chaos'),
+        summary:navLabel('Disrupts movement direction.','Perturbe la direction des déplacements.'),
+        effects:[
+          navLabel('Movement inputs can send the character in unintended directions.','Les déplacements peuvent envoyer le personnage dans des directions non voulues.'),
+          navLabel('The /? emote is displayed when the status is applied.','L’émote /? apparaît lorsque le statut est appliqué.')
+        ],
+        confirmed:navLabel('Confirmed by current Global cards such as Creamy Fear Card and Requiem Card; Cure also explicitly removes Confusion.','Confirmé par des cartes Global actuelles comme Creamy Fear Card et Requiem Card ; Cure retire aussi explicitement Confusion.'),
+        recovery:navLabel('Cure removes Confusion.','Cure retire Confusion.')
+      },
+      {
+        id:'curse', icon:'💀', name:'Curse',
+        summary:navLabel('Heavily weakens offensive power, luck and movement.','Affaiblit fortement la puissance offensive, la chance et les déplacements.'),
+        effects:[
+          navLabel('ATK is reduced by 25%.','ATK est réduit de 25 %.'),
+          navLabel('LUK becomes 0.','LUK passe à 0.'),
+          navLabel('Movement Speed is drastically reduced.','La vitesse de déplacement est fortement réduite.')
+        ],
+        confirmed:navLabel('Confirmed by Magnolia Card; Blessing explicitly removes Curse on players.','Confirmé par Magnolia Card ; Blessing retire explicitement Curse sur les joueurs.'),
+        recovery:navLabel('Blessing removes Curse from a player.','Blessing retire Curse d’un joueur.')
+      },
+      {
+        id:'frozen', icon:'🧊', name:'Frozen',
+        summary:navLabel('Completely freezes the target and changes its defensive element to Water 1 while frozen.','Gèle complètement la cible et change son élément défensif en Water 1 pendant le gel.'),
+        effects:[
+          navLabel('The target cannot move, attack, use skills or use items.','La cible ne peut plus se déplacer, attaquer, utiliser de compétences ni utiliser d’objets.'),
+          navLabel('FLEE is negated.','FLEE est annulé.'),
+          navLabel('Equipment DEF is reduced by 50% and Hard MDEF is increased by 25%.','La DEF provenant de l’équipement est réduite de 50 % et la Hard MDEF augmente de 25 %.'),
+          navLabel('Defensive element becomes Water Lv.1.','L’élément défensif devient Water Lv.1.'),
+          navLabel('Taking damage breaks Frozen.','Recevoir des dégâts brise Frozen.')
+        ],
+        confirmed:navLabel('Confirmed by Frost Diver and current cards such as Marina Card, Marc Card and Megalodon Card.','Confirmé par Frost Diver et par des cartes actuelles comme Marina Card, Marc Card et Megalodon Card.'),
+        recovery:navLabel('Receiving damage removes Frozen. Marc Card completely prevents it.','Recevoir des dégâts retire Frozen. Marc Card l’empêche complètement.')
+      },
+      {
+        id:'poison', icon:'☠️', name:'Poison',
+        summary:navLabel('Deals periodic HP damage and interferes with normal recovery.','Inflige des dégâts périodiques aux HP et perturbe la récupération normale.'),
+        effects:[
+          navLabel('Status DEF is reduced by 25%.','La DEF liée au statut est réduite de 25 %.'),
+          navLabel('While HP is above 25%, the target loses 1.5% of Max HP + 2 HP every second.','Tant que les HP sont au-dessus de 25 %, la cible perd 1,5 % de ses HP max + 2 HP chaque seconde.'),
+          navLabel('Natural SP regeneration is disabled.','La régénération naturelle de SP est désactivée.')
+        ],
+        confirmed:navLabel('Confirmed by Envenom / Detoxify and current cards such as Snake Card, Ghoul Card and Poporing Card.','Confirmé par Envenom / Detoxify et par des cartes actuelles comme Snake Card, Ghoul Card et Poporing Card.'),
+        recovery:navLabel('Detoxify removes Poison.','Detoxify retire Poison.')
+      },
+      {
+        id:'silence', icon:'🤐', name:'Silence',
+        summary:navLabel('Prevents the use of active skills.','Empêche l’utilisation des compétences actives.'),
+        effects:[
+          navLabel('Active skills cannot be used.','Les compétences actives ne peuvent plus être utilisées.'),
+          navLabel('The /... emote is displayed.','L’émote /... est affichée.')
+        ],
+        confirmed:navLabel('Confirmed by Metaller Card and Marduk Card; Cure explicitly removes Silence.','Confirmé par Metaller Card et Marduk Card ; Cure retire explicitement Silence.'),
+        recovery:navLabel('Cure removes Silence. Marduk Card completely prevents it.','Cure retire Silence. Marduk Card l’empêche complètement.')
+      },
+      {
+        id:'sleep', icon:'💤', name:'Sleep',
+        summary:navLabel('Leaves the target unable to act and extremely vulnerable to incoming attacks.','Empêche la cible d’agir et la rend très vulnérable aux attaques reçues.'),
+        effects:[
+          navLabel('The target cannot move, attack, use skills or use items.','La cible ne peut plus se déplacer, attaquer, utiliser de compétences ni utiliser d’objets.'),
+          navLabel('Attacks against the sleeping target always hit.','Les attaques contre une cible endormie touchent toujours.'),
+          navLabel('Attackers have double their normal CRIT chance against the sleeping target.','Les attaquants ont deux fois leur chance normale de CRIT contre la cible endormie.'),
+          navLabel('Taking damage wakes the target up.','Recevoir des dégâts réveille la cible.')
+        ],
+        confirmed:navLabel('Confirmed by current cards such as Plankton Card, Coco Card and Nightmare Card.','Confirmé par des cartes actuelles comme Plankton Card, Coco Card et Nightmare Card.'),
+        recovery:navLabel('Receiving damage removes Sleep. Nightmare Card completely prevents it.','Recevoir des dégâts retire Sleep. Nightmare Card l’empêche complètement.')
+      },
+      {
+        id:'stone', icon:'🪨', name:'Stone / Petrification',
+        summary:navLabel('A two-stage petrification that eventually immobilizes the target.','Une pétrification en deux étapes qui finit par immobiliser complètement la cible.'),
+        effects:[
+          navLabel('First stage: the target can still move, but cannot attack or use skills; items can still be used.','Première étape : la cible peut encore se déplacer, mais ne peut plus attaquer ni utiliser de compétences ; les objets restent utilisables.'),
+          navLabel('After Stone hardens, the target becomes fully immobilized and unable to act.','Une fois Stone durci, la cible est totalement immobilisée et ne peut plus agir.'),
+          navLabel('Equipment DEF is reduced by 50% and MDEF is increased by 25%.','La DEF provenant de l’équipement est réduite de 50 % et la MDEF augmente de 25 %.'),
+          navLabel('Defensive element becomes Earth Lv.1.','L’élément défensif devient Earth Lv.1.'),
+          navLabel('If HP is above 25%, the target loses 1% HP every 5 seconds.','Si les HP sont au-dessus de 25 %, la cible perd 1 % de HP toutes les 5 secondes.'),
+          navLabel('After hardening, taking damage breaks Stone.','Après durcissement, recevoir des dégâts brise Stone.')
+        ],
+        confirmed:navLabel('Confirmed by Stone Curse and current cards such as Pest Card, Medusa Card, Argos Card and Munak Card.','Confirmé par Stone Curse et par des cartes actuelles comme Pest Card, Medusa Card, Argos Card et Munak Card.'),
+        recovery:navLabel('Blessing removes Petrification. Medusa Card completely prevents it.','Blessing retire Petrification. Medusa Card l’empêche complètement.')
+      },
+      {
+        id:'stun', icon:'💫', name:'Stun',
+        summary:navLabel('Completely prevents actions for its duration.','Empêche complètement d’agir pendant sa durée.'),
+        effects:[
+          navLabel('FLEE is negated.','FLEE est annulé.'),
+          navLabel('The target cannot move, attack, pick up items, use skills or use items.','La cible ne peut plus se déplacer, attaquer, ramasser des objets, utiliser de compétences ni utiliser d’objets.')
+        ],
+        confirmed:navLabel('Confirmed by Fatal Blow / Bash, Stone Fling and current cards such as Skeleton Card and Orc Hero Card.','Confirmé par Fatal Blow / Bash, Stone Fling et par des cartes actuelles comme Skeleton Card et Orc Hero Card.'),
+        recovery:navLabel('Orc Hero Card completely prevents Stun.','Orc Hero Card empêche complètement Stun.')
+      }
+    ];
+
+    const renderStatus = st => `<div id="status-${st.id}" style="scroll-margin-top:90px">
+      <strong><span aria-hidden="true" style="margin-right:8px;font-size:1.12em">${st.icon}</span>${esc(st.name)}</strong>
+      ${st.alias ? `<div style="margin-top:3px;font-size:.88rem;color:var(--text-soft)">${st.alias}</div>` : ''}
+      <p>${st.summary}</p>
+      <ul style="margin:.55rem 0 .65rem 1.1rem;padding:0">
+        ${st.effects.map(effect=>`<li style="margin:.24rem 0">${effect}</li>`).join('')}
+      </ul>
+      <p style="margin-bottom:.35rem"><strong>${navLabel('Confirmed on current Global:','Confirmé sur le Global actuel :')}</strong> ${st.confirmed}</p>
+      <p style="margin:0"><strong>${navLabel('Removal / prevention:','Retrait / prévention :')}</strong> ${st.recovery}</p>
+    </div>`;
+
+    return `${generalPageHeader(topic)}
+      <p class="article-lead">${navLabel(
+        'Status Effects are temporary negative conditions that can alter movement, combat stats, skill usage or elemental defense. This page deliberately lists only status ailments whose presence is currently confirmed for Global.',
+        'Les effets de statut sont des états négatifs temporaires pouvant modifier les déplacements, les statistiques de combat, l’utilisation des compétences ou l’élément défensif. Cette page ne liste volontairement que les statuts dont la présence est actuellement confirmée sur le Global.'
+      )}</p>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
+        'The exact resistance and duration formulas are not reproduced here unless they are independently verified for Global. This avoids importing version-specific Renewal formulas by mistake.',
+        'Les formules exactes de résistance et de durée ne sont pas reproduites ici tant qu’elles ne sont pas vérifiées indépendamment sur le Global. Cela évite d’importer par erreur des formules propres à une autre version.'
+      )}</div></div>
+
+      ${toc([
+        {id:'status-list',label:navLabel('Confirmed status effects','Statuts confirmés')},
+        {id:'status-details',label:navLabel('Effects and counters','Effets et contres')},
+        {id:'status-notes',label:navLabel('Important distinctions','Distinctions importantes')}
+      ])}
+
+      <h2 id="status-list">${navLabel('Confirmed status effects','Statuts confirmés')}</h2>
+      <div class="element-legend">
+        ${statuses.map(st=>`<a href="#/wiki/status-effects?focus=${st.id}" style="text-decoration:none"><span>${st.icon} ${esc(st.name)}</span></a>`).join('')}
+      </div>
+
+      <h2 id="status-details">${navLabel('Effects and counters','Effets et contres')}</h2>
+      <div class="wiki-feature-list">
+        ${statuses.map(renderStatus).join('')}
+      </div>
+
+      <h2 id="status-notes">${navLabel('Important distinctions','Distinctions importantes')}</h2>
+      <div class="wiki-feature-list">
+        <div><strong>Frozen ≠ Freezing</strong><p>${navLabel(
+          'Frozen is the classic full freeze status confirmed by Frost Diver and current cards. Freezing is a different later status and is not included here.',
+          'Frozen est le gel complet classique, confirmé par Frost Diver et les cartes actuelles. Freezing est un autre statut plus tardif et n’est pas inclus ici.'
+        )}</p></div>
+        <div><strong>Stone = Petrification</strong><p>${navLabel(
+          'The names Stone, Stone Curse and Petrification refer to the same classic petrification status in this context.',
+          'Les noms Stone, Stone Curse et Petrification désignent ici le même statut classique de pétrification.'
+        )}</p></div>
+        <div><strong>Confusion = Chaos</strong><p>${navLabel(
+          'iRO Wiki uses Chaos as the section name and notes that it is also known as Confusion. Global data commonly uses Confusion.',
+          'iRO Wiki utilise Chaos comme nom de section et précise qu’il est aussi appelé Confusion. Les données Global utilisent couramment Confusion.'
+        )}</p></div>
+      </div>
+
+      <h2 id="sources">${navLabel('Sources','Sources')}</h2>
+      <div class="source-box"><ul>
+        <li><a href="https://irowiki.org/wiki/Status_Effects" target="_blank" rel="noopener">iRO Wiki — Status Effects</a> — ${navLabel('reference for status behavior and terminology','référence pour le comportement et la terminologie des statuts')}</li>
+        <li><a href="https://rozerodb.com/cards" target="_blank" rel="noopener">RO ZERO DATABASE — Global Cards</a> — ${navLabel('current Global cards used to confirm which classic status effects are present','cartes Global actuelles utilisées pour confirmer quels statuts classiques sont présents')}</li>
+        <li><a href="https://roz.prontera.info/skills/planner?class=super-novice" target="_blank" rel="noopener">Ragnarok Zero Database — Skill Planner</a> — ${navLabel('current skill data confirming Stone / Petrification and Frozen','données de compétences actuelles confirmant Stone / Petrification et Frozen')}</li>
+      </ul></div>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#/skills">${miniIcon('skill')}${navLabel('Skills','Compétences')}</a>
+        <a class="button" href="#/cards">${miniIcon('card')}${navLabel('Cards','Cartes')}</a>
+        <a class="button" href="#/wiki/monster-races">${miniIcon('monster')}${navLabel('Monster Races','Races des monstres')}</a>
+      </div>`;
+  }
+
   function sourcesLinksPage(topic) {
     const title = lang === 'fr' ? topic.fr : topic.en;
     const resources = [
@@ -4972,6 +5149,7 @@ window.RO_DATA = {
     if (id === 'elements') return elementsPage(topic);
     if (id === 'monster-sizes') return monsterSizesPage(topic);
     if (id === 'monster-races') return monsterRacesPage(topic);
+    if (id === 'status-effects') return statusEffectsPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
