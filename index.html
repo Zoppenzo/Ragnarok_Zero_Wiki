@@ -5805,8 +5805,8 @@ window.RO_DATA = {
     return `${breadcrumbs([{label:title}])}
       <div class="article-heading"><h1>${icon('class')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'A Party is a temporary group of players used to hunt, level and tackle cooperative content together. Ragnarok Zero: Global supports groups of up to 12 characters and includes the Adventurer Agency, a built-in Party finder.',
-        'Une Party est un groupe temporaire de joueurs utilisé pour chasser, monter de niveau et faire du contenu coopératif ensemble. Ragnarok Zero: Global permet des groupes allant jusqu’à 12 personnages et possède l’Adventurer Agency, un outil intégré de recherche de Party.'
+        'A Party is a temporary group of players used to hunt, level and tackle cooperative content together. A Party can contain up to 12 characters and includes the Adventurer Agency, a built-in Party finder.',
+        'Une Party est un groupe temporaire de joueurs utilisé pour chasser, monter de niveau et faire du contenu coopératif ensemble. Une Party peut contenir jusqu’à 12 personnages et possède l’Adventurer Agency, un outil intégré de recherche de Party.'
       )}</p>
 
       ${toc([
@@ -5824,14 +5824,14 @@ window.RO_DATA = {
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Party EXP bonus','Bonus d’EXP de Party')}</strong><br>${navLabel(
-        'The GM team states that Party EXP grants +10% for each additional member, capped at +30%. The maximum Party EXP bonus is reached with 4 members.',
-        'L’équipe GM indique que l’EXP de Party donne +10 % par membre supplémentaire, avec un plafond à +30 %. Le bonus maximal d’EXP de Party est atteint à 4 membres.'
+        'Party EXP grants +10% for each additional member, capped at +30%. The maximum Party EXP bonus is reached with 4 members.',
+        'L’EXP de Party donne +10 % par membre supplémentaire, avec un plafond à +30 %. Le bonus maximal d’EXP de Party est atteint à 4 membres.'
       )}</div></div>
 
       <h2 id="party-controls">${navLabel('Creating and managing a Party','Créer et gérer une Party')}</h2>
       <p>${navLabel(
-        'The Party window can be opened from the interface or with its shortcut. The current client also supports the usual Party commands for creating, leaving and removing members.',
-        'La fenêtre de Party peut être ouverte depuis l’interface ou avec son raccourci. Le client actuel prend également en charge les commandes habituelles pour créer une Party, la quitter et expulser un membre.'
+        'The Party window can be opened from the interface or with its shortcut. The following commands can also be used to create a Party, leave it or remove a member.',
+        'La fenêtre de Party peut être ouverte depuis l’interface ou avec son raccourci. Les commandes suivantes permettent aussi de créer une Party, de la quitter ou d’expulser un membre.'
       )}</p>
       <div class="table-wrap"><table>
         <thead><tr><th>${navLabel('Shortcut / command','Raccourci / commande')}</th><th>${navLabel('Action','Action')}</th></tr></thead>
@@ -5841,18 +5841,18 @@ window.RO_DATA = {
       <h2 id="setup-options">${navLabel('Setup Options','Options de groupe')}</h2>
       <h3>${navLabel('Experience distribution','Distribution de l’EXP')}</h3>
       <p>${navLabel(
-        'The Party leader can switch the group between Individual EXP and Shared EXP. Shared EXP must be enabled for Party EXP to be distributed between eligible nearby members.',
-        'Le chef de Party peut basculer le groupe entre EXP individuelle et EXP partagée. Shared EXP doit être activé pour que l’expérience soit répartie entre les membres éligibles suffisamment proches.'
+        'The Party leader can switch the group between Individual EXP and Shared EXP. Shared EXP must be enabled for Party EXP to be distributed between members on the same map. Dead or disconnected members are excluded from EXP distribution.',
+        'Le chef de Party peut basculer le groupe entre EXP individuelle et EXP partagée. Shared EXP doit être activé pour que l’expérience soit répartie entre les membres présents sur la même map. Les membres morts ou déconnectés sont exclus du partage d’EXP.'
       )}</p>
       <div class="wiki-callout warning-lite"><strong>${navLabel('Check this setting whenever the group changes.','Vérifie ce réglage dès que le groupe change.')}</strong><br>${navLabel(
-        'Lymd reports that when a member leaves the Party, Shared EXP is reset to Individual. The leader must manually enable Shared EXP again.',
-        'Lymd indique que lorsqu’un membre quitte la Party, Shared EXP repasse sur Individual. Le chef doit donc réactiver manuellement Shared EXP.'
+        'When a member leaves the Party, Shared EXP resets to Individual. The leader must manually enable Shared EXP again.',
+        'Lorsqu’un membre quitte la Party, Shared EXP repasse sur Individual. Le chef doit donc réactiver manuellement Shared EXP.'
       )}</div>
 
       <h3>${navLabel('Item distribution','Distribution des objets')}</h3>
       <p>${navLabel(
-        'The Party window also contains item-distribution settings. The exact options will be documented as they are checked in the current client.',
-        'La fenêtre de Party contient aussi des réglages de distribution des objets. Les options exactes seront documentées au fur et à mesure de leur vérification dans le client actuel.'
+        'Party Settings also let the leader configure how items are collected and how they are distributed among Party members.',
+        'Les réglages de Party permettent aussi de configurer la méthode de ramassage des objets et leur distribution entre les membres.'
       )}</p>
 
       <h2 id="experience-setup">${navLabel('Experience Setup','Partage de l’EXP')}</h2>
@@ -5865,16 +5865,18 @@ window.RO_DATA = {
         <tbody>${expRows.map(([n,bonus])=>`<tr><th>${n}</th><td><strong>${bonus}</strong></td></tr>`).join('')}</tbody>
       </table></div>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
-        'Current Zero guides report an additional proximity rule: Shared EXP applies only to members inside a 31×31-cell area around the Party leader. Being on the same map is not enough if a member moves too far away.',
-        'Les guides Zero actuels indiquent également une règle de proximité : Shared EXP ne s’applique qu’aux membres situés dans une zone de 31×31 cellules autour du chef de Party. Être sur la même map ne suffit donc pas si un membre s’éloigne trop.'
-      )}</div></div>
+
 
       <h2 id="adventurer-agency">Adventurer Agency</h2>
       <p>${navLabel(
-        'The Adventurer Agency is the built-in Party finder for Ragnarok Zero: Global. It lists groups that are recruiting and lets a Party leader register a group so other players can find and join it without relying only on chat.',
-        'L’Adventurer Agency est l’outil de recherche de Party intégré à Ragnarok Zero: Global. Elle affiche les groupes qui recrutent et permet à un chef de Party d’enregistrer son groupe afin que d’autres joueurs puissent le trouver et le rejoindre sans dépendre uniquement du chat.'
+        'The Adventurer Agency is the built-in Party finder. It lists groups that are recruiting and lets a Party leader register a group so other players can find and join it without relying only on chat.',
+        'L’Adventurer Agency est l’outil de recherche de Party intégré. Elle affiche les groupes qui recrutent et permet à un chef de Party d’enregistrer son groupe afin que d’autres joueurs puissent le trouver et le rejoindre sans dépendre uniquement du chat.'
       )}</p>
+
+      <figure style="margin:16px auto 22px;max-width:760px;text-align:center">
+        <img src="https://midgardhub.com/images/guides/new-player/image128.png" alt="${navLabel('Adventurer Agency party list','Liste des Party dans l’Adventurer Agency')}" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+        <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel('Adventurer Agency — list of recruiting Parties.','Adventurer Agency — liste des Party en recrutement.')}</figcaption>
+      </figure>
 
       <h3>${navLabel('Register your Party','Publier sa Party')}</h3>
       <ol>
