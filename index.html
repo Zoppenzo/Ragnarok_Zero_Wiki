@@ -3715,6 +3715,14 @@ window.RO_DATA = {
         navLabel('Account/server buff item documented on Global.','Buff de compte/serveur documenté sur Global.')
       ],
       [
+        'Essential Package',
+        '+10% EXP / +10% Item Drop Rate',
+        navLabel(
+          'Character-bound after activation. The standard package lasts 30 days and also provides 3 Yggdrasil Dew per day plus 30 World Teleport Tickets once when opened. A 7-day version exists with the same +10% EXP / drop-rate effect for 7 days.',
+          'Lié au personnage qui l’active. Le package standard dure 30 jours et fournit aussi 3 Yggdrasil Dew par jour ainsi que 30 World Teleport Tickets une fois à l’ouverture. Une version 7 jours existe avec le même bonus de +10 % EXP / taux de drop pendant 7 jours.'
+        )
+      ],
+      [
         navLabel('Inn EXP bonus','Bonus EXP d’auberge'),
         '+10% EXP / 30 min',
         navLabel('Available during the inn’s active hours. The current guide notes that it does not stack with Growth Elixir.','Disponible pendant les horaires actifs de l’auberge. Le guide actuel précise qu’il ne se cumule pas avec Growth Elixir.')
@@ -3746,6 +3754,7 @@ window.RO_DATA = {
         {id:'types',label:navLabel('Base EXP and Job EXP','Base EXP et Job EXP')},
         {id:'earning',label:navLabel('Earning experience','Gagner de l’expérience')},
         {id:'monster-exp',label:navLabel('Monster EXP','EXP des monstres')},
+        {id:'exp-requirements',label:navLabel('EXP required per level','EXP requise par niveau')},
         {id:'party-exp',label:navLabel('Party EXP','EXP en Party')},
         {id:'death-penalty',label:navLabel('Death penalty','Pénalité de mort')},
         {id:'modifiers',label:navLabel('EXP modifiers','Modificateurs d’EXP')},
@@ -3784,6 +3793,26 @@ window.RO_DATA = {
         'Le comportement actuel du lancement Global n’utilise pas la table Renewal d’écart de niveau affichée sur iRO Wiki. C’est pourquoi farmer un monstre de niveau inférieur mais confortable peut rester rentable si le nombre de kills par minute est élevé.'
       )}</p>
       <div class="hero-actions"><a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Open Zero monster database','Ouvrir la base de monstres Zero')}</a><a class="button" href="#/leveling">${miniIcon('level')}${navLabel('Leveling Finder','Leveling Finder')}</a></div>
+
+      <h2 id="exp-requirements">${navLabel('Base EXP required per level','Base EXP requise par niveau')}</h2>
+      <p>${navLabel(
+        'For Ragnarok Zero: Global, the EXP requirement table must come from the official GNJOY Game Guide 21. Older iRO, kRO Zero or Taiwan Zero EXP tables are not substituted here because Global progression values can differ.',
+        'Pour Ragnarok Zero: Global, le tableau d’EXP nécessaire doit provenir du Guide du jeu officiel GNJOY n°21. Les anciennes tables iRO, kRO Zero ou Taiwan Zero ne sont pas utilisées à leur place car les valeurs de progression de Global peuvent être différentes.'
+      )}</p>
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Official source','Source officielle')}</strong><br><a href="https://roz.mygnjoy.com/fr/intro/guide/21" target="_blank" rel="noopener">GNJOY — Guide du jeu 21</a><br>${navLabel(
+        'The official page is the authoritative source for the level-by-level table. It is currently region-restricted from the wiki verification environment, so values are not guessed or filled from another RO version.',
+        'Cette page officielle est la référence pour le tableau niveau par niveau. Elle est actuellement bloquée régionalement depuis l’environnement de vérification du wiki ; les valeurs manquantes ne sont donc ni inventées ni complétées avec une autre version de RO.'
+      )}</div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Target Base Level','Base Level cible')}</th><th>${navLabel('EXP required','EXP requise')}</th><th>${navLabel('Verification','Vérification')}</th></tr></thead>
+        <tbody>
+          <tr><th>50</th><td><strong>14,834,800</strong></td><td>${navLabel('Confirmed from a current Global community mirror explicitly citing official Guide 21.','Confirmé via un miroir communautaire Global actuel citant explicitement le Guide officiel 21.')}</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted-note">${navLabel(
+        'Only the value that can currently be independently verified is reproduced. The complete 1–50 table should be copied directly from Guide 21 once the official table can be read, rather than importing an older EXP table.',
+        'Seule la valeur actuellement vérifiable indépendamment est reproduite. Le tableau complet 1–50 doit être recopié directement depuis le Guide 21 dès que la table officielle peut être lue, plutôt que d’importer une ancienne table d’EXP.'
+      )}</p>
 
       <h2 id="party-exp">${navLabel('Party experience','Expérience en Party')}</h2>
       <p>${navLabel(
@@ -3829,6 +3858,9 @@ window.RO_DATA = {
       <div class="hero-actions"><a class="button primary" href="#/wiki/levels">${miniIcon('level')}${navLabel('Open Levels','Ouvrir Niveaux')}</a><a class="button" href="#/quests">${miniIcon('quest')}${navLabel('Quest database','Base des quêtes')}</a></div>
 
       ${officialSources([
+        ['Official GNJOY — EXP requirements / Game Guide 21','https://roz.mygnjoy.com/fr/intro/guide/21'],
+        ['MidgardHub — Essential Package (30 days)','https://midgardhub.com/database/items/17898'],
+        ['MidgardHub — Essential Package (7 days)','https://midgardhub.com/database/items/17957'],
         ['Official GNJOY — Party EXP Returns notice (25 Aug 2026)','https://roz.mygnjoy.com/en/news/notice/69'],
         ['Official GNJOY — Community Feedback & Party EXP update','https://roz.mygnjoy.com/en/news/notice/70'],
         ['Ragnarok Zero Global Guide — Lymd','https://sites.google.com/view/rozeroguide'],
