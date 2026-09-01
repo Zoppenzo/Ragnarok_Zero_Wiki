@@ -2264,6 +2264,60 @@ tbody tr:hover { background: #fcf8f3; }
     max-height: none;
   }
 }
+
+/* V14 — force every Database icon to the same visual box as native King Poring.
+   Uses classes instead of src*= selectors because most assets resolve to data: URLs. */
+.database-category-row {
+  grid-template-columns: 88px minmax(0,1fr) 30px;
+  min-height: 98px;
+  padding: 9px 12px 9px 8px;
+}
+.database-category-sprite {
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+.database-category-sprite .database-category-icon {
+  width: 64px !important;
+  height: 64px !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  image-rendering: pixelated;
+}
+.database-category-sprite .database-category-icon-memorial {
+  width: 63px !important;
+  height: 64px !important;
+}
+.database-category-sprite .database-category-icon-npc {
+  width: 64px !important;
+  height: 72px !important;
+}
+@media (max-width: 700px) {
+  .database-category-row {
+    grid-template-columns: 80px minmax(0,1fr) 22px;
+    min-height: 92px;
+    padding: 7px 9px 7px 6px;
+  }
+  .database-category-sprite {
+    width: 72px;
+    height: 72px;
+  }
+  .database-category-sprite .database-category-icon {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  .database-category-sprite .database-category-icon-memorial {
+    width: 59px !important;
+    height: 60px !important;
+  }
+  .database-category-sprite .database-category-icon-npc {
+    width: 60px !important;
+    height: 68px !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -3551,17 +3605,17 @@ window.RO_DATA = {
 
   function databaseCategoryRows() {
     const rows = [
-      ['#/monsters','assets/database/monster-poring.gif',navLabel('Monster','Monstre'),navLabel('Monster database, drops and spawn locations.','Base des monstres, drops et lieux d’apparition.')],
-      ['#/items','assets/database/item-ui.png',navLabel('Item','Objet'),navLabel('Equipment, consumables and miscellaneous items.','Équipements, consommables et objets divers.')],
-      ['#/cards','assets/database/card.png',navLabel('Card','Card'),navLabel('Card effects, slots and monster sources.','Effets des cartes, emplacements et monstres sources.')],
-      ['#/affixes','assets/database/affix.png',navLabel('Affix','Affix'),navLabel('Equipment affixes, option slots and value ranges.','Affixes d’équipement, slots d’options et plages de valeurs.')],
-      ['#/memorial-dungeons','assets/database/memorial-dungeon.gif',navLabel('Memorial Dungeon','Mémorial Donjon'),navLabel('Memorial Dungeon database and documented entries.','Base des Mémorial Donjons et entrées documentées.')],
-      ['#/maps','assets/database/map.png',navLabel('Maps','Maps'),navLabel('Fields, towns, dungeons, monsters and NPCs.','Champs, villes, donjons, monstres et NPCs.')],
-      ['#/skills','assets/database/skill.png',navLabel('Skill','Compétence'),navLabel('Player skills, prerequisites and class links.','Compétences, prérequis et classes associées.')],
-      ['#/quests','assets/database/quest.png',navLabel('Quests','Quêtes'),navLabel('Quest index, requirements, steps and rewards.','Index des quêtes, prérequis, étapes et récompenses.')],
-      ['#/npcs','assets/database/npc.png',navLabel('NPC','NPC'),navLabel('NPC locations, services and related quests.','Localisation des NPCs, services et quêtes associées.')]
+      ['monster','#/monsters','assets/database/monster-poring.gif',navLabel('Monster','Monstre'),navLabel('Monster database, drops and spawn locations.','Base des monstres, drops et lieux d’apparition.')],
+      ['item','#/items','assets/database/item-ui.png',navLabel('Item','Objet'),navLabel('Equipment, consumables and miscellaneous items.','Équipements, consommables et objets divers.')],
+      ['card','#/cards','assets/database/card.png',navLabel('Card','Card'),navLabel('Card effects, slots and monster sources.','Effets des cartes, emplacements et monstres sources.')],
+      ['affix','#/affixes','assets/database/affix.png',navLabel('Affix','Affix'),navLabel('Equipment affixes, option slots and value ranges.','Affixes d’équipement, slots d’options et plages de valeurs.')],
+      ['memorial','#/memorial-dungeons','assets/database/memorial-dungeon.gif',navLabel('Memorial Dungeon','Mémorial Donjon'),navLabel('Memorial Dungeon database and documented entries.','Base des Mémorial Donjons et entrées documentées.')],
+      ['map','#/maps','assets/database/map.png',navLabel('Maps','Maps'),navLabel('Fields, towns, dungeons, monsters and NPCs.','Champs, villes, donjons, monstres et NPCs.')],
+      ['skill','#/skills','assets/database/skill.png',navLabel('Skill','Compétence'),navLabel('Player skills, prerequisites and class links.','Compétences, prérequis et classes associées.')],
+      ['quest','#/quests','assets/database/quest.png',navLabel('Quests','Quêtes'),navLabel('Quest index, requirements, steps and rewards.','Index des quêtes, prérequis, étapes et récompenses.')],
+      ['npc','#/npcs','assets/database/npc.png',navLabel('NPC','NPC'),navLabel('NPC locations, services and related quests.','Localisation des NPCs, services et quêtes associées.')]
     ];
-    return `<div class="database-category-list">${rows.map(([href,img,title,desc])=>`<a class="database-category-row" href="${href}"><span class="database-category-sprite"><img src="${asset(img)}" alt=""></span><span class="database-category-copy"><strong>${title}</strong><small>${desc}</small></span><span class="database-category-arrow">→</span></a>`).join('')}</div>`;
+    return `<div class="database-category-list">${rows.map(([key,href,img,title,desc])=>`<a class="database-category-row database-category-${key}" href="${href}"><span class="database-category-sprite"><img class="database-category-icon database-category-icon-${key}" src="${asset(img)}" alt=""></span><span class="database-category-copy"><strong>${title}</strong><small>${desc}</small></span><span class="database-category-arrow">→</span></a>`).join('')}</div>`;
   }
 
   function homeView() {
