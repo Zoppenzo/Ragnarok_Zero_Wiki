@@ -5080,24 +5080,32 @@ window.RO_DATA = {
         return;
       }
 
-      output.innerHTML=tiers.map(tier=>{
-        const tierRows=rows.filter(r=>r[1]===tier);
-        return `<section style="margin:22px 0 30px">
-          <h2 style="margin-bottom:12px">${esc(tier)} <span style="font-size:.75rem;font-weight:600;color:var(--text-soft)">(${tierRows.length})</span></h2>
-          <div class="table-wrap"><table>
-            <thead><tr>
-              <th>${navLabel('Affix','Affixe')}</th>
-              <th style="width:120px;text-align:center">${navLabel('Minimum','Minimum')}</th>
-              <th style="width:120px;text-align:center">${navLabel('Maximum','Maximum')}</th>
-            </tr></thead>
-            <tbody>${tierRows.map(r=>`<tr>
-              <th>${esc(r[2])}</th>
-              <td style="text-align:center;font-weight:700">${esc(r[3])}</td>
-              <td style="text-align:center;font-weight:700">${esc(r[4])}</td>
-            </tr>`).join('')}</tbody>
-          </table></div>
-        </section>`;
-      }).join('');
+      const slotWidth = tiers.length >= 4 ? 245 : 285;
+      output.innerHTML=`<div style="width:100%;overflow-x:auto;padding:4px 0 12px">
+        <div style="display:grid;grid-template-columns:repeat(${tiers.length},minmax(${slotWidth}px,1fr));gap:14px;min-width:${tiers.length*slotWidth}px;align-items:start">
+          ${tiers.map(tier=>{
+            const tierRows=rows.filter(r=>r[1]===tier);
+            return `<section style="border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);box-shadow:0 2px 8px rgba(0,0,0,.04)">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:var(--accent);color:white">
+                <strong style="font-size:.9rem;letter-spacing:.02em">${esc(tier)}</strong>
+                <span style="font-size:.72rem;font-weight:700;opacity:.9">${tierRows.length} ${navLabel('options','options')}</span>
+              </div>
+              <table style="width:100%;border-collapse:collapse;font-size:.78rem;table-layout:fixed">
+                <thead><tr>
+                  <th style="text-align:left;padding:8px 9px;width:auto">${navLabel('Affix','Affixe')}</th>
+                  <th style="width:54px;text-align:center;padding:8px 4px">Min</th>
+                  <th style="width:54px;text-align:center;padding:8px 4px">Max</th>
+                </tr></thead>
+                <tbody>${tierRows.map((r,index)=>`<tr style="${index<tierRows.length-1?'border-bottom:1px solid var(--line-soft)':''}">
+                  <th style="text-align:left;padding:7px 9px;font-weight:600;line-height:1.25;overflow-wrap:anywhere">${esc(r[2])}</th>
+                  <td style="text-align:center;padding:7px 4px;font-weight:700;white-space:nowrap">${esc(r[3])}</td>
+                  <td style="text-align:center;padding:7px 4px;font-weight:700;white-space:nowrap">${esc(r[4])}</td>
+                </tr>`).join('')}</tbody>
+              </table>
+            </section>`;
+          }).join('')}
+        </div>
+      </div>`;
     };
 
     sourceSelect.addEventListener('change',()=>{populateTypes();refresh();});
