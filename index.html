@@ -2510,6 +2510,67 @@ window.RO_DATA = {
     },
 
     {
+      id: "enlarge-weight-limit", name: "Enlarge Weight Limit", classId: "merchant", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/36.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Passively increases the maximum weight capacity for carrying items by 200 per skill level.", fr: "Augmente passivement la capacité maximale de poids transportable de 200 par niveau de compétence." },
+      prerequisites: [], notes: { en: "At Lv.10, Weight Limit is increased by 2,000.", fr: "Au niveau 10, la limite de poids est augmentée de 2 000." }, verified: true
+    },
+    {
+      id: "discount", name: "Discount", classId: "merchant", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/37.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Reduces the price paid when purchasing items from standard NPC shops.", fr: "Réduit le prix payé lors de l’achat d’objets auprès des boutiques NPC standard." },
+      prerequisites: [{ skillId: "enlarge-weight-limit", level: 3, verified: true }], notes: { en: "Merchant prerequisite on Zero Global is Enlarge Weight Limit Lv.3. The discount reaches 24% at Lv.10.", fr: "Le prérequis Merchant sur Zero Global est Enlarge Weight Limit Lv.3. La réduction atteint 24 % au niveau 10." }, verified: true
+    },
+    {
+      id: "overcharge", name: "Overcharge", classId: "merchant", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/38.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Increases the amount of Zeny received when selling items to NPC shops.", fr: "Augmente la quantité de Zeny obtenue lors de la vente d’objets aux boutiques NPC." },
+      prerequisites: [{ skillId: "discount", level: 3, verified: true }], notes: { en: "Merchant prerequisite on Zero Global is Discount Lv.3. The markup reaches 24% at Lv.10.", fr: "Le prérequis Merchant sur Zero Global est Discount Lv.3. Le bonus de vente atteint 24 % au niveau 10." }, verified: true
+    },
+    {
+      id: "pushcart", name: "Pushcart", classId: "merchant", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/39.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Allows the Merchant to use a cart for carrying items. The movement-speed penalty while using a cart decreases with skill level and disappears at Lv.10.", fr: "Permet au Merchant d’utiliser une charrette pour transporter des objets. La pénalité de vitesse de déplacement diminue avec le niveau et disparaît au niveau 10." },
+      prerequisites: [{ skillId: "enlarge-weight-limit", level: 5, verified: true }], notes: { en: "Merchant prerequisite on Zero Global is Enlarge Weight Limit Lv.5.", fr: "Le prérequis Merchant sur Zero Global est Enlarge Weight Limit Lv.5." }, verified: true
+    },
+    {
+      id: "item-appraisal", name: "Item Appraisal", classId: "merchant", maxLevel: 1, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/40.webp",
+      spCost: 10, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Identifies a selected unidentified item without using a Magnifier.", fr: "Identifie un objet non identifié sélectionné sans utiliser de Magnifier." },
+      prerequisites: [], notes: { en: "Zero skill data lists 10 SP and range 1.", fr: "Les données de compétence Zero indiquent 10 SP et une portée de 1." }, verified: true
+    },
+    {
+      id: "vending", name: "Vending", classId: "merchant", maxLevel: 10, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/41.webp",
+      spCost: 30, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "While a cart is equipped, opens a temporary shop that sells items stored in the cart. The number of different items that can be listed increases with skill level.", fr: "Avec une charrette équipée, ouvre une boutique temporaire permettant de vendre les objets stockés dans la charrette. Le nombre d’objets différents pouvant être mis en vente augmente avec le niveau." },
+      prerequisites: [{ skillId: "pushcart", level: 3, verified: true }], notes: { en: "Merchant prerequisite on Zero Global is Pushcart Lv.3. Vending lists 3 items at Lv.1 up to 12 at Lv.10.", fr: "Le prérequis Merchant sur Zero Global est Pushcart Lv.3. Vending permet de proposer 3 objets au niveau 1 jusqu’à 12 au niveau 10." }, verified: true
+    },
+    {
+      id: "mammonite", name: "Mammonite", classId: "merchant", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Weapon", image: "https://game.ragnaplace.com/ro/rozg/skill/42.webp",
+      spCost: 5, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Strikes one enemy with a powerful melee physical attack fueled by Zeny. Both damage and Zeny cost increase with skill level.", fr: "Frappe un ennemi avec une puissante attaque physique de mêlée alimentée par des Zeny. Les dégâts et le coût en Zeny augmentent avec le niveau." },
+      prerequisites: [], notes: { en: "Zero Global lists ATK 150% / 100 Zeny at Lv.1 up to ATK 600% / 1,000 Zeny at Lv.10. The skill costs 5 SP.", fr: "Zero Global indique ATK 150 % / 100 Zeny au niveau 1 jusqu’à ATK 600 % / 1 000 Zeny au niveau 10. La compétence coûte 5 SP." }, verified: true
+    },
+    {
+      id: "cart-revolution", name: "Cart Revolution", classId: "merchant", maxLevel: 1, type: "Quest / Active", role: "damage", target: "Enemy / Area", element: "Weapon", image: "https://game.ragnaplace.com/ro/rozg/skill/153.webp",
+      spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Can be used while a cart is equipped. Strikes the target and enemies in a 3×3 area with special melee physical damage. Base damage is ATK 150% and increases with cart weight.", fr: "Peut être utilisée avec une charrette équipée. Frappe la cible et les ennemis dans une zone de 3×3 avec des dégâts physiques de mêlée spéciaux. Les dégâts de base sont ATK 150 % et augmentent avec le poids de la charrette." },
+      prerequisites: [], notes: { en: "Quest skill. The current Zero Global description does not publish an SP value, so this wiki does not import one from another RO version.", fr: "Compétence de quête. La description Zero Global actuelle ne publie pas de valeur de SP ; le wiki n’en importe donc pas depuis une autre version de RO." }, verified: true
+    },
+    {
+      id: "change-cart", name: "Change Cart", classId: "merchant", maxLevel: 1, type: "Quest / Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/154.webp",
+      spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Can be used while a cart is equipped. Changes the cart appearance, with more styles becoming available as Base Level increases.", fr: "Peut être utilisée avec une charrette équipée. Change l’apparence de la charrette, avec davantage de styles disponibles à mesure que le Base Level augmente." },
+      prerequisites: [], notes: { en: "Quest skill. The current Zero Global skill page does not publish an SP value.", fr: "Compétence de quête. La page de compétence Zero Global actuelle ne publie pas de valeur de SP." }, verified: true
+    },
+    {
+      id: "crazy-uproar", name: "Crazy Uproar", classId: "merchant", maxLevel: 1, type: "Quest / Active", role: "supportive", target: "Self / Party", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/155.webp",
+      spCost: null, castTime: "1.25 s (0.25 fixed + 1.0 variable)", castDelay: "0.3 s", cooldown: "0.5 s",
+      description: { en: "Lets out a powerful shout. For 5 minutes, grants STR +4 and ATK +30 to the caster and on-screen party members.", fr: "Pousse un puissant cri. Pendant 5 minutes, accorde STR +4 et ATK +30 au lanceur et aux membres du groupe visibles à l’écran." },
+      prerequisites: [], notes: { en: "Quest skill. This is the Zero Global effect; it differs from older RO descriptions that only mention a personal STR bonus.", fr: "Compétence de quête. Il s’agit de l’effet Zero Global ; il diffère des anciennes descriptions de RO qui ne mentionnent qu’un bonus personnel de STR." }, verified: true
+    },
+
+    {
       id: "envenom", name: "Envenom", classId: "thief", maxLevel: 10, type: "Active", target: "Enemy", image: null,
       spCost: null, castTime: null, cooldown: null,
       description: { en: "Skill entry prepared for Ragnarok Zero data. Values and effects still need verification.", fr: "Entrée de compétence prête pour les données Ragnarok Zero. Les valeurs et effets doivent encore être vérifiés." },
@@ -2535,7 +2596,7 @@ window.RO_DATA = {
     { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman is the melee-focused first class of Ragnarok Zero: Global, built around weapon mastery, strong single-target attacks, survivability and close-range utility.", fr: "Swordman est la première classe orientée mêlée de Ragnarok Zero: Global, centrée sur les maîtrises d'armes, les attaques puissantes sur cible unique, la survie et les outils de combat rapproché." }, notes: { en: "Ragnarok Zero: Global lists 11 Swordman skills: eight normal first-job skills and three quest skills.", fr: "Ragnarok Zero: Global liste 11 compétences Swordman : huit compétences normales de première classe et trois compétences de quête." } },
     { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage is the ranged magic first class of Ragnarok Zero: Global. It uses elemental and Ghost magic for single-target and area damage while also providing control and defensive utility.", fr: "Mage est la première classe de magie à distance de Ragnarok Zero: Global. Elle utilise les éléments et la magie Ghost pour infliger des dégâts monocible ou de zone, tout en disposant de contrôle et d'outils défensifs." }, notes: { en: "Ragnarok Zero: Global lists 15 Mage skills: 14 normal first-job skills and the Energy Coat quest skill. Mage advances to Wizard or Sage from Job Lv.40.", fr: "Ragnarok Zero: Global liste 15 compétences Mage : 14 compétences normales de première classe et la compétence de quête Energy Coat. Mage évolue en Wizard ou Sage à partir du Job Lv.40." } },
     { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer is the ranged physical first class of Ragnarok Zero: Global. It specializes in Bows and Arrows, long-range accuracy, rapid single-target attacks and ranged area control.", fr: "Archer est la première classe physique à distance de Ragnarok Zero: Global. Elle se spécialise dans les arcs et les flèches, la précision à longue portée, les attaques rapides sur cible unique et le contrôle de zone à distance." }, notes: { en: "Ragnarok Zero: Global lists 7 Archer skills: five normal first-job skills and two quest skills, Arrow Crafting and Arrow Repel. Archer advances to Hunter, Bard or Dancer from Job Lv.40.", fr: "Ragnarok Zero: Global liste 7 compétences Archer : cinq compétences normales de première classe et deux compétences de quête, Arrow Crafting et Arrow Repel. Archer évolue en Hunter, Bard ou Dancer à partir du Job Lv.40." } },
-    { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Merchant pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
+    { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant is the economic and cart-focused first class of Ragnarok Zero: Global. It combines NPC trading skills, increased carrying capacity, Pushcart utility and Zeny-powered melee attacks.", fr: "Merchant est la première classe orientée commerce et charrette de Ragnarok Zero: Global. Elle combine les compétences de commerce avec les NPC, une capacité de transport accrue, l’utilisation du Pushcart et des attaques de mêlée consommant des Zeny." }, notes: { en: "Ragnarok Zero: Global lists 10 Merchant skills: seven normal first-job skills and three quest skills — Cart Revolution, Change Cart and Crazy Uproar. Merchant advances to Blacksmith or Alchemist from Job Lv.40.", fr: "Ragnarok Zero: Global liste 10 compétences Merchant : sept compétences normales de première classe et trois compétences de quête — Cart Revolution, Change Cart et Crazy Uproar. Merchant évolue en Blacksmith ou Alchemist à partir du Job Lv.40." } },
     { id: "thief", name: "Thief", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Thief class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Thief pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "acolyte", name: "Acolyte", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Acolyte class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Acolyte pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
 
@@ -3973,8 +4034,38 @@ window.RO_DATA = {
     return rows[id] || null;
   }
 
+  function merchantSkillLevelData(id) {
+    const N = 'None';
+    const tradeRates = [7,9,11,13,15,17,19,21,23,24];
+    const cartPenalty = [45,40,35,30,25,20,15,10,5,0];
+    const rows = {
+      'enlarge-weight-limit': Array.from({length:10},(_,i)=>[
+        i+1,`Weight Limit +${(i+1)*200}`,0,1,N,N,N
+      ]),
+      'discount': Array.from({length:10},(_,i)=>[
+        i+1,`Discount rate: ${tradeRates[i]}%`,0,1,N,N,N
+      ]),
+      'overcharge': Array.from({length:10},(_,i)=>[
+        i+1,`Markup rate: ${tradeRates[i]}%`,0,1,N,N,N
+      ]),
+      'pushcart': Array.from({length:10},(_,i)=>[
+        i+1,cartPenalty[i]===0?'Movement Speed Penalty: None':`Movement Speed Penalty: ${cartPenalty[i]}%`,0,1,N,N,N
+      ]),
+      'item-appraisal': [[
+        1,'Identifies an item',10,1,N,N,N
+      ]],
+      'vending': Array.from({length:10},(_,i)=>[
+        i+1,`Items for Sale: ${i+3}`,30,1,N,N,N
+      ]),
+      'mammonite': Array.from({length:10},(_,i)=>[
+        i+1,`ATK ${150+i*50}% · Zeny Cost: ${(i+1)*100}Z`,5,1,N,'ASPD-based',N
+      ])
+    };
+    return rows[id] || null;
+  }
+
   function wikiSkillLevelData(id) {
-    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || archerSkillLevelData(id) || null;
+    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || archerSkillLevelData(id) || merchantSkillLevelData(id) || null;
   }
 
   function swordmanSkillExtraText(sk) {
@@ -4088,7 +4179,7 @@ window.RO_DATA = {
 
           ${hasDetailedLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
-            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':'https://roz.prontera.info/skills/planner?class=crusader')}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
+            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://roz.prontera.info/skills/planner?class=super-novice':'https://roz.prontera.info/skills/planner?class=crusader'))}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero extracted skill tree reference</a></li>
             ${sk.classId==='mage' ? '<li><a href="https://ragnaplace.com/en/rozg-en/skill/16/stone-curse" target="_blank" rel="noopener">RagnaPlace — Ragnarok Zero Global fixed / variable / global delay tables</a></li>' : ''}
           </ul></div>` : ''}
@@ -4380,6 +4471,83 @@ window.RO_DATA = {
   }
 
 
+  function merchantDetail() {
+    const c = getClass('merchant');
+    const regularIds = ['enlarge-weight-limit','discount','overcharge','pushcart','item-appraisal','vending','mammonite'];
+    const questIds = ['cart-revolution','change-cart','crazy-uproar'];
+    const regular = regularIds.map(getSkill).filter(Boolean);
+    const quest = questIds.map(getSkill).filter(Boolean);
+    const classGenders = classGenderList('merchant');
+    const spriteBlock = `<div class="class-infobox-sprites">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot('merchant',g,false)}</div>`).join('')}</div>`;
+    const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
+    const rows = regular.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+    </tr>`).join('');
+    const questRows = quest.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+      <td>${navLabel('Quest skill — no normal Job skill point','Compétence de quête — aucun point de Job normal')}</td>
+    </tr>`).join('');
+
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:'Merchant'}])}
+      <article class="article-with-infobox">
+        <div class="article-heading"><h1>${icon('class')}Merchant</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+        <aside class="infobox class-infobox">
+          <div class="infobox-title">Merchant<span class="infobox-subtitle">${navLabel('First Class','Première classe')}</span></div>
+          ${spriteBlock}
+          <table><tbody>
+            ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
+            ${infoRow(t('status'),navLabel('Available','Disponible'))}
+            ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
+            ${infoRow(navLabel('Max Job Level','Job Level max'),'50')}
+            ${infoRow(navLabel('Skill points','Points de compétence'),'49')}
+            ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/blacksmith">Blacksmith</a> / <a href="#/classes/alchemist">Alchemist</a>')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(t('skills'),String(regular.length + quest.length))}
+          </tbody></table>
+          <div class="infobox-footer">${badge(true)}</div>
+        </aside>
+        <div class="article-body">
+          <p class="article-lead">${esc(txt(c.description))}</p>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok Zero: Global data','Données Ragnarok Zero: Global')}</strong><br>${navLabel('Merchant uses the Zero skill tree: 10 skills total, including Cart Revolution, Change Cart and Crazy Uproar as quest skills. Merchant-specific prerequisites are kept distinct from Super Novice prerequisites when Zero lists different values.','Merchant utilise l’arbre de compétences Zero : 10 compétences au total, dont Cart Revolution, Change Cart et Crazy Uproar comme compétences de quête. Les prérequis spécifiques au Merchant sont distingués de ceux du Super Novice lorsque Zero indique des valeurs différentes.')}</div></div>
+
+          <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
+          <p>${navLabel('Merchant has a maximum Job Level of 50 and 49 normal skill points. It advances to Blacksmith or Alchemist from Job Level 40.','Merchant possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Blacksmith ou Alchemist à partir du Job Level 40.')}</p>
+          <div class="related-list"><a href="#/classes/blacksmith">Blacksmith</a> · <a href="#/classes/alchemist">Alchemist</a></div>
+
+          <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table></div>
+
+          <h3 id="quest-skills" style="font-size:21px;margin-top:30px">${navLabel('Quest Skills','Compétences de quête')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th><th style="width:220px">${navLabel('Quest','Quête')}</th></tr></thead>
+            <tbody>${questRows}</tbody>
+          </table></div>
+
+          ${classSeeAlso(c)}
+          <h2 id="sources">${navLabel('Sources','Sources')}</h2>
+          <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
+            <li><a href="https://ragnaplace.com/en/rozg-en/skill/37/discount" target="_blank" rel="noopener">RagnaPlace — Discount — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/skill/39/pushcart" target="_blank" rel="noopener">RagnaPlace — Pushcart — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/skill/42/mammonite" target="_blank" rel="noopener">RagnaPlace — Mammonite — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/153/cart-revolution" target="_blank" rel="noopener">RagnaPlace — Cart Revolution — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/154/change-cart" target="_blank" rel="noopener">RagnaPlace — Change Cart — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/155/crazy-uproar" target="_blank" rel="noopener">RagnaPlace — Crazy Uproar — Ragnarok Zero Global</a></li>
+            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
+          </ul></div>
+        </div>
+      </article>`;
+  }
+
+
   function classSeeAlso(c) {
     const skills = DATA.skills.filter(sk=>sk.classId===c.id);
     const skillLinks = skills.length
@@ -4495,6 +4663,7 @@ window.RO_DATA = {
     if (id === 'swordman') return swordmanDetail();
     if (id === 'mage') return mageDetail();
     if (id === 'archer') return archerDetail();
+    if (id === 'merchant') return merchantDetail();
     const c = getClass(id);
     if (!c) return notFound();
     const skills = DATA.skills.filter(s=>s.classId===id);
