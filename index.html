@@ -2261,6 +2261,109 @@ tbody tr:hover { background: #fcf8f3; }
   image-rendering:pixelated;
 }
 
+
+/* V19 — universal sprite editor */
+#app { position: relative; }
+.rz-sprite-editing .rz-sprite-target {
+  outline: 2px dashed #3f73c9 !important;
+  outline-offset: 2px !important;
+  cursor: pointer !important;
+}
+.rz-sprite-editing .rz-sprite-target:hover,
+.rz-sprite-editing .rz-sprite-selected {
+  outline-style: solid !important;
+  box-shadow: 0 0 0 4px rgba(63,115,201,.14) !important;
+}
+.rz-sprite-custom:not(img) {
+  animation: none !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+}
+.rz-free-sprite-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+}
+.rz-free-sprite {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.rz-sprite-editing .rz-free-sprite {
+  pointer-events: auto;
+  cursor: move;
+  outline: 2px dashed #7b4bb7;
+  outline-offset: 2px;
+}
+.rz-sprite-editing .rz-free-sprite.rz-sprite-selected {
+  outline-style: solid;
+  box-shadow: 0 0 0 4px rgba(123,75,183,.14);
+}
+.rz-sprite-place-mode { cursor: crosshair !important; }
+.rz-sprite-place-mode::after {
+  content: "Clique pour placer le sprite";
+  position: fixed;
+  z-index: 10030;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  border: 1px solid #6d56a0;
+  border-radius: 5px;
+  background: #fff;
+  color: #46356b;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 5px 18px rgba(0,0,0,.16);
+  pointer-events: none;
+}
+.sprite-editor-panel {
+  position: fixed;
+  z-index: 10020;
+  top: 82px;
+  right: 18px;
+  width: min(320px, calc(100vw - 30px));
+  padding: 12px;
+  border: 1px solid #8f8a99;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 10px 32px rgba(0,0,0,.2);
+}
+.sprite-editor-panel.hidden { display: none !important; }
+.sprite-editor-panel h3 { margin: 0 0 5px; font-size: 15px; }
+.sprite-editor-status { margin: 0 0 9px; color: #66616e; font-size: 11px; line-height: 1.4; }
+.sprite-editor-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.sprite-editor-actions button {
+  min-height: 32px;
+  padding: 5px 9px;
+  border: 1px solid #aaa5b3;
+  border-radius: 4px;
+  background: #f8f7fb;
+  color: #292632;
+  cursor: pointer;
+  font-weight: 700;
+}
+.sprite-editor-actions button:hover { background: #fff; border-color: #6f6978; }
+.sprite-editor-actions .sprite-add { background: #edf3ff; border-color: #7590c7; }
+.sprite-editor-actions .sprite-danger { color: #8a1c1c; }
+.sprite-editor-help {
+  margin: 9px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid #e1dee7;
+  color: #77727f;
+  font-size: 10px;
+  line-height: 1.4;
+}
+@media (max-width: 760px) {
+  .sprite-editor-panel { top: 132px; right: 10px; }
+}
+
 </style>
 </head>
 <body>
@@ -2346,6 +2449,7 @@ tbody tr:hover { background: #fcf8f3; }
           <button id="edit-toggle" class="edit-toggle" type="button">✎ Edit page</button>
           <div id="edit-actions" class="edit-actions hidden" aria-label="Page editing actions">
             <button id="link-languages" class="link-languages active" type="button" aria-pressed="true">🔗 FR ↔ EN</button>
+            <button id="sprite-editor-open" type="button">🖼 Sprites</button>
             <button id="edit-save" class="edit-save" type="button">Save</button>
             <button id="edit-cancel" class="edit-cancel" type="button">Cancel</button>
             <button id="edit-reset" class="edit-reset" type="button">Reset page</button>
@@ -7959,6 +8063,7 @@ window.RO_DATA = {
   const importButton = document.getElementById('backup-import');
   const backupFile = document.getElementById('backup-file');
   const linkLanguagesButton = document.getElementById('link-languages');
+  const spriteEditorOpen = document.getElementById('sprite-editor-open');
 
   if (!app || !editToggle) return;
 
@@ -7966,6 +8071,12 @@ window.RO_DATA = {
   const IMAGE_PREFIX = 'rz-image:v1:';
   const MAX_IMAGE_BYTES = 900 * 1024;
   const LINK_PREF = 'rz-editor-link-languages';
+  const SPRITE_PREFIX = 'rz-sprite:v2:';
+  const FREE_SPRITE_PREFIX = 'rz-free-sprite:v2:';
+  let spritePanel = null;
+  let spriteSelection = null;
+  let spritePlaceSrc = '';
+  let spriteDrag = null;
 
   let editMode = false;
   let linkLanguages = localStorage.getItem(LINK_PREF) !== 'false';
@@ -8038,6 +8149,7 @@ window.RO_DATA = {
       linkLanguagesButton.setAttribute('aria-pressed', String(linkLanguages));
       linkLanguagesButton.title = linkLanguages ? L('linkedHint') : '';
     }
+    updateSpriteUi();
   }
 
   function getEditableElements() {
@@ -8150,6 +8262,7 @@ window.RO_DATA = {
     refreshTimer = setTimeout(() => {
       applyTextOverrides();
       applyImages();
+      applyUniversalSprites();
       updateLabels();
     }, 0);
   }
@@ -8175,6 +8288,7 @@ window.RO_DATA = {
     if (langEnButton) langEnButton.disabled = true;
     if (langFrButton) langFrButton.disabled = true;
     applyImages();
+    applyUniversalSprites();
     updateLabels();
   }
 
@@ -8191,6 +8305,11 @@ window.RO_DATA = {
       el.classList.remove('rz-content-editable');
     });
     applyImages();
+    spritePlaceSrc = '';
+    spriteSelection = null;
+    app.classList.remove('rz-sprite-editing', 'rz-sprite-place-mode');
+    spritePanel && spritePanel.classList.add('hidden');
+    applyUniversalSprites();
     updateLabels();
   }
 
@@ -8233,6 +8352,9 @@ window.RO_DATA = {
       Object.keys(localStorage).filter(key => key.startsWith(prefix)).forEach(key => localStorage.removeItem(key));
     });
     document.querySelectorAll('.editable-image-slot').forEach(slot => localStorage.removeItem(imageStorageKey(slot)));
+    const spriteRoutePrefix = SPRITE_PREFIX + encodeURIComponent(routeKey()) + ':';
+    Object.keys(localStorage).filter(key => key.startsWith(spriteRoutePrefix)).forEach(key => localStorage.removeItem(key));
+    localStorage.removeItem(freeSpriteKey());
     leaveEditMode();
     toast(L('resetDone'));
     window.dispatchEvent(new HashChangeEvent('hashchange'));
@@ -8269,6 +8391,450 @@ window.RO_DATA = {
     input.click();
   }
 
+
+  function spriteText(key) {
+    const fr = getLang() === 'fr';
+    const values = {
+      title: fr ? 'Éditeur de sprites' : 'Sprite editor',
+      none: fr ? 'Aucun sprite sélectionné.' : 'No sprite selected.',
+      existing: fr ? 'Sprite existant sélectionné.' : 'Existing sprite selected.',
+      free: fr ? 'Sprite ajouté sélectionné. Tu peux le déplacer à la souris.' : 'Added sprite selected. You can drag it with the mouse.',
+      add: fr ? '+ Ajouter' : '+ Add',
+      replace: fr ? 'Remplacer' : 'Replace',
+      smaller: fr ? '− Réduire' : '− Smaller',
+      larger: fr ? '+ Agrandir' : '+ Larger',
+      reset: fr ? 'Réinitialiser' : 'Reset',
+      remove: fr ? 'Supprimer' : 'Delete',
+      close: fr ? 'Fermer' : 'Close',
+      place: fr ? 'Clique maintenant où tu veux placer le sprite.' : 'Now click where you want to place the sprite.',
+      saved: fr ? 'Sprite enregistré.' : 'Sprite saved.',
+      help: fr
+        ? 'Clique sur une image encadrée en bleu pour la modifier. “+ Ajouter” permet de choisir une image puis de la poser où tu veux. Les sprites ajoutés se déplacent à la souris. Les changements sont gardés dans ce navigateur et inclus dans Sauvegarde / Restaurer.'
+        : 'Click a blue-outlined image to edit it. “+ Add” lets you choose an image and place it anywhere. Added sprites can be dragged. Changes are stored in this browser and included in Backup / Restore.'
+    };
+    return values[key] || key;
+  }
+
+  function ensureSpritePanel() {
+    if (spritePanel) return spritePanel;
+    spritePanel = document.createElement('section');
+    spritePanel.className = 'sprite-editor-panel hidden';
+    spritePanel.innerHTML =
+      '<h3 id="sprite-panel-title"></h3>' +
+      '<p id="sprite-panel-status" class="sprite-editor-status"></p>' +
+      '<div class="sprite-editor-actions">' +
+        '<button id="sprite-add" class="sprite-add" type="button"></button>' +
+        '<button id="sprite-replace" type="button"></button>' +
+        '<button id="sprite-smaller" type="button"></button>' +
+        '<button id="sprite-larger" type="button"></button>' +
+        '<button id="sprite-reset" class="sprite-danger" type="button"></button>' +
+        '<button id="sprite-close" type="button"></button>' +
+      '</div>' +
+      '<p id="sprite-help" class="sprite-editor-help"></p>';
+    document.body.appendChild(spritePanel);
+
+    spritePanel.querySelector('#sprite-add').addEventListener('click', beginSpritePlacement);
+    spritePanel.querySelector('#sprite-replace').addEventListener('click', replaceSpriteSelection);
+    spritePanel.querySelector('#sprite-smaller').addEventListener('click', function(){ resizeSpriteSelection(0.85); });
+    spritePanel.querySelector('#sprite-larger').addEventListener('click', function(){ resizeSpriteSelection(1.15); });
+    spritePanel.querySelector('#sprite-reset').addEventListener('click', resetSpriteSelection);
+    spritePanel.querySelector('#sprite-close').addEventListener('click', function(){ spritePanel.classList.add('hidden'); });
+    updateSpriteUi();
+    return spritePanel;
+  }
+
+  function updateSpriteUi() {
+    if (spriteEditorOpen) spriteEditorOpen.textContent = '🖼 Sprites';
+    if (!spritePanel) return;
+    spritePanel.querySelector('#sprite-panel-title').textContent = spriteText('title');
+    spritePanel.querySelector('#sprite-add').textContent = spriteText('add');
+    spritePanel.querySelector('#sprite-replace').textContent = spriteText('replace');
+    spritePanel.querySelector('#sprite-smaller').textContent = spriteText('smaller');
+    spritePanel.querySelector('#sprite-larger').textContent = spriteText('larger');
+    spritePanel.querySelector('#sprite-close').textContent = spriteText('close');
+    spritePanel.querySelector('#sprite-help').textContent = spriteText('help');
+    refreshSpritePanel();
+  }
+
+  function spriteKey(element) {
+    return SPRITE_PREFIX + encodeURIComponent(routeKey()) + ':' + encodeURIComponent(domPath(element));
+  }
+
+  function freeSpriteKey() {
+    return FREE_SPRITE_PREFIX + encodeURIComponent(routeKey());
+  }
+
+  function readFreeSprites() {
+    try {
+      const value = JSON.parse(localStorage.getItem(freeSpriteKey()) || '[]');
+      return Array.isArray(value) ? value : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function writeFreeSprites(list) {
+    localStorage.setItem(freeSpriteKey(), JSON.stringify(list));
+  }
+
+  function spriteTargets() {
+    const list = app.querySelectorAll('img:not(.rz-free-sprite), .database-category-icon:not(img), .king-poring-anim');
+    return Array.from(new Set(Array.from(list))).filter(function(element){
+      return !element.closest('.rz-free-sprite-layer');
+    });
+  }
+
+  function rememberSpriteOriginal(element) {
+    if (element.dataset.rzSpriteOriginal === '1') return;
+    element.dataset.rzSpriteOriginal = '1';
+    element.dataset.rzOriginalStyle = element.getAttribute('style') || '';
+    if (element.tagName === 'IMG') {
+      element.dataset.rzHadSrc = element.hasAttribute('src') ? '1' : '0';
+      element.dataset.rzOriginalSrc = element.getAttribute('src') || '';
+    }
+  }
+
+  function restoreSpriteOriginal(element) {
+    if (element.tagName === 'IMG') {
+      if (element.dataset.rzHadSrc === '1') element.setAttribute('src', element.dataset.rzOriginalSrc || '');
+      else element.removeAttribute('src');
+    }
+    const originalStyle = element.dataset.rzOriginalStyle || '';
+    if (originalStyle) element.setAttribute('style', originalStyle);
+    else element.removeAttribute('style');
+    element.classList.remove('rz-sprite-custom');
+  }
+
+  function applySpriteOverrides() {
+    spriteTargets().forEach(function(element){
+      rememberSpriteOriginal(element);
+      element.classList.toggle('rz-sprite-target', editMode);
+      const raw = localStorage.getItem(spriteKey(element));
+      if (!raw) return;
+      let record = null;
+      try { record = JSON.parse(raw); } catch (error) {}
+      if (!record) return;
+      element.classList.add('rz-sprite-custom');
+      if (record.src) {
+        if (element.tagName === 'IMG') element.src = record.src;
+        else element.style.setProperty('background-image', 'url("' + record.src + '")', 'important');
+      }
+      if (record.width) {
+        element.style.setProperty('width', record.width + 'px', 'important');
+        element.style.setProperty('min-width', record.width + 'px', 'important');
+        element.style.setProperty('max-width', record.width + 'px', 'important');
+      }
+      if (record.height) {
+        element.style.setProperty('height', record.height + 'px', 'important');
+        element.style.setProperty('min-height', record.height + 'px', 'important');
+        element.style.setProperty('max-height', record.height + 'px', 'important');
+      }
+      if (element.tagName === 'IMG') element.style.setProperty('object-fit', 'contain', 'important');
+    });
+  }
+
+  function ensureFreeSpriteLayer() {
+    let layer = app.querySelector(':scope > .rz-free-sprite-layer');
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.className = 'rz-free-sprite-layer';
+      layer.setAttribute('aria-hidden', 'true');
+      app.appendChild(layer);
+    }
+    return layer;
+  }
+
+  function renderFreeSprites() {
+    const layer = ensureFreeSpriteLayer();
+    const records = readFreeSprites();
+    const ids = new Set(records.map(function(record){ return String(record.id); }));
+
+    layer.querySelectorAll('.rz-free-sprite').forEach(function(image){
+      if (!ids.has(image.dataset.spriteId)) image.remove();
+    });
+
+    records.forEach(function(record){
+      let image = Array.from(layer.querySelectorAll('.rz-free-sprite')).find(function(node){
+        return node.dataset.spriteId === String(record.id);
+      });
+      if (!image) {
+        image = document.createElement('img');
+        image.className = 'rz-free-sprite';
+        image.dataset.spriteId = String(record.id);
+        image.alt = '';
+        image.draggable = false;
+        layer.appendChild(image);
+      }
+      image.src = record.src;
+      image.style.left = (Number(record.x) || 0) + 'px';
+      image.style.top = (Number(record.y) || 0) + 'px';
+      image.style.width = Math.max(8, Number(record.width) || 48) + 'px';
+      image.style.height = Math.max(8, Number(record.height) || 48) + 'px';
+      image.classList.toggle('rz-sprite-selected', !!spriteSelection && spriteSelection.kind === 'free' && String(spriteSelection.id) === String(record.id));
+    });
+  }
+
+  function applyUniversalSprites() {
+    if (spriteSelection && spriteSelection.kind === 'existing' && !spriteSelection.element.isConnected) spriteSelection = null;
+    app.classList.toggle('rz-sprite-editing', editMode);
+    applySpriteOverrides();
+    renderFreeSprites();
+    refreshSpritePanel();
+  }
+
+  function openSpritePanel() {
+    ensureSpritePanel().classList.remove('hidden');
+    refreshSpritePanel();
+  }
+
+  function clearSpriteSelectionClasses() {
+    spriteTargets().forEach(function(element){ element.classList.remove('rz-sprite-selected'); });
+    app.querySelectorAll('.rz-free-sprite').forEach(function(element){ element.classList.remove('rz-sprite-selected'); });
+  }
+
+  function selectExistingSprite(element) {
+    spriteSelection = { kind: 'existing', element: element };
+    clearSpriteSelectionClasses();
+    element.classList.add('rz-sprite-selected');
+    openSpritePanel();
+  }
+
+  function selectFreeSprite(id) {
+    spriteSelection = { kind: 'free', id: String(id) };
+    clearSpriteSelectionClasses();
+    const image = Array.from(app.querySelectorAll('.rz-free-sprite')).find(function(node){
+      return node.dataset.spriteId === String(id);
+    });
+    if (image) image.classList.add('rz-sprite-selected');
+    openSpritePanel();
+  }
+
+  function getSelectedRecord() {
+    if (!spriteSelection) return null;
+    if (spriteSelection.kind === 'free') {
+      return readFreeSprites().find(function(record){ return String(record.id) === String(spriteSelection.id); }) || null;
+    }
+    const element = spriteSelection.element;
+    if (!element || !element.isConnected) return null;
+    const raw = localStorage.getItem(spriteKey(element));
+    if (raw) {
+      try { return JSON.parse(raw); } catch (error) {}
+    }
+    const rect = element.getBoundingClientRect();
+    return {
+      src: element.tagName === 'IMG' ? (element.currentSrc || element.src || '') : '',
+      width: Math.max(8, Math.round(rect.width || 40)),
+      height: Math.max(8, Math.round(rect.height || 40))
+    };
+  }
+
+  function refreshSpritePanel() {
+    if (!spritePanel) return;
+    const status = spritePanel.querySelector('#sprite-panel-status');
+    const reset = spritePanel.querySelector('#sprite-reset');
+    const disabled = !spriteSelection || !getSelectedRecord();
+    spritePanel.querySelector('#sprite-replace').disabled = disabled;
+    spritePanel.querySelector('#sprite-smaller').disabled = disabled;
+    spritePanel.querySelector('#sprite-larger').disabled = disabled;
+    reset.disabled = disabled;
+    if (disabled) {
+      status.textContent = spriteText('none');
+      reset.textContent = spriteText('reset');
+    } else if (spriteSelection.kind === 'free') {
+      status.textContent = spriteText('free');
+      reset.textContent = spriteText('remove');
+    } else {
+      status.textContent = spriteText('existing');
+      reset.textContent = spriteText('reset');
+    }
+  }
+
+  function chooseSpriteImage(callback) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/png,image/jpeg,image/webp,image/gif';
+    input.addEventListener('change', function(){
+      const file = input.files && input.files[0];
+      if (!file) return;
+      if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type)) {
+        alert(L('imageType'));
+        return;
+      }
+      if (file.size > MAX_IMAGE_BYTES) {
+        alert(L('imageTooLarge'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(){ callback(String(reader.result)); };
+      reader.readAsDataURL(file);
+    }, { once: true });
+    input.click();
+  }
+
+  function beginSpritePlacement() {
+    chooseSpriteImage(function(src){
+      spritePlaceSrc = src;
+      app.classList.add('rz-sprite-place-mode');
+      spritePanel.classList.add('hidden');
+      toast(spriteText('place'));
+    });
+  }
+
+  function placeSpriteAt(event) {
+    if (!spritePlaceSrc) return false;
+    const rect = app.getBoundingClientRect();
+    const list = readFreeSprites();
+    const id = String(Date.now()) + '-' + Math.random().toString(36).slice(2,7);
+    const width = 48;
+    const height = 48;
+    list.push({
+      id: id,
+      src: spritePlaceSrc,
+      x: Math.max(0, Math.round(event.clientX - rect.left - width / 2)),
+      y: Math.max(0, Math.round(event.clientY - rect.top - height / 2)),
+      width: width,
+      height: height
+    });
+    writeFreeSprites(list);
+    spritePlaceSrc = '';
+    app.classList.remove('rz-sprite-place-mode');
+    renderFreeSprites();
+    selectFreeSprite(id);
+    toast(spriteText('saved'));
+    return true;
+  }
+
+  function replaceSpriteSelection() {
+    if (!spriteSelection) return;
+    chooseSpriteImage(function(src){
+      if (spriteSelection.kind === 'free') {
+        const list = readFreeSprites();
+        const record = list.find(function(item){ return String(item.id) === String(spriteSelection.id); });
+        if (!record) return;
+        record.src = src;
+        writeFreeSprites(list);
+      } else if (spriteSelection.element && spriteSelection.element.isConnected) {
+        const record = getSelectedRecord() || {};
+        record.src = src;
+        localStorage.setItem(spriteKey(spriteSelection.element), JSON.stringify(record));
+      }
+      applyUniversalSprites();
+      toast(spriteText('saved'));
+    });
+  }
+
+  function resizeSpriteSelection(factor) {
+    if (!spriteSelection) return;
+    if (spriteSelection.kind === 'free') {
+      const list = readFreeSprites();
+      const record = list.find(function(item){ return String(item.id) === String(spriteSelection.id); });
+      if (!record) return;
+      record.width = Math.max(8, Math.min(800, Math.round((Number(record.width) || 48) * factor)));
+      record.height = Math.max(8, Math.min(800, Math.round((Number(record.height) || 48) * factor)));
+      writeFreeSprites(list);
+    } else if (spriteSelection.element && spriteSelection.element.isConnected) {
+      const record = getSelectedRecord() || {};
+      record.width = Math.max(8, Math.min(800, Math.round((Number(record.width) || 40) * factor)));
+      record.height = Math.max(8, Math.min(800, Math.round((Number(record.height) || 40) * factor)));
+      localStorage.setItem(spriteKey(spriteSelection.element), JSON.stringify(record));
+    }
+    applyUniversalSprites();
+  }
+
+  function resetSpriteSelection() {
+    if (!spriteSelection) return;
+    if (spriteSelection.kind === 'free') {
+      const list = readFreeSprites().filter(function(item){ return String(item.id) !== String(spriteSelection.id); });
+      writeFreeSprites(list);
+      spriteSelection = null;
+    } else if (spriteSelection.element && spriteSelection.element.isConnected) {
+      localStorage.removeItem(spriteKey(spriteSelection.element));
+      restoreSpriteOriginal(spriteSelection.element);
+    }
+    clearSpriteSelectionClasses();
+    applyUniversalSprites();
+  }
+
+  function startFreeSpriteDrag(event, image) {
+    const list = readFreeSprites();
+    const record = list.find(function(item){ return String(item.id) === String(image.dataset.spriteId); });
+    if (!record) return;
+    spriteDrag = {
+      id: String(record.id),
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: Number(record.x) || 0,
+      originY: Number(record.y) || 0,
+      x: Number(record.x) || 0,
+      y: Number(record.y) || 0
+    };
+    selectFreeSprite(record.id);
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+
+  document.addEventListener('pointermove', function(event){
+    if (!spriteDrag) return;
+    spriteDrag.x = Math.max(0, Math.round(spriteDrag.originX + event.clientX - spriteDrag.startX));
+    spriteDrag.y = Math.max(0, Math.round(spriteDrag.originY + event.clientY - spriteDrag.startY));
+    const image = Array.from(app.querySelectorAll('.rz-free-sprite')).find(function(node){
+      return node.dataset.spriteId === spriteDrag.id;
+    });
+    if (image) {
+      image.style.left = spriteDrag.x + 'px';
+      image.style.top = spriteDrag.y + 'px';
+    }
+  });
+
+  document.addEventListener('pointerup', function(){
+    if (!spriteDrag) return;
+    const list = readFreeSprites();
+    const record = list.find(function(item){ return String(item.id) === spriteDrag.id; });
+    if (record) {
+      record.x = spriteDrag.x;
+      record.y = spriteDrag.y;
+      writeFreeSprites(list);
+    }
+    spriteDrag = null;
+  });
+
+  app.addEventListener('pointerdown', function(event){
+    if (!editMode) return;
+    const free = event.target.closest && event.target.closest('.rz-free-sprite');
+    if (free) startFreeSpriteDrag(event, free);
+  }, true);
+
+  app.addEventListener('click', function(event){
+    if (!editMode) return;
+
+    if (placeSpriteAt(event)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+
+    const free = event.target.closest && event.target.closest('.rz-free-sprite');
+    if (free) {
+      selectFreeSprite(free.dataset.spriteId);
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+
+    const target = event.target.closest && event.target.closest('img:not(.rz-free-sprite), .database-category-icon:not(img), .king-poring-anim');
+    if (target && app.contains(target) && !target.closest('.rz-free-sprite-layer')) {
+      selectExistingSprite(target);
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, true);
+
+  spriteEditorOpen && spriteEditorOpen.addEventListener('click', function(){
+    if (!editMode) return;
+    openSpritePanel();
+  });
+
+
   function exportBackup() {
     const payload = {
       version: 1,
@@ -8276,7 +8842,7 @@ window.RO_DATA = {
       values: {}
     };
     Object.keys(localStorage).forEach(key => {
-      if (key.startsWith(TEXT_PREFIX) || key.startsWith(IMAGE_PREFIX) || key === 'rz-lang' || key === LINK_PREF) payload.values[key] = localStorage.getItem(key);
+      if (key.startsWith(TEXT_PREFIX) || key.startsWith(IMAGE_PREFIX) || key.startsWith(SPRITE_PREFIX) || key.startsWith(FREE_SPRITE_PREFIX) || key === 'rz-lang' || key === LINK_PREF) payload.values[key] = localStorage.getItem(key);
     });
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -8297,7 +8863,7 @@ window.RO_DATA = {
         const payload = JSON.parse(String(reader.result));
         if (!payload || payload.version !== 1 || typeof payload.values !== 'object') throw new Error('Invalid backup');
         Object.entries(payload.values).forEach(([key, value]) => {
-          if (key.startsWith(TEXT_PREFIX) || key.startsWith(IMAGE_PREFIX) || key === 'rz-lang' || key === LINK_PREF) localStorage.setItem(key, String(value));
+          if (key.startsWith(TEXT_PREFIX) || key.startsWith(IMAGE_PREFIX) || key.startsWith(SPRITE_PREFIX) || key.startsWith(FREE_SPRITE_PREFIX) || key === 'rz-lang' || key === LINK_PREF) localStorage.setItem(key, String(value));
         });
         toast(L('importDone'));
         setTimeout(() => location.reload(), 500);
@@ -8377,6 +8943,7 @@ window.RO_DATA = {
   });
   languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 
+  ensureSpritePanel();
   preparePage();
 })();
 
