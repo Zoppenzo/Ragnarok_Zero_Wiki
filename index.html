@@ -923,6 +923,7 @@ tbody tr:hover { background: #eef4fb; }
 .muted-note { color: var(--muted); font-size: 12px; }
 
 .source-box {
+  display: none !important;
   margin: 30px 0 0;
   padding: 10px 12px;
   border-top: 1px solid var(--line-soft);
@@ -930,6 +931,7 @@ tbody tr:hover { background: #eef4fb; }
   color: var(--muted);
   font-size: 12px;
 }
+h2#sources { display: none !important; }
 .source-box > strong { color: var(--text); }
 .source-box ul { margin: 6px 0 0 19px; padding: 0; }
 .source-box li { margin: 3px 0; }
@@ -3801,8 +3803,8 @@ window.RO_DATA = {
       ${listRows(zeroCommands)}
 
       <div class="notice info"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
-        'The client itself remains the final reference: type /h or /help after an update to see the commands currently exposed by your version. Commands such as /skip, /q1, /q2, /merai, /fog, /mineffect and other old RO commands are not listed here because they have not been sufficiently verified for the current Global client.',
-        'Le client reste la référence finale : tape /h ou /help après une mise à jour pour voir les commandes réellement exposées par ta version. Les commandes comme /skip, /q1, /q2, /merai, /fog, /mineffect et d’autres anciennes commandes RO ne sont pas listées ici car elles ne sont pas suffisamment vérifiées sur le client Global actuel.'
+        'Type /h or /help after an update to see the commands currently available in your client. Commands such as /skip, /q1, /q2, /merai, /fog and /mineffect are not listed here when their current Global behavior is uncertain.',
+        'Tape /h ou /help après une mise à jour pour voir les commandes actuellement disponibles dans ton client. Les commandes comme /skip, /q1, /q2, /merai, /fog et /mineffect ne sont pas listées ici lorsque leur fonctionnement actuel sur Global est incertain.'
       )}</div></div>
 
       ${officialSources([
@@ -4024,7 +4026,7 @@ window.RO_DATA = {
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Experience rule','Règle d’expérience')}</strong><br>${navLabel(
         'Do not use iRO Renewal’s level-difference EXP table here. Current Global references document the launch behavior without that Renewal scaling table, so it is intentionally absent here.',
-        'N’utilise pas ici le tableau iRO Renewal de modification d’EXP selon l’écart de niveau. Les références Global actuelles documentent le comportement de lancement sans cette table de scaling Renewal ; elle est donc volontairement absente ici.'
+        'N’utilise pas ici le tableau iRO Renewal de modification d’EXP selon l’écart de niveau. Ce système n’est pas appliqué de cette manière sur le serveur Global actuel.'
       )}</div></div>
 
       ${toc([
