@@ -2467,6 +2467,49 @@ window.RO_DATA = {
       prerequisites: [{ skillId: "fire-ball", level: 5, verified: true }, { skillId: "sight", level: 1, verified: true }], notes: { en: "Zero data lists MATK 50% per wall hit; hit capacity and duration increase by level.", fr: "Les données Zero indiquent MATK 50 % par coup du mur ; le nombre de coups et la durée augmentent avec le niveau." }, verified: true
     },
     {
+      id: "owls-eye", name: "Owl's Eye", classId: "archer", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/43.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Passively increases DEX by 1 per skill level, up to DEX +10.", fr: "Augmente passivement la DEX de 1 par niveau de compétence, jusqu'à DEX +10." },
+      prerequisites: [], notes: { en: "Passive skill; no SP cost, cast time, cast delay or cooldown.", fr: "Compétence passive ; aucun coût en SP, temps de cast, délai après cast ou cooldown." }, verified: true
+    },
+    {
+      id: "vultures-eye", name: "Vulture's Eye", classId: "archer", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/44.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "When using a Bow, increases attack range and HIT rate by 1% per level.", fr: "Avec un arc, augmente la portée d'attaque et le taux de HIT de 1 % par niveau." },
+      prerequisites: [{ skillId: "owls-eye", level: 3, verified: true }], notes: { en: "At Lv.10: Bow Range +10 and Hit Rate +10%.", fr: "Au niveau 10 : portée de l'arc +10 et taux de HIT +10 %." }, verified: true
+    },
+    {
+      id: "improve-concentration", name: "Improve Concentration", classId: "archer", maxLevel: 10, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/45.webp",
+      spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Temporarily increases DEX and AGI and reveals hidden targets in a 3×3 area around the caster when activated.", fr: "Augmente temporairement la DEX et l'AGI et révèle les cibles cachées dans une zone de 3×3 autour du lanceur lors de l'activation." },
+      prerequisites: [{ skillId: "vultures-eye", level: 1, verified: true }], notes: { en: "DEX/AGI bonus rises from +3% to +12%; duration rises from 60 to 240 seconds.", fr: "Le bonus DEX/AGI passe de +3 % à +12 % ; la durée passe de 60 à 240 secondes." }, verified: true
+    },
+    {
+      id: "double-strafe", name: "Double Strafe", classId: "archer", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Weapon", image: "https://game.ragnaplace.com/ro/rozg/skill/46.webp",
+      spCost: 12, castTime: "None", castDelay: "0.1 s", cooldown: "None",
+      description: { en: "Fires a single Arrow at one target and strikes twice. Damage increases with skill level.", fr: "Tire une flèche sur une cible et frappe deux fois. Les dégâts augmentent avec le niveau de la compétence." },
+      prerequisites: [{ skillId: "vultures-eye", level: 10, verified: true }], notes: { en: "Base range is 9 cells. Zero Global lists ATK 100% ×2 at Lv.1 up to ATK 190% ×2 at Lv.10.", fr: "La portée de base est de 9 cellules. Zero Global indique ATK 100 % ×2 au niveau 1 jusqu'à ATK 190 % ×2 au niveau 10." }, verified: true
+    },
+    {
+      id: "arrow-shower", name: "Arrow Shower", classId: "archer", maxLevel: 10, type: "Active", role: "damage", target: "Ground", element: "Weapon", image: "https://game.ragnaplace.com/ro/rozg/skill/47.webp",
+      spCost: 15, castTime: "None", castDelay: "0.1 s", cooldown: "None",
+      description: { en: "Fires an Arrow at a ground cell, damaging enemies in a 3×3 area and knocking them back 2 cells from the center.", fr: "Tire une flèche sur une cellule au sol, inflige des dégâts aux ennemis dans une zone de 3×3 et les repousse de 2 cellules depuis le centre." },
+      prerequisites: [{ skillId: "double-strafe", level: 5, verified: true }], notes: { en: "Base range is 9 cells. Damage rises from ATK 160% at Lv.1 to ATK 250% at Lv.10.", fr: "La portée de base est de 9 cellules. Les dégâts passent de ATK 160 % au niveau 1 à ATK 250 % au niveau 10." }, verified: true
+    },
+    {
+      id: "arrow-crafting", name: "Arrow Crafting", classId: "archer", maxLevel: 1, type: "Quest / Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/147.webp",
+      spCost: 10, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Converts a selected material into Arrows; the Arrow type and quantity depend on the material used.", fr: "Transforme un matériau sélectionné en flèches ; le type et la quantité de flèches dépendent du matériau utilisé." },
+      prerequisites: [], notes: { en: "Quest skill learned without spending a normal Job skill point.", fr: "Compétence de quête apprise sans dépenser de point de compétence de Job normal." }, verified: true
+    },
+    {
+      id: "arrow-repel", name: "Arrow Repel", classId: "archer", maxLevel: 1, type: "Quest / Active", role: "damage", target: "Enemy", element: "Weapon", image: "https://game.ragnaplace.com/ro/rozg/skill/148.webp",
+      spCost: 15, castTime: "0.8 s fixed", castDelay: "None", cooldown: "None",
+      description: { en: "Fires an Arrow with great force, dealing ATK 150% ranged physical damage and knocking the target back 4 cells.", fr: "Tire une flèche avec force, infligeant ATK 150 % de dégâts physiques à distance et repoussant la cible de 4 cellules." },
+      prerequisites: [], notes: { en: "Quest skill. Base range is 9 cells. Zero Global uses a 0.8-second fixed cast with no variable cast.", fr: "Compétence de quête. La portée de base est de 9 cellules. Zero Global utilise un cast fixe de 0,8 seconde sans cast variable." }, verified: true
+    },
+
+    {
       id: "envenom", name: "Envenom", classId: "thief", maxLevel: 10, type: "Active", target: "Enemy", image: null,
       spCost: null, castTime: null, cooldown: null,
       description: { en: "Skill entry prepared for Ragnarok Zero data. Values and effects still need verification.", fr: "Entrée de compétence prête pour les données Ragnarok Zero. Les valeurs et effets doivent encore être vérifiés." },
@@ -2491,7 +2534,7 @@ window.RO_DATA = {
 
     { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman is the melee-focused first class of Ragnarok Zero: Global, built around weapon mastery, strong single-target attacks, survivability and close-range utility.", fr: "Swordman est la première classe orientée mêlée de Ragnarok Zero: Global, centrée sur les maîtrises d'armes, les attaques puissantes sur cible unique, la survie et les outils de combat rapproché." }, notes: { en: "Ragnarok Zero: Global lists 11 Swordman skills: eight normal first-job skills and three quest skills.", fr: "Ragnarok Zero: Global liste 11 compétences Swordman : huit compétences normales de première classe et trois compétences de quête." } },
     { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage is the ranged magic first class of Ragnarok Zero: Global. It uses elemental and Ghost magic for single-target and area damage while also providing control and defensive utility.", fr: "Mage est la première classe de magie à distance de Ragnarok Zero: Global. Elle utilise les éléments et la magie Ghost pour infliger des dégâts monocible ou de zone, tout en disposant de contrôle et d'outils défensifs." }, notes: { en: "Ragnarok Zero: Global lists 15 Mage skills: 14 normal first-job skills and the Energy Coat quest skill. Mage advances to Wizard or Sage from Job Lv.40.", fr: "Ragnarok Zero: Global liste 15 compétences Mage : 14 compétences normales de première classe et la compétence de quête Energy Coat. Mage évolue en Wizard ou Sage à partir du Job Lv.40." } },
-    { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Archer pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
+    { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer is the ranged physical first class of Ragnarok Zero: Global. It specializes in Bows and Arrows, long-range accuracy, rapid single-target attacks and ranged area control.", fr: "Archer est la première classe physique à distance de Ragnarok Zero: Global. Elle se spécialise dans les arcs et les flèches, la précision à longue portée, les attaques rapides sur cible unique et le contrôle de zone à distance." }, notes: { en: "Ragnarok Zero: Global lists 7 Archer skills: five normal first-job skills and two quest skills, Arrow Crafting and Arrow Repel. Archer advances to Hunter, Bard or Dancer from Job Lv.40.", fr: "Ragnarok Zero: Global liste 7 compétences Archer : cinq compétences normales de première classe et deux compétences de quête, Arrow Crafting et Arrow Repel. Archer évolue en Hunter, Bard ou Dancer à partir du Job Lv.40." } },
     { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Merchant pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "thief", name: "Thief", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Thief class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Thief pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "acolyte", name: "Acolyte", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Acolyte class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Acolyte pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
@@ -3902,8 +3945,36 @@ window.RO_DATA = {
     return rows[id] || null;
   }
 
+  function archerSkillLevelData(id) {
+    const N = 'None';
+    const rows = {
+      'owls-eye': Array.from({length:10},(_,i)=>[
+        i+1,`DEX +${i+1}`,0,1,N,N,N
+      ]),
+      'vultures-eye': Array.from({length:10},(_,i)=>[
+        i+1,`Bow Range +${i+1} · Hit Rate +${i+1}%`,0,1,N,N,N
+      ]),
+      'improve-concentration': Array.from({length:10},(_,i)=>[
+        i+1,`DEX, AGI +${i+3}% · Duration ${60+i*20} sec`,25+i*5,1,N,N,N
+      ]),
+      'double-strafe': Array.from({length:10},(_,i)=>[
+        i+1,`ATK ${100+i*10}% × 2 hits`,12,9,N,'0.1 s',N
+      ]),
+      'arrow-shower': Array.from({length:10},(_,i)=>[
+        i+1,`ATK ${160+i*10}% · 3×3 area · Knockback 2 cells`,15,9,N,'0.1 s',N
+      ]),
+      'arrow-crafting': [[
+        1,'Convert selected material into Arrows',10,1,N,N,N
+      ]],
+      'arrow-repel': [[
+        1,'ATK 150% · Knockback 4 cells',15,9,'0.8 s fixed',N,N
+      ]]
+    };
+    return rows[id] || null;
+  }
+
   function wikiSkillLevelData(id) {
-    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || null;
+    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || archerSkillLevelData(id) || null;
   }
 
   function swordmanSkillExtraText(sk) {
@@ -4012,7 +4083,7 @@ window.RO_DATA = {
 
           ${hasDetailedLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
-            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':'https://roz.prontera.info/skills/planner?class=crusader'}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
+            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':'https://roz.prontera.info/skills/planner?class=crusader')}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero extracted skill tree reference</a></li>
             ${sk.classId==='mage' ? '<li><a href="https://ragnaplace.com/en/rozg-en/skill/16/stone-curse" target="_blank" rel="noopener">RagnaPlace — Ragnarok Zero Global fixed / variable / global delay tables</a></li>' : ''}
           </ul></div>` : ''}
@@ -4231,6 +4302,79 @@ window.RO_DATA = {
       </article>`;
   }
 
+  function archerDetail() {
+    const c = getClass('archer');
+    const regularIds = ['owls-eye','vultures-eye','improve-concentration','double-strafe','arrow-shower'];
+    const questIds = ['arrow-crafting','arrow-repel'];
+    const regular = regularIds.map(getSkill).filter(Boolean);
+    const quest = questIds.map(getSkill).filter(Boolean);
+    const classGenders = classGenderList('archer');
+    const spriteBlock = `<div class="class-infobox-sprites">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot('archer',g,false)}</div>`).join('')}</div>`;
+    const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
+    const rows = regular.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+    </tr>`).join('');
+    const questRows = quest.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+      <td>${navLabel('Quest skill — no normal Job skill point','Compétence de quête — aucun point de Job normal')}</td>
+    </tr>`).join('');
+
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:'Archer'}])}
+      <article class="article-with-infobox">
+        <div class="article-heading"><h1>${icon('class')}Archer</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+        <aside class="infobox class-infobox">
+          <div class="infobox-title">Archer<span class="infobox-subtitle">${navLabel('First Class','Première classe')}</span></div>
+          ${spriteBlock}
+          <table><tbody>
+            ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
+            ${infoRow(t('status'),navLabel('Available','Disponible'))}
+            ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
+            ${infoRow(navLabel('Max Job Level','Job Level max'),'50')}
+            ${infoRow(navLabel('Skill points','Points de compétence'),'49')}
+            ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/hunter">Hunter</a> / <a href="#/classes/bard">Bard</a> / <a href="#/classes/dancer">Dancer</a>')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(t('skills'),String(regular.length + quest.length))}
+          </tbody></table>
+          <div class="infobox-footer">${badge(true)}</div>
+        </aside>
+        <div class="article-body">
+          <p class="article-lead">${esc(txt(c.description))}</p>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok Zero: Global data','Données Ragnarok Zero: Global')}</strong><br>${navLabel('Archer uses the Zero skill tree: 7 skills total, including Arrow Crafting and Arrow Repel as quest skills. Skill effects, SP costs, ranges, cast information and prerequisites below come from Zero-specific sources.','Archer utilise l’arbre de compétences Zero : 7 compétences au total, dont Arrow Crafting et Arrow Repel comme compétences de quête. Les effets, coûts SP, portées, informations de cast et prérequis ci-dessous proviennent de sources spécifiques à Zero.')}</div></div>
+
+          <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
+          <p>${navLabel('Archer has a maximum Job Level of 50 and 49 normal skill points. It advances to Hunter, Bard or Dancer from Job Level 40.','Archer possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Hunter, Bard ou Dancer à partir du Job Level 40.')}</p>
+          <div class="related-list"><a href="#/classes/hunter">Hunter</a> · <a href="#/classes/bard">Bard</a> · <a href="#/classes/dancer">Dancer</a></div>
+
+          <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table></div>
+
+          <h3 id="quest-skills" style="font-size:21px;margin-top:30px">${navLabel('Quest Skills','Compétences de quête')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th><th style="width:220px">${navLabel('Quest','Quête')}</th></tr></thead>
+            <tbody>${questRows}</tbody>
+          </table></div>
+
+          ${classSeeAlso(c)}
+          <h2 id="sources">${navLabel('Sources','Sources')}</h2>
+          <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
+            <li><a href="https://ragnaplace.com/en/rozg-en/class/3/archer" target="_blank" rel="noopener">RagnaPlace — Archer — Ragnarok Zero Global</a></li>
+            <li><a href="https://roz.prontera.info/skills/planner?class=hunter" target="_blank" rel="noopener">Prontera.info — Archer/Hunter Skill Planner</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero skill-tree reference</a></li>
+          </ul></div>
+        </div>
+      </article>`;
+  }
+
+
   function classSeeAlso(c) {
     const skills = DATA.skills.filter(sk=>sk.classId===c.id);
     const skillLinks = skills.length
@@ -4345,6 +4489,7 @@ window.RO_DATA = {
     if (id === 'novice') return noviceDetail();
     if (id === 'swordman') return swordmanDetail();
     if (id === 'mage') return mageDetail();
+    if (id === 'archer') return archerDetail();
     const c = getClass(id);
     if (!c) return notFound();
     const skills = DATA.skills.filter(s=>s.classId===id);
