@@ -3354,6 +3354,7 @@ window.RO_DATA = {
           <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel('The current Ragnarok Zero database records no named function for Basic Skill Lv.8, so it is left blank instead of importing a value from another RO version.','La base Ragnarok Zero actuelle n’enregistre aucune fonction nommée pour Basic Skill Lv.8 ; ce niveau est donc laissé vide au lieu d’importer une valeur d’une autre version de RO.')}</div></div>
           <h2 id="notes">${t('notes')}</h2>
           <div class="notes-box">${navLabel('Basic Skill reaches level 9. Job Change is recorded at Lv.9 in the Zero skill data.','Basic Skill atteint le niveau 9. Job Change est enregistré au Lv.9 dans les données de compétences Zero.')}</div>
+          ${skillClassNav(sk)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><ul>
             <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero: Global Skill Planner</a></li>
@@ -3372,6 +3373,7 @@ window.RO_DATA = {
     const media = sk.image ? `<div class="infobox-image" style="height:96px"><img src="${sk.image}" alt="${esc(sk.name)}" width="34" height="34"></div>` : imagePlaceholder('skill');
     return `${breadcrumbs([{label:t('skills'),href:'#/skills'},{label:sk.name}])}<article class="article-with-infobox"><div class="article-heading"><h1>${skillIconImg(sk,32)} ${esc(sk.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox"><div class="infobox-title">${esc(sk.name)}<span class="infobox-subtitle">Skill</span></div>${media}<table><tbody>${infoRow(t('class'),`<a href="#/classes/${sk.classId}">${esc(getClass(sk.classId)?.name||sk.classId)}</a>`)}${infoRow(t('type'),esc(sk.type))}${infoRow(t('target'),esc(sk.target||t('unknown')))}${infoRow(t('maxLevel'),String(sk.maxLevel))}${infoRow(t('spCost'),esc(val(sk.spCost)))}${infoRow(t('castTime'),esc(val(sk.castTime)))}${infoRow(navLabel('Cast Delay','Délai après lancement'),esc(val(sk.castDelay)))}${infoRow(t('cooldown'),esc(val(sk.cooldown)))}</tbody></table><div class="infobox-footer">${badge(sk.verified)}</div></aside><div class="article-body"><p class="article-lead">${esc(txt(sk.description))}</p>${toc([{id:'prereq',label:t('prerequisites')},{id:'notes',label:t('notes')}])}<h2 id="prereq">${t('prerequisites')}</h2><div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(sk.notes))}</div>
       ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
+      ${skillClassNav(sk)}
       </div></article>`;
   }
 
@@ -3432,6 +3434,30 @@ window.RO_DATA = {
       ? skills.map(sk=>`<a href="#/skills/${sk.id}">${esc(sk.name)}</a>`).join(' • ')
       : navLabel('No verified skills added yet','Aucune compétence vérifiée ajoutée pour le moment');
 
+    const weaponsByClass = {
+      novice: ['Dagger','One Handed Sword'],
+      swordman: ['One Handed Sword','Spear','Two Handed Sword'],
+      mage: ['Dagger','Rod'],
+      archer: ['Bow (Arrows)'],
+      merchant: ['Axe','Dagger','Mace','One Handed Sword'],
+      thief: ['Dagger','Bow (Arrows)'],
+      acolyte: ['Mace','Rod'],
+      knight: ['One Handed Sword','Spear','Two Handed Sword'],
+      crusader: ['One Handed Sword','Spear','Two Handed Sword'],
+      wizard: ['Rod'],
+      sage: ['Book','Rod'],
+      hunter: ['Bow (Arrows)'],
+      bard: ['Bow (Arrows)','Instrument','Dagger'],
+      dancer: ['Bow (Arrows)','Whip','Dagger'],
+      blacksmith: ['Axe','Mace'],
+      alchemist: ['Axe','Dagger','Mace','One Handed Sword'],
+      priest: ['Book','Mace','Rod'],
+      monk: ['Mace','Knuckle'],
+      assassin: ['Dagger','Katar','One Handed Sword'],
+      rogue: ['Dagger','Bow (Arrows)','One Handed Sword']
+    };
+    const weapons = (weaponsByClass[c.id] || []).join(' • ') || navLabel('Not listed yet','Pas encore renseigné');
+
     const classLink = id => {
       const x = getClass(id);
       if (!x) return '';
@@ -3449,7 +3475,7 @@ window.RO_DATA = {
         <tbody>
           <tr><th style="width:170px">${navLabel('Skills','Compétences')}</th><td>${skillLinks}</td></tr>
           <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — Zero verification pending','Détails des quêtes de compétences Novice — vérification Zero en attente') : navLabel('No verified class quest page added yet','Aucune page de quête de classe vérifiée pour le moment')}</td></tr>
-          <tr><th>${navLabel('Weapons','Armes')}</th><td>${navLabel('Ragnarok Zero weapon data pending verification','Données d’armes Ragnarok Zero en attente de vérification')}</td></tr>
+          <tr><th>${navLabel('Weapons','Armes')}</th><td>${esc(weapons)}</td></tr>
         </tbody>
       </table></div>
 
@@ -3459,6 +3485,55 @@ window.RO_DATA = {
           <tr><th style="width:180px">${navLabel('Novice Class','Classe Novice')}</th><td>${novice}</td></tr>
           <tr><th>${navLabel('First Class','Premières classes')}</th><td>${first}</td></tr>
           <tr><th>${navLabel('Second Class','Secondes classes')}</th><td>${second} <span class="badge unverified" style="margin-left:8px">${navLabel('Coming soon','Bientôt disponible')}</span></td></tr>
+        </tbody>
+      </table></div>`;
+  }
+
+
+  function skillClassNav(sk) {
+    const c = getClass(sk.classId);
+    if (!c) return '';
+    const weaponsByClass = {
+      novice: ['Dagger','One Handed Sword'],
+      swordman: ['One Handed Sword','Spear','Two Handed Sword'],
+      mage: ['Dagger','Rod'],
+      archer: ['Bow (Arrows)'],
+      merchant: ['Axe','Dagger','Mace','One Handed Sword'],
+      thief: ['Dagger','Bow (Arrows)'],
+      acolyte: ['Mace','Rod'],
+      knight: ['One Handed Sword','Spear','Two Handed Sword'],
+      crusader: ['One Handed Sword','Spear','Two Handed Sword'],
+      wizard: ['Rod'],
+      sage: ['Book','Rod'],
+      hunter: ['Bow (Arrows)'],
+      bard: ['Bow (Arrows)','Instrument','Dagger'],
+      dancer: ['Bow (Arrows)','Whip','Dagger'],
+      blacksmith: ['Axe','Mace'],
+      alchemist: ['Axe','Dagger','Mace','One Handed Sword'],
+      priest: ['Book','Mace','Rod'],
+      monk: ['Mace','Knuckle'],
+      assassin: ['Dagger','Katar','One Handed Sword'],
+      rogue: ['Dagger','Bow (Arrows)','One Handed Sword']
+    };
+    const classSkills = DATA.skills.filter(x=>x.classId===sk.classId);
+    const links = classSkills.length
+      ? classSkills.map(x=>x.id===sk.id
+          ? `<strong><em>${esc(x.name)}</em></strong>`
+          : `<a href="#/skills/${x.id}">${esc(x.name)}</a>`).join(' • ')
+      : navLabel('No skills listed','Aucune compétence listée');
+    const weapons = (weaponsByClass[c.id] || []).join(' • ') || navLabel('Not listed yet','Pas encore renseigné');
+    const questText = c.id==='novice'
+      ? navLabel('Novice skill quest details — Zero verification pending','Détails des quêtes de compétences Novice — vérification Zero en attente')
+      : navLabel('Class quest details — Zero verification pending','Détails des quêtes de classe — vérification Zero en attente');
+
+    return `
+      <h2 id="skill-see-also">${navLabel('See Also','Voir aussi')}</h2>
+      <div class="table-wrap"><table class="see-also-table skill-nav-table">
+        <thead><tr><th colspan="2" style="text-align:center"><em>${esc(c.name)}</em></th></tr></thead>
+        <tbody>
+          <tr><th style="width:170px">${navLabel('Skills','Compétences')}</th><td>${links}</td></tr>
+          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${questText}</td></tr>
+          <tr><th>${navLabel('Weapons','Armes')}</th><td>${esc(weapons)}</td></tr>
         </tbody>
       </table></div>`;
   }
