@@ -5228,20 +5228,30 @@ window.RO_DATA = {
       const source=sourceSelect.value;
       const type=typeSelect.value;
       const q=search.value.trim().toLowerCase();
-      let rows=(AFFIX_DATABASE_DATA[source]||[]).filter(r=>r[0]===type);
+      const allForType=(AFFIX_DATABASE_DATA[source]||[]).filter(r=>r[0]===type);
+      let rows=allForType;
       if(q) rows=rows.filter(r=>r[2].toLowerCase().includes(q));
 
-      const tiers=[...new Set(rows.map(r=>r[1]))].sort((a,b)=>slotNumber(a)-slotNumber(b));
-      const allForType=(AFFIX_DATABASE_DATA[source]||[]).filter(r=>r[0]===type);
-      summary.textContent=`${sourceLabel(source)} · ${type} · ${rows.length} ${navLabel('affixes displayed','affixes affichés')} / ${allForType.length}`;
+      const slot4Options = ['Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead','Unbreakable'];
+      const supportsSlot4 = type === 'Armor' || /Series|Weapons/i.test(type);
+      const slot4Matches = supportsSlot4
+        ? slot4Options.filter(option=>!q || option.toLowerCase().includes(q))
+        : [];
 
-      if(!rows.length){
+      const tiers=[...new Set(rows.map(r=>r[1]))];
+      if(slot4Matches.length && !tiers.some(tier=>slotNumber(tier)===4)) tiers.push('Slot 4');
+      tiers.sort((a,b)=>slotNumber(a)-slotNumber(b));
+
+      const displayedCount = rows.length + slot4Matches.length;
+      const totalCount = allForType.length + (supportsSlot4 ? slot4Options.length : 0);
+      summary.textContent=`${sourceLabel(source)} · ${type} · ${displayedCount} ${navLabel('options displayed','options affichées')} / ${totalCount}`;
+
+      if(!tiers.length){
         output.innerHTML=`<div class="empty">${t('noResults')}</div>`;
         return;
       }
 
       const slotWidth = tiers.length >= 4 ? 245 : 285;
-      const slot4Elements = ['Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
       output.innerHTML=`<div style="width:100%;overflow-x:auto;padding:4px 0 12px">
         <div style="display:grid;grid-template-columns:repeat(${tiers.length},minmax(${slotWidth}px,1fr));gap:14px;min-width:${tiers.length*slotWidth}px;align-items:start">
           ${tiers.map(tier=>{
@@ -5256,16 +5266,16 @@ window.RO_DATA = {
                 </div>
                 <div style="padding:10px 12px;border-bottom:1px solid var(--line-soft);font-size:.75rem;color:var(--text-soft);line-height:1.4">
                   ${navLabel(
-                    'Slot 4 appears to be related to changing the weapon or armor element. The exact rules still need verification.',
-                    'Le Slot 4 semble être lié au changement d’élément de l’arme ou de l’armure. Les règles exactes restent à vérifier.'
+                    'Slot 4 on weapons and armor can roll an element or Unbreakable. The exact rules still need verification.',
+                    'Le Slot 4 des armes et des armures peut obtenir un élément ou Unbreakable. Les règles exactes restent à vérifier.'
                   )}
                 </div>
                 <table style="width:100%;border-collapse:collapse;font-size:.8rem;table-layout:fixed">
                   <thead><tr>
-                    <th style="text-align:left;padding:8px 9px">${navLabel('Possible element','Élément possible')}</th>
+                    <th style="text-align:left;padding:8px 9px">${navLabel('Possible option','Option possible')}</th>
                   </tr></thead>
-                  <tbody>${slot4Elements.map((element,index)=>`<tr style="${index<slot4Elements.length-1?'border-bottom:1px solid var(--line-soft)':''}">
-                    <th style="text-align:left;padding:8px 10px;font-weight:600">${esc(element)}</th>
+                  <tbody>${slot4Matches.map((option,index)=>`<tr style="${index<slot4Matches.length-1?'border-bottom:1px solid var(--line-soft)':''}">
+                    <th style="text-align:left;padding:8px 10px;font-weight:600">${esc(option)}</th>
                   </tr>`).join('')}</tbody>
                 </table>
               </section>`;
