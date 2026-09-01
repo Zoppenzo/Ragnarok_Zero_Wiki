@@ -2028,6 +2028,45 @@ tbody tr:hover { background: #fcf8f3; }
   max-height: 90px;
 }
 
+
+/* Element reference page */
+.element-page-shell{max-width:1220px}
+.element-intro-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start;margin:18px 0 24px}
+.element-read-card,.element-level-card{border:1px solid #cfd8e6;border-radius:10px;background:#fff;padding:16px;box-shadow:0 1px 2px rgba(20,35,60,.05)}
+.element-read-card h3,.element-level-card h3{margin:0 0 10px;font-size:17px}
+.element-read-list{display:grid;gap:7px;font-size:14px}
+.element-axis{display:inline-flex;align-items:center;gap:7px;font-weight:700}
+.element-axis.attack{color:#b62b2b}.element-axis.defend{color:#2857a6}
+.element-level-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.element-level-tab{appearance:none;border:1px solid #b9c7da;border-radius:8px;background:#f7f9fc;padding:8px 14px;font-weight:700;color:#31445f;cursor:pointer}
+.element-level-tab:hover{background:#eef4ff;border-color:#8eabd0}
+.element-level-tab.active{background:#2f5f9f;color:#fff;border-color:#2f5f9f}
+.element-table-wrap{overflow:auto;border:1px solid #c9d5e5;border-radius:10px;background:#fff;box-shadow:0 2px 7px rgba(28,50,82,.08);margin-bottom:18px}
+.element-matrix{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;font-size:13px}
+.element-matrix th,.element-matrix td{border-right:1px solid #dce4ef;border-bottom:1px solid #dce4ef;text-align:center;padding:9px 10px;min-width:78px}
+.element-matrix thead th{position:sticky;top:0;z-index:3;background:#edf3fb;color:#24466d;font-weight:800}
+.element-matrix tbody th{position:sticky;left:0;z-index:2;background:#f7f9fc;text-align:left;min-width:132px;font-weight:800}
+.element-matrix .corner{position:sticky;left:0;z-index:4;min-width:168px;background:linear-gradient(135deg,#f9e5e5 0 49.5%,#d8e7fa 50.5% 100%);padding:7px}
+.element-corner-inner{display:grid;grid-template-columns:1fr 1fr;min-height:48px;align-items:center;gap:4px;font-size:11px;line-height:1.15}
+.element-corner-inner .atk{text-align:left;align-self:end;color:#a72424}.element-corner-inner .def{text-align:right;align-self:start;color:#275897}
+.element-head-chip,.element-row-chip{display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.element-row-chip{justify-content:flex-start}
+.element-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.45)}
+.el-neutral{background:#aeb8c4}.el-water{background:#4a9fea}.el-earth{background:#70995b}.el-fire{background:#ef6845}.el-wind{background:#d8cf43}.el-poison{background:#875ca8}.el-holy{background:#f5cc50}.el-shadow{background:#56546e}.el-ghost{background:#6d83b0}.el-undead{background:#8a5b64}
+.element-mod{font-weight:800}
+.element-mod-immune{background:#e3e7ec;color:#67717e}
+.element-mod-low{background:#dcecff;color:#1f5c98}
+.element-mod-midlow{background:#edf5ff;color:#355c83}
+.element-mod-normal{background:#fff;color:#33445b}
+.element-mod-good{background:#fff0c9;color:#8a5a00}
+.element-mod-high{background:#ffd8b4;color:#9b4100}
+.element-mod-veryhigh{background:#ffc5c5;color:#a01f1f}
+.element-legend{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 20px}
+.element-legend span{display:inline-flex;align-items:center;gap:6px;border:1px solid #d4deeb;border-radius:999px;padding:5px 9px;font-size:12px;background:#fff}
+.element-legend i{width:14px;height:14px;border-radius:4px;display:inline-block;border:1px solid rgba(0,0,0,.08)}
+.element-note{font-size:13px;color:#58677a;margin-top:8px}
+.element-matrix-panel[hidden]{display:none}
+@media(max-width:820px){.element-intro-grid{grid-template-columns:1fr}.element-matrix th,.element-matrix td{padding:8px;min-width:70px}.element-matrix tbody th{min-width:118px}.element-matrix .corner{min-width:145px}}
 </style>
 </head>
 <body>
@@ -3309,8 +3348,187 @@ window.RO_DATA = {
       ])}`;
   }
 
+
+  const ELEMENT_NAMES = ['Neutral','Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
+
+  // Source orientation follows iRO Wiki: rows = defending element, columns = attacking element.
+  // The rendered wiki table transposes this so the user sees ATTACKING on the left and DEFENDING on top.
+  const ELEMENT_TABLES_IRO = {
+    1: [
+      [100,100,100,100,100,100,100,100,90,100],
+      [100,25,100,90,150,150,100,100,100,100],
+      [100,100,25,150,90,150,100,100,100,100],
+      [100,150,90,25,100,150,100,100,100,90],
+      [100,90,150,100,25,150,100,100,100,100],
+      [100,150,150,150,150,0,75,75,75,75],
+      [100,100,100,100,100,75,0,125,90,125],
+      [100,100,100,100,100,75,125,0,90,0],
+      [90,100,100,100,100,75,100,100,125,100],
+      [100,100,100,125,100,75,125,0,100,0]
+    ],
+    2: [
+      [100,100,100,100,100,100,100,100,70,100],
+      [100,0,100,80,175,150,100,100,100,100],
+      [100,100,0,175,80,150,100,100,100,100],
+      [100,175,80,0,100,150,100,100,100,80],
+      [100,80,175,100,0,150,100,100,100,100],
+      [100,150,150,150,150,0,75,75,75,50],
+      [100,100,100,100,100,75,0,150,80,150],
+      [100,100,100,100,100,75,150,0,80,0],
+      [70,100,100,100,100,75,100,100,150,125],
+      [100,100,100,150,100,50,150,0,125,0]
+    ],
+    3: [
+      [100,100,100,100,100,100,100,100,50,100],
+      [100,0,100,70,200,125,100,100,100,100],
+      [100,100,0,200,70,125,100,100,100,100],
+      [100,200,70,0,100,125,100,100,100,70],
+      [100,70,200,100,0,125,100,100,100,100],
+      [100,125,125,125,125,0,50,50,50,25],
+      [100,100,100,100,100,50,0,175,70,175],
+      [100,100,100,100,100,50,175,0,70,0],
+      [50,100,100,100,100,50,100,100,175,150],
+      [100,100,100,175,100,25,175,0,150,0]
+    ],
+    4: [
+      [100,100,100,100,100,100,100,100,0,100],
+      [100,0,100,60,200,125,100,100,100,100],
+      [100,100,0,200,60,125,100,100,100,100],
+      [100,200,60,0,100,125,100,100,100,60],
+      [100,60,200,100,0,125,100,100,100,100],
+      [100,125,125,125,125,0,50,50,50,0],
+      [100,100,100,100,100,50,0,200,60,200],
+      [100,100,100,100,100,50,200,0,60,0],
+      [0,100,100,100,100,50,100,100,200,175],
+      [100,100,100,200,100,0,200,0,175,0]
+    ]
+  };
+
+  function elementClassName(name) {
+    return 'el-' + name.toLowerCase();
+  }
+
+  function elementChip(name, row=false) {
+    return `<span class="${row?'element-row-chip':'element-head-chip'}"><i class="element-dot ${elementClassName(name)}"></i><span>${esc(name)}</span></span>`;
+  }
+
+  function elementModifierClass(value) {
+    if (value === 0) return 'element-mod-immune';
+    if (value <= 75) return 'element-mod-low';
+    if (value < 100) return 'element-mod-midlow';
+    if (value === 100) return 'element-mod-normal';
+    if (value <= 125) return 'element-mod-good';
+    if (value <= 150) return 'element-mod-high';
+    return 'element-mod-veryhigh';
+  }
+
+  function renderElementMatrix(level) {
+    const source = ELEMENT_TABLES_IRO[level];
+    // source[defenderIndex][attackerIndex] -> displayed row attacker, column defender
+    const body = ELEMENT_NAMES.map((attacker, attackerIndex) => {
+      const cells = ELEMENT_NAMES.map((defender, defenderIndex) => {
+        const value = source[defenderIndex][attackerIndex];
+        const title = `${attacker} → ${defender} Lv.${level}: ${value}%`;
+        return `<td class="element-mod ${elementModifierClass(value)}" title="${esc(title)}">${value}%</td>`;
+      }).join('');
+      return `<tr><th scope="row">${elementChip(attacker,true)}</th>${cells}</tr>`;
+    }).join('');
+
+    return `<div class="element-matrix-panel" data-element-level="${level}" ${level===1?'':'hidden'}>
+      <div class="element-table-wrap">
+        <table class="element-matrix">
+          <thead><tr>
+            <th class="corner"><div class="element-corner-inner"><span class="atk">${navLabel('ATTACKING ↓','ATTAQUE ↓')}</span><span class="def">${navLabel('DEFENDING →','DÉFENSE →')}</span></div></th>
+            ${ELEMENT_NAMES.map(name=>`<th scope="col">${elementChip(name)}</th>`).join('')}
+          </tr></thead>
+          <tbody>${body}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  function wireElementPage() {
+    const tabs=[...document.querySelectorAll('.element-level-tab')];
+    const panels=[...document.querySelectorAll('.element-matrix-panel')];
+    if(!tabs.length||!panels.length) return;
+    tabs.forEach(tab=>tab.addEventListener('click',()=>{
+      const level=tab.dataset.elementLevel;
+      tabs.forEach(x=>x.classList.toggle('active',x===tab));
+      tabs.forEach(x=>x.setAttribute('aria-selected',x===tab?'true':'false'));
+      panels.forEach(panel=>panel.hidden=panel.dataset.elementLevel!==level);
+    }));
+  }
+
+  function elementsPage(topic) {
+    setTimeout(wireElementPage,0);
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+    const tables=[1,2,3,4].map(renderElementMatrix).join('');
+    return `${breadcrumbs([{label:title}])}
+      <div class="element-page-shell">
+        <div class="article-heading"><h1>${icon('mechanics')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+        <p class="article-lead">${navLabel(
+          'Elements modify damage depending on the attacking element and the defending element. The value in a cell is the percentage of normal damage dealt.',
+          'Les éléments modifient les dégâts selon l’élément de l’attaque et l’élément de la cible. La valeur d’une case correspond au pourcentage des dégâts normaux infligés.'
+        )}</p>
+
+        <div class="element-intro-grid">
+          <div class="element-read-card">
+            <h3>${navLabel('How to read the table','Comment lire le tableau')}</h3>
+            <div class="element-read-list">
+              <div><span class="element-axis attack">↓ ${navLabel('Left side = attacking element','À gauche = élément qui attaque')}</span></div>
+              <div><span class="element-axis defend">→ ${navLabel('Top = defending element','En haut = élément qui défend')}</span></div>
+              <div><strong>150%</strong> = ${navLabel('50% more damage','50 % de dégâts supplémentaires')}</div>
+              <div><strong>75%</strong> = ${navLabel('25% less damage','25 % de dégâts en moins')}</div>
+              <div><strong>100%</strong> = ${navLabel('normal damage','dégâts normaux')}</div>
+              <div><strong>0%</strong> = ${navLabel('no damage from that elemental interaction','aucun dégât pour cette interaction élémentaire')}</div>
+            </div>
+          </div>
+          <div class="element-level-card">
+            <h3>${navLabel('Defending element level','Niveau de l’élément défensif')}</h3>
+            <p>${navLabel(
+              'Attacking elements do not have levels. Defending elements have Levels 1–4; weaknesses and resistances generally become stronger at higher levels.',
+              'Les éléments offensifs n’ont pas de niveau. Les éléments défensifs possèdent des niveaux 1 à 4 ; les faiblesses et résistances deviennent généralement plus marquées aux niveaux élevés.'
+            )}</p>
+            <div class="element-note">${navLabel('Player defensive property is normally Level 1; monsters can use higher defending-element levels.','La propriété défensive des joueurs est normalement de niveau 1 ; les monstres peuvent posséder des niveaux élémentaires défensifs plus élevés.')}</div>
+          </div>
+        </div>
+
+        <h2 id="element-table">${navLabel('Element damage table','Table des dégâts élémentaires')}</h2>
+        <div class="element-legend">
+          <span><i class="element-mod-immune"></i>0%</span>
+          <span><i class="element-mod-low"></i>1–75%</span>
+          <span><i class="element-mod-midlow"></i>76–99%</span>
+          <span><i class="element-mod-normal"></i>100%</span>
+          <span><i class="element-mod-good"></i>101–125%</span>
+          <span><i class="element-mod-high"></i>126–150%</span>
+          <span><i class="element-mod-veryhigh"></i>151–200%</span>
+        </div>
+
+        <div class="element-level-tabs" role="tablist" aria-label="${navLabel('Defending element level','Niveau de défense élémentaire')}">
+          ${[1,2,3,4].map(l=>`<button class="element-level-tab ${l===1?'active':''}" type="button" role="tab" aria-selected="${l===1?'true':'false'}" data-element-level="${l}">${navLabel('Level','Niveau')} ${l}</button>`).join('')}
+        </div>
+
+        ${tables}
+
+        <h2 id="elements-list">${navLabel('The ten elements','Les dix éléments')}</h2>
+        <div class="element-legend">
+          ${ELEMENT_NAMES.map(name=>`<span>${elementChip(name)}</span>`).join('')}
+        </div>
+
+        <h2 id="sources">${navLabel('Sources','Sources')}</h2>
+        <div class="source-box"><ul>
+          <li><a href="https://irowiki.org/wiki/Element" target="_blank" rel="noopener">iRO Wiki — Element</a> — ${navLabel('damage multipliers and element-level tables','multiplicateurs de dégâts et tables des niveaux élémentaires')}</li>
+        </ul></div>
+        <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
+          'The source page places attacking elements in columns and defending elements in rows. This wiki intentionally transposes the same values so attacking elements are on the left and defending elements are at the top.',
+          'La page source place les éléments offensifs en colonnes et les éléments défensifs en lignes. Ce wiki transpose volontairement les mêmes valeurs afin d’avoir les éléments qui attaquent à gauche et ceux qui défendent en haut.'
+        )}</div></div>
+      </div>`;
+  }
+
   function topicDetail(id) {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
+    if (id === 'elements') return elementsPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
