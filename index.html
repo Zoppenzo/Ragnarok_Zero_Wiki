@@ -3467,8 +3467,12 @@ window.RO_DATA = {
       <div class="element-page-shell">
         <div class="article-heading"><h1>${icon('mechanics')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
         <p class="article-lead">${navLabel(
-          'Elements modify damage depending on the attacking element and the defending element. The value in a cell is the percentage of normal damage dealt.',
-          'Les éléments modifient les dégâts selon l’élément de l’attaque et l’élément de la cible. La valeur d’une case correspond au pourcentage des dégâts normaux infligés.'
+          'Elements are an important combat mechanic. They determine how effective an attack is depending on the element used by the attacker and the defending element of the target. Depending on the matchup, damage can be increased, reduced, or completely negated.',
+          'Les éléments sont une mécanique importante du combat. Ils déterminent l’efficacité d’une attaque selon l’élément utilisé par l’attaquant et l’élément défensif de la cible. Selon la combinaison, les dégâts peuvent être augmentés, réduits ou totalement annulés.'
+        )}</p>
+        <p>${navLabel(
+          'Ragnarok Online uses ten elements: Neutral, Water, Earth, Fire, Wind, Poison, Holy, Shadow, Ghost and Undead. The attacking element comes from the attack itself, while the defending element belongs to the target. Defending elements can have Levels 1–4, which change the resulting damage modifier.',
+          'Ragnarok Online possède dix éléments : Neutral, Water, Earth, Fire, Wind, Poison, Holy, Shadow, Ghost et Undead. L’élément offensif provient de l’attaque, tandis que l’élément défensif appartient à la cible. Les éléments défensifs peuvent avoir un niveau de 1 à 4, ce qui modifie le multiplicateur de dégâts obtenu.'
         )}</p>
 
         <div class="element-intro-grid">
@@ -3480,7 +3484,7 @@ window.RO_DATA = {
               <div><strong>150%</strong> = ${navLabel('50% more damage','50 % de dégâts supplémentaires')}</div>
               <div><strong>75%</strong> = ${navLabel('25% less damage','25 % de dégâts en moins')}</div>
               <div><strong>100%</strong> = ${navLabel('normal damage','dégâts normaux')}</div>
-              <div><strong>0%</strong> = ${navLabel('no damage from that elemental interaction','aucun dégât pour cette interaction élémentaire')}</div>
+              <div><strong>0%</strong> = ${navLabel('the target is immune to this element','la cible est immunisée contre cet élément')}</div>
             </div>
           </div>
           <div class="element-level-card">
