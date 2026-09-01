@@ -4929,14 +4929,18 @@ window.RO_DATA = {
 
       <h2 id="slots">${navLabel('Slots and compatibility','Slots et compatibilité')}</h2>
       <p>${navLabel(
-        'Slot count belongs to the individual equipment item. Different versions of similarly named equipment can have different slots, so always use the item entry rather than assuming an iRO slot count.',
-        'Le nombre de slots appartient à l’objet d’équipement concerné. Des versions portant un nom proche peuvent avoir un nombre de slots différent ; utilise donc toujours la fiche de l’objet au lieu de supposer un nombre de slots venant d’iRO.'
+        'Weapons and equipment do not use card slots in the same way. Weapons can have several card slots, while non-weapon equipment that accepts a card uses a single slot.',
+        'Les armes et les équipements n’utilisent pas les slots de cartes de la même manière. Une arme peut posséder plusieurs slots de cartes, tandis qu’un équipement hors arme pouvant recevoir une carte utilise un seul slot.'
       )}</p>
       <div class="wiki-feature-list">
-        <div><strong>${navLabel('Weapon cards','Cartes d’arme')}</strong><p>${navLabel('Install only into compatible weapon slots.','S’insèrent uniquement dans les slots d’armes compatibles.')}</p></div>
-        <div><strong>${navLabel('Armor cards','Cartes d’armure')}</strong><p>${navLabel('Install into the armor category specified by the card.','S’insèrent dans la catégorie d’armure indiquée par la carte.')}</p></div>
-        <div><strong>${navLabel('Garment / Footgear / Shield','Garment / Chaussures / Bouclier')}</strong><p>${navLabel('Each card is restricted to its own compatible equipment category.','Chaque carte est limitée à sa propre catégorie d’équipement compatible.')}</p></div>
-        <div><strong>${navLabel('Accessory / Headgear','Accessoire / Headgear')}</strong><p>${navLabel('Compatibility is determined by the card description, not by another RO version.','La compatibilité est déterminée par la description de la carte et non par une autre version de RO.')}</p></div>
+        <div><strong>${navLabel('Weapons','Armes')}</strong><p>${navLabel(
+          'A weapon can have several card slots, so multiple compatible weapon cards can be inserted into the same weapon when enough slots are available.',
+          'Une arme peut posséder plusieurs slots de cartes. Il est donc possible d’insérer plusieurs cartes d’arme compatibles dans une même arme si elle possède assez de slots.'
+        )}</p></div>
+        <div><strong>${navLabel('Equipment','Équipements')}</strong><p>${navLabel(
+          'Armor, Garment, Footgear, Shield, Accessory and Headgear cards each belong to their corresponding equipment category. A slotted non-weapon equipment piece has one card slot; some equipment has no slot.',
+          'Les cartes Armor, Garment, Footgear, Shield, Accessory et Headgear vont chacune dans leur catégorie d’équipement correspondante. Un équipement hors arme slotté possède un seul slot de carte ; certains équipements n’ont aucun slot.'
+        )}</p></div>
       </div>
 
       <h2 id="removing">${navLabel('Removing cards','Retirer des cartes')}</h2>
