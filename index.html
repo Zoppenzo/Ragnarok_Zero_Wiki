@@ -2313,6 +2313,12 @@ window.RO_DATA = {
       prerequisites: [], notes: { en: "Quest skill; learned without spending a normal job skill point.", fr: "Compétence de quête ; elle s'apprend sans dépenser de point de compétence de Job normal." }, verified: true
     },
     {
+      id: "spear-mastery", name: "Spear Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/55.png",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Increases physical damage when attacking with a spear. Damage is further increased while mounted.", fr: "Augmente les dégâts physiques infligés avec une lance. Les dégâts sont encore augmentés lorsque le personnage est monté." },
+      prerequisites: [], notes: { en: "Ragnarok Zero: Global Swordsman 1st-class skill. Max Lv.10.", fr: "Compétence de première classe Swordsman dans Ragnarok Zero: Global. Niveau max 10." }, verified: true
+    },
+    {
       id: "two-handed-sword-mastery", name: "Two Handed Sword Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/3.png",
       spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       levels: null,
@@ -2354,7 +2360,7 @@ window.RO_DATA = {
   classes: [
     { id: "novice", name: "Novice", tier: "Base Class", group: "novice", parentId: null, releaseStatus: "available", image: null, description: { en: "Novice is the starting class for every new character in Ragnarok Zero: Global. It introduces the basic game functions before the character chooses a first class.", fr: "Novice est la classe de départ de tous les nouveaux personnages dans Ragnarok Zero: Global. Elle sert à découvrir les fonctions de base du jeu avant de choisir une première classe." }, notes: { en: "At Job Level 10 or higher, a Novice can advance to one of the six first classes currently live on Global: Swordsman, Mage, Archer, Merchant, Thief or Acolyte.", fr: "À partir du Job Level 10, un Novice peut évoluer vers l’une des six premières classes actuellement disponibles sur Global : Swordsman, Mage, Archer, Merchant, Thief ou Acolyte." } },
 
-    { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman is the melee-focused first class of Ragnarok Zero: Global, built around weapon mastery, strong single-target attacks, survivability and close-range utility.", fr: "Swordman est la première classe orientée mêlée de Ragnarok Zero: Global, centrée sur les maîtrises d'armes, les attaques puissantes sur cible unique, la survie et les outils de combat rapproché." }, notes: { en: "Ragnarok Zero: Global lists 10 Swordman skills: seven normal first-job skills and three quest skills.", fr: "Ragnarok Zero: Global liste 10 compétences Swordman : sept compétences normales de première classe et trois compétences de quête." } },
+    { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman is the melee-focused first class of Ragnarok Zero: Global, built around weapon mastery, strong single-target attacks, survivability and close-range utility.", fr: "Swordman est la première classe orientée mêlée de Ragnarok Zero: Global, centrée sur les maîtrises d'armes, les attaques puissantes sur cible unique, la survie et les outils de combat rapproché." }, notes: { en: "Ragnarok Zero: Global lists 11 Swordman skills: eight normal first-job skills and three quest skills.", fr: "Ragnarok Zero: Global liste 11 compétences Swordman : huit compétences normales de première classe et trois compétences de quête." } },
     { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Mage pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Archer pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Merchant pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
@@ -3449,6 +3455,10 @@ window.RO_DATA = {
       'berserk-swordman': [[1,'Automatically activates at ≤25% HP · effect equivalent to Provoke Lv.10',1,1,N,N,N]],
       'hp-recovery-while-moving': [[1,'Recover HP while moving at 25% of normal standing recovery',0,1,N,N,N]],
       'fatal-blow': [[1,'Bash Lv.6+ can inflict Stun; chance scales with Bash level and character level',0,1,N,N,N]],
+      'spear-mastery': [
+        [1,'Damage +4 · Mounted +5',0,1,N,N,N],[2,'Damage +8 · Mounted +10',0,1,N,N,N],[3,'Damage +12 · Mounted +15',0,1,N,N,N],[4,'Damage +16 · Mounted +20',0,1,N,N,N],[5,'Damage +20 · Mounted +25',0,1,N,N,N],
+        [6,'Damage +24 · Mounted +30',0,1,N,N,N],[7,'Damage +28 · Mounted +35',0,1,N,N,N],[8,'Damage +32 · Mounted +40',0,1,N,N,N],[9,'Damage +36 · Mounted +45',0,1,N,N,N],[10,'Damage +40 · Mounted +50',0,1,N,N,N]
+      ],
       'two-handed-sword-mastery': [
         [1,'Damage +4',0,1,N,N,N],[2,'Damage +8',0,1,N,N,N],[3,'Damage +12',0,1,N,N,N],[4,'Damage +16',0,1,N,N,N],[5,'Damage +20',0,1,N,N,N],
         [6,'Damage +24',0,1,N,N,N],[7,'Damage +28',0,1,N,N,N],[8,'Damage +32',0,1,N,N,N],[9,'Damage +36',0,1,N,N,N],[10,'Damage +40',0,1,N,N,N]
@@ -3628,7 +3638,7 @@ window.RO_DATA = {
 
   function swordmanDetail() {
     const c = getClass('swordman');
-    const regularIds = ['sword-mastery','increase-hp-recovery','bash','provoke','two-handed-sword-mastery','magnum-break','endure'];
+    const regularIds = ['sword-mastery','increase-hp-recovery','bash','provoke','spear-mastery','two-handed-sword-mastery','magnum-break','endure'];
     const freeIds = ['berserk-swordman','hp-recovery-while-moving','fatal-blow'];
     const regular = regularIds.map(getSkill).filter(Boolean);
     const free = freeIds.map(getSkill).filter(Boolean);
@@ -3668,7 +3678,7 @@ window.RO_DATA = {
 
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok Zero: Global data','Données Ragnarok Zero: Global')}</strong><br>${navLabel('The Swordman skill list, max levels, Zero effects and skill icons on this page are based on MidgardHub’s Ragnarok Zero Global skill database.','La liste des compétences Swordman, leurs niveaux max, leurs effets Zero et leurs icônes sur cette page sont basés sur la base de compétences Ragnarok Zero Global de MidgardHub.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok Zero: Global data','Données Ragnarok Zero: Global')}</strong><br>${navLabel('The Swordman skill list, max levels, Zero effects and skill icons on this page are based on Ragnarok Zero Global sources. Spear Mastery is a 1st-class Swordsman skill in Zero, unlike iRO Classic.','La liste des compétences Swordman, leurs niveaux max, leurs effets Zero et leurs icônes sont basés sur des sources Ragnarok Zero Global. Spear Mastery est bien une compétence de première classe Swordsman sur Zero, contrairement à iRO Classic.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Swordman develops into Knight or Crusader. These second classes are kept in the wiki as upcoming Global content.','Swordman évolue vers Knight ou Crusader. Ces secondes classes sont conservées dans le wiki comme contenu Global à venir.')}</p>
@@ -3691,6 +3701,7 @@ window.RO_DATA = {
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
             <li><a href="https://midgardhub.com/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Skill Database</a></li>
+            <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Skill Planner — Knight / Swordsman line</a></li>
           </ul></div>
         </div>
       </article>`;
