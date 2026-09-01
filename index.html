@@ -2584,22 +2584,64 @@ window.RO_DATA = {
     },
 
     {
-      id: "envenom", name: "Envenom", classId: "thief", maxLevel: 10, type: "Active", target: "Enemy", image: null,
-      spCost: null, castTime: null, cooldown: null,
-      description: { en: "Skill entry prepared for Ragnarok Zero data. Values and effects still need verification.", fr: "Entrée de compétence prête pour les données Ragnarok Zero. Les valeurs et effets doivent encore être vérifiés." },
-      prerequisites: [], notes: { en: "Formula not imported.", fr: "Formule non importée." }, verified: false
+      id: "double-attack", name: "Double Attack", classId: "thief", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Weapon", image: "https://game.ragnaplace.com/ro/rozg/skill/48.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "When attacking with a Dagger, grants a chance to perform a double attack. The activation chance and HIT bonus increase with skill level. With Katar weapons, this skill affects left-hand damage.", fr: "Lors des attaques avec une dague, donne une chance d'effectuer une double attaque. La chance d'activation et le bonus de HIT augmentent avec le niveau. Avec les Katars, cette compétence affecte les dégâts de la main gauche." },
+      prerequisites: [], notes: { en: "Zero Global: activation chance rises from 7% to 70%, and HIT bonus from +1% to +10%.", fr: "Zero Global : la chance d'activation passe de 7 % à 70 %, et le bonus de HIT de +1 % à +10 %." }, verified: true
     },
     {
-      id: "detoxify", name: "Detoxify", classId: "thief", maxLevel: 1, type: "Active", target: "Self / Ally", image: null,
-      spCost: null, castTime: null, cooldown: null,
-      description: { en: "Prerequisite relation is included as a structural demo and should be verified.", fr: "La relation de prérequis est incluse comme démonstration structurelle et doit être vérifiée." },
-      prerequisites: [{ skillId: "envenom", level: 3, verified: false }], notes: { en: "Prerequisite needs Zero-specific verification.", fr: "Le prérequis doit être vérifié spécifiquement pour Zero." }, verified: false
+      id: "steal", name: "Steal", classId: "thief", maxLevel: 10, type: "Active", role: "supportive", target: "Enemy", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/50.webp",
+      spCost: 10, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Attempts to steal an item carried by the target. Success is affected by the DEX difference between the caster and target. Boss monsters and players cannot be stolen from.", fr: "Tente de voler un objet porté par la cible. La réussite dépend notamment de la différence de DEX entre le lanceur et la cible. Les boss et les joueurs ne peuvent pas être volés." },
+      prerequisites: [], notes: { en: "Base success rate rises from 8% at Lv.1 to 62% at Lv.10 before the target DEX adjustment.", fr: "Le taux de réussite de base passe de 8 % au Lv.1 à 62 % au Lv.10 avant l'ajustement lié à la DEX de la cible." }, verified: true
     },
     {
-      id: "double-attack", name: "Double Attack", classId: "thief", maxLevel: 10, type: "Passive", target: "Self", image: null,
-      spCost: null, castTime: null, cooldown: null,
-      description: { en: "Demo skill entry.", fr: "Compétence de démonstration." },
-      prerequisites: [], notes: { en: "Effect values not loaded.", fr: "Valeurs d'effet non chargées." }, verified: false
+      id: "envenom", name: "Envenom", classId: "thief", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Poison", image: "https://game.ragnaplace.com/ro/rozg/skill/52.webp",
+      spCost: 12, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Deals Poison-property physical damage to one target and can inflict Poison. Envenom adds a flat damage bonus to the normal physical attack damage.", fr: "Inflige des dégâts physiques Poison à une cible et peut infliger Poison. Envenom ajoute un bonus de dégâts fixe aux dégâts physiques normaux." },
+      prerequisites: [], notes: { en: "Damage bonus is +15 per skill level. Poison chance rises from 14% at Lv.1 to 50% at Lv.10.", fr: "Le bonus de dégâts est de +15 par niveau. La chance de Poison passe de 14 % au Lv.1 à 50 % au Lv.10." }, verified: true
+    },
+    {
+      id: "improve-dodge", name: "Improve Dodge", classId: "thief", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/49.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Passively increases FLEE. After advancing to a second class, the FLEE bonus becomes larger; Assassin also gains an additional movement-speed effect.", fr: "Augmente passivement le FLEE. Après le passage en seconde classe, le bonus de FLEE devient plus important ; Assassin obtient aussi un effet supplémentaire de vitesse de déplacement." },
+      prerequisites: [], notes: { en: "As Thief: FLEE +3 per level. After second job: FLEE +4 per level.", fr: "En Thief : FLEE +3 par niveau. Après la seconde classe : FLEE +4 par niveau." }, verified: true
+    },
+    {
+      id: "hiding", name: "Hiding", classId: "thief", maxLevel: 10, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/51.webp",
+      spCost: 10, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Hides underground. Natural SP recovery is disabled while hidden, and SP is consumed periodically. Detection skills, Demon/Insect monsters and bosses can reveal or detect the user.", fr: "Permet de se cacher sous terre. La récupération naturelle de SP est désactivée et des SP sont consommés périodiquement. Les compétences de détection, les monstres Demon/Insect et les boss peuvent détecter ou révéler l'utilisateur." },
+      prerequisites: [{ skillId: "steal", level: 5, verified: true }], notes: { en: "Duration rises from 30 to 300 seconds; periodic SP consumption becomes less frequent as skill level rises.", fr: "La durée passe de 30 à 300 secondes ; la consommation périodique de SP devient moins fréquente lorsque le niveau augmente." }, verified: true
+    },
+    {
+      id: "detoxify", name: "Detoxify", classId: "thief", maxLevel: 1, type: "Active", role: "supportive", target: "Self / Ally", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/53.webp",
+      spCost: 10, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Cures the Poison status from a target.", fr: "Soigne le statut Poison d'une cible." },
+      prerequisites: [{ skillId: "envenom", level: 3, verified: true }], notes: { en: "Zero Global lists Envenom Lv.3 as prerequisite and range 9.", fr: "Zero Global indique Envenom Lv.3 comme prérequis et une portée de 9." }, verified: true
+    },
+    {
+      id: "sand-attack", name: "Sand Attack", classId: "thief", maxLevel: 1, type: "Free / Active", role: "damage", target: "Enemy", element: "Earth", image: "https://game.ragnaplace.com/ro/rozg/skill/149.webp",
+      spCost: 9, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Throws sand at one target, dealing Earth-property melee physical damage equal to ATK 130% and having a chance to inflict Blind.", fr: "Lance du sable sur une cible, infligeant des dégâts physiques de mêlée Earth égaux à ATK 130 % avec une chance d'infliger Blind." },
+      prerequisites: [], notes: { en: "Zero Global quest/default skill; no normal Thief Job skill point is consumed.", fr: "Compétence quest/default de Zero Global ; elle ne consomme aucun point de compétence Job normal du Thief." }, verified: true
+    },
+    {
+      id: "stone-fling", name: "Stone Fling", classId: "thief", maxLevel: 1, type: "Free / Active", role: "damage", target: "Enemy", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/152.webp",
+      spCost: 2, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Throws a Stone at one target, dealing fixed 50 ranged physical damage that ignores DEF. Consumes 1 Stone and has a low chance to inflict Stun or Blind.", fr: "Lance une Stone sur une cible, infligeant 50 dégâts physiques à distance fixes qui ignorent la DEF. Consomme 1 Stone et possède une faible chance d'infliger Stun ou Blind." },
+      prerequisites: [], notes: { en: "Zero Global quest/default skill; no normal Thief Job skill point is consumed.", fr: "Compétence quest/default de Zero Global ; elle ne consomme aucun point de compétence Job normal du Thief." }, verified: true
+    },
+    {
+      id: "back-slide", name: "Back Slide", classId: "thief", maxLevel: 1, type: "Free / Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/150.webp",
+      spCost: 7, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Instantly moves the user backward by 5 cells.", fr: "Déplace instantanément l'utilisateur de 5 cases vers l'arrière." },
+      prerequisites: [], notes: { en: "Zero Global quest/default skill; no normal Thief Job skill point is consumed.", fr: "Compétence quest/default de Zero Global ; elle ne consomme aucun point de compétence Job normal du Thief." }, verified: true
+    },
+    {
+      id: "find-stone", name: "Find Stone", classId: "thief", maxLevel: 1, type: "Free / Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/151.webp",
+      spCost: 2, castTime: "0.5 s", castDelay: "None", cooldown: "None",
+      description: { en: "Creates a Stone from the ground. On Ragnarok Zero Global, it cannot be used when current carried weight exceeds 70%.", fr: "Ramasse une Stone au sol. Sur Ragnarok Zero Global, la compétence ne peut pas être utilisée lorsque le poids transporté actuel dépasse 70 %." },
+      prerequisites: [], notes: { en: "Important Zero-specific value: the weight threshold is 70% on the Global planner.", fr: "Valeur importante spécifique à Zero : le seuil de poids est de 70 % sur le planner Global." }, verified: true
     }
   ],
 
@@ -2610,7 +2652,7 @@ window.RO_DATA = {
     { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage is the ranged magic first class of Ragnarok Zero: Global. It uses elemental and Ghost magic for single-target and area damage while also providing control and defensive utility.", fr: "Mage est la première classe de magie à distance de Ragnarok Zero: Global. Elle utilise les éléments et la magie Ghost pour infliger des dégâts monocible ou de zone, tout en disposant de contrôle et d'outils défensifs." }, notes: { en: "Ragnarok Zero: Global lists 15 Mage skills: 14 normal first-job skills and the Energy Coat quest skill. Mage advances to Wizard or Sage from Job Lv.40.", fr: "Ragnarok Zero: Global liste 15 compétences Mage : 14 compétences normales de première classe et la compétence de quête Energy Coat. Mage évolue en Wizard ou Sage à partir du Job Lv.40." } },
     { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer is the ranged physical first class of Ragnarok Zero: Global. It specializes in Bows and Arrows, long-range accuracy, rapid single-target attacks and ranged area control.", fr: "Archer est la première classe physique à distance de Ragnarok Zero: Global. Elle se spécialise dans les arcs et les flèches, la précision à longue portée, les attaques rapides sur cible unique et le contrôle de zone à distance." }, notes: { en: "Ragnarok Zero: Global lists 7 Archer skills: five normal first-job skills and two quest skills, Arrow Crafting and Arrow Repel. Archer advances to Hunter, Bard or Dancer from Job Lv.40.", fr: "Ragnarok Zero: Global liste 7 compétences Archer : cinq compétences normales de première classe et deux compétences de quête, Arrow Crafting et Arrow Repel. Archer évolue en Hunter, Bard ou Dancer à partir du Job Lv.40." } },
     { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant is the economic and cart-focused first class of Ragnarok Zero: Global. It combines NPC trading skills, increased carrying capacity, Axe and one-handed Sword mastery, Pushcart utility and Zeny-powered melee attacks.", fr: "Merchant est la première classe orientée commerce et charrette de Ragnarok Zero: Global. Elle combine les compétences de commerce avec les NPC, une capacité de transport accrue, la maîtrise des haches et épées à une main, l’utilisation du Pushcart et des attaques de mêlée consommant des Zeny." }, notes: { en: "Ragnarok Zero: Global lists 12 Merchant skills: eight normal first-job skills and four Free Skills — Cart Revolution, Change Cart, Crazy Uproar and Cart Boost. Merchant advances to Blacksmith or Alchemist from Job Lv.40.", fr: "Ragnarok Zero: Global liste 12 compétences Merchant : huit compétences normales de première classe et quatre Free Skills — Cart Revolution, Change Cart, Crazy Uproar et Cart Boost. Merchant évolue en Blacksmith ou Alchemist à partir du Job Lv.40." } },
-    { id: "thief", name: "Thief", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Thief class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Thief pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
+    { id: "thief", name: "Thief", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Thief is the agile melee first class of Ragnarok Zero: Global. It focuses on Daggers, evasion, stealing, poison attacks and mobility while also gaining Sword Mastery on the Zero skill tree.", fr: "Thief est la première classe de mêlée agile de Ragnarok Zero: Global. Elle se concentre sur les dagues, l’esquive, le vol, les attaques Poison et la mobilité, tout en disposant aussi de Sword Mastery dans l’arbre Zero." }, notes: { en: "Ragnarok Zero: Global lists 11 Thief skills: seven normal first-job skills and four no-Job-point quest/default skills — Sand Attack, Stone Fling, Back Slide and Find Stone. Thief advances to Assassin or Rogue from Job Lv.40.", fr: "Ragnarok Zero: Global liste 11 compétences Thief : sept compétences normales de première classe et quatre compétences quest/default ne consommant pas de point de Job — Sand Attack, Stone Fling, Back Slide et Find Stone. Thief évolue en Assassin ou Rogue à partir du Job Lv.40." } },
     { id: "acolyte", name: "Acolyte", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Acolyte class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Acolyte pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
 
     { id: "knight", name: "Knight", tier: "Second Class", group: "second", parentId: "swordman", releaseStatus: "coming-soon", image: "assets/classes/knight.png", description: { en: "Upcoming second class branching from Swordman.", fr: "Seconde classe à venir issue de Swordman." }, notes: { en: "Listed ahead of its planned Global release. Zero-specific skills, stats and job-change information will only be added after verification.", fr: "Répertoriée avant sa sortie prévue sur Global. Les skills, stats et informations de changement de classe spécifiques à Zero ne seront ajoutés qu’après vérification." } },
@@ -4088,8 +4130,35 @@ window.RO_DATA = {
     return rows[id] || null;
   }
 
+  function thiefSkillLevelData(id) {
+    const N = 'None';
+    const rows = {
+      'double-attack': Array.from({length:10},(_,i)=>[
+        i+1,`Activation Chance: ${(i+1)*7}% · HIT Bonus: ${i+1}%`,0,1,N,N,N
+      ]),
+      'steal': Array.from({length:10},(_,i)=>[
+        i+1,`Base success rate: ${8+i*6}%`,10,1,N,'ASPD-based',N
+      ]),
+      'envenom': Array.from({length:10},(_,i)=>[
+        i+1,`Damage +${(i+1)*15} · Poison chance: ${14+i*4}%`,12,2,N,'ASPD-based',N
+      ]),
+      'improve-dodge': Array.from({length:10},(_,i)=>[
+        i+1,`FLEE +${(i+1)*3} · After second job: FLEE +${(i+1)*4}`,0,1,N,N,N
+      ]),
+      'hiding': Array.from({length:10},(_,i)=>[
+        i+1,`Duration: ${(i+1)*30} sec · Additional SP: 1 every ${i+5} sec`,10,1,N,'ASPD-based',N
+      ]),
+      'detoxify': [[1,'Cures Poison',10,9,N,'ASPD-based',N]],
+      'sand-attack': [[1,'ATK 130% · Earth property · Chance to Blind',9,1,N,'ASPD-based',N]],
+      'stone-fling': [[1,'Fixed 50 damage · Ignores DEF · Consumes 1 Stone',2,7,N,'ASPD-based',N]],
+      'back-slide': [[1,'Move backward 5 cells',7,1,N,N,N]],
+      'find-stone': [[1,'Creates 1 Stone · Unusable above 70% carried weight',2,1,'0.5 s',N,N]]
+    };
+    return rows[id] || null;
+  }
+
   function wikiSkillLevelData(id) {
-    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || archerSkillLevelData(id) || merchantSkillLevelData(id) || null;
+    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || archerSkillLevelData(id) || merchantSkillLevelData(id) || thiefSkillLevelData(id) || null;
   }
 
   function swordmanSkillExtraText(sk) {
@@ -4209,6 +4278,30 @@ window.RO_DATA = {
         fr: 'Multiplicateur fixe au Lv.1 ; la cible est également repoussée de 4 cases.'
       },
 
+      // Thief
+      'double-attack': {
+        formula: 'Activation Chance = 7 × Skill Lv.%',
+        formula2: 'On proc: 2 normal Dagger attack hits',
+        en: 'The proc chance rises from 7% at Lv.1 to 70% at Lv.10. The skill also grants HIT +1% per level.',
+        fr: 'La chance d’activation passe de 7 % au Lv.1 à 70 % au Lv.10. La compétence donne aussi HIT +1 % par niveau.'
+      },
+      'envenom': {
+        formula: 'Damage = Normal Physical Damage + (15 × Skill Lv.)',
+        formula2: 'Poison Chance = [10 + (4 × Skill Lv.)]%',
+        en: 'The added damage is flat and is added to the normal physical attack damage. At Lv.10 the bonus is +150 and Poison chance is 50%.',
+        fr: 'Le bonus de dégâts est fixe et s’ajoute aux dégâts physiques normaux. Au Lv.10, le bonus est de +150 et la chance de Poison est de 50 %.'
+      },
+      'sand-attack': {
+        formula: 'Damage (ATK) = 130%',
+        en: 'Deals Earth-property melee physical damage. Blind is a separate status effect.',
+        fr: 'Inflige des dégâts physiques de mêlée Earth. Blind est un effet de statut séparé.'
+      },
+      'stone-fling': {
+        formula: 'Damage = 50 fixed physical damage',
+        en: 'The 50 damage ignores DEF. One Stone is consumed per use.',
+        fr: 'Les 50 dégâts ignorent la DEF. Une Stone est consommée à chaque utilisation.'
+      },
+
       // Merchant
       'axe-mastery': {
         formula: 'Bonus Damage = 3 × Skill Lv.',
@@ -4289,7 +4382,8 @@ window.RO_DATA = {
 
     const catalystBySkill = {
       'stone-curse': '1 Red Gemstone',
-      'safety-wall': '1 Blue Gemstone'
+      'safety-wall': '1 Blue Gemstone',
+      'stone-fling': '1 Stone'
     };
     const catalyst = catalystBySkill[sk.id] || t('none');
     const prereq = sk.prerequisites.length
@@ -4320,7 +4414,9 @@ window.RO_DATA = {
           <div class="infobox-title">${esc(sk.name)}<span class="infobox-subtitle">Skill</span></div>
           ${media}
           <table><tbody>
-            ${infoRow(t('class'),`<a href="#/classes/${sk.classId}">${esc(getClass(sk.classId)?.name||sk.classId)}</a>`)}
+            ${infoRow(t('class'),sk.id==='sword-mastery'
+              ? '<a href="#/classes/swordman">Swordman</a> / <a href="#/classes/thief">Thief</a>'
+              : `<a href="#/classes/${sk.classId}">${esc(getClass(sk.classId)?.name||sk.classId)}</a>`)}
             ${infoRow(t('type'),esc(sk.type))}
             ${infoRow(t('target'),esc(sk.target||t('unknown')))}
             ${infoRow(navLabel('Element','Élément'),esc(sk.element||'Neutral'))}
@@ -4358,7 +4454,7 @@ window.RO_DATA = {
 
           ${hasDetailedLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
-            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://rz.fharr.com/db/skilltree':'https://roz.prontera.info/skills/planner?class=crusader'))}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
+            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://rz.fharr.com/db/skilltree':(sk.classId==='thief'?'https://roz.prontera.info/skills/planner?class=assassin':'https://roz.prontera.info/skills/planner?class=crusader')))}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero extracted skill tree reference</a></li>
             ${sk.classId==='mage' ? '<li><a href="https://ragnaplace.com/en/rozg-en/skill/16/stone-curse" target="_blank" rel="noopener">RagnaPlace — Ragnarok Zero Global fixed / variable / global delay tables</a></li>' : ''}
           </ul></div>` : ''}
@@ -4726,7 +4822,81 @@ window.RO_DATA = {
   }
 
 
-    function classSeeAlso(c) {
+    function thiefDetail() {
+    const c = getClass('thief');
+    const regularIds = ['double-attack','steal','envenom','improve-dodge','hiding','detoxify','sword-mastery'];
+    const freeIds = ['sand-attack','stone-fling','back-slide','find-stone'];
+    const regular = regularIds.map(getSkill).filter(Boolean);
+    const free = freeIds.map(getSkill).filter(Boolean);
+    const classGenders = classGenderList('thief');
+    const spriteBlock = `<div class="class-infobox-sprites">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot('thief',g,false)}</div>`).join('')}</div>`;
+    const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
+    const rows = regular.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+    </tr>`).join('');
+    const freeRows = free.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+      <td>${navLabel('No normal Job skill point','Aucun point de Job normal')}</td>
+    </tr>`).join('');
+
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:'Thief'}])}
+      <article class="article-with-infobox">
+        <div class="article-heading"><h1>${icon('class')}Thief</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+        <aside class="infobox class-infobox">
+          <div class="infobox-title">Thief<span class="infobox-subtitle">${navLabel('First Class','Première classe')}</span></div>
+          ${spriteBlock}
+          <table><tbody>
+            ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
+            ${infoRow(t('status'),navLabel('Available','Disponible'))}
+            ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
+            ${infoRow(navLabel('Max Job Level','Job Level max'),'50')}
+            ${infoRow(navLabel('Skill points','Points de compétence'),'49')}
+            ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/assassin">Assassin</a> / <a href="#/classes/rogue">Rogue</a>')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(t('skills'),String(regular.length + free.length))}
+          </tbody></table>
+          <div class="infobox-footer">${badge(true)}</div>
+        </aside>
+        <div class="article-body">
+          <p class="article-lead">${esc(txt(c.description))}</p>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok Zero: Global data','Données Ragnarok Zero: Global')}</strong><br>${navLabel('Thief uses the Zero skill tree with 11 first-job skills. Sword Mastery is part of the Zero Thief tree, and Find Stone uses the Zero Global 70% weight threshold rather than the 50% value found on older RO pages.','Thief utilise l’arbre Zero avec 11 compétences de première classe. Sword Mastery fait partie de l’arbre Thief de Zero, et Find Stone utilise le seuil de poids Zero Global de 70 % au lieu de la valeur de 50 % présente sur d’anciennes pages RO.')}</div></div>
+
+          <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
+          <p>${navLabel('Thief has a maximum Job Level of 50 and 49 normal skill points. It advances to Assassin or Rogue from Job Level 40.','Thief possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Assassin ou Rogue à partir du Job Level 40.')}</p>
+          <div class="related-list"><a href="#/classes/assassin">Assassin</a> · <a href="#/classes/rogue">Rogue</a></div>
+
+          <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table></div>
+
+          <h3 id="free-skills" style="font-size:21px;margin-top:30px">${navLabel('Free / Quest-default Skills','Compétences gratuites / Quest-default')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th><th style="width:220px">${navLabel('Skill points','Points de compétence')}</th></tr></thead>
+            <tbody>${freeRows}</tbody>
+          </table></div>
+
+          ${classSeeAlso(c)}
+          <h2 id="sources">${navLabel('Sources','Sources')}</h2>
+          <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
+            <li><a href="https://roz.prontera.info/skills/planner?class=assassin" target="_blank" rel="noopener">Prontera.info — Thief/Assassin Skill Planner — Ragnarok Zero Global</a></li>
+            <li><a href="https://rozerodb.com/player-skills/double-attack" target="_blank" rel="noopener">RO Zero Database — Double Attack</a></li>
+            <li><a href="https://rozerodb.com/player-skills/back-slide" target="_blank" rel="noopener">RO Zero Database — Back Slide</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — Zero skill-tree reference</a></li>
+          </ul></div>
+        </div>
+      </article>`;
+  }
+
+
+  function classSeeAlso(c) {
     const skills = DATA.skills.filter(sk=>sk.classId===c.id);
     const skillLinks = skills.length
       ? skills.map(sk=>`<a href="#/skills/${sk.id}">${esc(sk.name)}</a>`).join(' • ')
@@ -4842,6 +5012,7 @@ window.RO_DATA = {
     if (id === 'mage') return mageDetail();
     if (id === 'archer') return archerDetail();
     if (id === 'merchant') return merchantDetail();
+    if (id === 'thief') return thiefDetail();
     const c = getClass(id);
     if (!c) return notFound();
     const skills = DATA.skills.filter(s=>s.classId===id);
