@@ -900,7 +900,7 @@ tbody tr:hover { background: #eef4fb; }
 .source-box ul { margin: 6px 0 0 19px; padding: 0; }
 .source-box li { margin: 3px 0; }
 
-/* Interactive Zero world map */
+/* Interactive world map */
 .world-map-shell {
   margin: 14px 0 20px;
   padding: 10px;
@@ -2767,7 +2767,7 @@ window.RO_DATA = {
       id: "mace-mastery", name: "Mace Mastery", classId: "acolyte", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/65.webp",
       spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "While using a Mace, passively increases physical damage and CRIT. Both bonuses increase with skill level.", fr: "Avec une Mace, augmente passivement les dégâts physiques et le CRIT. Les deux bonus augmentent avec le niveau de compétence." },
-      prerequisites: [], notes: { en: "first-job Acolyte skill: Damage +3 and CRIT +1 per skill level.", fr: "Compétence de première classe Acolyte propre à Zero : dégâts +3 et CRIT +1 par niveau." }, verified: true
+      prerequisites: [], notes: { en: "first-job Acolyte skill: Damage +3 and CRIT +1 per skill level.", fr: "Compétence de première classe Acolyte actuelle : dégâts +3 et CRIT +1 par niveau." }, verified: true
     },
     {
       id: "divine-protection", name: "Divine Protection", classId: "acolyte", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/22.webp",
@@ -2785,13 +2785,13 @@ window.RO_DATA = {
       id: "teleport", name: "Teleport", classId: "acolyte", maxLevel: 2, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/26.webp",
       spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Teleports the caster. Lv.1 sends the caster to a random location on the current map; Lv.2 allows returning to the saved point.", fr: "Téléporte le lanceur. Le Lv.1 l’envoie à un emplacement aléatoire de la map actuelle ; le Lv.2 permet de retourner au point de sauvegarde." },
-      prerequisites: [{ skillId: "ruwach", level: 1, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Ruwach Lv.1.", fr: "Prérequis Zero spécifique à Acolyte : Ruwach Lv.1." }, verified: true
+      prerequisites: [{ skillId: "ruwach", level: 1, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Ruwach Lv.1.", fr: "Prérequis actuel d’Acolyte : Ruwach Lv.1." }, verified: true
     },
     {
       id: "cure", name: "Cure", classId: "acolyte", maxLevel: 1, type: "Active", role: "supportive", target: "Self / Ally", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/35.webp",
       spCost: 15, castTime: "None", castDelay: "0.3 s", cooldown: "0.5 s",
       description: { en: "Cures Silence, Confusion and Blind from the target.", fr: "Soigne Silence, Confusion et Blind sur la cible." },
-      prerequisites: [{ skillId: "heal", level: 2, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Heal Lv.2.", fr: "Prérequis Zero spécifique à Acolyte : Heal Lv.2." }, verified: true
+      prerequisites: [{ skillId: "heal", level: 2, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Heal Lv.2.", fr: "Prérequis actuel d’Acolyte : Heal Lv.2." }, verified: true
     },
     {
       id: "increase-agility", name: "Increase Agility", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Self / Ally", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/29.webp",
@@ -2803,12 +2803,12 @@ window.RO_DATA = {
       id: "blessing", name: "Blessing", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Self / Ally / Enemy", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/34.webp",
       spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Increases STR, INT, DEX and HIT on players. It can cure Curse/Petrification on players; against Demon or Undead monsters it reduces STR, INT and DEX by 50%.", fr: "Augmente STR, INT, DEX et HIT sur les joueurs. Peut soigner Curse/Petrification sur les joueurs ; contre les monstres Demon ou Undead, réduit STR, INT et DEX de 50 %." },
-      prerequisites: [{ skillId: "divine-protection", level: 5, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Divine Protection Lv.5.", fr: "Prérequis Zero spécifique à Acolyte : Divine Protection Lv.5." }, verified: true
+      prerequisites: [{ skillId: "divine-protection", level: 5, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Divine Protection Lv.5.", fr: "Prérequis actuel d’Acolyte : Divine Protection Lv.5." }, verified: true
     },
     {
       id: "demon-bane", name: "Demon Bane", classId: "acolyte", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/23.webp",
       spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
-      description: { en: "Increases physical attack damage against Demon-race and Undead-property enemies. The listed skill-level bonus is +3 per level; Zero also states that the effect increases with character level.", fr: "Augmente les dégâts physiques contre les ennemis de race Demon et de propriété Undead. Le bonus indiqué par niveau est de +3 ; Zero précise aussi que l’effet augmente avec le niveau du personnage." },
+      description: { en: "Increases physical attack damage against Demon-race and Undead-property enemies. The listed skill-level bonus is +3 per level; The current data also states that the effect increases with character level.", fr: "Augmente les dégâts physiques contre les ennemis de race Demon et de propriété Undead. Le bonus indiqué par niveau est de +3 ; La base actuelle précise aussi que l’effet augmente avec le niveau du personnage." },
       prerequisites: [{ skillId: "divine-protection", level: 3, verified: true }], notes: { en: "The exact public coefficient of the additional character-level scaling is not verified here and is not guessed.", fr: "Le coefficient public exact du scaling supplémentaire avec le niveau du personnage n’est pas vérifié ici et n’est pas inventé." }, verified: true
     },
     {
@@ -2839,7 +2839,7 @@ window.RO_DATA = {
       id: "pneuma", name: "Pneuma", classId: "acolyte", maxLevel: 1, type: "Active", role: "supportive", target: "Ground", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/25.webp",
       spCost: 10, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Creates a 3×3 protective area for 10 seconds that blocks ranged physical damage.", fr: "Crée une zone protectrice de 3×3 pendant 10 secondes qui bloque les dégâts physiques à distance." },
-      prerequisites: [{ skillId: "warp-portal", level: 4, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Warp Portal Lv.4.", fr: "Prérequis Zero spécifique à Acolyte : Warp Portal Lv.4." }, verified: true
+      prerequisites: [{ skillId: "warp-portal", level: 4, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Warp Portal Lv.4.", fr: "Prérequis actuel d’Acolyte : Warp Portal Lv.4." }, verified: true
     }
   ],
 
@@ -2851,7 +2851,7 @@ window.RO_DATA = {
     { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer is the ranged physical first class of Ragnarok. It specializes in Bows and Arrows, long-range accuracy, rapid single-target attacks and ranged area control.", fr: "Archer est la première classe physique à distance de Ragnarok. Elle se spécialise dans les arcs et les flèches, la précision à longue portée, les attaques rapides sur cible unique et le contrôle de zone à distance." }, notes: { en: "The current data lists 7 Archer skills: five normal first-job skills and two quest skills, Arrow Crafting and Arrow Repel. Archer advances to Hunter, Bard or Dancer from Job Lv.40.", fr: "La base actuelle liste 7 compétences Archer : cinq compétences normales de première classe et deux compétences de quête, Arrow Crafting et Arrow Repel. Archer évolue en Hunter, Bard ou Dancer à partir du Job Lv.40." } },
     { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant is the economic and cart-focused first class of Ragnarok. It combines NPC trading skills, increased carrying capacity, Axe and one-handed Sword mastery, Pushcart utility and Zeny-powered melee attacks.", fr: "Merchant est la première classe orientée commerce et charrette de Ragnarok. Elle combine les compétences de commerce avec les NPC, une capacité de transport accrue, la maîtrise des haches et épées à une main, l’utilisation du Pushcart et des attaques de mêlée consommant des Zeny." }, notes: { en: "The current data lists 12 Merchant skills: eight normal first-job skills and four Free Skills — Cart Revolution, Change Cart, Crazy Uproar and Cart Boost. Merchant advances to Blacksmith or Alchemist from Job Lv.40.", fr: "La base actuelle liste 12 compétences Merchant : huit compétences normales de première classe et quatre Free Skills — Cart Revolution, Change Cart, Crazy Uproar et Cart Boost. Merchant évolue en Blacksmith ou Alchemist à partir du Job Lv.40." } },
     { id: "thief", name: "Thief", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Thief is the agile melee first class of Ragnarok. It focuses on Daggers, evasion, stealing, poison attacks and mobility while also gaining Sword Mastery on the current skill tree.", fr: "Thief est la première classe de mêlée agile de Ragnarok. Elle se concentre sur les dagues, l’esquive, le vol, les attaques Poison et la mobilité, tout en disposant aussi de Sword Mastery dans l’arbre actuel." }, notes: { en: "The current data lists 11 Thief skills: seven normal first-job skills and four no-Job-point quest/default skills — Sand Attack, Stone Fling, Back Slide and Find Stone. Thief advances to Assassin or Rogue from Job Lv.40.", fr: "La base actuelle liste 11 compétences Thief : sept compétences normales de première classe et quatre compétences quest/default ne consommant pas de point de Job — Sand Attack, Stone Fling, Back Slide et Find Stone. Thief évolue en Assassin ou Rogue à partir du Job Lv.40." } },
-    { id: "acolyte", name: "Acolyte", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Acolyte is the support and Holy-magic first class of Ragnarok. It heals and buffs allies, debuffs enemies, protects against ranged attacks, uses teleportation magic and gains Mace Mastery on the current first-job tree.", fr: "Acolyte est la première classe de soutien et de magie Holy de Ragnarok. Elle soigne et renforce les alliés, affaiblit les ennemis, protège contre les attaques à distance, utilise la téléportation et dispose de Mace Mastery dans l’arbre de première classe Zero." }, notes: { en: "The current data lists 16 Acolyte skills, including Mace Mastery as a normal first-job skill and Holy Light as a free / quest-default skill. Acolyte advances to Priest or Monk from Job Lv.40.", fr: "La base actuelle liste 16 compétences Acolyte, dont Mace Mastery comme compétence normale de première classe et Holy Light comme Free Skill / quest-default. Acolyte évolue en Priest ou Monk à partir du Job Lv.40." } },
+    { id: "acolyte", name: "Acolyte", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Acolyte is the support and Holy-magic first class of Ragnarok. It heals and buffs allies, debuffs enemies, protects against ranged attacks, uses teleportation magic and gains Mace Mastery on the current first-job tree.", fr: "Acolyte est la première classe de soutien et de magie Holy de Ragnarok. Elle soigne et renforce les alliés, affaiblit les ennemis, protège contre les attaques à distance, utilise la téléportation et dispose de Mace Mastery dans l’arbre de première classe actuel." }, notes: { en: "The current data lists 16 Acolyte skills, including Mace Mastery as a normal first-job skill and Holy Light as a free / quest-default skill. Acolyte advances to Priest or Monk from Job Lv.40.", fr: "La base actuelle liste 16 compétences Acolyte, dont Mace Mastery comme compétence normale de première classe et Holy Light comme Free Skill / quest-default. Acolyte évolue en Priest ou Monk à partir du Job Lv.40." } },
 
     { id: "knight", name: "Knight", tier: "Second Class", group: "second", parentId: "swordman", releaseStatus: "coming-soon", image: "assets/classes/knight.png", description: { en: "Upcoming second class branching from Swordman.", fr: "Seconde classe à venir issue de Swordman." }, notes: { en: "Listed ahead of its planned Global release. version-specific skills, stats and job-change information will only be added after verification.", fr: "Répertoriée avant sa sortie prévue sur Global. Les skills, stats et informations de changement de classe propres à cette version ne seront ajoutés qu’après vérification." } },
     { id: "crusader", name: "Crusader", tier: "Second Class", group: "second", parentId: "swordman", releaseStatus: "coming-soon", image: "assets/classes/crusader.png", description: { en: "Upcoming second class branching from Swordman.", fr: "Seconde classe à venir issue de Swordman." }, notes: { en: "Listed ahead of its planned Global release. gameplay data for this version remains pending verification.", fr: "Répertoriée avant sa sortie prévue sur Global. Les données de gameplay propres à cette version restent en attente de vérification." } },
@@ -2948,7 +2948,7 @@ window.RO_DATA = {
       article: 'Article', discussion: 'Discussion', search: 'Search', searchPlaceholder: 'Search Ragnarok Wiki',
       subtitle: 'English / Français', footer: 'Demo data are not verified game data.', sidebarNote: 'Community reference project for Ragnarok.',
       fromWiki: 'From Ragnarok Wiki', welcome: 'Welcome to Ragnarok Wiki',
-      welcomeText: 'A bilingual community reference for Ragnarok Online Zero. Game entities keep their English names; the interface and explanatory text can switch between English and French.',
+      welcomeText: 'A bilingual community reference for Ragnarok Online. Game entities keep their English names; the interface and explanatory text can switch between English and French.',
       prototype: 'Prototype data',
       wikiStats: 'Wiki statistics',
       startHere: 'Getting Started', startDesc: 'New player information and essential references.',
@@ -2973,7 +2973,7 @@ window.RO_DATA = {
       coordinates: 'Coordinates', services: 'Services', relatedQuests: 'Related quests',
       contents: 'Contents', overview: 'Overview',
       levelingTitle: 'Leveling Finder', levelingText: 'Compare monsters around your level once verified Ragnarok EXP and monster levels are loaded.', yourLevel: 'Your level', expMultiplier: 'EXP multiplier', suggested: 'Suggested monsters',
-      buildTitle: 'Build Planner', buildText: 'Allocate STR, AGI, VIT, INT, DEX and LUK. Official Zero stat-cost formulas are not guessed.', pointsUsed: 'Points used', reset: 'Reset',
+      buildTitle: 'Build Planner', buildText: 'Allocate STR, AGI, VIT, INT, DEX and LUK. Official stat-cost formulas are not guessed.', pointsUsed: 'Points used', reset: 'Reset',
       noVerifiedLevels: 'No verified monster levels are loaded yet. Import real Ragnarok data and this tool will immediately become useful.',
       back: 'Back to Main Page', notFound: 'Page not found', notFoundText: 'The requested page does not exist in this prototype.',
       imagePlaceholder: 'Image placeholder', sourceStatus: 'Data status', pageType: 'Page type',
@@ -2992,7 +2992,7 @@ window.RO_DATA = {
       article: 'Article', discussion: 'Discussion', search: 'Rechercher', searchPlaceholder: 'Rechercher dans Ragnarok Wiki',
       subtitle: 'English / Français', footer: 'Les données de démo ne sont pas des données de jeu vérifiées.', sidebarNote: 'Projet de référence communautaire pour Ragnarok.',
       fromWiki: 'De Ragnarok Wiki', welcome: 'Bienvenue sur Ragnarok Wiki',
-      welcomeText: "Une référence communautaire bilingue pour Ragnarok Online Zero. Les noms des éléments du jeu restent en anglais ; l'interface et les explications peuvent passer entre anglais et français.",
+      welcomeText: "Une référence communautaire bilingue pour Ragnarok Online. Les noms des éléments du jeu restent en anglais ; l'interface et les explications peuvent passer entre anglais et français.",
       prototype: 'Données de prototype',
       wikiStats: 'Statistiques du wiki',
       startHere: 'Bien débuter', startDesc: 'Informations pour nouveaux joueurs et références essentielles.',
@@ -3017,7 +3017,7 @@ window.RO_DATA = {
       coordinates: 'Coordonnées', services: 'Services', relatedQuests: 'Quêtes liées',
       contents: 'Sommaire', overview: 'Présentation',
       levelingTitle: 'Leveling Finder', levelingText: 'Compare les monstres autour de ton niveau dès que les niveaux et EXP Ragnarok vérifiés sont chargés.', yourLevel: 'Ton niveau', expMultiplier: 'Multiplicateur EXP', suggested: 'Monstres suggérés',
-      buildTitle: 'Build Planner', buildText: "Répartis STR, AGI, VIT, INT, DEX et LUK. Les formules officielles Zero ne sont pas inventées.", pointsUsed: 'Points utilisés', reset: 'Réinitialiser',
+      buildTitle: 'Build Planner', buildText: "Répartis STR, AGI, VIT, INT, DEX et LUK. Les formules officielles ne sont pas inventées.", pointsUsed: 'Points utilisés', reset: 'Réinitialiser',
       noVerifiedLevels: "Aucun niveau de monstre vérifié n'est encore chargé. Importe les vraies données Ragnarok et cet outil deviendra immédiatement utile.",
       back: "Retour à l'accueil", notFound: 'Page introuvable', notFoundText: "La page demandée n'existe pas dans ce prototype.",
       imagePlaceholder: "Emplacement d'image", sourceStatus: 'Statut des données', pageType: 'Type de page',
@@ -3374,7 +3374,7 @@ window.RO_DATA = {
     return `${breadcrumbs([{label:t('classes')}])}
       <div class="article-heading"><div><span class="eyebrow">${navLabel('Character','Personnage')}</span><h1>${icon('class')}${t('classes')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div></div>
       <p class="article-lead">${navLabel('Click anywhere on a class card — the sprite, background or name — to open its dedicated page. Second classes are already shown as upcoming so the tree is ready for the next update.','Clique n’importe où sur la case d’une classe — sprite, fond ou nom — pour ouvrir sa page dédiée. Les secondes classes sont déjà affichées comme contenu à venir afin que l’arbre soit prêt pour la prochaine mise à jour.')}</p>
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero-only data policy.','Politique de données actuelles uniquement.')}</strong> ${navLabel('The upcoming class pages do not import Classic/Pre-Renewal stats, skills or formulas. They are structural pages until version-specific information is verified.','Les pages des classes à venir n’importent aucune stat, compétence ou formule Classic/Pre-Renewal. Ce sont des pages structurelles tant que les informations propres à Zero ne sont pas vérifiées.')}</div></div>
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Verified data policy.','Politique de données actuelles uniquement.')}</strong> ${navLabel('The upcoming class pages do not import Classic/Pre-Renewal stats, skills or formulas. They are structural pages until version-specific information is verified.','Les pages des classes à venir n’importent aucune stat, compétence ou formule Classic/Pre-Renewal. Ce sont des pages structurelles tant que les informations propres à Zero ne sont pas vérifiées.')}</div></div>
       ${classProgressionTree(false)}
       <h2>${navLabel('Available now','Disponibles actuellement')}</h2>
       <div class="class-directory">${live.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}">${icon('class')}<span><strong>${esc(c.name)}</strong><small>${esc(c.tier)}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
@@ -3401,12 +3401,12 @@ window.RO_DATA = {
   function introductionPage(topic) {
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
-        'Ragnarok is the worldwide service of Ragnarok, officially launched on August 18, 2026. It is a PC MMORPG set in Midgard and keeps the familiar point-and-click style of Ragnarok while adding systems specific to the Global Zero service.',
-        'Ragnarok est le service mondial de Ragnarok, lancé officiellement le 18 août 2026. C’est un MMORPG PC se déroulant à Midgard, qui conserve le gameplay point-and-click caractéristique de Ragnarok tout en ajoutant des systèmes propres au service Global de Zero.'
+        'Ragnarok is the worldwide service of Ragnarok, officially launched on August 18, 2026. It is a PC MMORPG set in Midgard and keeps the familiar point-and-click style of Ragnarok while adding systems specific to the Global service.',
+        'Ragnarok est le service mondial de Ragnarok, lancé officiellement le 18 août 2026. C’est un MMORPG PC se déroulant à Midgard, qui conserve le gameplay point-and-click caractéristique de Ragnarok tout en ajoutant des systèmes propres au service Global.'
       )}</p>
       ${toc([
         {id:'what-is-zero',label:navLabel('What is Ragnarok?','Qu’est-ce que Ragnarok ?')},
-        {id:'zero-systems',label:navLabel('Notable Zero systems','Systèmes Zero notables')},
+        {id:'zero-systems',label:navLabel('Notable systems','Systèmes notables')},
         {id:'about-wiki',label:navLabel('About this wiki','À propos de ce wiki')}
       ])}
 
@@ -3420,7 +3420,7 @@ window.RO_DATA = {
         'Ragnarok modifie et étend de nombreux systèmes connus de Ragnarok ; ce wiki traite donc le service Global comme un ruleset propre au lieu de réutiliser automatiquement les données Classic, Pre-Renewal ou Renewal.'
       )}</p>
 
-      <h2 id="zero-systems">${navLabel('Notable Zero systems','Systèmes Zero notables')}</h2>
+      <h2 id="zero-systems">${navLabel('Notable systems','Systèmes notables')}</h2>
       <div class="wiki-feature-list">
         <div><strong>${miniIcon('map')}${navLabel('PvE & PvP Channels','Canaux PvE et PvP')}</strong><p>${navLabel(
           'Maps use multiple PvE channels to spread players across copies of the same field. Hidden World also provides dedicated PvP channels with their own access rules and bonuses.',
@@ -3443,8 +3443,8 @@ window.RO_DATA = {
           'Global possède une quête principale scénarisée avec des chapitres débloqués selon le niveau, des récompenses d’expérience et une progression étendue au fil des patchs.'
         )}</p></div>
         <div><strong>${miniIcon('item')}${navLabel('Equipment Affixes / Options','Affixes / options d’équipement')}</strong><p>${navLabel(
-          'Dropped equipment can come with random affixes or options. These additional stats are a major part of Zero gearing and make two copies of the same weapon or armor potentially very different.',
-          'Les équipements obtenus peuvent posséder des affixes ou options aléatoires. Ces statistiques supplémentaires sont centrales dans l’équipement Zero et peuvent rendre deux exemplaires d’une même arme ou armure très différents.'
+          'Dropped equipment can come with random affixes or options. These additional stats are a major part of gearing and make two copies of the same weapon or armor potentially very different.',
+          'Les équipements obtenus peuvent posséder des affixes ou options aléatoires. Ces statistiques supplémentaires sont centrales dans l’équipement et peuvent rendre deux exemplaires d’une même arme ou armure très différents.'
         )}</p></div>
         <div><strong>${miniIcon('monster')}MVP Raid</strong><p>${navLabel(
           'Party-oriented content built around fighting MVP monsters for rewards and loot.',
@@ -3567,7 +3567,7 @@ window.RO_DATA = {
 
     const fixedShortcuts = [
       ['Enter', navLabel('Activate the chat input; press Enter again to send.','Active la saisie du chat ; appuie de nouveau sur Entrée pour envoyer.')],
-      ['1 – 9', navLabel('Use the corresponding slots of the first skill bar in the classic Zero mapping. These bindings can be changed.','Utilise les slots correspondants de la première barre de skills dans le mapping classique de Zero. Ces touches peuvent être modifiées.')],
+      ['1 – 9', navLabel('Use the corresponding slots of the first skill bar in the classic mapping. These bindings can be changed.','Utilise les slots correspondants de la première barre de skills dans le mapping classique. Ces touches peuvent être modifiées.')],
       ['F10', navLabel('Resize the chat window.','Redimensionne la fenêtre de chat.')],
       ['F11', navLabel('Close the open interface windows, leaving the basic information and chat windows.','Ferme les fenêtres d’interface ouvertes en laissant les informations de base et le chat.')],
       ['F12', navLabel('Open / close the skill hotbar.','Ouvre / ferme la barre de raccourcis des skills.')],
@@ -3637,9 +3637,9 @@ window.RO_DATA = {
       ${toc([
         {id:'mouse',label:navLabel('Mouse controls','Contrôles souris')},
         {id:'keys',label:navLabel('Confirmed keys','Touches confirmées')},
-        {id:'legacy',label:navLabel('Legacy Zero combinations','Combinaisons Zero classiques')},
+        {id:'legacy',label:navLabel('Legacy combinations','Combinaisons classiques')},
         {id:'commands-global',label:navLabel('Current Global commands','Commandes Global actuelles')},
-        {id:'commands-zero',label:navLabel('Other confirmed Zero commands','Autres commandes Zero confirmées')}
+        {id:'commands-zero',label:navLabel('Other confirmed commands','Autres commandes confirmées')}
       ])}
 
       <h2 id="mouse">${navLabel('Mouse controls','Contrôles souris')}</h2>
@@ -3651,7 +3651,7 @@ window.RO_DATA = {
       <h2 id="keys">${navLabel('Confirmed keys','Touches confirmées')}</h2>
       ${listRows(fixedShortcuts)}
 
-      <h2 id="legacy">${navLabel('Legacy Zero combinations','Combinaisons Zero classiques')}</h2>
+      <h2 id="legacy">${navLabel('Legacy combinations','Combinaisons classiques')}</h2>
       <p>${navLabel(
         'These combinations are documented by the Ragnarok Tip Box. On Global, enable the legacy / ALT shortcut behavior in Game Settings if you want to use the classic mapping.',
         'Ces combinaisons sont documentées par la Tip Box de Ragnarok. Sur Global, active le comportement classique / ALT dans Game Settings si tu veux utiliser ce mapping.'
@@ -3661,7 +3661,7 @@ window.RO_DATA = {
       <h2 id="commands-global">${navLabel('Current Global commands','Commandes Global actuelles')}</h2>
       ${listRows(globalCommands)}
 
-      <h2 id="commands-zero">${navLabel('Other confirmed Zero commands','Autres commandes Zero confirmées')}</h2>
+      <h2 id="commands-zero">${navLabel('Other confirmed commands','Autres commandes confirmées')}</h2>
       ${listRows(zeroCommands)}
 
       <div class="notice info"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
@@ -3985,8 +3985,8 @@ window.RO_DATA = {
         'L’EXP en Party est un système encore ajusté en direct sur Global. Gravity a retiré l’ancien bonus de Party EXP lors du patch du 20 août, puis a annoncé son retour sous une forme révisée pour la maintenance du 27 août après les retours des joueurs.'
       )}</p>
       <div class="wiki-callout">${navLabel(
-        'Because the operator is still tuning this system, this wiki does not copy iRO’s fixed party table or hard-code an old Zero multiplier. The exact live bonus/range should be updated only from a confirmed Global patch or direct in-game verification.',
-        'Comme l’opérateur ajuste encore ce système, ce wiki ne copie pas le tableau fixe d’iRO et ne fige pas un ancien multiplicateur Zero. Le bonus et la portée exacts doivent être mis à jour uniquement à partir d’un patch Global confirmé ou d’une vérification directe en jeu.'
+        'Because the operator is still tuning this system, this wiki does not copy iRO’s fixed party table or hard-code an old multiplier. The exact live bonus/range should be updated only from a confirmed Global patch or direct in-game verification.',
+        'Comme l’opérateur ajuste encore ce système, ce wiki ne copie pas le tableau fixe d’iRO et ne fige pas un ancien multiplicateur. Le bonus et la portée exacts doivent être mis à jour uniquement à partir d’un patch Global confirmé ou d’une vérification directe en jeu.'
       )}</div>
       <ul>
         <li>${navLabel('Party EXP sharing must be enabled by the Party leader.','Le partage d’EXP doit être activé par le chef de Party.')}</li>
@@ -4282,7 +4282,7 @@ window.RO_DATA = {
       )}</div></div>
       <ul>
         <li><strong>ASPD:</strong> ${navLabel('AGI and DEX definitely matter, but class, weapon, shield, skills and potions are also involved. The full Global formula is still unconfirmed.','AGI et DEX comptent bien, mais la classe, l’arme, le bouclier, les skills et potions interviennent aussi. La formule Global complète reste non confirmée.')}</li>
-        <li><strong>Variable Cast Time:</strong> ${navLabel('DEX and INT reduce it, but this wiki does not yet publish an exact instant-cast threshold as a confirmed Zero rule.','DEX et INT la réduisent, mais ce wiki ne publie pas encore de seuil exact d’instant cast comme règle Zero confirmée.')}</li>
+        <li><strong>Variable Cast Time:</strong> ${navLabel('DEX and INT reduce it, but this wiki does not yet publish an exact instant-cast threshold as a confirmed rule.','DEX et INT la réduisent, mais ce wiki ne publie pas encore de seuil exact d’instant cast comme règle confirmée.')}</li>
         <li><strong>Max HP / Max SP:</strong> ${navLabel('VIT and INT scaling is understood, but the underlying Base HP/SP curves have not yet been measured for every current first class.','La progression via VIT et INT est comprise, mais les courbes de Base HP/SP n’ont pas encore été mesurées pour toutes les premières classes actuelles.')}</li>
         <li><strong>Natural regeneration:</strong> ${navLabel('HP/SP regeneration formulas are still reported with conflicting implementations and remain outside the verified table above.','Les formules de régénération HP/SP sont encore rapportées avec des implémentations contradictoires et restent en dehors du tableau vérifié ci-dessus.')}</li>
       </ul>
@@ -4400,7 +4400,7 @@ window.RO_DATA = {
       <div class="table-wrap"><table class="glossary-table"><thead><tr><th>${navLabel('Term','Terme')}</th><th>${navLabel('Meaning','Signification')}</th></tr></thead><tbody>
         ${rows.map(([term,meaning],i)=>{const letter=term[0].toUpperCase(); const prev=i?rows[i-1][0][0].toUpperCase():''; return `<tr${letter!==prev?` id="letter-${letter}"`:''}><th>${esc(term)}</th><td>${meaning}</td></tr>`}).join('')}
       </tbody></table></div>
-      <p class="muted-note">${navLabel('This glossary will grow as the wiki documents more verified Zero systems.','Ce glossaire s’agrandira à mesure que le wiki documentera davantage de systèmes Zero vérifiés.')}</p>
+      <p class="muted-note">${navLabel('This glossary will grow as the wiki documents more verified systems.','Ce glossaire s’agrandira à mesure que le wiki documentera davantage de systèmes vérifiés.')}</p>
       ${officialSources([
         ['Official Status guide','https://roz.mygnjoy.com/en/intro/guide/2'],
         ['Official Cards guide','https://roz.mygnjoy.com/en/intro/guide/7'],
