@@ -5081,7 +5081,7 @@ window.RO_DATA = {
       }
 
       const slotWidth = tiers.length >= 4 ? 245 : 285;
-      const slot4Elements = ['Neutral','Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
+      const slot4Elements = ['Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
       output.innerHTML=`<div style="width:100%;overflow-x:auto;padding:4px 0 12px">
         <div style="display:grid;grid-template-columns:repeat(${tiers.length},minmax(${slotWidth}px,1fr));gap:14px;min-width:${tiers.length*slotWidth}px;align-items:start">
           ${tiers.map(tier=>{
