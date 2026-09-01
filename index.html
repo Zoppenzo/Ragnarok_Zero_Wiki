@@ -4830,17 +4830,50 @@ window.RO_DATA = {
 
   function monsterRacesPage(topic) {
     const races = [
-      ['✨','Angel',navLabel('A relatively rare monster race; many Angel monsters are bosses.','Race de monstres relativement rare ; beaucoup de monstres Angel sont des boss.')],
-      ['🐾','Brute',navLabel('Mostly animals or monsters with clear animal-like traits. Also called Animal in some translations.','Principalement des animaux ou des monstres possédant des caractéristiques animales marquées. Aussi appelée Animal dans certaines traductions.')],
-      ['👤','Demi-Human',navLabel('Humanlike monsters or creatures with humanlike characteristics. Demi-Human modifiers generally also affect Human players.','Monstres d’apparence humaine ou possédant des caractéristiques humaines. Les modificateurs Demi-Human affectent généralement aussi les joueurs Human.')],
-      ['👹','Demon',navLabel('A monster race also referred to as Devil in some terminology.','Race de monstres également appelée Devil dans certaines terminologies.')],
-      ['🐉','Dragon',navLabel('The monster race used for dragons.','Race de monstres utilisée pour les dragons.')],
-      ['🐟','Fish',navLabel('The monster race used for fish; many Fish monsters are Water element.','Race de monstres utilisée pour les poissons ; beaucoup de monstres Fish sont de l’élément Water.')],
-      ['⚙️','Formless',navLabel('A catch-all race for monsters that do not fit the other races, including many machines, robots and animated objects.','Race regroupant les monstres qui ne rentrent pas dans les autres catégories, notamment de nombreuses machines, robots et objets animés.')],
-      ['🪲','Insect',navLabel('The monster race used for insects.','Race de monstres utilisée pour les insectes.')],
-      ['🌿','Plant',navLabel('The monster race used for plants.','Race de monstres utilisée pour les plantes.')],
-      ['🧑','Player (Human)',navLabel('The playable Human race. It shares race modifiers with Demi-Human, although not every game system treats both categories identically.','Race des personnages Human jouables. Elle partage les modificateurs de race avec Demi-Human, même si tous les systèmes du jeu ne traitent pas les deux catégories de façon identique.')],
-      ['☠️','Undead',navLabel('A monster race associated with the dead. Undead race is separate from Undead element, even though the two are often paired.','Race de monstres associée aux morts-vivants. La race Undead est distincte de l’élément Undead, même si les deux sont souvent associés.')]
+      ['✨','Angel',navLabel(
+        'A relatively rare monster race; many Angel monsters use Boss Protocol.',
+        'Race de monstres relativement rare ; beaucoup de monstres Angel utilisent le protocole Boss.'
+      )],
+      ['🐾','Brute',navLabel(
+        'Mostly animals or monsters with clear animal-like traits. This race is also called Animal in some translations.',
+        'Principalement des animaux ou des monstres possédant des caractéristiques animales marquées. Cette race est aussi appelée Animal dans certaines traductions.'
+      )],
+      ['👤','Demi-Human',navLabel(
+        'Humanlike monsters or creatures with humanlike characteristics. Demi-Human modifiers generally also affect the Human Player race.<br><strong>Cards:</strong> card effects that target Demi-Human also apply to Human players.',
+        'Monstres d’apparence humaine ou possédant des caractéristiques humaines. Les modificateurs Demi-Human affectent généralement aussi la race Player (Human).<br><strong>Cartes :</strong> les effets de cartes qui ciblent Demi-Human s’appliquent aussi aux joueurs Human.'
+      )],
+      ['👹','Demon',navLabel(
+        'A monster race also called Devil in some terminology.<br><strong>Special:</strong> Demon monsters ignore Hiding-related skills, including Hiding, Cloaking, Stalk and Stealth, so they can detect characters using them. Blessing cast on a Demon lowers its FLEE and HIT.',
+        'Race de monstres aussi appelée Devil dans certaines terminologies.<br><strong>Particularité :</strong> les monstres Demon ignorent les compétences liées à la dissimulation, notamment Hiding, Cloaking, Stalk et Stealth : ils peuvent donc détecter les personnages qui les utilisent. Blessing lancé sur un Demon réduit son FLEE et son HIT.'
+      )],
+      ['🐉','Dragon',navLabel(
+        'The monster race used for dragons.',
+        'Race de monstres utilisée pour les dragons.'
+      )],
+      ['🐟','Fish',navLabel(
+        'The monster race used for fish. A large proportion of Fish monsters are Water element, but Race and Element remain separate attributes.',
+        'Race de monstres utilisée pour les poissons. Une grande partie des monstres Fish sont de l’élément Water, mais la Race et l’Élément restent deux caractéristiques distinctes.'
+      )],
+      ['⚙️','Formless',navLabel(
+        'A catch-all race for monsters that do not fit the other races, including many machines, robots and animated objects. In some in-game terminology it is called Neutral Monster; this must not be confused with the Neutral element.',
+        'Race regroupant les monstres qui ne rentrent pas dans les autres catégories, notamment de nombreuses machines, robots et objets animés. Dans certaines terminologies du jeu, elle est appelée Neutral Monster ; il ne faut pas la confondre avec l’élément Neutral.'
+      )],
+      ['🪲','Insect',navLabel(
+        'The monster race used for insects.<br><strong>Special:</strong> like Demon monsters, Insect monsters ignore Hiding-related skills, including Hiding, Cloaking, Stalk and Stealth, so they can detect characters using them.',
+        'Race de monstres utilisée pour les insectes.<br><strong>Particularité :</strong> comme les Demon, les monstres Insect ignorent les compétences liées à la dissimulation, notamment Hiding, Cloaking, Stalk et Stealth : ils peuvent donc détecter les personnages qui les utilisent.'
+      )],
+      ['🌿','Plant',navLabel(
+        'A monster race used for Plant-type monsters.',
+        'Race de monstres utilisée pour les monstres de type Plant.'
+      )],
+      ['🧑','Player (Human)',navLabel(
+        'The playable Human race. Human shares modifiers with the Demi-Human monster race, although some game systems can distinguish Player from Demi-Human.<br><strong>Cards:</strong> Demi-Human card effects also apply to Human players.',
+        'Race Human des personnages jouables. Human partage ses modificateurs avec la race de monstres Demi-Human, même si certains systèmes du jeu peuvent distinguer Player de Demi-Human.<br><strong>Cartes :</strong> les effets de cartes Demi-Human s’appliquent aussi aux joueurs Human.'
+      )],
+      ['☠️','Undead',navLabel(
+        'A monster race associated with the dead.<br><strong>Immunities:</strong> Undead-race monsters are immune to Frozen and Stone Curse.<br><strong>Important:</strong> Undead Race is separate from Undead Element. The two are often paired, and Undead-race monsters are also commonly paired with Shadow element; their frequent weakness to Holy or Fire therefore comes from their element, not from the race by itself.',
+        'Race de monstres associée aux morts-vivants.<br><strong>Immunités :</strong> les monstres de race Undead sont immunisés à Frozen et Stone Curse.<br><strong>Important :</strong> la race Undead est distincte de l’élément Undead. Les deux sont souvent associés, et les monstres de race Undead sont aussi fréquemment de l’élément Shadow ; leur faiblesse fréquente à Holy ou Fire vient donc de leur élément, pas de la race elle-même.'
+      )]
     ];
 
     return `${generalPageHeader(topic)}
