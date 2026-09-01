@@ -3601,7 +3601,7 @@ window.RO_DATA = {
       <div class="class-tree-first-row">${firstClasses.map(id=>classTreeNode(id,compact)).join('')}</div>
       <div class="class-tree-tier-title second-tier">${navLabel('2nd Class — coming soon','2e classe — bientôt disponible')}</div>
       <div class="class-tree-second-grid">${branches.map(([parent,children])=>`<div class="class-tree-branch" data-parent="${parent}"><div class="class-tree-branch-line" aria-hidden="true"></div><div class="class-tree-branch-children">${children.map(id=>classTreeNode(id,true)).join('')}</div></div>`).join('')}</div>
-      <div class="class-tree-caption">${navLabel('Class sprites use the iRO Wiki Classic job images supplied for this project. Male and female sprites are shown for second classes when both variants exist; Bard and Dancer keep their original gender-specific sprites. The entire class card is clickable.','Les sprites de classes utilisent les images de jobs iRO Wiki Classic fournies pour ce projet. Les variantes Homme et Femme sont affichées pour les secondes classes lorsqu’elles existent ; Bard et Dancer conservent leur sprite propre à leur genre. Toute la case de la classe est cliquable.')}</div>
+      <div class="class-tree-caption">${navLabel('Male and female sprites are shown for second classes when both variants exist; Bard and Dancer keep their original gender-specific sprites. The entire class card is clickable.','Les variantes Homme et Femme sont affichées pour les secondes classes lorsqu’elles existent ; Bard et Dancer conservent leur sprite propre à leur genre. Toute la case de la classe est cliquable.')}</div>
     </section>`;
   }
 
@@ -3640,7 +3640,7 @@ window.RO_DATA = {
       <section class="classic-welcome">
         <h1>${t('welcome')}</h1>
         <p>${t('welcomeText')}</p>
-        <div class="zero-scope-note"><strong>${navLabel('Global scope — August 31, 2026:','Périmètre Global — 31 août 2026 :')}</strong> ${navLabel('live content remains separated from announced content. Second classes are visible in the class tree because their release is imminent, but their gameplay pages remain empty of Classic or Pre-Renewal statistics.','le contenu déjà disponible reste séparé du contenu annoncé. Les secondes classes sont visibles dans l’arbre car leur sortie est imminente, mais leurs pages de gameplay restent dépourvues de statistiques Classic ou Pre-Renewal.')}</div>
+        <div class="zero-scope-note"><strong>${navLabel('Global scope — August 31, 2026:','Périmètre Global — 31 août 2026 :')}</strong> ${navLabel('live content remains separated from announced content. Second classes are visible in the class tree because their release is imminent, but their gameplay pages remain empty until their Global release.','le contenu déjà disponible reste séparé du contenu annoncé. Les secondes classes sont visibles dans l’arbre car leur sortie est imminente, mais leurs pages de gameplay restent vides jusqu’à leur sortie sur Global.')}</div>
       </section>
       <div class="classic-main-columns">
         <section class="classic-topic-box">
@@ -3720,8 +3720,8 @@ window.RO_DATA = {
           'Les maps utilisent plusieurs canaux PvE afin de répartir les joueurs sur différentes copies d’une même zone. Le Hidden World propose aussi des canaux PvP dédiés avec leurs propres règles d’accès et bonus.'
         )}</p></div>
         <div><strong>${miniIcon('class')}${navLabel('Rebalanced Classes','Classes rééquilibrées')}</strong><p>${navLabel(
-          'Classes and skills are rebalanced for the current server. Skill trees, prerequisites, damage values, cast times and even which skills belong to a first job can differ from other Ragnarok versions.',
-          'Les classes et compétences sont rééquilibrées pour le serveur actuel. Les arbres de skills, prérequis, dégâts, temps de cast et même les compétences appartenant à une première classe peuvent différer des autres versions de Ragnarok.'
+          'Classes and skills are rebalanced for the current server, with their own skill trees, prerequisites, damage values and cast times.',
+          'Les classes et compétences sont rééquilibrées pour le serveur actuel, avec leurs propres arbres de skills, prérequis, dégâts et temps de cast.'
         )}</p></div>
         <div><strong>${miniIcon('tools')}Auto-Hunt</strong><p>${navLabel(
           'A built-in hunting system that can automate targeting, skills, movement, pickups and other farming behavior according to the player settings.',
@@ -4077,9 +4077,7 @@ window.RO_DATA = {
         ['Lymd — Global Guide','https://sites.google.com/view/rozeroguide'],
         ['MidgardHub — Complete New Player Guide','https://midgardhub.com/guides/new-player']
       ])}
-      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
-        <li><a href="https://irowiki.org/wiki/Levels" target="_blank" rel="noopener">iRO Wiki — Levels</a> — ${navLabel('used only as a model for article organization; no iRO level caps, formulas or progression values were imported.','utilisé uniquement comme modèle d’organisation de l’article ; aucun plafond, formule ou chiffre de progression iRO n’a été importé.')}</li>
-      </ul></div>`;
+      `;
   }
 
   function experiencePage(topic) {
@@ -4318,9 +4316,7 @@ window.RO_DATA = {
         ['MidgardHub — Hidden World / PvP Maps','https://midgardhub.com/guides/pvp-maps'],
         ['Community Wiki — current leveling guide','https://ragnarokzero.wiki/fr/guides/leveling/']
       ])}
-      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
-        <li><a href="https://irowiki.org/wiki/Experience" target="_blank" rel="noopener">iRO Wiki — Experience</a> — ${navLabel('used only for the article structure (types of EXP, mechanics, party, modifiers); none of its Renewal percentages or tables were imported.','utilisé uniquement pour la structure de l’article (types d’EXP, mécaniques, Party, modificateurs) ; aucun pourcentage ni tableau Renewal n’a été importé.')}</li>
-      </ul></div>`;
+      `;
   }
 
   function statsPage(topic) {
@@ -4574,12 +4570,7 @@ window.RO_DATA = {
         ['Prontera.info — formulas','https://roz.prontera.info/mechanics'],
         ['Global Guide — progression & stat roles','https://roz-global.info/06-progression.html']
       ])}
-      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
-        <li><a href="https://irowiki.org/wiki/Stats" target="_blank" rel="noopener">iRO Wiki — Stats</a> — ${navLabel(
-          'used only as an article-organization reference (primary stats followed by derived stats). The gameplay formulas on this page come from sources for this version instead.',
-          'utilisé uniquement comme référence d’organisation de l’article (statistiques principales puis statistiques dérivées). Les formules de gameplay de cette page proviennent de sources propres à cette version.'
-        )}</li>
-      </ul></div>`;
+      `;
   }
 
   function faqPage(topic) {
@@ -5793,10 +5784,8 @@ window.RO_DATA = {
         </tr></thead>
         <tbody>${resources.map(([type,name,url]) => `<tr><td>${esc(type)}</td><th>${esc(name)}</th><td><a href="${url}" target="_blank" rel="noopener">${esc(url)}</a></td></tr>`).join('')}</tbody>
       </table></div>
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
-        'Sites for other Ragnarok versions are used only as structural or visual references unless a page explicitly states otherwise.',
-        'Les sites d’autres versions de Ragnarok servent uniquement de références de structure ou visuelles, sauf indication contraire.'
-      )}</div></div>`;
+`;
+  }
   }
 
 
@@ -6012,7 +6001,7 @@ window.RO_DATA = {
       <ul>
         <li>${navLabel('Common equipment groups include weapons, headgear, armor, shields, garments, footgear and accessories.','Les groupes d’équipement courants comprennent les armes, headgears, armures, boucliers, garments, chaussures et accessoires.')}</li>
         <li>${navLabel('Each item page shows its required level, class restrictions, slots, refine level and options.','Chaque fiche d’objet indique son niveau requis, ses restrictions de classe, ses slots, son refine et ses options.')}</li>
-        <li>${navLabel('Do not use iRO item stats as substitutes: this version frequently has different stats, slots, drops or random-option behavior.','N’utilise pas les statistiques d’objets iRO comme remplacement : cette version possède fréquemment des stats, slots, drops ou options aléatoires différents.')}</li>
+        
       </ul>
 
       <h2 id="cards">${navLabel('Cards','Cartes')}</h2>
@@ -6044,9 +6033,7 @@ window.RO_DATA = {
         ['MidgardHub — New Player Guide / equipment and affixes','https://midgardhub.com/guides/new-player'],
         ['Global Guide — Item Safe Lock','https://sites.google.com/view/rozeroguide']
       ])}
-      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
-        <li><a href="https://irowiki.org/wiki/Items" target="_blank" rel="noopener">iRO Wiki — Items</a> — ${navLabel('used only for the high-level organization into equipment, cards, consumables and miscellaneous items. iRO item values are not imported.','utilisé uniquement pour l’organisation générale en équipement, cartes, consommables et objets divers. Les valeurs des objets iRO ne sont pas importées.')}</li>
-      </ul></div>`;
+      `;
   }
 
   function cardsOverviewPage() {
@@ -6112,9 +6099,7 @@ window.RO_DATA = {
         ['Official Cards guide','https://roz.mygnjoy.com/en/intro/guide/7'],
         ['MidgardHub — Activation System (cards are preserved during activation)','https://midgardhub.com/guides/activation']
       ])}
-      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
-        <li><a href="https://irowiki.org/wiki/Card_System" target="_blank" rel="noopener">iRO Wiki — Card System</a> — ${navLabel('used for the article flow: acquiring, installing, slots and removing. iRO card rates and system-specific values are not copied.','utilisé pour le déroulement de l’article : obtention, insertion, slots et retrait. Les taux de cartes et valeurs spécifiques à iRO ne sont pas copiés.')}</li>
-      </ul></div>`;
+      `;
   }
 
   function monstersOverviewPage() {
@@ -6178,9 +6163,7 @@ window.RO_DATA = {
         ['MidgardHub — map-monster relations','https://midgardhub.com/database/maps'],
         ['ROZ Database — world map and monster search','https://rozerodb.com/updates/2026-08-23-world-map-overhaul']
       ])}
-      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
-        <li><a href="https://irowiki.org/wiki/Monster" target="_blank" rel="noopener">iRO Wiki — Monster</a> — ${navLabel('used only as a structural reference for characteristics, properties and boss sections. iRO monster stats and champion-monster rules are not imported.','utilisé uniquement comme référence de structure pour les caractéristiques, propriétés et sections Boss. Les stats de monstres et règles des Champion Monsters d’iRO ne sont pas importées.')}</li>
-      </ul></div>`;
+      `;
   }
 
   function worldMapPointData() {
@@ -6494,12 +6477,7 @@ window.RO_DATA = {
         ['Prontera.info — casting / Global Delay modifiers','https://roz.prontera.info/guides/bonuses'],
         ['ROZ Database — Challenge Drink fixed-cast rule','https://rozerodb.com/cash-shop']
       ])}
-      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
-        <li><a href="https://irowiki.org/wiki/Skills" target="_blank" rel="noopener">iRO Wiki — Skills</a> — ${navLabel(
-          'used as a structural reference for the explanation of skill types and usage phases. iRO formulas, cards, class examples and Renewal timing values are not copied into this article.',
-          'utilisé comme référence de structure pour l’explication des types de skills et des phases d’utilisation. Les formules, cartes, exemples de classes et valeurs de timing Renewal d’iRO ne sont pas copiés dans cet article.'
-        )}</li>
-      </ul></div>`;
+      `;
   }
 
   function listView(type) {
