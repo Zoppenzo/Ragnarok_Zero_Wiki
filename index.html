@@ -4852,36 +4852,77 @@ window.RO_DATA = {
   }
 
   function worldMapPointData() {
-    // Coordinates are snapped to the visual centre of the atlas grid cells.
-    // Blue = city, red = dungeon.
+    /*
+      Geography reference: RateMyServer Map Database / World Map.
+      Coordinates below are aligned to the actual Orbis of Midgard artwork used
+      on this page. Gameplay data (monsters, drops, EXP, etc.) still comes only
+      from this wiki's current-server dataset.
+    */
     return [
-      // Cities
-      {id:'umbala', name:'Umbala', type:'city', x:15, y:55, patterns:['umbala','um_fild','um_']},
-      {id:'geffen', name:'Geffen', type:'city', x:32.5, y:32.5, patterns:['geffen','gef_f','gef_']},
-      {id:'lutie', name:'Lutie / Xmas', type:'city', x:70, y:2.5, patterns:['lutie','xmas']},
-      {id:'prontera', name:'Prontera', type:'city', x:45, y:27.5, patterns:['prontera','prt_f','prt_','demo_field']},
-      {id:'aldebaran', name:'Al De Baran', type:'city', x:52.5, y:10, patterns:['aldebaran','alde_']},
-      {id:'izlude', name:'Izlude', type:'city', x:65, y:32.5, patterns:['izlude','izl_']},
-      {id:'morocc', name:'Morocc', type:'city', x:47.5, y:55, patterns:['morocc','moc_f','moc_']},
-      {id:'comodo', name:'Comodo', type:'city', x:25, y:67.5, patterns:['comodo','cmd_']},
-      {id:'payon', name:'Payon', type:'city', x:80, y:77.5, patterns:['payon','pay_f','pay_']},
-      {id:'alberta', name:'Alberta', type:'city', x:85, y:92.5, patterns:['alberta','alb_']},
+      // Cities — blue.
+      {id:'comodo', name:'Comodo', type:'city', x:14.7, y:54.8, mapIds:['comodo'], patterns:['cmd_fild']},
+      {id:'umbala', name:'Umbala', type:'city', x:26.0, y:67.0, mapIds:['umbala'], patterns:['um_fild']},
+      {id:'aldebaran', name:'Al De Baran', type:'city', x:44.8, y:26.0, mapIds:['aldebaran'], patterns:['mjolnir']},
+      {id:'geffen', name:'Geffen', type:'city', x:47.0, y:56.0, mapIds:['geffen'], patterns:['gef_fild']},
+      {id:'morocc', name:'Morocc', type:'city', x:49.2, y:84.4, mapIds:['morocc','moc_ruins'], patterns:['moc_fild']},
+      {id:'prontera', name:'Prontera', type:'city', x:65.5, y:60.4, mapIds:['prontera'], patterns:['prt_fild','demo_field']},
+      {id:'izlude', name:'Izlude', type:'city', x:73.5, y:64.0, mapIds:['izlude'], patterns:['izlude','izl_']},
+      {id:'payon', name:'Payon', type:'city', x:79.0, y:77.5, mapIds:['payon'], patterns:['pay_fild']},
+      {id:'alberta', name:'Alberta', type:'city', x:85.0, y:92.3, mapIds:['alberta'], patterns:['alb_']},
 
-      // Dungeons
-      {id:'geffen-dungeon', name:'Geffen Dungeon', type:'dungeon', x:32.5, y:37.5, patterns:['gef_d','b_gef_d','geffen dungeon']},
-      {id:'orc-dungeon', name:'Orc Dungeon', type:'dungeon', x:22.5, y:37.5, patterns:['orcsdun','orc_dun','orc dungeon']},
-      {id:'clock-tower', name:'Clock Tower', type:'dungeon', x:52.5, y:15, patterns:['c_tower','alde_dun','tow_d','clock tower']},
-      {id:'hidden-dungeon', name:'Hidden Dungeon', type:'dungeon', x:42.5, y:22.5, patterns:['prt_maze','hidden dungeon']},
-      {id:'sphinx', name:'Sphinx', type:'dungeon', x:42.5, y:50, patterns:['in_sphinx','sp_d','sphinx']},
-      {id:'pyramids', name:'Pyramids', type:'dungeon', x:42.5, y:55, patterns:['moc_pryd','pyramid']},
-      {id:'payon-cave', name:'Payon Cave', type:'dungeon', x:80, y:72.5, patterns:['pay_dun','pay_d0','b_pay_d','payon cave']}
+      // Dungeons — red. Map IDs/floors are taken from the RMS area grouping.
+      {id:'glast-heim', name:'Glast Heim', type:'dungeon', x:42.5, y:50.4,
+        mapIds:['glast_01'], patterns:['gl_','glast']},
+      {id:'orc-dungeon', name:'Orc Dungeon', type:'dungeon', x:42.5, y:56.0,
+        mapIds:['orcsdun01','orcsdun02'], patterns:['orcsdun']},
+      {id:'geffen-dungeon', name:'Geffen Dungeon', type:'dungeon', x:47.0, y:56.0,
+        mapIds:['gef_dun00','gef_dun01','gef_dun02','gef_dun03'], patterns:['gef_dun']},
+      {id:'coal-mine', name:'Coal Mine / Mjolnir Dead Pit', type:'dungeon', x:38.0, y:31.6,
+        mapIds:['mjo_dun01','mjo_dun02','mjo_dun03'], patterns:['mjo_dun']},
+      {id:'clock-tower', name:'Clock Tower', type:'dungeon', x:44.8, y:26.0,
+        mapIds:['c_tower1','c_tower2','c_tower3','c_tower4'], patterns:['c_tower','alde_dun']},
+      {id:'hidden-temple', name:'Hidden Temple / Labyrinth Forest', type:'dungeon', x:60.5, y:54.8,
+        mapIds:['prt_maze01','prt_maze02','prt_maze03'], patterns:['prt_maze']},
+      {id:'prontera-culvert', name:'Prontera Culvert', type:'dungeon', x:69.5, y:54.8,
+        mapIds:['prt_sewb1','prt_sewb2','prt_sewb3','prt_sewb4'], patterns:['prt_sewb']},
+      {id:'sphinx', name:'Sphinx', type:'dungeon', x:44.7, y:84.4,
+        mapIds:['in_sphinx1','in_sphinx2','in_sphinx3','in_sphinx4','in_sphinx5'], patterns:['in_sphinx']},
+      {id:'pyramid', name:'Pyramid', type:'dungeon', x:44.7, y:78.8,
+        mapIds:['moc_pryd01','moc_pryd02','moc_pryd03','moc_pryd04','moc_pryd05','moc_pryd06'], patterns:['moc_pryd']},
+      {id:'ant-hell-west', name:'Ant Hell', type:'dungeon', x:40.2, y:84.4,
+        mapIds:['anthell01','anthell02'], patterns:['anthell']},
+      {id:'ant-hell-east', name:'Ant Hell', type:'dungeon', x:53.7, y:89.9,
+        mapIds:['anthell01','anthell02'], patterns:['anthell']},
+      {id:'byalan', name:'Byalan Island Dungeon', type:'dungeon', x:78.0, y:67.5,
+        mapIds:['iz_dun00','iz_dun01','iz_dun02','iz_dun03','iz_dun04','iz_dun05'], patterns:['iz_dun']},
+      {id:'payon-cave', name:'Payon Cave', type:'dungeon', x:79.0, y:71.9,
+        mapIds:['pay_dun00','pay_dun01','pay_dun02','pay_dun03','pay_dun04'], patterns:['pay_dun']}
+    ];
+  }
+
+  function worldMapRemoteLocations() {
+    return [
+      {
+        name:'Lutie / Xmas',
+        type:'city',
+        mapIds:['xmas','xmas_fild01','xmas_dun01','xmas_dun02'],
+        note:navLabel(
+          'RateMyServer classifies Lutie under Remote Area. It is therefore kept out of the main continental point overlay instead of forcing an inaccurate position onto the core atlas.',
+          'RateMyServer classe Lutie dans les Remote Areas. Elle reste donc hors des points du continent principal plutôt que d’être placée artificiellement à un mauvais endroit sur l’atlas.'
+        )
+      }
     ];
   }
 
   function mapsForWorldPoint(point) {
     return DATA.maps.filter(map => {
-      const haystack = `${map.id} ${map.name} ${map.internalName || ''}`.toLowerCase();
-      return point.patterns.some(pattern => haystack.includes(pattern));
+      const id = String(map.id || '').toLowerCase();
+      const internal = String(map.internalName || '').toLowerCase();
+      const name = String(map.name || '').toLowerCase();
+      const exactIds = (point.mapIds || []).map(x=>x.toLowerCase());
+      if (exactIds.includes(id) || exactIds.includes(internal)) return true;
+      const haystack = `${id} ${internal} ${name}`;
+      return (point.patterns || []).some(pattern => haystack.includes(pattern.toLowerCase()));
     });
   }
 
@@ -4891,48 +4932,59 @@ window.RO_DATA = {
 
   function worldMapPage() {
     const points = worldMapPointData();
-    const hotspotHtml = points.map(point => {
+    const remote = worldMapRemoteLocations();
+
+    // Multiple locations can share one atlas cell (for example Geffen + Geffen Dungeon).
+    // The group is centered on the cell; dots are spread symmetrically around that center.
+    const groups = new Map();
+    points.forEach(point => {
+      const key = `${point.x.toFixed(1)}:${point.y.toFixed(1)}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(point);
+    });
+
+    const hotspotHtml = [...groups.values()].flatMap(group => group.map((point,index) => {
       const maps = mapsForWorldPoint(point);
       const monsters = monstersForMapIds(maps.map(m=>m.id));
       const monsterNames = [...new Set(monsters.map(m=>m.name))];
-      const mapNames = maps.map(m=>m.name);
+      const loadedMapNames = maps.map(m=>m.name);
+      const referenceMaps = point.mapIds || [];
       const monstersText = monsterNames.length
         ? monsterNames.slice(0,10).map(name=>esc(name)).join(', ') + (monsterNames.length > 10 ? '…' : '')
-        : navLabel('No monster relation imported in the local wiki dataset yet.','Aucune relation de monstre importée dans la base locale du wiki pour le moment.');
-      const mapsText = mapNames.length
-        ? mapNames.slice(0,6).map(name=>esc(name)).join(', ')
-        : navLabel('No local map entry matched yet.','Aucune entrée locale correspondante pour le moment.');
-      const kind = point.type === 'dungeon'
-        ? navLabel('Dungeon','Donjon')
-        : navLabel('City','Ville');
+        : navLabel('No monster relation imported here yet.','Aucune relation de monstre importée ici pour le moment.');
+      const mapsText = loadedMapNames.length
+        ? loadedMapNames.slice(0,6).map(name=>esc(name)).join(', ')
+        : referenceMaps.slice(0,6).map(id=>`<code>${esc(id)}</code>`).join(', ');
+      const moreMaps = referenceMaps.length > 6 ? ` +${referenceMaps.length - 6}` : '';
+      const kind = point.type === 'dungeon' ? navLabel('Dungeon','Donjon') : navLabel('City','Ville');
+      const spread = group.length > 1 ? (index - (group.length - 1) / 2) * 13 : 0;
 
-      return `<button class="world-hotspot ${point.type}" type="button" style="left:${point.x}%;top:${point.y}%" aria-label="${esc(point.name)} — ${esc(kind)}">
+      return `<button class="world-hotspot ${point.type}" type="button"
+        style="left:calc(${point.x}% + ${spread}px);top:${point.y}%"
+        aria-label="${esc(point.name)} — ${esc(kind)}">
         <span class="world-tooltip"><strong>${esc(point.name)}</strong>
           <span><b>${navLabel('Type','Type')}:</b> ${kind}</span>
+          <span><b>${navLabel('Maps','Maps')}:</b> ${mapsText || '—'}${moreMaps}</span>
           <span><b>${navLabel('Monsters','Monstres')}:</b> ${monstersText}</span>
-          <small><b>${navLabel('Maps loaded','Maps chargées')}:</b> ${mapsText}</small>
         </span>
       </button>`;
-    }).join('');
-
-    const cities = points.filter(point => point.type === 'city');
-    const dungeons = points.filter(point => point.type === 'dungeon');
+    })).join('');
 
     return `${breadcrumbs([{label:navLabel('World Map','Carte du monde')}])}
       <div class="article-heading"><h1>${icon('map')}${navLabel('World Map','Carte du monde')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'The World Map gives an overview of Midgard and its major cities and dungeons. The points below are aligned to the centre of the atlas grid cells instead of being placed approximately over the artwork.',
-        'La Carte du monde donne une vue d’ensemble des principales villes et donjons de Midgard. Les points ci-dessous sont alignés au centre des cases de la grille de l’atlas au lieu d’être placés approximativement sur l’illustration.'
+        'The map uses the in-game Orbis of Midgard atlas. Town and dungeon geography is referenced against RateMyServer’s Map Database and World Map, while monster information continues to come from this wiki’s own dataset.',
+        'La carte utilise l’atlas en jeu Orbis of Midgard. La géographie des villes et donjons est recoupée avec la Map Database et la World Map de RateMyServer, tandis que les informations de monstres continuent de venir de notre propre base.'
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Interactive behavior','Fonctionnement interactif')}</strong><br>${navLabel(
-        'Blue points are cities and red points are dungeons. Hover or focus a point to see the monsters currently linked to matching maps in this wiki’s dataset.',
-        'Les points bleus représentent les villes et les points rouges les donjons. Passe la souris sur un point ou sélectionne-le au clavier pour voir les monstres actuellement reliés aux maps correspondantes dans la base du wiki.'
+        'Blue points are cities and red points are dungeon entrances. Points are centered on the corresponding atlas cell; when a city and a dungeon share the same cell, the pair is spread a few pixels around the same center so both remain visible.',
+        'Les points bleus sont les villes et les points rouges les entrées de donjons. Les points sont centrés sur la case correspondante de l’atlas ; lorsqu’une ville et un donjon partagent la même case, les deux points sont légèrement écartés autour du même centre pour rester visibles.'
       )}</div></div>
 
       ${toc([
         {id:'interactive-map',label:navLabel('Interactive map','Carte interactive')},
-        {id:'locations',label:navLabel('Mapped locations','Lieux indiqués')}
+        {id:'remote',label:navLabel('Remote locations','Lieux distants')}
       ])}
 
       <h2 id="interactive-map">${navLabel('Interactive World Map','Carte du monde interactive')}</h2>
@@ -4943,40 +4995,30 @@ window.RO_DATA = {
         </div>
         <div class="world-map-legend">
           <span><i class="city"></i>${navLabel('City','Ville')}</span>
-          <span><i class="dungeon"></i>${navLabel('Dungeon','Donjon')}</span>
-          <span>${navLabel('Hover / focus a point to show linked monsters','Survole / sélectionne un point pour afficher les monstres liés')}</span>
+          <span><i class="dungeon"></i>${navLabel('Dungeon entrance','Entrée de donjon')}</span>
+          <span>${navLabel('Hover / focus a point to see its maps and linked monsters','Survole / sélectionne un point pour voir ses maps et les monstres liés')}</span>
         </div>
       </div>
-      <p class="muted-note">${navLabel(
-        'The atlas is the in-game Orbis of Midgard artwork. Point overlays and tooltips are implemented by this wiki. Dungeon markers represent the dungeon entrance / world-map location rather than every dungeon floor.',
-        'L’atlas est l’illustration en jeu Orbis of Midgard. Les points et tooltips sont implémentés par ce wiki. Un point de donjon représente son entrée / emplacement sur la carte du monde et non chaque étage du donjon.'
-      )}</p>
 
-      <h2 id="locations">${navLabel('Mapped locations','Lieux indiqués')}</h2>
-      <h3>${navLabel('Cities','Villes')}</h3>
-      <div class="world-region-grid">
-        ${cities.map(point => {
-          const maps = mapsForWorldPoint(point);
-          const monsters = monstersForMapIds(maps.map(m=>m.id));
-          return `<div class="world-region-card"><strong>${esc(point.name)}</strong><small>${maps.length} ${navLabel('local maps','maps locales')} · ${monsters.length} ${navLabel('linked monsters','monstres reliés')}</small></div>`;
-        }).join('')}
-      </div>
-      <h3>${navLabel('Dungeons','Donjons')}</h3>
-      <div class="world-region-grid">
-        ${dungeons.map(point => {
-          const maps = mapsForWorldPoint(point);
-          const monsters = monstersForMapIds(maps.map(m=>m.id));
-          return `<div class="world-region-card"><strong>${esc(point.name)}</strong><small>${maps.length} ${navLabel('local maps','maps locales')} · ${monsters.length} ${navLabel('linked monsters','monstres reliés')}</small></div>`;
-        }).join('')}
-      </div>
+      <h2 id="remote">${navLabel('Remote locations','Lieux distants')}</h2>
+      ${remote.map(place=>`<div class="notes-box"><strong>${esc(place.name)}</strong><br>${place.note}<br><small>${navLabel('Maps','Maps')}: ${place.mapIds.map(id=>`<code>${esc(id)}</code>`).join(', ')}</small></div>`).join('')}
 
       ${officialSources([
-        ['MidgardHub — current Ragnarok Zero Global map index','https://midgardhub.com/database/maps'],
-        ['RO Zero Database — World Map overhaul / monster search','https://rozerodb.com/updates/2026-08-23-world-map-overhaul'],
-        ['Ragnarok Zero Global Guide — World Map','https://sites.google.com/view/rozeroguide']
+        ['RateMyServer — Map Database','https://ratemyserver.net/index.php?page=map_db'],
+        ['RateMyServer — Interactive World Map','https://ratemyserver.net/worldmap.php?re_mob=0'],
+        ['RateMyServer — All Towns','https://ratemyserver.net/index.php?area=5999&page=areainfo&re_mob=1'],
+        ['RateMyServer — Dungeon Map','https://ratemyserver.net/dungeonmap.php?re_mob=1'],
+        ['MidgardHub — current map index / availability cross-check','https://midgardhub.com/database/maps']
       ])}
-      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
-        <li><a href="https://irowiki.org/wiki/World_Map" target="_blank" rel="noopener">iRO Wiki — World Map</a> — ${navLabel('used only as the structural inspiration for an in-game-map explanation followed by an interactive map. iRO shortcuts and map data are not copied.','utilisé uniquement comme inspiration de structure : explication de la carte en jeu puis carte interactive. Les raccourcis et données cartographiques iRO ne sont pas copiés.')}</li>
+      <div class="source-box"><strong>${navLabel('Source scope','Périmètre des sources')}</strong><ul>
+        <li>${navLabel(
+          'RateMyServer is used here for geography, area grouping and map IDs only. Its Renewal / Pre-Renewal monster stats, drops and gameplay values are not imported.',
+          'RateMyServer est utilisé ici uniquement pour la géographie, le regroupement des zones et les IDs de maps. Ses statistiques de monstres, drops et valeurs de gameplay Renewal / Pre-Renewal ne sont pas importés.'
+        )}</li>
+        <li><a href="https://irowiki.org/wiki/World_Map" target="_blank" rel="noopener">iRO Wiki — World Map</a> — ${navLabel(
+          'article-layout inspiration only.',
+          'uniquement utilisé comme inspiration de structure pour l’article.'
+        )}</li>
       </ul></div>`;
   }
 
