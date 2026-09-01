@@ -2321,8 +2321,9 @@ window.RO_DATA = {
     {
       id: "two-handed-sword-mastery", name: "Two Handed Sword Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", image: "https://static.divine-pride.net/images/skill/3.png",
       spCost: 0, castTime: null, castDelay: null, cooldown: null,
+      levels: null,
       description: { en: "Increases physical damage dealt while using a two-handed sword, with the bonus scaling by skill level.", fr: "Augmente les dégâts physiques infligés avec une épée à deux mains, avec un bonus qui augmente selon le niveau de la compétence." },
-      prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
+      prerequisites: [{ skillId: "sword-mastery", level: 1, verified: true }], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
     },
     {
       id: "magnum-break", name: "Magnum Break", classId: "swordman", maxLevel: 10, type: "Active", target: "Self / Area", image: "https://static.divine-pride.net/images/skill/7.png",
@@ -3431,16 +3432,149 @@ window.RO_DATA = {
       </article>`;
   }
 
+
+  function swordmanSkillLevelData(id) {
+    const rows = {
+      'sword-mastery': [
+        [1,'Damage +4',0,1,'—'],[2,'Damage +8',0,1,'—'],[3,'Damage +12',0,1,'—'],[4,'Damage +16',0,1,'—'],[5,'Damage +20',0,1,'—'],
+        [6,'Damage +24',0,1,'—'],[7,'Damage +28',0,1,'—'],[8,'Damage +32',0,1,'—'],[9,'Damage +36',0,1,'—'],[10,'Damage +40',0,1,'—']
+      ],
+      'increase-hp-recovery': [
+        [1,'HP / 10 sec: +(5 + 0.2% MHP)',0,1,'—'],[2,'HP / 10 sec: +(10 + 0.4% MHP)',0,1,'—'],[3,'HP / 10 sec: +(15 + 0.6% MHP)',0,1,'—'],[4,'HP / 10 sec: +(20 + 0.8% MHP)',0,1,'—'],[5,'HP / 10 sec: +(25 + 1.0% MHP)',0,1,'—'],
+        [6,'HP / 10 sec: +(30 + 1.2% MHP)',0,1,'—'],[7,'HP / 10 sec: +(35 + 1.4% MHP)',0,1,'—'],[8,'HP / 10 sec: +(40 + 1.6% MHP)',0,1,'—'],[9,'HP / 10 sec: +(45 + 1.8% MHP)',0,1,'—'],[10,'HP / 10 sec: +(50 + 2.0% MHP)',0,1,'—']
+      ],
+      'bash': [
+        [1,'ATK 130% · Accuracy +5%',8,1,'—'],[2,'ATK 160% · Accuracy +10%',8,1,'—'],[3,'ATK 190% · Accuracy +15%',8,1,'—'],[4,'ATK 220% · Accuracy +20%',8,1,'—'],[5,'ATK 250% · Accuracy +25%',8,1,'—'],
+        [6,'ATK 280% · Accuracy +30%',15,1,'—'],[7,'ATK 310% · Accuracy +35%',15,1,'—'],[8,'ATK 340% · Accuracy +40%',15,1,'—'],[9,'ATK 370% · Accuracy +45%',15,1,'—'],[10,'ATK 400% · Accuracy +50%',15,1,'—']
+      ],
+      'provoke': [
+        [1,'Enemy damage +5% · Enemy DEF -10%',4,9,'—'],[2,'Enemy damage +8% · Enemy DEF -15%',5,9,'—'],[3,'Enemy damage +11% · Enemy DEF -20%',6,9,'—'],[4,'Enemy damage +14% · Enemy DEF -25%',7,9,'—'],[5,'Enemy damage +17% · Enemy DEF -30%',8,9,'—'],
+        [6,'Enemy damage +20% · Enemy DEF -35%',9,9,'—'],[7,'Enemy damage +23% · Enemy DEF -40%',10,9,'—'],[8,'Enemy damage +26% · Enemy DEF -45%',11,9,'—'],[9,'Enemy damage +29% · Enemy DEF -50%',12,9,'—'],[10,'Enemy damage +32% · Enemy DEF -55%',13,9,'—']
+      ],
+      'berserk-swordman': [[1,'Activates automatically at ≤25% HP · effect equivalent to Provoke Lv.10',1,1,'—']],
+      'hp-recovery-while-moving': [[1,'Recover HP while moving at 25% of normal standing recovery',0,1,'—']],
+      'two-handed-sword-mastery': [
+        [1,'Damage +4',0,1,'—'],[2,'Damage +8',0,1,'—'],[3,'Damage +12',0,1,'—'],[4,'Damage +16',0,1,'—'],[5,'Damage +20',0,1,'—'],
+        [6,'Damage +24',0,1,'—'],[7,'Damage +28',0,1,'—'],[8,'Damage +32',0,1,'—'],[9,'Damage +36',0,1,'—'],[10,'Damage +40',0,1,'—']
+      ],
+      'magnum-break': [
+        [1,'ATK 120%',30,1,'2 sec'],[2,'ATK 140%',30,1,'2 sec'],[3,'ATK 160%',30,1,'2 sec'],[4,'ATK 180%',30,1,'2 sec'],[5,'ATK 200%',30,1,'2 sec'],
+        [6,'ATK 220%',30,1,'2 sec'],[7,'ATK 240%',30,1,'2 sec'],[8,'ATK 260%',30,1,'2 sec'],[9,'ATK 280%',30,1,'2 sec'],[10,'ATK 300%',30,1,'2 sec']
+      ],
+      'endure': [
+        [1,'Duration 10 sec · MDEF +1',10,1,'10 sec'],[2,'Duration 13 sec · MDEF +2',10,1,'10 sec'],[3,'Duration 16 sec · MDEF +3',10,1,'10 sec'],[4,'Duration 19 sec · MDEF +4',10,1,'10 sec'],[5,'Duration 22 sec · MDEF +5',10,1,'10 sec'],
+        [6,'Duration 25 sec · MDEF +6',10,1,'10 sec'],[7,'Duration 28 sec · MDEF +7',10,1,'10 sec'],[8,'Duration 31 sec · MDEF +8',10,1,'10 sec'],[9,'Duration 34 sec · MDEF +9',10,1,'10 sec'],[10,'Duration 37 sec · MDEF +10',10,1,'10 sec']
+      ],
+      'fatal-blow': [[1,'Bash Lv.6+ can inflict Stun; chance scales with Bash level and character level',0,1,'—']],
+      'spear-mastery': [
+        [1,'Damage +4 · Mounted +5',0,1,'—'],[2,'Damage +8 · Mounted +10',0,1,'—'],[3,'Damage +12 · Mounted +15',0,1,'—'],[4,'Damage +16 · Mounted +20',0,1,'—'],[5,'Damage +20 · Mounted +25',0,1,'—'],
+        [6,'Damage +24 · Mounted +30',0,1,'—'],[7,'Damage +28 · Mounted +35',0,1,'—'],[8,'Damage +32 · Mounted +40',0,1,'—'],[9,'Damage +36 · Mounted +45',0,1,'—'],[10,'Damage +40 · Mounted +50',0,1,'—']
+      ]
+    };
+    return rows[id] || null;
+  }
+
+  function swordmanSkillExtraText(sk) {
+    const en = {
+      'bash': 'Deals a strong single-target melee hit. Starting at Bash Lv.6, learning Fatal Blow allows Bash to inflict Stun with a chance that scales upward.',
+      'magnum-break': 'Deals Fire-property physical damage in a 5×5 area around the caster, knocks enemies back 2 cells, and grants an additional Fire-property weapon-damage effect for 10 seconds.',
+      'endure': 'Temporarily reduces normal hit-stun interruption, allowing continued movement and attacks. The effect ends after 7 hits and is disabled in Siege.',
+      'provoke': 'Lowers the target’s defense while raising its attack. Against monsters it also draws aggression; Undead and boss monsters are unaffected.'
+    };
+    const fr = {
+      'bash': 'Inflige une puissante attaque de mêlée sur une cible. À partir de Bash Lv.6, apprendre Fatal Blow permet à Bash d’infliger Stun avec une chance croissante.',
+      'magnum-break': 'Inflige des dégâts physiques Fire dans une zone de 5×5 autour du lanceur, repousse les ennemis de 2 cellules et ajoute pendant 10 secondes un effet de dégâts d’arme Fire.',
+      'endure': 'Réduit temporairement l’interruption causée par les coups normaux afin de continuer à se déplacer et attaquer. L’effet se termine après 7 coups et ne fonctionne pas en Siege.',
+      'provoke': 'Réduit la défense de la cible tout en augmentant son attaque. Sur les monstres, attire aussi leur agressivité ; les Undead et les boss ne sont pas affectés.'
+    };
+    return (lang==='fr' ? fr[sk.id] : en[sk.id]) || txt(sk.description);
+  }
+
+  function detailedSkillLevelTable(sk) {
+    const rows = swordmanSkillLevelData(sk.id);
+    if (!rows) return '';
+    return `
+      <h2 id="levels">${navLabel('Level-by-level effects','Effets par niveau')}</h2>
+      <div class="table-wrap"><table class="skill-level-table">
+        <thead><tr>
+          <th style="width:80px">${navLabel('Level','Niveau')}</th>
+          <th>${navLabel('Effect','Effet')}</th>
+          <th style="width:80px">SP</th>
+          <th style="width:90px">${navLabel('Range','Portée')}</th>
+          <th style="width:110px">${navLabel('Cooldown','Recharge')}</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(([lv,effect,sp,range,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${esc(effect)}</td><td>${sp}</td><td>${range}</td><td>${esc(cd)}</td></tr>`).join('')}
+        </tbody>
+      </table></div>`;
+  }
+
   function skillDetail(id) {
     const sk = getSkill(id);
     if (!sk) return notFound();
     if (id === 'basic-skill') return basicSkillDetail();
-    const prereq = sk.prerequisites.length ? sk.prerequisites.map(p=>`<tr><td>${entityCell(getSkill(p.skillId)?.name||p.skillId,`#/skills/${p.skillId}`,'skill')}</td><td>${p.level}</td><td>${badge(p.verified)}</td></tr>`).join('') : `<tr><td colspan="3">${t('none')}</td></tr>`;
-    const media = sk.image ? `<div class="infobox-image" style="height:96px"><img src="${sk.image}" alt="${esc(sk.name)}" width="34" height="34"></div>` : imagePlaceholder('skill');
-    return `${breadcrumbs([{label:t('skills'),href:'#/skills'},{label:sk.name}])}<article class="article-with-infobox"><div class="article-heading"><h1>${skillIconImg(sk,32)} ${esc(sk.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox"><div class="infobox-title">${esc(sk.name)}<span class="infobox-subtitle">Skill</span></div>${media}<table><tbody>${infoRow(t('class'),`<a href="#/classes/${sk.classId}">${esc(getClass(sk.classId)?.name||sk.classId)}</a>`)}${infoRow(t('type'),esc(sk.type))}${infoRow(t('target'),esc(sk.target||t('unknown')))}${infoRow(t('maxLevel'),String(sk.maxLevel))}${infoRow(t('spCost'),esc(val(sk.spCost)))}${infoRow(t('castTime'),esc(val(sk.castTime)))}${infoRow(navLabel('Cast Delay','Délai après lancement'),esc(val(sk.castDelay)))}${infoRow(t('cooldown'),esc(val(sk.cooldown)))}</tbody></table><div class="infobox-footer">${badge(sk.verified)}</div></aside><div class="article-body"><p class="article-lead">${esc(txt(sk.description))}</p>${toc([{id:'prereq',label:t('prerequisites')},{id:'notes',label:t('notes')}])}<h2 id="prereq">${t('prerequisites')}</h2><div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(sk.notes))}</div>
-      ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
-      ${skillClassNav(sk)}
-      </div></article>`;
+
+    const prereq = sk.prerequisites.length
+      ? sk.prerequisites.map(p=>`<tr><td>${entityCell(getSkill(p.skillId)?.name||p.skillId,`#/skills/${p.skillId}`,'skill')}</td><td>${p.level}</td><td>${badge(p.verified)}</td></tr>`).join('')
+      : `<tr><td colspan="3">${t('none')}</td></tr>`;
+
+    const media = sk.image
+      ? `<div class="infobox-image" style="height:96px"><img src="${sk.image}" alt="${esc(sk.name)}" width="34" height="34"></div>`
+      : imagePlaceholder('skill');
+
+    const hasSwordmanLevels = !!swordmanSkillLevelData(sk.id);
+    const rows = swordmanSkillLevelData(sk.id);
+    const inferredSP = rows ? [...new Set(rows.map(r=>r[2]))].join(' / ') : val(sk.spCost);
+    const inferredRange = rows ? [...new Set(rows.map(r=>r[3]))].join(' / ') : val(sk.range);
+    const inferredCooldown = rows ? [...new Set(rows.map(r=>r[4]).filter(x=>x && x!=='—'))].join(' / ') || 'None' : val(sk.cooldown);
+
+    return `${breadcrumbs([{label:t('skills'),href:'#/skills'},{label:sk.name}])}
+      <article class="article-with-infobox">
+        <div class="article-heading"><h1>${skillIconImg(sk,32)} ${esc(sk.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+        <aside class="infobox">
+          <div class="infobox-title">${esc(sk.name)}<span class="infobox-subtitle">Skill</span></div>
+          ${media}
+          <table><tbody>
+            ${infoRow(t('class'),`<a href="#/classes/${sk.classId}">${esc(getClass(sk.classId)?.name||sk.classId)}</a>`)}
+            ${infoRow(t('type'),esc(sk.type))}
+            ${infoRow(t('target'),esc(sk.target||t('unknown')))}
+            ${infoRow(t('maxLevel'),String(sk.maxLevel))}
+            ${infoRow(t('spCost'),esc(String(inferredSP)))}
+            ${infoRow(navLabel('Range','Portée'),esc(String(inferredRange)))}
+            ${infoRow(t('castTime'),esc(val(sk.castTime)))}
+            ${infoRow(navLabel('Cast Delay','Délai après lancement'),esc(val(sk.castDelay)))}
+            ${infoRow(t('cooldown'),esc(String(inferredCooldown)))}
+          </tbody></table>
+          <div class="infobox-footer">${badge(sk.verified)}</div>
+        </aside>
+
+        <div class="article-body">
+          <p class="article-lead">${esc(hasSwordmanLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}</p>
+          ${toc([
+            ...(hasSwordmanLevels ? [{id:'levels',label:navLabel('Level-by-level effects','Effets par niveau')}] : []),
+            {id:'prereq',label:t('prerequisites')},
+            {id:'notes',label:t('notes')},
+            ...(hasSwordmanLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
+          ])}
+
+          ${hasSwordmanLevels ? detailedSkillLevelTable(sk) : ''}
+
+          <h2 id="prereq">${t('prerequisites')}</h2>
+          <div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div>
+
+          <h2 id="notes">${t('notes')}</h2>
+          <div class="notes-box">${esc(txt(sk.notes))}</div>
+
+          ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
+
+          ${hasSwordmanLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
+            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
+            <li><a href="https://roz.prontera.info/skills/planner?class=crusader" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
+          </ul></div>` : ''}
+
+          ${skillClassNav(sk)}
+        </div>
+      </article>`;
   }
 
     function noviceDetail() {
