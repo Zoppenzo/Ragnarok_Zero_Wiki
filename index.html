@@ -3088,7 +3088,7 @@ window.RO_DATA = {
 
     { id:'elements', group:'Systems & Data', en:'Elements', fr:'Éléments' },
     { id:'monster-sizes', group:'Systems & Data', en:'Monster Sizes', fr:'Tailles des monstres', icon:'monster' },
-    { id:'monster-races', group:'Systems & Data', en:'Monster Races', fr:'Races des monstres' },
+    { id:'monster-races', group:'Systems & Data', en:'Monster Races', fr:'Races des monstres', icon:'monster' },
     { id:'monster-exclusive-skills', group:'Systems & Data', en:'Monster Skills', fr:'Compétences des monstres' },
     { id:'status-effects', group:'Systems & Data', en:'Status Effects', fr:'Effets de statut' },
     { id:'card-system', group:'Systems & Data', en:'Card System', fr:'Système de cartes' },
@@ -3158,6 +3158,9 @@ window.RO_DATA = {
     },
     '#/wiki/monster-sizes': {
       'size-types':'complete', 'weapon-modifiers':'complete', 'reading-table':'complete'
+    },
+    '#/wiki/monster-races': {
+      'race-overview':'complete', 'race-list':'complete', 'race-effects':'complete'
     },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
@@ -4727,29 +4730,30 @@ window.RO_DATA = {
 
   function monsterSizesPage(topic) {
     const rows = [
-      ['Bare Handed',100,100,100],
-      ['Dagger',100,75,50],
-      ['1H Sword',75,100,75],
-      ['2H Sword',75,75,100],
-      ['Spear',75,75,100],
-      ['Spear · Peco / Gryphon',75,100,100],
-      ['Axe',50,75,100],
-      ['Mace',75,100,100],
-      ['Rod / Staff',100,100,100],
-      ['Bow',100,100,75],
-      ['Katar',75,100,75],
-      ['Book',100,100,50],
-      ['Knuckle',100,100,75],
-      ['Instrument',75,100,75],
-      ['Whip',75,100,50],
-      ['Gun',100,100,100],
-      ['Huuma Shuriken',75,75,100]
+      ['Bare Handed','👊',100,100,100],
+      ['Dagger','🗡️',100,75,50],
+      ['1H Sword','⚔️',75,100,75],
+      ['2H Sword','🗡️',75,75,100],
+      ['Spear','🔱',75,75,100],
+      ['Spear · Peco / Gryphon','🔱',75,100,100],
+      ['Axe','🪓',50,75,100],
+      ['Mace','🔨',75,100,100],
+      ['Rod / Staff','🪄',100,100,100],
+      ['Bow','🏹',100,100,75],
+      ['Katar','✦',75,100,75],
+      ['Book','📖',100,100,50],
+      ['Knuckle','👊',100,100,75],
+      ['Instrument','🎵',75,100,75],
+      ['Whip','➰',75,100,50],
+      ['Gun','🔫',100,100,100],
+      ['Huuma Shuriken','✥',75,75,100]
     ];
 
     const sizeCell = value => {
       const cls = value === 100 ? 'element-mod-normal' : value >= 75 ? 'element-mod-midlow' : 'element-mod-low';
       return `<td class="${cls}" style="font-weight:700;text-align:center">${value}%</td>`;
     };
+    const weaponLabel = (weapon,glyph) => `<span style="display:inline-flex;align-items:center;gap:8px"><span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid var(--line-soft);border-radius:6px;background:var(--paper-soft);font-size:16px;line-height:1">${glyph}</span><span>${esc(weapon)}</span></span>`;
 
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
@@ -4779,6 +4783,11 @@ window.RO_DATA = {
         )}</p></div>
       </div>
 
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
+        'Player characters are Medium for size interactions. Baby characters are Small.',
+        'Les personnages joueurs sont considérés Medium pour les interactions de taille. Les personnages Baby sont considérés Small.'
+      )}</div></div>
+
       <h2 id="weapon-modifiers">${navLabel('Weapon size modifiers','Modificateurs de taille des armes')}</h2>
       <p>${navLabel(
         'The percentage below is applied to the physical weapon damage according to the target’s size.',
@@ -4792,8 +4801,8 @@ window.RO_DATA = {
           <th style="text-align:center">Large</th>
         </tr></thead>
         <tbody>
-          ${rows.map(([weapon,small,medium,large]) => `<tr>
-            <th>${esc(weapon)}</th>
+          ${rows.map(([weapon,glyph,small,medium,large]) => `<tr>
+            <th>${weaponLabel(weapon,glyph)}</th>
             ${sizeCell(small)}
             ${sizeCell(medium)}
             ${sizeCell(large)}
@@ -4815,6 +4824,68 @@ window.RO_DATA = {
 
       <div class="hero-actions">
         <a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Monster database','Base de monstres')}</a>
+        <a class="button" href="#/wiki/elements">${miniIcon('mechanics')}${navLabel('Elements','Éléments')}</a>
+      </div>`;
+  }
+
+  function monsterRacesPage(topic) {
+    const races = [
+      ['✨','Angel',navLabel('Angelic or celestial monsters.','Monstres angéliques ou célestes.')],
+      ['🐾','Brute',navLabel('Animals and beast-like monsters. Also called Animal in some translations.','Animaux et monstres de type bestial. Aussi appelé Animal dans certaines traductions.')],
+      ['👤','Demi-Human',navLabel('Humanoid monsters such as Orcs, Goblins and similar creatures. This is separate from the Player race.','Monstres humanoïdes comme les Orcs, Goblins et créatures similaires. Cette race est distincte de la race Player.')],
+      ['👹','Demon',navLabel('Demonic or devil-like monsters.','Monstres démoniaques ou de type Devil.')],
+      ['🐉','Dragon',navLabel('Dragons and draconic creatures.','Dragons et créatures draconiques.')],
+      ['🐟','Fish',navLabel('Fish and aquatic creatures classified under this race.','Poissons et créatures aquatiques classées dans cette race.')],
+      ['⚙️','Formless',navLabel('Constructs, objects and creatures without a conventional biological form.','Constructions, objets et créatures sans forme biologique conventionnelle.')],
+      ['🪲','Insect',navLabel('Insects and insect-like creatures.','Insectes et créatures apparentées.')],
+      ['🌿','Plant',navLabel('Plants and monsters classified under the Plant race.','Plantes et monstres classés dans la race Plant.')],
+      ['🧑','Player (Human)',navLabel('The race used for player characters. It is distinct from Demi-Human.','Race utilisée pour les personnages joueurs. Elle est distincte de Demi-Human.')],
+      ['☠️','Undead',navLabel('Undead creatures. Undead race and Undead element are two separate attributes.','Créatures mortes-vivantes. La race Undead et l’élément Undead sont deux caractéristiques différentes.')]
+    ];
+
+    return `${generalPageHeader(topic)}
+      <p class="article-lead">${navLabel(
+        'Race is a combat attribute assigned to monsters and players. It is separate from Size and Element, and can be targeted by equipment, cards and other effects.',
+        'La race est une caractéristique de combat attribuée aux monstres et aux joueurs. Elle est indépendante de la Taille et de l’Élément, et peut être ciblée par des équipements, cartes et autres effets.'
+      )}</p>
+
+      ${toc([
+        {id:'race-overview',label:navLabel('Race, Size and Element','Race, Taille et Élément')},
+        {id:'race-list',label:navLabel('The eleven races','Les onze races')},
+        {id:'race-effects',label:navLabel('Race-based effects','Effets liés aux races')}
+      ])}
+
+      <h2 id="race-overview">${navLabel('Race, Size and Element','Race, Taille et Élément')}</h2>
+      <p>${navLabel(
+        'A monster can simultaneously have a Race, a Size and an Element. These three attributes are independent: for example, a monster can be Demi-Human, Medium and Fire at the same time.',
+        'Un monstre possède simultanément une Race, une Taille et un Élément. Ces trois caractéristiques sont indépendantes : un monstre peut par exemple être Demi-Human, Medium et Fire en même temps.'
+      )}</p>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('monster')}${navLabel('Race','Race')}</strong><p>${navLabel('Biological or creature category used by race-based effects.','Catégorie de créature utilisée par les effets liés aux races.')}</p></div>
+        <div><strong>${miniIcon('mechanics')}${navLabel('Size','Taille')}</strong><p>${navLabel('Small, Medium or Large; mainly relevant to weapon-size modifiers.','Small, Medium ou Large ; intervient notamment dans les modificateurs de taille des armes.')}</p></div>
+        <div><strong>${miniIcon('mechanics')}${navLabel('Element','Élément')}</strong><p>${navLabel('Neutral, Water, Earth, Fire, Wind, Poison, Holy, Shadow, Ghost or Undead, with its own damage interactions.','Neutral, Water, Earth, Fire, Wind, Poison, Holy, Shadow, Ghost ou Undead, avec ses propres interactions de dégâts.')}</p></div>
+      </div>
+
+      <h2 id="race-list">${navLabel('The eleven races','Les onze races')}</h2>
+      <div class="wiki-feature-list">
+        ${races.map(([glyph,name,description]) => `<div><strong><span aria-hidden="true" style="margin-right:7px">${glyph}</span>${esc(name)}</strong><p>${description}</p></div>`).join('')}
+      </div>
+
+      <h2 id="race-effects">${navLabel('Race-based effects','Effets liés aux races')}</h2>
+      <p>${navLabel(
+        'Equipment and cards can interact directly with a race. These effects can increase physical or magical damage against a race, reduce damage received from it, increase CRIT against it or trigger special effects when fighting or defeating monsters of that race.',
+        'Les équipements et cartes peuvent interagir directement avec une race. Ces effets peuvent augmenter les dégâts physiques ou magiques contre une race, réduire les dégâts reçus, augmenter le CRIT contre cette race ou déclencher des effets particuliers en combattant ou en éliminant des monstres de cette race.'
+      )}</p>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
+        'Demi-Human and Player (Human) are different races. A bonus that explicitly targets Demi-Human monsters should not automatically be treated as a bonus against players.',
+        'Demi-Human et Player (Human) sont deux races différentes. Un bonus visant explicitement les monstres Demi-Human ne doit pas être considéré automatiquement comme un bonus contre les joueurs.'
+      )}</div></div>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Monster database','Base de monstres')}</a>
+        <a class="button" href="#/cards">${miniIcon('card')}${navLabel('Cards','Cartes')}</a>
+        <a class="button" href="#/wiki/monster-sizes">${miniIcon('mechanics')}${navLabel('Monster Sizes','Tailles des monstres')}</a>
         <a class="button" href="#/wiki/elements">${miniIcon('mechanics')}${navLabel('Elements','Éléments')}</a>
       </div>`;
   }
@@ -4861,6 +4932,7 @@ window.RO_DATA = {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
     if (id === 'elements') return elementsPage(topic);
     if (id === 'monster-sizes') return monsterSizesPage(topic);
+    if (id === 'monster-races') return monsterRacesPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
