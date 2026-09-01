@@ -3575,6 +3575,273 @@ window.RO_DATA = {
       ])}`;
   }
 
+  function levelsPage(topic) {
+    const capRows = [
+      [
+        navLabel('Base Level','Base Level'),
+        '1',
+        '50',
+        navLabel('Base EXP','Base EXP'),
+        navLabel('Overall character progression, stat points and level-gated content.','Progression générale du personnage, points de caractéristiques et contenu soumis à un niveau minimum.')
+      ],
+      [
+        'Novice Job Level',
+        '1',
+        '10',
+        navLabel('Job EXP','Job EXP'),
+        navLabel('Unlocks the first job change once the Novice requirements are met.','Permet le premier changement de classe une fois les conditions du Novice remplies.')
+      ],
+      [
+        navLabel('1st Class Job Level','Job Level — 1re classe'),
+        '1',
+        '50',
+        navLabel('Job EXP','Job EXP'),
+        navLabel('Grants skill points for the current first-class skill tree.','Accorde les points de compétence de l’arbre actuel de la première classe.')
+      ]
+    ];
+
+    return `${generalPageHeader(topic)}
+      <p class="article-lead">${navLabel(
+        'Character progression in Ragnarok Zero: Global is split into two separate level tracks: Base Level for the character itself and Job Level for the current class.',
+        'La progression d’un personnage dans Ragnarok Zero: Global est divisée en deux niveaux distincts : le Base Level pour le personnage lui-même et le Job Level pour sa classe actuelle.'
+      )}</p>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global scope — 1 September 2026','Périmètre Global actuel — 1er septembre 2026')}</strong><br>${navLabel(
+        'The live launch cap is Base Level 50. Novice changes job from Job Level 10, and the six currently available first classes can progress to Job Level 50. Future class and level-cap increases are deliberately not mixed into this live table.',
+        'Le plafond actuellement en ligne est le Base Level 50. Le Novice peut changer de classe à partir du Job Level 10 et les six premières classes actuellement disponibles peuvent progresser jusqu’au Job Level 50. Les futures classes et hausses de niveau ne sont volontairement pas mélangées à ce tableau du contenu live.'
+      )}</div></div>
+
+      ${toc([
+        {id:'overview',label:navLabel('Overview','Aperçu')},
+        {id:'base-level',label:'Base Level'},
+        {id:'job-level',label:'Job Level'},
+        {id:'current-caps',label:navLabel('Current level caps','Plafonds actuels')},
+        {id:'job-change',label:navLabel('Job-change progression','Progression des changements de classe')},
+        {id:'related',label:navLabel('Related pages','Pages associées')}
+      ])}
+
+      <h2 id="overview">${navLabel('Overview','Aperçu')}</h2>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('level')} Base Level</strong><p>${navLabel(
+          'Raised with Base EXP. It represents the character’s overall progression and is independent from the current class’s Job Level.',
+          'Augmente avec la Base EXP. Il représente la progression générale du personnage et est indépendant du Job Level de la classe actuelle.'
+        )}</p></div>
+        <div><strong>${miniIcon('skill')} Job Level</strong><p>${navLabel(
+          'Raised with Job EXP. It belongs to the current class and is what provides the skill points used in that class’s skill tree.',
+          'Augmente avec la Job EXP. Il appartient à la classe actuelle et fournit les points de compétence utilisés dans son arbre de skills.'
+        )}</p></div>
+      </div>
+
+      <h2 id="base-level">Base Level</h2>
+      <p>${navLabel(
+        'Every character begins at Base Level 1. Gaining enough Base EXP raises the Base Level while the Job Level remains on its own separate progression bar.',
+        'Chaque personnage commence au Base Level 1. Accumuler suffisamment de Base EXP augmente le Base Level, tandis que le Job Level conserve sa propre barre de progression.'
+      )}</p>
+      <ul>
+        <li>${navLabel('Base Level is the level normally meant when a guide or equipment requirement simply says “Level”.','Le Base Level est le niveau généralement visé lorsqu’un guide ou un équipement indique simplement « Level ».')}</li>
+        <li>${navLabel('Increasing Base Level awards Status Points that can be distributed among STR, AGI, VIT, INT, DEX and LUK.','Augmenter le Base Level accorde des Status Points à répartir entre STR, AGI, VIT, INT, DEX et LUK.')}</li>
+        <li>${navLabel('Equipment, quests and other systems can require a minimum Base Level.','Les équipements, quêtes et autres systèmes peuvent demander un Base Level minimum.')}</li>
+        <li>${navLabel('Changing job does not reset Base Level.','Changer de classe ne réinitialise pas le Base Level.')}</li>
+      </ul>
+
+      <h2 id="job-level">Job Level</h2>
+      <p>${navLabel(
+        'Job Level measures progression inside the character’s current class. It uses Job EXP rather than Base EXP.',
+        'Le Job Level mesure la progression au sein de la classe actuelle du personnage. Il utilise la Job EXP et non la Base EXP.'
+      )}</p>
+      <ul>
+        <li>${navLabel('A new character begins as Novice at Job Level 1.','Un nouveau personnage commence Novice au Job Level 1.')}</li>
+        <li>${navLabel('At Job Level 10 or higher, the Novice can change to one of the six first classes currently available on Global.','À partir du Job Level 10, le Novice peut évoluer vers l’une des six premières classes actuellement disponibles sur Global.')}</li>
+        <li>${navLabel('After the job change, the new first class starts again at Job Level 1 while Base Level is kept.','Après le changement de classe, la nouvelle première classe recommence au Job Level 1 tandis que le Base Level est conservé.')}</li>
+        <li>${navLabel('Each Job Level gained after Job Level 1 provides one skill point. Reaching Job Level 50 therefore provides 49 points for the current first-class tree.','Chaque Job Level gagné après le Job Level 1 fournit un point de compétence. Atteindre le Job Level 50 donne donc 49 points pour l’arbre actuel de la première classe.')}</li>
+      </ul>
+
+      <h2 id="current-caps">${navLabel('Current Global level caps','Plafonds de niveau actuels sur Global')}</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Progression','Progression')}</th><th>${navLabel('Starts at','Départ')}</th><th>${navLabel('Current cap','Plafond actuel')}</th><th>${navLabel('Experience used','Expérience utilisée')}</th><th>${navLabel('Purpose','Rôle')}</th></tr></thead>
+        <tbody>${capRows.map(row=>`<tr>${row.map((cell,i)=>`<${i===0?'th':'td'}>${cell}</${i===0?'th':'td'}>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="job-change">${navLabel('Current job-change progression','Progression actuelle des changements de classe')}</h2>
+      <div class="wiki-feature-list">
+        <div><strong>1. Novice</strong><p>${navLabel('Base Level progresses normally; raise Job Level from 1 to 10.','Le Base Level progresse normalement ; monte le Job Level de 1 à 10.')}</p></div>
+        <div><strong>2. Job Level 10</strong><p>${navLabel('Complete the chosen first-job change and become Swordman, Mage, Archer, Merchant, Thief or Acolyte.','Effectue le changement vers la première classe choisie : Swordman, Mage, Archer, Merchant, Thief ou Acolyte.')}</p></div>
+        <div><strong>3. 1st Class</strong><p>${navLabel('Job Level restarts at 1. Earn Job EXP and spend the resulting skill points in the class tree.','Le Job Level repart à 1. Gagne de la Job EXP et dépense les points obtenus dans l’arbre de la classe.')}</p></div>
+        <div><strong>4. ${navLabel('Current cap','Plafond actuel')}</strong><p>${navLabel('Base Level 50 / first-class Job Level 50 are the current live limits documented by this page.','Base Level 50 / Job Level 50 de première classe sont les limites live actuellement documentées par cette page.')}</p></div>
+      </div>
+
+      <h2 id="related">${navLabel('Related pages','Pages associées')}</h2>
+      <div class="related-list">
+        <a href="#/wiki/experience">${miniIcon('level')}${navLabel('Experience','Expérience')}</a>
+        <a href="#/classes">${miniIcon('class')}${navLabel('Classes','Classes')}</a>
+        <a href="#/skills">${miniIcon('skill')}${navLabel('Skills','Compétences')}</a>
+        <a href="#/wiki/stats">${miniIcon('mechanics')}${navLabel('Stats','Statistiques')}</a>
+      </div>
+
+      ${officialSources([
+        ['RO Zero Database — Global release roadmap','https://rozerodb.com/guides/roadmap-update'],
+        ['Ragnarok Zero Global Guide — Lymd','https://sites.google.com/view/rozeroguide'],
+        ['MidgardHub — Complete New Player Guide','https://midgardhub.com/guides/new-player']
+      ])}
+      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
+        <li><a href="https://irowiki.org/wiki/Levels" target="_blank" rel="noopener">iRO Wiki — Levels</a> — ${navLabel('used only as a model for article organization; no iRO level caps, formulas or progression values were imported.','utilisé uniquement comme modèle d’organisation de l’article ; aucun plafond, formule ou chiffre de progression iRO n’a été importé.')}</li>
+      </ul></div>`;
+  }
+
+  function experiencePage(topic) {
+    const expSources = [
+      [
+        navLabel('Monster kills','Monstres vaincus'),
+        navLabel('Monsters award separate Base EXP and Job EXP values. Use the Zero monster database for the values of each monster.','Les monstres donnent des valeurs distinctes de Base EXP et de Job EXP. Utilise la base de monstres Zero pour les valeurs propres à chaque monstre.')
+      ],
+      [
+        navLabel('Quests','Quêtes'),
+        navLabel('Main Quest and other quests can award Base and/or Job EXP as part of their rewards.','La Main Quest et d’autres quêtes peuvent donner de la Base EXP et/ou de la Job EXP parmi leurs récompenses.')
+      ],
+      [
+        navLabel('Mission / progression content','Missions / contenu de progression'),
+        navLabel('Mission-board and progression activities are an important alternative to pure monster grinding in the current Global progression.','Les tableaux de missions et activités de progression sont une alternative importante au grind pur de monstres dans la progression Global actuelle.')
+      ],
+      [
+        navLabel('Temporary bonuses','Bonus temporaires'),
+        navLabel('Account buffs, inns, map buffs and server events can modify the amount earned. Always distinguish permanent mechanics from temporary events.','Les buffs de compte, auberges, buffs de map et événements serveur peuvent modifier le gain. Il faut toujours distinguer les mécaniques permanentes des événements temporaires.')
+      ]
+    ];
+
+    const modifiers = [
+      [
+        'Account EXP Buff',
+        '+10% Base EXP / +10% Job EXP',
+        navLabel('Account/server buff item documented on Global.','Buff de compte/serveur documenté sur Global.')
+      ],
+      [
+        navLabel('Inn EXP bonus','Bonus EXP d’auberge'),
+        '+10% EXP / 30 min',
+        navLabel('Available during the inn’s active hours. The current guide notes that it does not stack with Growth Elixir.','Disponible pendant les horaires actifs de l’auberge. Le guide actuel précise qu’il ne se cumule pas avec Growth Elixir.')
+      ],
+      [
+        'Hidden World',
+        '+10% EXP',
+        navLabel('Current Global Hidden World buff while using the relevant access effect; map rules apply.','Buff Hidden World actuel de Global avec l’effet d’accès correspondant ; les règles de la map s’appliquent.')
+      ],
+      [
+        navLabel('Server EXP events','Événements EXP serveur'),
+        navLabel('Variable','Variable'),
+        navLabel('Temporary values announced by Gravity. They are not part of the permanent EXP formula.','Valeurs temporaires annoncées par Gravity. Elles ne font pas partie de la formule permanente d’EXP.')
+      ]
+    ];
+
+    return `${generalPageHeader(topic)}
+      <p class="article-lead">${navLabel(
+        'Experience (EXP) is the progression resource used to raise Base Level and Job Level in Ragnarok Zero: Global. The two tracks use separate EXP values.',
+        'L’expérience (EXP) est la ressource de progression utilisée pour augmenter le Base Level et le Job Level dans Ragnarok Zero: Global. Les deux progressions utilisent des valeurs d’EXP distinctes.'
+      )}</p>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero-specific rule','Règle spécifique à Zero')}</strong><br>${navLabel(
+        'Do not use iRO Renewal’s level-difference EXP table for Ragnarok Zero: Global. Current Global references document the launch behavior without that Renewal scaling table, so it is intentionally absent here.',
+        'N’utilise pas le tableau iRO Renewal de modification d’EXP selon l’écart de niveau pour Ragnarok Zero: Global. Les références Global actuelles documentent le comportement de lancement sans cette table de scaling Renewal ; elle est donc volontairement absente ici.'
+      )}</div></div>
+
+      ${toc([
+        {id:'types',label:navLabel('Base EXP and Job EXP','Base EXP et Job EXP')},
+        {id:'earning',label:navLabel('Earning experience','Gagner de l’expérience')},
+        {id:'monster-exp',label:navLabel('Monster EXP','EXP des monstres')},
+        {id:'party-exp',label:navLabel('Party EXP','EXP en Party')},
+        {id:'death-penalty',label:navLabel('Death penalty','Pénalité de mort')},
+        {id:'modifiers',label:navLabel('EXP modifiers','Modificateurs d’EXP')},
+        {id:'current-cap',label:navLabel('Current cap','Plafond actuel')}
+      ])}
+
+      <h2 id="types">${navLabel('Base EXP and Job EXP','Base EXP et Job EXP')}</h2>
+      <div class="wiki-feature-list">
+        <div><strong>Base EXP</strong><p>${navLabel(
+          'Fills the Base Level progression bar. When the required amount is reached, the character gains one Base Level.',
+          'Remplit la barre de progression du Base Level. Lorsque la quantité requise est atteinte, le personnage gagne un Base Level.'
+        )}</p></div>
+        <div><strong>Job EXP</strong><p>${navLabel(
+          'Fills the Job Level progression bar of the current class. Job Level gains provide the skill points used by that class.',
+          'Remplit la barre de Job Level de la classe actuelle. Les gains de Job Level fournissent les points de compétence utilisés par cette classe.'
+        )}</p></div>
+      </div>
+      <p>${navLabel(
+        'A monster can therefore be good for Base EXP but comparatively weak for Job EXP, or the reverse. When preparing a character for the current Job Level 50 cap, compare both values rather than looking only at Base EXP.',
+        'Un monstre peut donc être intéressant en Base EXP mais relativement faible en Job EXP, ou l’inverse. Pour préparer un personnage au plafond actuel de Job Level 50, compare les deux valeurs au lieu de regarder uniquement la Base EXP.'
+      )}</p>
+
+      <h2 id="earning">${navLabel('Ways to earn experience','Façons de gagner de l’expérience')}</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Source','Source')}</th><th>${navLabel('How it works on Zero Global','Fonctionnement sur Zero Global')}</th></tr></thead>
+        <tbody>${expSources.map(([a,b])=>`<tr><th>${a}</th><td>${b}</td></tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="monster-exp">${navLabel('Experience from monsters','Expérience des monstres')}</h2>
+      <p>${navLabel(
+        'Each monster has its own Base EXP and Job EXP reward. These are Zero-specific database values and must not be replaced by iRO Classic, Pre-Renewal or Renewal monster EXP.',
+        'Chaque monstre possède sa propre récompense de Base EXP et de Job EXP. Il s’agit de valeurs propres à Zero et elles ne doivent pas être remplacées par l’EXP des monstres d’iRO Classic, Pre-Renewal ou Renewal.'
+      )}</p>
+      <p>${navLabel(
+        'The current Global launch behavior does not use the Renewal-style level-difference table shown on iRO Wiki. This is why farming a comfortable lower-level monster can remain useful when its kills per minute are high.',
+        'Le comportement actuel du lancement Global n’utilise pas la table Renewal d’écart de niveau affichée sur iRO Wiki. C’est pourquoi farmer un monstre de niveau inférieur mais confortable peut rester rentable si le nombre de kills par minute est élevé.'
+      )}</p>
+      <div class="hero-actions"><a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Open Zero monster database','Ouvrir la base de monstres Zero')}</a><a class="button" href="#/leveling">${miniIcon('level')}${navLabel('Leveling Finder','Leveling Finder')}</a></div>
+
+      <h2 id="party-exp">${navLabel('Party experience','Expérience en Party')}</h2>
+      <p>${navLabel(
+        'Party EXP is a live-balanced system on Global. Gravity removed the previous Party EXP bonus during the 20 August patch, then announced its return in a revised form for the 27 August maintenance after player feedback.',
+        'L’EXP en Party est un système encore ajusté en direct sur Global. Gravity a retiré l’ancien bonus de Party EXP lors du patch du 20 août, puis a annoncé son retour sous une forme révisée pour la maintenance du 27 août après les retours des joueurs.'
+      )}</p>
+      <div class="wiki-callout">${navLabel(
+        'Because the operator is still tuning this system, this wiki does not copy iRO’s fixed party table or hard-code an old Zero multiplier. The exact live bonus/range should be updated only from a confirmed Global patch or direct in-game verification.',
+        'Comme l’opérateur ajuste encore ce système, ce wiki ne copie pas le tableau fixe d’iRO et ne fige pas un ancien multiplicateur Zero. Le bonus et la portée exacts doivent être mis à jour uniquement à partir d’un patch Global confirmé ou d’une vérification directe en jeu.'
+      )}</div>
+      <ul>
+        <li>${navLabel('Party EXP sharing must be enabled by the Party leader.','Le partage d’EXP doit être activé par le chef de Party.')}</li>
+        <li>${navLabel('Current Global guides warn that when the Party composition changes, the sharing setting may need to be enabled again.','Les guides Global actuels signalent qu’après un changement dans la composition de la Party, le partage peut devoir être réactivé.')}</li>
+        <li>${navLabel('Do not use the iRO 15-level share range or iRO “+20% per member” table as Zero data.','N’utilise pas la plage de 15 niveaux d’iRO ni son tableau « +20 % par membre » comme données Zero.')}</li>
+      </ul>
+
+      <h2 id="death-penalty">${navLabel('Death penalty','Pénalité de mort')}</h2>
+      <p>${navLabel(
+        'On the current Global launch build, a normal death costs 10% of Base EXP progression. This makes survival a major part of leveling efficiency: a slightly easier map can outperform a stronger map if it prevents repeated deaths.',
+        'Sur le build Global actuellement en ligne, une mort normale coûte 10 % de la progression de Base EXP. La survie est donc une composante majeure de l’efficacité du leveling : une map légèrement plus facile peut être plus rentable si elle évite des morts répétées.'
+      )}</p>
+      <ul>
+        <li>${navLabel('Account Death Penalty buffs can reduce the penalty by 50% while active.','Les buffs Account Death Penalty peuvent réduire la pénalité de 50 % pendant leur durée.')}</li>
+        <li>${navLabel('Life Insurance Certificate prevents EXP loss for one death while its effect is active.','Life Insurance Certificate empêche la perte d’EXP pour une mort pendant que son effet est actif.')}</li>
+        <li>${navLabel('Some special maps or content can disable the death penalty; use the rules of that specific content rather than assuming every map behaves the same way.','Certaines maps ou certains contenus spéciaux peuvent désactiver la pénalité de mort ; utilise les règles du contenu concerné au lieu de supposer que toutes les maps fonctionnent de la même façon.')}</li>
+      </ul>
+
+      <h2 id="modifiers">${navLabel('EXP modifiers confirmed on Global','Modificateurs d’EXP confirmés sur Global')}</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Effect','Effet')}</th><th>${navLabel('EXP bonus','Bonus EXP')}</th><th>${navLabel('Notes','Notes')}</th></tr></thead>
+        <tbody>${modifiers.map(([a,b,c])=>`<tr><th>${a}</th><td><strong>${b}</strong></td><td>${c}</td></tr>`).join('')}</tbody>
+      </table></div>
+      <p class="muted-note">${navLabel(
+        'Temporary event percentages change frequently and are intentionally not treated as permanent server rates.',
+        'Les pourcentages des événements temporaires changent fréquemment et ne sont volontairement pas présentés comme des rates permanents du serveur.'
+      )}</p>
+
+      <h2 id="current-cap">${navLabel('Experience and the current cap','Expérience et plafond actuel')}</h2>
+      <p>${navLabel(
+        'The live launch cap documented by this wiki is Base Level 50 and Job Level 50 for the currently available first classes. See the Levels page for the progression flow and the current cap table.',
+        'Le plafond live documenté par ce wiki est le Base Level 50 et le Job Level 50 pour les premières classes actuellement disponibles. Consulte la page Niveaux pour le chemin de progression et le tableau des plafonds actuels.'
+      )}</p>
+      <div class="hero-actions"><a class="button primary" href="#/wiki/levels">${miniIcon('level')}${navLabel('Open Levels','Ouvrir Niveaux')}</a><a class="button" href="#/quests">${miniIcon('quest')}${navLabel('Quest database','Base des quêtes')}</a></div>
+
+      ${officialSources([
+        ['Official GNJOY — Party EXP Returns notice (25 Aug 2026)','https://roz.mygnjoy.com/en/news/notice/69'],
+        ['Official GNJOY — Community Feedback & Party EXP update','https://roz.mygnjoy.com/en/news/notice/70'],
+        ['Ragnarok Zero Global Guide — Lymd','https://sites.google.com/view/rozeroguide'],
+        ['MidgardHub — Complete New Player Guide','https://midgardhub.com/guides/new-player'],
+        ['MidgardHub — Account EXP Buff','https://midgardhub.com/database/items/23463'],
+        ['MidgardHub — Hidden World / PvP Maps','https://midgardhub.com/guides/pvp-maps'],
+        ['Ragnarok Zero Wiki — current leveling guide','https://ragnarokzero.wiki/fr/guides/leveling/']
+      ])}
+      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
+        <li><a href="https://irowiki.org/wiki/Experience" target="_blank" rel="noopener">iRO Wiki — Experience</a> — ${navLabel('used only for the article structure (types of EXP, mechanics, party, modifiers); none of its Renewal percentages or tables were imported.','utilisé uniquement pour la structure de l’article (types d’EXP, mécaniques, Party, modificateurs) ; aucun pourcentage ni tableau Renewal n’a été importé.')}</li>
+      </ul></div>`;
+  }
+
   function faqPage(topic) {
     const faq = [
       [
@@ -3868,6 +4135,8 @@ window.RO_DATA = {
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
+    if (id === 'levels') return levelsPage(topic);
+    if (id === 'experience') return experiencePage(topic);
     if (id === 'faq') return faqPage(topic);
     if (id === 'glossary') return glossaryPage(topic);
 
