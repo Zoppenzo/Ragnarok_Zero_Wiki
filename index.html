@@ -2645,7 +2645,7 @@ window.RO_DATA = {
       id: "stone-curse", name: "Stone Curse", classId: "mage", maxLevel: 10, type: "Active", role: "supportive", target: "Enemy", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/16.webp",
       spCost: null, castTime: "1.0 s (0.2 fixed + 0.8 variable)", castDelay: "ASPD-based", cooldown: "None",
       description: { en: "Attempts to inflict the Stone status on one target. Consumes 1 Red Gemstone on use at Lv.1–5; from Lv.6 onward the gemstone is consumed only when the skill succeeds.", fr: "Tente d'infliger le statut Stone à une cible. Consomme 1 Red Gemstone à l'utilisation aux Lv.1–5 ; à partir du Lv.6, la gemme n'est consommée que si la compétence réussit." },
-      prerequisites: [], notes: { en: "Ragnarok Mage skill. Stone chance rises from 24% to 60%. The status name is kept as Stone to match iRO Wiki terminology.", fr: "Compétence Mage actuelle. La chance de Stone passe de 24 % à 60 %. Le nom du statut reste Stone afin de conserver la terminologie d'iRO Wiki." }, verified: true
+      prerequisites: [], notes: { en: "Ragnarok Mage skill. Stone chance rises from 24% to 60%. The status name is kept as Stone to match the English game terminology.", fr: "Compétence Mage actuelle. La chance de Stone passe de 24 % à 60 %. Le nom du statut reste Stone afin de correspondre à la terminologie anglaise du jeu." }, verified: true
     },
     {
       id: "cold-bolt", name: "Cold Bolt", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Water", image: "https://game.ragnaplace.com/ro/rozg/skill/14.webp",
@@ -3304,7 +3304,7 @@ window.RO_DATA = {
     },
     '#/wiki/party': {
       overview:'complete', 'party-controls':'complete', 'setup-options':'complete',
-      'experience-setup':'complete', 'adventurer-agency':'complete', 'group-leveling':'complete'
+      'experience-setup':'complete', 'adventurer-agency':'complete'
     },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
@@ -3688,8 +3688,7 @@ window.RO_DATA = {
   function generalPageHeader(topic) {
     const title = lang === 'fr' ? (topic.fr || topic.en) : topic.en;
     return `${breadcrumbs([{label:title}])}
-      <div class="article-heading"><h1>${icon(topic.icon || 'guide')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
-      <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok only','Ragnarok uniquement')}</strong><br>${navLabel('This article is written for the current Global version. Classic, Pre-Renewal and other Ragnarok versions are not used as gameplay data here.','Cet article est écrit pour la version Global actuelle. Les données de gameplay Classic, Pre-Renewal ou d’autres versions de Ragnarok ne sont pas utilisées ici.')}</div></div>`;
+      <div class="article-heading"><h1>${icon(topic.icon || 'guide')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>`;
   }
 
   function introductionPage(topic) {
@@ -3710,8 +3709,8 @@ window.RO_DATA = {
         'Les joueurs créent un personnage, commencent en Novice, explorent les villes et les zones extérieures, combattent des monstres, accomplissent des quêtes, améliorent leur équipement, apprennent des compétences et progressent dans le système de classes. La progression du personnage repose à la fois sur le Base Level et le Job Level, avec les caractéristiques STR, AGI, VIT, INT, DEX et LUK.'
       )}</p>
       <p>${navLabel(
-        'Ragnarok modifies and extends many familiar Ragnarok systems, so this wiki treats the Global service as its own ruleset instead of automatically reusing Classic, Pre-Renewal or Renewal data.',
-        'Ragnarok modifie et étend de nombreux systèmes connus de Ragnarok ; ce wiki traite donc le service Global comme un ruleset propre au lieu de réutiliser automatiquement les données Classic, Pre-Renewal ou Renewal.'
+        'Ragnarok Zero: Global has its own progression, balance changes and gameplay systems documented throughout this wiki.',
+        'Ragnarok Zero: Global possède sa propre progression, ses équilibrages et ses systèmes de gameplay, documentés dans ce wiki.'
       )}</p>
 
       <h2 id="zero-systems">${navLabel('Notable systems','Systèmes notables')}</h2>
@@ -3772,8 +3771,8 @@ window.RO_DATA = {
   function gettingStartedPage(topic) {
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
-        'This page covers the safest first steps for a new Ragnarok player without assuming mechanics from other Ragnarok versions.',
-        'Cette page présente les premières étapes les plus sûres pour un nouveau joueur de Ragnarok, sans supposer que les mécaniques des autres versions de Ragnarok sont identiques.'
+        'This page covers the essential first steps for a new Ragnarok Zero: Global player.',
+        'Cette page présente les premières étapes essentielles pour un nouveau joueur de Ragnarok Zero: Global.'
       )}</p>
       ${toc([
         {id:'install',label:navLabel('Install the game','Installer le jeu')},
@@ -3919,8 +3918,8 @@ window.RO_DATA = {
 
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
-        'This page lists shortcuts and commands for the current Global client. Generic iRO Classic commands are excluded when they are not known to work on the current server.',
-        'Cette page liste les raccourcis et commandes du client Global actuel. Les commandes génériques d’iRO Classic sont exclues lorsqu’elles ne sont pas connues comme fonctionnelles sur le serveur actuel.'
+        'This page lists shortcuts and commands for the current Global client.',
+        'Cette page liste les raccourcis et commandes du client Global actuel.'
       )}</p>
 
       <div class="wiki-callout">${navLabel(
@@ -4180,11 +4179,6 @@ window.RO_DATA = {
         'L’expérience (EXP) est la ressource de progression utilisée pour augmenter le Base Level et le Job Level. Les deux progressions utilisent des valeurs d’EXP distinctes.'
       )}</p>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Experience rule','Règle d’expérience')}</strong><br>${navLabel(
-        'Do not use iRO Renewal’s level-difference EXP table here. Current Global references document the launch behavior without that Renewal scaling table, so it is intentionally absent here.',
-        'N’utilise pas ici le tableau iRO Renewal de modification d’EXP selon l’écart de niveau. Ce système n’est pas appliqué de cette manière sur le serveur Global actuel.'
-      )}</div></div>
-
       ${toc([
         {id:'types',label:navLabel('Base EXP and Job EXP','Base EXP et Job EXP')},
         {id:'earning',label:navLabel('Earning experience','Gagner de l’expérience')},
@@ -4220,19 +4214,19 @@ window.RO_DATA = {
 
       <h2 id="monster-exp">${navLabel('Experience from monsters','Expérience des monstres')}</h2>
       <p>${navLabel(
-        'Each monster has its own Base EXP and Job EXP reward. The values shown on this wiki are for the current Global server and are not replaced by iRO Classic, Pre-Renewal or Renewal monster EXP.',
-        'Chaque monstre possède sa propre récompense de Base EXP et de Job EXP. Les valeurs affichées sur ce wiki correspondent au serveur Global actuel et ne sont pas remplacées par celles d’iRO Classic, Pre-Renewal ou Renewal.'
+        'Each monster has its own Base EXP and Job EXP reward. The monster database lists the current Global values.',
+        'Chaque monstre possède sa propre récompense de Base EXP et de Job EXP. La base de monstres affiche les valeurs actuelles de Global.'
       )}</p>
       <p>${navLabel(
-        'On the current Global server, monster EXP is not reduced through the iRO Renewal level-difference table. A lower-level monster can therefore still be efficient if you can defeat it much faster.',
-        'Sur le serveur Global actuel, l’EXP d’un monstre n’est pas réduite selon le tableau d’écart de niveau d’iRO Renewal. Un monstre de niveau inférieur peut donc rester intéressant si tu peux le vaincre beaucoup plus rapidement.'
+        'Monster EXP is not reduced by a level-difference scaling table on the current Global server. A lower-level monster can therefore still be efficient if you can defeat it much faster.',
+        'L’EXP des monstres n’est pas réduite par un tableau de pénalité selon l’écart de niveau sur le serveur Global actuel. Un monstre de niveau inférieur peut donc rester intéressant si tu peux le vaincre beaucoup plus rapidement.'
       )}</p>
       <div class="hero-actions"><a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Open monster database','Ouvrir la base de monstres')}</a><a class="button" href="#/leveling">${miniIcon('level')}${navLabel('Leveling Finder','Leveling Finder')}</a></div>
 
       <h2 id="exp-requirements">${navLabel('EXP tables by level','Tables d’EXP par niveau')}</h2>
       <p>${navLabel(
-        'The tables below contain the current Global LV / EXP values. No iRO, Classic, Pre-Renewal or Renewal EXP table is substituted.',
-        'Les tableaux ci-dessous contiennent les valeurs LV / EXP actuelles de Global. Aucun tableau d’EXP iRO, Classic, Pre-Renewal ou Renewal n’est utilisé à leur place.'
+        'The tables below contain the current Global LV / EXP values.',
+        'Les tableaux ci-dessous contiennent les valeurs LV / EXP actuelles de Global.'
       )}</p>
 
       <h3>${navLabel('Base Level EXP — Lv. 1 to 50','Base Level EXP — Nv. 1 à 50')}</h3>
@@ -4264,23 +4258,21 @@ window.RO_DATA = {
       </table></div>
 
       <p class="muted-note">${navLabel(
-        'The numbers are reproduced exactly from the supplied current database table. They are displayed as LV / EXP values without reinterpreting them through an iRO formula.',
-        'Les nombres sont reproduits exactement depuis le tableau de la base actuelle fourni. Ils sont affichés comme valeurs LV / EXP sans être réinterprétés à travers une formule iRO.'
+        'The numbers are reproduced exactly from the supplied current database table.',
+        'Les nombres sont reproduits exactement depuis le tableau de la base actuelle fourni.'
       )}</p>
 
       <h2 id="party-exp">${navLabel('Party experience','Expérience en Party')}</h2>
       <p>${navLabel(
-        'Party EXP is a live-balanced system on Global. Gravity removed the previous Party EXP bonus during the 20 August patch, then announced its return in a revised form for the 27 August maintenance after player feedback.',
-        'L’EXP en Party est un système encore ajusté en direct sur Global. Gravity a retiré l’ancien bonus de Party EXP lors du patch du 20 août, puis a annoncé son retour sous une forme révisée pour la maintenance du 27 août après les retours des joueurs.'
+        'The Party EXP bonus is +10% for each additional member and is capped at +30%. The maximum Party EXP bonus is reached with 4 members.',
+        'Le bonus d’EXP de Party est de +10 % par membre supplémentaire et est plafonné à +30 %. Le bonus maximal d’EXP de Party est atteint à 4 membres.'
       )}</p>
-      <div class="wiki-callout">${navLabel(
-        'Because the operator is still tuning this system, this wiki does not copy iRO’s fixed party table or hard-code an old multiplier. The exact live bonus/range will be updated when current Global values are available.',
-        'Comme l’opérateur ajuste encore ce système, ce wiki ne copie pas le tableau fixe d’iRO et ne fige pas un ancien multiplicateur. Le bonus et la portée exacts seront ajoutés lorsque les valeurs Global actuelles seront disponibles.'
-      )}</div>
       <ul>
-        <li>${navLabel('Party EXP sharing must be enabled by the Party leader.','Le partage d’EXP doit être activé par le chef de Party.')}</li>
-        <li>${navLabel('Current Global guides warn that when the Party composition changes, the sharing setting may need to be enabled again.','Les guides Global actuels signalent qu’après un changement dans la composition de la Party, le partage peut devoir être réactivé.')}</li>
-        <li>${navLabel('Do not use the iRO 15-level share range or iRO “+20% per member” table as current data.','N’utilise pas la plage de 15 niveaux d’iRO ni son tableau « +20 % par membre » comme données actuelles.')}</li>
+        <li>${navLabel('2 members: +10% Party EXP.','2 membres : +10 % d’EXP de Party.')}</li>
+        <li>${navLabel('3 members: +20% Party EXP.','3 membres : +20 % d’EXP de Party.')}</li>
+        <li>${navLabel('4 or more members: +30% Party EXP cap.','4 membres ou plus : plafond de +30 % d’EXP de Party.')}</li>
+        <li>${navLabel('Shared EXP must be enabled by the Party leader.','Shared EXP doit être activé par le chef de Party.')}</li>
+        <li>${navLabel('If a member leaves, check the setting because Shared EXP can return to Individual.','Si un membre quitte la Party, vérifie le réglage car Shared EXP peut repasser sur Individual.')}</li>
       </ul>
 
       <h2 id="death-penalty">${navLabel('Death penalty','Pénalité de mort')}</h2>
@@ -4561,8 +4553,8 @@ window.RO_DATA = {
 
       <h2 id="unconfirmed">${navLabel('Incomplete mechanics','Mécaniques incomplètes')}</h2>
       <div class="notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div>${navLabel(
-        'Only partial information is available for these calculations, so complete Renewal formulas are not copied here as substitutes.',
-        'Nous n’avons encore que des informations partielles pour ces calculs ; les formules Renewal complètes ne sont donc pas copiées ici pour combler les manques.'
+        'Only partial information is available for these calculations. Unknown formulas are left incomplete until they are verified.',
+        'Nous n’avons encore que des informations partielles pour ces calculs. Les formules inconnues restent incomplètes jusqu’à leur vérification.'
       )}</div></div>
       <ul>
         <li><strong>Carry Weight:</strong> ${navLabel('STR increases carrying capacity. Complete formula: unknown.','La STR augmente la capacité de transport. Formule complète : inconnue.')}</li>
@@ -4593,10 +4585,6 @@ window.RO_DATA = {
   function faqPage(topic) {
     const faq = [
       [
-        navLabel('Is this wiki for Ragnarok Online Classic or Pre-Renewal?','Ce wiki concerne-t-il Ragnarok Online Classic ou Pre-Renewal ?'),
-        navLabel('No. The wiki is specifically for Ragnarok. Other Ragnarok versions may look similar, but their values are not automatically valid here.','Non. Le wiki est spécifiquement dédié à Ragnarok. Les autres versions de Ragnarok peuvent sembler proches, mais leurs valeurs ne sont pas automatiquement valides ici.')
-      ],
-      [
         navLabel('Why are monster, item and skill names kept in English?','Pourquoi les noms de monstres, objets et skills restent-ils en anglais ?'),
         navLabel('To match the international game terminology and make searches easier. Explanations and the interface can still be switched between English and French.','Pour correspondre à la terminologie internationale du jeu et faciliter les recherches. Les explications et l’interface peuvent tout de même être affichées en anglais ou en français.')
       ],
@@ -4618,7 +4606,7 @@ window.RO_DATA = {
       ],
       [
         navLabel('How does Party EXP work?','Comment fonctionne l’EXP en Party ?'),
-        navLabel('EXP distribution applies only to eligible party members on the same map; dead or logged-out characters are excluded.','La distribution d’EXP s’applique uniquement aux membres éligibles présents sur la même map ; les personnages morts ou déconnectés sont exclus.')
+        navLabel('The Party EXP bonus is +10% per additional member, capped at +30%. Shared EXP must be enabled by the Party leader.','Le bonus d’EXP de Party est de +10 % par membre supplémentaire, plafonné à +30 %. Shared EXP doit être activé par le chef de Party.')
       ],
       [
         navLabel('Where should I download the game?','Où télécharger le jeu ?'),
@@ -4626,7 +4614,7 @@ window.RO_DATA = {
       ],
       [
         navLabel('Why are some values missing?','Pourquoi certaines valeurs sont-elles absentes ?'),
-        navLabel('Some values are still unknown and are left empty rather than being replaced with values from another Ragnarok version.','Certaines valeurs sont encore inconnues et restent vides au lieu d’être remplacées par celles d’une autre version de Ragnarok.')
+        navLabel('Some values are still unknown and are left empty until reliable current data is available.','Certaines valeurs sont encore inconnues et restent vides jusqu’à ce que des données actuelles fiables soient disponibles.')
       ],
       [
         navLabel('Is this an official Gravity website?','Ce site est-il un site officiel de Gravity ?'),
@@ -5815,17 +5803,8 @@ window.RO_DATA = {
   function partyPage(topic) {
     const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
     const expRows = [
-      [2,'120%','60%'],
-      [3,'140%','47%'],
-      [4,'160%','40%'],
-      [5,'180%','36%'],
-      [6,'200%','33%'],
-      [7,'220%','31%'],
-      [8,'240%','30%'],
-      [9,'260%','29%'],
-      [10,'280%','28%'],
-      [11,'300%','27%'],
-      [12,'320%','27%']
+      [2,'+10%'], [3,'+20%'], [4,'+30%'], [5,'+30%'], [6,'+30%'],
+      [7,'+30%'], [8,'+30%'], [9,'+30%'], [10,'+30%'], [11,'+30%'], [12,'+30%']
     ];
     const commandRows = [
       ['P',navLabel('Open the Party window.','Ouvre la fenêtre de Party.')],
@@ -5847,8 +5826,7 @@ window.RO_DATA = {
         {id:'party-controls',label:navLabel('Creating and managing a Party','Créer et gérer une Party')},
         {id:'setup-options',label:navLabel('Setup Options','Options de groupe')},
         {id:'experience-setup',label:navLabel('Experience Setup','Partage de l’EXP')},
-        {id:'adventurer-agency',label:'Adventurer Agency'},
-        {id:'group-leveling',label:navLabel('Group Leveling','Leveling en groupe')}
+        {id:'adventurer-agency',label:'Adventurer Agency'}
       ])}
 
       <h2 id="overview">${navLabel('Overview','Aperçu')}</h2>
@@ -5857,9 +5835,9 @@ window.RO_DATA = {
         'Le système de Party permet de regrouper une équipe, d’afficher ses membres et d’appliquer les réglages du groupe, notamment le partage d’EXP. Le chef de Party gère le groupe et ses principaux réglages. Les Parties sont utiles pour le leveling, les Mémorial Donjons et les autres contenus coopératifs.'
       )}</p>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global Party EXP','EXP de Party actuelle sur Global')}</strong><br>${navLabel(
-        'After the August 20 change, Gravity officially brought back a revamped Party EXP system during the August 27, 2026 maintenance. Gravity confirmed the system itself, while the multipliers below come from Lymd’s latest live tests.',
-        'Après la modification du 20 août, Gravity a officiellement réintroduit un système d’EXP de Party remanié lors de la maintenance du 27 août 2026. Gravity a confirmé le système lui-même, tandis que les multiplicateurs ci-dessous proviennent des derniers tests en jeu de Lymd.'
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Party EXP bonus','Bonus d’EXP de Party')}</strong><br>${navLabel(
+        'The GM team states that Party EXP grants +10% for each additional member, capped at +30%. The maximum Party EXP bonus is reached with 4 members.',
+        'L’équipe GM indique que l’EXP de Party donne +10 % par membre supplémentaire, avec un plafond à +30 %. Le bonus maximal d’EXP de Party est atteint à 4 membres.'
       )}</div></div>
 
       <h2 id="party-controls">${navLabel('Creating and managing a Party','Créer et gérer une Party')}</h2>
@@ -5885,18 +5863,18 @@ window.RO_DATA = {
 
       <h3>${navLabel('Item distribution','Distribution des objets')}</h3>
       <p>${navLabel(
-        'The Party window also contains item-distribution settings. The old iRO item-sharing modes are not copied here as Zero data until the exact Global labels and behavior are verified directly.',
-        'La fenêtre de Party contient aussi des réglages de distribution des objets. Les anciens modes de partage d’iRO ne sont pas repris ici comme données Zero tant que les intitulés et le comportement exacts de Global ne sont pas vérifiés directement.'
+        'The Party window also contains item-distribution settings. The exact options will be documented as they are checked in the current client.',
+        'La fenêtre de Party contient aussi des réglages de distribution des objets. Les options exactes seront documentées au fur et à mesure de leur vérification dans le client actuel.'
       )}</p>
 
       <h2 id="experience-setup">${navLabel('Experience Setup','Partage de l’EXP')}</h2>
       <p>${navLabel(
-        'According to Lymd’s latest live tests, the current Party bonus increases total EXP by 20 percentage points for each additional character: 120% total EXP with 2 characters, up to 320% with 12. The result is then divided between eligible members.',
-        'D’après les derniers tests en jeu de Lymd, le bonus de Party actuel augmente l’EXP totale de 20 points de pourcentage par personnage supplémentaire : 120 % d’EXP totale à 2 personnages, jusqu’à 320 % à 12. Le résultat est ensuite réparti entre les membres éligibles.'
+        'Party EXP gains +10% for each additional member and reaches its +30% cap at 4 members. Adding more members does not increase the Party EXP bonus beyond that cap.',
+        'L’EXP de Party gagne +10 % par membre supplémentaire et atteint son plafond de +30 % à 4 membres. Ajouter davantage de membres n’augmente pas le bonus d’EXP de Party au-delà de ce plafond.'
       )}</p>
       <div class="table-wrap"><table>
-        <thead><tr><th>${navLabel('Characters','Personnages')}</th><th>${navLabel('Total EXP','EXP totale')}</th><th>${navLabel('Per person','Par personne')}</th></tr></thead>
-        <tbody>${expRows.map(([n,total,each])=>`<tr><th>${n}</th><td>${total}</td><td>${each}</td></tr>`).join('')}</tbody>
+        <thead><tr><th>${navLabel('Party members','Membres de la Party')}</th><th>${navLabel('Party EXP bonus','Bonus d’EXP de Party')}</th></tr></thead>
+        <tbody>${expRows.map(([n,bonus])=>`<tr><th>${n}</th><td><strong>${bonus}</strong></td></tr>`).join('')}</tbody>
       </table></div>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
@@ -5929,17 +5907,6 @@ window.RO_DATA = {
         'Après le départ d’un membre, vérifie immédiatement le réglage d’EXP et remets-le sur Shared s’il est repassé sur Individual.'
       )}</div>
 
-      <h2 id="group-leveling">${navLabel('Group Leveling','Leveling en groupe')}</h2>
-      <p>${navLabel(
-        'A coordinated Party can fight in areas that would be uncomfortable solo. Lymd notes that well-built groups of roughly 10–12 players can move into harder leveling areas earlier, while smaller duo/trio setups can work around a mobber, a damage dealer and a support.',
-        'Une Party coordonnée peut combattre dans des zones qui seraient difficiles en solo. Lymd indique que des groupes bien construits d’environ 10 à 12 joueurs peuvent aller plus tôt dans des zones de leveling plus difficiles, tandis que les petits groupes duo/trio peuvent s’organiser autour d’un mobber, d’un damage dealer et d’un support.'
-      )}</p>
-      <ul>
-        <li>${navLabel('Acolyte support is especially useful when a group lacks HIT: Blessing and Increase Agi improve the group’s consistency.','Un Acolyte est particulièrement utile lorsque le groupe manque de HIT : Blessing et Increase Agi améliorent la régularité du groupe.')}</li>
-        <li>${navLabel('Pneuma can make ranged-monster areas such as Parasite maps much safer for a coordinated group.','Pneuma peut rendre les zones avec des monstres à distance, comme les maps de Parasite, beaucoup plus sûres pour un groupe coordonné.')}</li>
-        <li>${navLabel('For Adventurer Agency listings, always state both the area and the channel so new members can actually find the Party.','Pour les annonces de l’Adventurer Agency, indique toujours la zone et le channel afin que les nouveaux membres puissent réellement retrouver la Party.')}</li>
-      </ul>
-
       <div class="hero-actions">
         <a class="button primary" href="#/wiki/experience">${miniIcon('level')}${navLabel('Experience','Expérience')}</a>
         <a class="button" href="#/wiki/basic-controls">${miniIcon('tools')}${navLabel('Basic Controls','Contrôles de base')}</a>
@@ -5969,7 +5936,6 @@ window.RO_DATA = {
     const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
     return `${breadcrumbs([{label:title}])}
       <div class="article-heading"><h1>${icon(topic.icon || 'guide')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok article shell','Structure d’article Ragnarok')}</strong><br>${navLabel('This page is part of the current Ragnarok wiki structure. No Pre-Renewal gameplay values have been copied into it.','Cette page fait partie de la structure actuelle du wiki Ragnarok. Aucune valeur de gameplay Pre-Renewal n’y a été copiée.')}</div></div>
       <h2>${navLabel('Overview','Aperçu')}</h2>
       <p>${navLabel('version-specific information for this topic will be added here when it becomes available. The page is already linked from the main page and sidebar so the final wiki structure is ready.','Les informations propres à cette version pour ce sujet seront ajoutées ici après vérification. La page est déjà reliée depuis l’accueil et la barre latérale afin que la structure finale du wiki soit prête.')}</p>
       <h2>${navLabel('Ragnarok data status','État des données Ragnarok')}</h2>
@@ -6428,11 +6394,6 @@ window.RO_DATA = {
         'Les skills sont des actions spéciales et des effets passifs appris via la Job Class du personnage. La liste exacte des skills, leurs prérequis et leurs niveaux maximum dépendent de la classe.'
       )}</p>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Version-specific data','Données propres à cette version')}</strong><br>${navLabel(
-        'Cast, cooldown and skill values on this page are specific to the current Global server and are not replaced by iRO values.',
-        'Les valeurs de cast, cooldown et les données de skills de cette page sont propres au serveur Global actuel et ne sont pas remplacées par des valeurs iRO.'
-      )}</div></div>
-
       ${toc([
         {id:'types',label:navLabel('Skill types','Types de skills')},
         {id:'usage',label:navLabel('Skill usage phases','Phases d’utilisation')},
@@ -6485,8 +6446,8 @@ window.RO_DATA = {
         <li>${navLabel('This is the reducible part of casting affected by cast-speed mechanics such as DEX / INT and effects that explicitly modify Variable Casting Time.','Il s’agit de la partie réductible du cast affectée par les mécaniques de vitesse d’incantation comme DEX / INT et par les effets qui modifient explicitement la Variable Casting Time.')}</li>
         <li>${navLabel('Phen Card is an example: casting cannot be interrupted, but Variable Casting Time is increased by 25%.','Phen Card est un exemple : le cast ne peut pas être interrompu, mais la Variable Casting Time augmente de 25 %.')}</li>
         <li><strong>${navLabel('No universal formula is published here yet.','Aucune formule universelle n’est encore publiée ici.')}</strong> ${navLabel(
-          'The commonly quoted Renewal formula based on 2×DEX + INT is not used here because current data does not establish it for the server.',
-          'La formule Renewal souvent citée basée sur 2×DEX + INT n’est pas utilisée ici, car les données actuelles ne l’établissent pas pour le serveur.'
+          'The exact DEX / INT formula has not yet been verified for the current server.',
+          'La formule exacte basée sur DEX / INT n’est pas encore vérifiée pour le serveur actuel.'
         )}</li>
       </ul>
 
@@ -8005,7 +7966,7 @@ window.RO_DATA = {
     const classGenders = classGenderList(c.id);
     const spriteBlock = `<div class="class-infobox-sprites ${classGenders.length===1?'single':''}">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot(c.id,g,false)}</div>`).join('')}</div>`;
     const status = c.releaseStatus === 'coming-soon' ? navLabel('Coming soon','Bientôt disponible') : navLabel('Available','Disponible');
-    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:c.name}])}${demoAlert()}<article class="article-with-infobox"><div class="article-heading"><h1>${icon('class')}${esc(c.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox class-infobox"><div class="infobox-title">${esc(c.name)}<span class="infobox-subtitle">Class</span></div>${spriteBlock}<table><tbody>${infoRow(t('tier'),String(c.tier))}${infoRow(t('status'),status)}${infoRow(t('parentClass'),c.parentId?`<a href="#/classes/${c.parentId}">${esc(getClass(c.parentId)?.name||c.parentId)}</a>`:t('none'))}${infoRow(t('skills'),String(skills.length))}</tbody></table></aside><div class="article-body"><p class="article-lead">${esc(txt(c.description))}</p>${c.releaseStatus==='coming-soon'?`<div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Upcoming class','Classe à venir')}</strong><br>${navLabel('This page is prepared in advance. No Classic or Pre-Renewal gameplay values are used as Ragnarok data.','Cette page est préparée à l’avance. Aucune valeur de gameplay Classic ou Pre-Renewal n’est utilisée comme donnée Ragnarok.')}</div></div>`:''}${toc([{id:'skills',label:t('skillTree')},{id:'notes',label:t('notes')}])}<h2 id="skills">${t('skillTree')}</h2><div class="skill-tree">${nodes}</div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(c.notes))}</div>${classSeeAlso(c)}</div></article>`;
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:c.name}])}${demoAlert()}<article class="article-with-infobox"><div class="article-heading"><h1>${icon('class')}${esc(c.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox class-infobox"><div class="infobox-title">${esc(c.name)}<span class="infobox-subtitle">Class</span></div>${spriteBlock}<table><tbody>${infoRow(t('tier'),String(c.tier))}${infoRow(t('status'),status)}${infoRow(t('parentClass'),c.parentId?`<a href="#/classes/${c.parentId}">${esc(getClass(c.parentId)?.name||c.parentId)}</a>`:t('none'))}${infoRow(t('skills'),String(skills.length))}</tbody></table></aside><div class="article-body"><p class="article-lead">${esc(txt(c.description))}</p>${c.releaseStatus==='coming-soon'?`<div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Upcoming class','Classe à venir')}</strong><br>${navLabel('This page is prepared in advance and will be completed when the class becomes playable on Global.','Cette page est préparée à l’avance et sera complétée lorsque la classe deviendra jouable sur Global.')}</div></div>`:''}${toc([{id:'skills',label:t('skillTree')},{id:'notes',label:t('notes')}])}<h2 id="skills">${t('skillTree')}</h2><div class="skill-tree">${nodes}</div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(c.notes))}</div>${classSeeAlso(c)}</div></article>`;
   }
 
   function questDetail(id) {
