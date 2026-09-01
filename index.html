@@ -3941,6 +3941,269 @@ window.RO_DATA = {
       </ul></div>`;
   }
 
+  function statsPage(topic) {
+    const primaryStats = [
+      [
+        'STR',
+        navLabel('Strength','Force'),
+        navLabel('Primary physical stat for melee Status ATK. It also contributes a smaller amount to ranged Status ATK.','Statistique physique principale du Status ATK au corps-à-corps. Elle contribue aussi plus faiblement au Status ATK à distance.'),
+        navLabel('Melee ATK, ranged ATK contribution, carry weight','ATK mêlée, contribution ATK distance, poids transportable')
+      ],
+      [
+        'AGI',
+        navLabel('Agility','Agilité'),
+        navLabel('Raises FLEE directly, contributes to Soft DEF and is one of the main stats involved in attack speed.','Augmente directement la FLEE, contribue à la Soft DEF et fait partie des statistiques principales impliquées dans la vitesse d’attaque.'),
+        navLabel('FLEE, Soft DEF, ASPD','FLEE, Soft DEF, ASPD')
+      ],
+      [
+        'VIT',
+        navLabel('Vitality','Vitalité'),
+        navLabel('Defensive stat that contributes to Soft DEF, Soft MDEF and maximum HP.','Statistique défensive qui contribue à la Soft DEF, à la Soft MDEF et aux HP maximum.'),
+        navLabel('Max HP, Soft DEF, Soft MDEF','HP max, Soft DEF, Soft MDEF')
+      ],
+      [
+        'INT',
+        navLabel('Intelligence','Intelligence'),
+        navLabel('Primary magic stat. It heavily increases Status MATK, contributes to Soft MDEF and also affects SP and variable casting.','Statistique magique principale. Elle augmente fortement le Status MATK, contribue à la Soft MDEF et affecte aussi les SP et l’incantation variable.'),
+        navLabel('MATK, Max SP, Soft MDEF, cast time','MATK, SP max, Soft MDEF, temps d’incantation')
+      ],
+      [
+        'DEX',
+        navLabel('Dexterity','Dextérité'),
+        navLabel('Primary ranged physical stat. It raises HIT, contributes to melee and magic attack, and affects variable casting and attack speed.','Statistique physique principale à distance. Elle augmente le HIT, contribue à l’attaque de mêlée et magique, et affecte l’incantation variable ainsi que la vitesse d’attaque.'),
+        navLabel('Ranged ATK, HIT, MATK contribution, cast time, ASPD','ATK distance, HIT, contribution MATK, cast time, ASPD')
+      ],
+      [
+        'LUK',
+        navLabel('Luck','Chance'),
+        navLabel('Hybrid secondary stat that contributes to CRIT, ATK, MATK, HIT, FLEE and Perfect Dodge.','Statistique secondaire hybride qui contribue au CRIT, à l’ATK, au MATK, au HIT, à la FLEE et à la Perfect Dodge.'),
+        navLabel('CRIT, ATK, MATK, HIT, FLEE, Perfect Dodge','CRIT, ATK, MATK, HIT, FLEE, Perfect Dodge')
+      ]
+    ];
+
+    const verifiedFormulas = [
+      [
+        'Status ATK (Melee)',
+        'floor(STR + DEX / 5 + LUK / 3 + BaseLv / 4)',
+        navLabel('Used for melee weapons. STR is the main stat. This Status ATK share is always Neutral.','Utilisé avec les armes de mêlée. STR est la statistique principale. Cette part de Status ATK est toujours Neutre.')
+      ],
+      [
+        'Status ATK (Ranged)',
+        'floor(DEX + STR / 5 + LUK / 3 + BaseLv / 4)',
+        navLabel('Used for ranged weapons such as bows. DEX is the main stat.','Utilisé avec les armes à distance comme les arcs. DEX est la statistique principale.')
+      ],
+      [
+        'Status MATK',
+        'INT + floor(INT / 2) + floor(DEX / 5) + floor(LUK / 3) + floor(BaseLv / 4)',
+        navLabel('Magic attack coming from character stats before equipment contributions.','Attaque magique provenant des statistiques du personnage avant les contributions de l’équipement.')
+      ],
+      [
+        'HIT',
+        '175 + BaseLv + DEX + floor(LUK / 3)',
+        navLabel('Base accuracy value before flat HIT bonuses from equipment.','Valeur de précision de base avant les bonus HIT fixes de l’équipement.')
+      ],
+      [
+        'FLEE',
+        '100 + BaseLv + AGI + floor(LUK / 5)',
+        navLabel('Base normal-dodge value before flat FLEE bonuses from equipment.','Valeur d’esquive normale de base avant les bonus FLEE fixes de l’équipement.')
+      ],
+      [
+        'CRIT',
+        '1 + LUK × 0.3 + BaseLv / 100',
+        navLabel('Base critical-hit rate in percent before gear CRIT bonuses.','Taux critique de base en pourcentage avant les bonus CRIT de l’équipement.')
+      ],
+      [
+        'Perfect Dodge',
+        '1 + floor(LUK / 10) + Gear Perfect Dodge',
+        navLabel('Independent physical dodge shown as the second value next to FLEE.','Esquive physique indépendante affichée comme seconde valeur à côté de la FLEE.')
+      ],
+      [
+        'Soft DEF',
+        'max(0, floor((BaseLv + VIT) / 2 + AGI / 5))',
+        navLabel('Flat physical reduction applied after the percentage reduction from Hard DEF.','Réduction physique fixe appliquée après la réduction en pourcentage de la Hard DEF.')
+      ],
+      [
+        'Soft MDEF',
+        'max(0, floor(INT + BaseLv / 4 + (DEX + VIT) / 5))',
+        navLabel('Magic defense coming from stats and Base Level.','Défense magique provenant des statistiques et du Base Level.')
+      ]
+    ];
+
+    const secondaryStats = [
+      ['ATK', navLabel('Physical attack. Zero displays the stat-derived part separately from the equipment / weapon part.','Attaque physique. Zero affiche séparément la partie provenant des statistiques et celle provenant de l’équipement / de l’arme.')],
+      ['MATK', navLabel('Magic attack. Status MATK is derived mainly from INT, with smaller DEX, LUK and Base Level contributions.','Attaque magique. Le Status MATK provient surtout de l’INT, avec de plus petites contributions de DEX, LUK et du Base Level.')],
+      ['DEF', navLabel('Physical defense is split between Soft DEF from stats/level and Hard DEF from equipment and refinement.','La défense physique est séparée entre la Soft DEF provenant des stats/niveau et la Hard DEF provenant de l’équipement et du refine.')],
+      ['MDEF', navLabel('Magic defense is likewise split between Soft MDEF and equipment-derived Hard MDEF.','La défense magique est également séparée entre Soft MDEF et Hard MDEF provenant de l’équipement.')],
+      ['HIT', navLabel('Accuracy used to land physical attacks. DEX is the main controllable stat, with a smaller LUK contribution.','Précision utilisée pour toucher avec les attaques physiques. DEX est la principale statistique contrôlable, avec une contribution plus faible de LUK.')],
+      ['FLEE', navLabel('Normal physical evasion. AGI is the main stat and LUK adds a smaller contribution.','Esquive physique normale. AGI est la statistique principale et LUK apporte une contribution plus faible.')],
+      ['CRIT', navLabel('Critical-hit rate. LUK is the primary stat contribution.','Taux de coup critique. LUK est la principale contribution provenant des statistiques.')],
+      ['Perfect Dodge', navLabel('Separate lucky dodge that can avoid physical attacks independently from normal FLEE.','Esquive chanceuse séparée pouvant éviter les attaques physiques indépendamment de la FLEE normale.')],
+      ['ASPD', navLabel('Attack speed. AGI and DEX matter, but the exact value also depends on class, weapon, shield, skills, potions and other bonuses.','Vitesse d’attaque. AGI et DEX comptent, mais la valeur exacte dépend aussi de la classe, de l’arme, du bouclier, des skills, potions et autres bonus.')],
+      ['HP / SP', navLabel('Maximum HP scales with VIT and maximum SP with INT, on top of class- and level-dependent base curves.','Les HP maximum évoluent avec VIT et les SP maximum avec INT, en plus de courbes de base dépendantes de la classe et du niveau.')]
+    ];
+
+    return `${generalPageHeader(topic)}
+      <p class="article-lead">${navLabel(
+        'Ragnarok Zero: Global uses six primary character stats: STR, AGI, VIT, INT, DEX and LUK. These stats feed into secondary combat values such as ATK, MATK, HIT, FLEE, DEF, MDEF and CRIT.',
+        'Ragnarok Zero: Global utilise six statistiques principales : STR, AGI, VIT, INT, DEX et LUK. Ces statistiques alimentent ensuite des valeurs de combat secondaires comme ATK, MATK, HIT, FLEE, DEF, MDEF et CRIT.'
+      )}</p>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero-specific formulas','Formules spécifiques à Zero')}</strong><br>${navLabel(
+        'The exact formulas shown on this page are limited to values verified in-game on Ragnarok Zero: Global. Formulas that are still unconfirmed for Global, such as the complete ASPD and variable-cast calculations, are deliberately not presented as established facts.',
+        'Les formules exactes affichées sur cette page sont limitées aux valeurs vérifiées en jeu sur Ragnarok Zero: Global. Les formules qui ne sont pas encore confirmées sur Global, comme les calculs complets d’ASPD et d’incantation variable, ne sont volontairement pas présentées comme certaines.'
+      )}</div></div>
+
+      ${toc([
+        {id:'primary',label:navLabel('Primary stats','Statistiques principales')},
+        {id:'str',label:'STR'},
+        {id:'agi',label:'AGI'},
+        {id:'vit',label:'VIT'},
+        {id:'int',label:'INT'},
+        {id:'dex',label:'DEX'},
+        {id:'luk',label:'LUK'},
+        {id:'derived',label:navLabel('Derived stats','Statistiques dérivées')},
+        {id:'formulas',label:navLabel('Verified formulas','Formules vérifiées')},
+        {id:'defense',label:navLabel('Soft vs Hard defense','Soft vs Hard defense')},
+        {id:'unconfirmed',label:navLabel('Not fully verified yet','Pas encore totalement vérifié')}
+      ])}
+
+      <h2 id="primary">${navLabel('Primary stats','Statistiques principales')}</h2>
+      <p>${navLabel(
+        'Status Points earned through Base Level progression are allocated to these six attributes. Bonuses from a job, equipment, cards or skills are added on top and do not consume the character’s Status Points.',
+        'Les Status Points obtenus grâce au Base Level sont répartis entre ces six attributs. Les bonus provenant de la classe, de l’équipement, des cartes ou des skills s’ajoutent par-dessus et ne consomment pas les Status Points du personnage.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Stat','Stat')}</th><th>${navLabel('Name','Nom')}</th><th>${navLabel('Main effect','Effet principal')}</th><th>${navLabel('Main derived values','Valeurs dérivées principales')}</th></tr></thead>
+        <tbody>${primaryStats.map(([abbr,name,desc,effects])=>`<tr><th><strong>${abbr}</strong></th><td>${name}</td><td>${desc}</td><td>${effects}</td></tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="str">STR — ${navLabel('Strength','Force')}</h2>
+      <p>${navLabel(
+        'STR is the main offensive stat for melee physical attacks. In Zero’s verified Status ATK formula, every point of STR contributes directly to melee Status ATK. With a ranged weapon, STR still contributes, but only at one fifth of its value.',
+        'STR est la statistique offensive principale pour les attaques physiques de mêlée. Dans la formule de Status ATK vérifiée sur Zero, chaque point de STR contribue directement au Status ATK de mêlée. Avec une arme à distance, STR contribue encore, mais seulement à hauteur d’un cinquième de sa valeur.'
+      )}</p>
+      <ul>
+        <li>${navLabel('Main stat for melee Status ATK.','Statistique principale du Status ATK de mêlée.')}</li>
+        <li>${navLabel('Smaller contribution to ranged Status ATK: floor(STR / 5).','Contribution plus faible au Status ATK à distance : floor(STR / 5).')}</li>
+        <li>${navLabel('Also increases carry-weight capacity; the exact complete weight formula is not treated as fully verified on this page yet.','Augmente aussi la capacité de poids transportable ; la formule complète exacte du poids n’est pas encore considérée comme totalement vérifiée sur cette page.')}</li>
+      </ul>
+
+      <h2 id="agi">AGI — ${navLabel('Agility','Agilité')}</h2>
+      <p>${navLabel(
+        'AGI is the main stat for normal evasion and one of the central attack-speed stats. It also contributes to Soft DEF.',
+        'AGI est la statistique principale de l’esquive normale et l’une des statistiques centrales de la vitesse d’attaque. Elle contribue également à la Soft DEF.'
+      )}</p>
+      <ul>
+        <li>${navLabel('+1 base FLEE per point of AGI.','+1 FLEE de base par point d’AGI.')}</li>
+        <li>${navLabel('Every 5 AGI contributes 1 point inside the verified Soft DEF formula.','Chaque tranche de 5 AGI apporte 1 point dans la formule vérifiée de Soft DEF.')}</li>
+        <li>${navLabel('ASPD depends on AGI and DEX together with class, weapon, shield and buffs; no unverified full formula is shown here.','L’ASPD dépend de l’AGI et de la DEX ainsi que de la classe, de l’arme, du bouclier et des buffs ; aucune formule complète non vérifiée n’est affichée ici.')}</li>
+      </ul>
+
+      <h2 id="vit">VIT — ${navLabel('Vitality','Vitalité')}</h2>
+      <p>${navLabel(
+        'VIT is the main survivability stat. It increases the character’s HP scaling and directly enters both the verified Soft DEF and Soft MDEF formulas.',
+        'VIT est la statistique principale de survie. Elle augmente la progression des HP du personnage et entre directement dans les formules vérifiées de Soft DEF et Soft MDEF.'
+      )}</p>
+      <ul>
+        <li>${navLabel('Contributes strongly to Soft DEF together with Base Level.','Contribue fortement à la Soft DEF avec le Base Level.')}</li>
+        <li>${navLabel('Every 5 combined DEX + VIT contributes to Soft MDEF through the verified formula.','Chaque tranche de 5 dans la somme DEX + VIT contribue à la Soft MDEF via la formule vérifiée.')}</li>
+        <li>${navLabel('Max HP scaling uses VIT, but the exact class-by-class base HP curves are not yet fully verified for every current class.','La progression des HP max utilise VIT, mais les courbes de HP de base propres à chaque classe ne sont pas encore totalement vérifiées pour toutes les classes actuelles.')}</li>
+      </ul>
+
+      <h2 id="int">INT — ${navLabel('Intelligence','Intelligence')}</h2>
+      <p>${navLabel(
+        'INT is the main magic-attack stat. It is the largest contributor to Status MATK and counts in full in the verified Soft MDEF formula.',
+        'INT est la statistique principale d’attaque magique. Elle est la plus grosse contribution au Status MATK et compte entièrement dans la formule vérifiée de Soft MDEF.'
+      )}</p>
+      <ul>
+        <li>${navLabel('Primary contributor to Status MATK.','Contribution principale au Status MATK.')}</li>
+        <li>${navLabel('+1 Soft MDEF contribution per point before the other terms and final floor operation.','Contribution de +1 Soft MDEF par point avant les autres termes et l’arrondi final.')}</li>
+        <li>${navLabel('Affects Max SP and variable cast time. The complete Global cast-time equation remains unconfirmed.','Affecte les SP max et le temps d’incantation variable. L’équation complète du cast time Global reste non confirmée.')}</li>
+      </ul>
+
+      <h2 id="dex">DEX — ${navLabel('Dexterity','Dextérité')}</h2>
+      <p>${navLabel(
+        'DEX is the main physical stat for ranged weapons and the main controllable source of HIT. It also contributes to melee ATK, MATK, Soft MDEF, ASPD and variable casting.',
+        'DEX est la statistique physique principale des armes à distance et la principale source contrôlable de HIT. Elle contribue aussi à l’ATK de mêlée, au MATK, à la Soft MDEF, à l’ASPD et à l’incantation variable.'
+      )}</p>
+      <ul>
+        <li>${navLabel('+1 base HIT per point of DEX.','+1 HIT de base par point de DEX.')}</li>
+        <li>${navLabel('Main stat for ranged Status ATK.','Statistique principale du Status ATK à distance.')}</li>
+        <li>${navLabel('Every 5 DEX contributes 1 melee Status ATK and 1 Status MATK inside the verified formulas.','Chaque tranche de 5 DEX contribue à 1 Status ATK de mêlée et 1 Status MATK dans les formules vérifiées.')}</li>
+        <li>${navLabel('Also contributes to Soft MDEF and affects variable cast time / ASPD.','Contribue aussi à la Soft MDEF et affecte le temps d’incantation variable / l’ASPD.')}</li>
+      </ul>
+
+      <h2 id="luk">LUK — ${navLabel('Luck','Chance')}</h2>
+      <p>${navLabel(
+        'LUK contributes small amounts to several combat values instead of specializing in only one. Its Zero Global contributions to CRIT, HIT, FLEE, ATK, MATK and Perfect Dodge are all represented in verified formulas.',
+        'LUK apporte de petites quantités à plusieurs valeurs de combat au lieu de se spécialiser dans une seule. Ses contributions Zero Global au CRIT, HIT, FLEE, ATK, MATK et Perfect Dodge apparaissent toutes dans des formules vérifiées.'
+      )}</p>
+      <ul>
+        <li>${navLabel('+0.3% base CRIT per point of LUK, plus the Base Level contribution.','+0,3 % de CRIT de base par point de LUK, auquel s’ajoute la contribution du Base Level.')}</li>
+        <li>${navLabel('Every 3 LUK contributes 1 HIT, 1 melee/ranged Status ATK and 1 Status MATK.','Chaque tranche de 3 LUK contribue à 1 HIT, 1 Status ATK mêlée/distance et 1 Status MATK.')}</li>
+        <li>${navLabel('Every 5 LUK contributes 1 FLEE.','Chaque tranche de 5 LUK contribue à 1 FLEE.')}</li>
+        <li>${navLabel('Every 10 LUK contributes 1 Perfect Dodge.','Chaque tranche de 10 LUK contribue à 1 Perfect Dodge.')}</li>
+        <li>${navLabel('LUK is not treated as an item-drop-rate stat.','LUK n’est pas considérée comme une statistique augmentant le taux de drop des objets.')}</li>
+      </ul>
+
+      <h2 id="derived">${navLabel('Derived stats','Statistiques dérivées')}</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Stat','Stat')}</th><th>${navLabel('Meaning on Zero Global','Signification sur Zero Global')}</th></tr></thead>
+        <tbody>${secondaryStats.map(([name,desc])=>`<tr><th>${name}</th><td>${desc}</td></tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="formulas">${navLabel('Verified Zero Global formulas','Formules Zero Global vérifiées')}</h2>
+      <p>${navLabel(
+        'The following formulas were marked as verified from current-server measurements, with the latest in-game verification dated 18 August 2026 (4 August for ranged Status ATK). floor() means round down.',
+        'Les formules suivantes sont marquées comme vérifiées à partir de mesures sur le serveur actuel, avec une dernière vérification en jeu datée du 18 août 2026 (4 août pour le Status ATK à distance). floor() signifie arrondir à l’entier inférieur.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th style="width:180px">${navLabel('Derived stat','Stat dérivée')}</th><th>${navLabel('Formula','Formule')}</th><th>${navLabel('Explanation','Explication')}</th></tr></thead>
+        <tbody>${verifiedFormulas.map(([name,formula,desc])=>`<tr><th>${name}</th><td><code>${esc(formula)}</code></td><td>${desc}</td></tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="defense">${navLabel('Soft DEF / MDEF and Hard DEF / MDEF','Soft DEF / MDEF et Hard DEF / MDEF')}</h2>
+      <p>${navLabel(
+        'Zero keeps two defensive layers. Soft defense comes from character stats and Base Level. Hard defense comes primarily from equipment and refinement. They are not interchangeable values.',
+        'Zero conserve deux couches de défense. La Soft defense provient des statistiques du personnage et du Base Level. La Hard defense provient principalement de l’équipement et du refine. Ce ne sont pas des valeurs interchangeables.'
+      )}</p>
+      <div class="wiki-feature-list">
+        <div><strong>Soft DEF</strong><p>${navLabel('Derived from Base Level, VIT and AGI. It acts as a flat physical reduction after the percentage armor-defense step.','Dérivée du Base Level, de VIT et d’AGI. Elle agit comme une réduction physique fixe après l’étape de réduction en pourcentage de l’armure.')}</p></div>
+        <div><strong>Hard DEF</strong><p>${navLabel('Provided by armor, shields, other equipment and refinement. It belongs to the equipment-defense side of the calculation.','Fournie par l’armure, les boucliers, les autres équipements et le refine. Elle appartient à la partie défense provenant de l’équipement.')}</p></div>
+        <div><strong>Soft MDEF</strong><p>${navLabel('Derived from INT, Base Level, DEX and VIT.','Dérivée de l’INT, du Base Level, de la DEX et de la VIT.')}</p></div>
+        <div><strong>Hard MDEF</strong><p>${navLabel('Primarily supplied by equipment. The final displayed MDEF combines the stat-derived and equipment-derived portions.','Principalement fournie par l’équipement. La MDEF finale affichée combine les parties provenant des statistiques et de l’équipement.')}</p></div>
+      </div>
+
+      <h2 id="unconfirmed">${navLabel('Mechanics not fully verified yet','Mécaniques pas encore totalement vérifiées')}</h2>
+      <div class="notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div>${navLabel(
+        'Do not copy the complete Renewal formulas for these values into Zero yet. Current Zero references still mark them as unconfirmed or dependent on class-specific measurements.',
+        'Ne copie pas encore les formules Renewal complètes de ces valeurs dans Zero. Les références Zero actuelles les marquent toujours comme non confirmées ou dépendantes de mesures propres à chaque classe.'
+      )}</div></div>
+      <ul>
+        <li><strong>ASPD:</strong> ${navLabel('AGI and DEX definitely matter, but class, weapon, shield, skills and potions are also involved. The full Global formula is still unconfirmed.','AGI et DEX comptent bien, mais la classe, l’arme, le bouclier, les skills et potions interviennent aussi. La formule Global complète reste non confirmée.')}</li>
+        <li><strong>Variable Cast Time:</strong> ${navLabel('DEX and INT reduce it, but this wiki does not yet publish an exact instant-cast threshold as a confirmed Zero rule.','DEX et INT la réduisent, mais ce wiki ne publie pas encore de seuil exact d’instant cast comme règle Zero confirmée.')}</li>
+        <li><strong>Max HP / Max SP:</strong> ${navLabel('VIT and INT scaling is understood, but the underlying Base HP/SP curves have not yet been measured for every current first class.','La progression via VIT et INT est comprise, mais les courbes de Base HP/SP n’ont pas encore été mesurées pour toutes les premières classes actuelles.')}</li>
+        <li><strong>Natural regeneration:</strong> ${navLabel('HP/SP regeneration formulas are still reported with conflicting implementations and remain outside the verified table above.','Les formules de régénération HP/SP sont encore rapportées avec des implémentations contradictoires et restent en dehors du tableau vérifié ci-dessus.')}</li>
+      </ul>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#/tools/build-planner">${miniIcon('tools')}${navLabel('Open Build Planner','Ouvrir le Build Planner')}</a>
+        <a class="button" href="#/wiki/levels">${miniIcon('level')}${navLabel('Levels','Niveaux')}</a>
+        <a class="button" href="#/classes">${miniIcon('class')}${navLabel('Classes','Classes')}</a>
+      </div>
+
+      ${officialSources([
+        ['Prontera.info — Ragnarok Zero Global data & verified formulas','https://roz.prontera.info/mechanics'],
+        ['Ragnarok Zero Global Guide — progression & stat roles','https://roz-global.info/06-progression.html']
+      ])}
+      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
+        <li><a href="https://irowiki.org/wiki/Stats" target="_blank" rel="noopener">iRO Wiki — Stats</a> — ${navLabel(
+          'used only as an article-organization reference (primary stats followed by derived stats). The gameplay formulas on this page come from Zero-specific sources instead.',
+          'utilisé uniquement comme référence d’organisation de l’article (statistiques principales puis statistiques dérivées). Les formules de gameplay de cette page proviennent de sources spécifiques à Zero.'
+        )}</li>
+      </ul></div>`;
+  }
+
   function faqPage(topic) {
     const faq = [
       [
@@ -4236,6 +4499,7 @@ window.RO_DATA = {
     if (id === 'basic-controls') return basicControlsPage(topic);
     if (id === 'levels') return levelsPage(topic);
     if (id === 'experience') return experiencePage(topic);
+    if (id === 'stats') return statsPage(topic);
     if (id === 'faq') return faqPage(topic);
     if (id === 'glossary') return glossaryPage(topic);
 
