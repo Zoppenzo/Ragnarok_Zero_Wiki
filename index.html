@@ -3091,7 +3091,7 @@ window.RO_DATA = {
     { id:'monster-races', group:'Systems & Data', en:'Monster Races', fr:'Races des monstres', icon:'monster' },
     { id:'monster-exclusive-skills', group:'Systems & Data', en:'Monster Skills', fr:'Compétences des monstres' },
     { id:'status-effects', group:'Systems & Data', en:'Status Effects', fr:'Effets de statut' },
-    { id:'card-system', group:'Systems & Data', en:'Card System', fr:'Système de cartes' },
+    { id:'affixes', group:'Systems & Data', en:'Affixes / Random Options', fr:'Affixes / Options aléatoires', icon:'item' },
     { id:'refinement-system', group:'Systems & Data', en:'Refinement', fr:'Raffinement' },
     { id:'crafting', group:'Systems & Data', en:'Crafting', fr:'Craft' },
     { id:'kafra-services', group:'Systems & Data', en:'Kafra & Support Services', fr:'Kafra & services d’assistance' },
@@ -3164,6 +3164,10 @@ window.RO_DATA = {
     },
     '#/wiki/status-effects': {
       'status-list':'partial', 'status-details':'partial', 'status-notes':'partial'
+    },
+    '#/wiki/affixes': {
+      overview:'partial', sources:'partial', categories:'partial',
+      slots:'partial', examples:'partial'
     },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
@@ -3297,6 +3301,7 @@ window.RO_DATA = {
       { title:['Items','Objets'], items:[
         ['#/items','Items & Equipment','Objets & équipement','item'],
         ['#/cards','Card Reference','Référence des cartes','card'],
+        ['#/wiki/affixes','Affixes / Random Options','Affixes / Options aléatoires','item'],
         ['#/wiki/refinement-system','Refinement','Raffinement','tools'],
         ['#/wiki/crafting','Crafting','Craft','item']
       ]},
@@ -4932,6 +4937,119 @@ window.RO_DATA = {
       </div>`;
   }
 
+  function affixesPage(topic) {
+    const sourceTypes = [
+      [navLabel('Monster Drop','Drop de monstre'), navLabel('Random options generated on equipment obtained from normal monster drops.','Options aléatoires générées sur l’équipement obtenu via les drops de monstres.')],
+      [navLabel('MVP Drop','Drop de MVP'), navLabel('Uses its own option pool.','Utilise son propre pool d’options.')],
+      [navLabel('Blacksmith Forging','Forge Blacksmith'), navLabel('Forging can use option pools that differ from normal drops.','La forge peut utiliser des pools d’options différents des drops normaux.')],
+      [navLabel('Activation System','Système d’activation'), navLabel('Activation equipment has dedicated random-option pools.','Les équipements d’activation possèdent des pools d’options dédiés.')],
+      ['Glast Heim', navLabel('A separate source/category listed by the affix database.','Une source/catégorie séparée listée par la base d’affixes.')]
+    ];
+
+    const gearGroups = [
+      ['🛡️','Armor',navLabel('Body armor.','Armures.')],
+      ['🧥','Garment',navLabel('Garment equipment.','Équipements Garment.')],
+      ['🪄','Magic Series',navLabel('Magic-oriented weapons and equipment pools.','Pools d’armes et équipements orientés magie.')],
+      ['⚔️','Melee Series',navLabel('Melee-oriented weapon pools.','Pools d’armes orientés mêlée.')],
+      ['🏹','Ranged Series',navLabel('Ranged-oriented weapon pools.','Pools d’armes orientés distance.')],
+      ['🥾','Shoes',navLabel('Footgear pools.','Pools de chaussures.')]
+    ];
+
+    const armorExamples = [
+      ['Slot 1','MaxHP','150–350'],
+      ['Slot 1','MaxSP','25–50'],
+      ['Slot 1','MaxHP (%)','1–5%'],
+      ['Slot 1','MaxSP (%)','1–5%'],
+      ['Slot 2',navLabel('HP Recovery speed increase','Vitesse de récupération HP'),'15–50%'],
+      ['Slot 2',navLabel('SP Recovery speed increase','Vitesse de récupération SP'),'15–50%'],
+      ['Slot 2','FLEE','5–15'],
+      ['Slot 2','DEF','10–30'],
+      ['Slot 2','MDEF','1–5'],
+      ['Slot 2',navLabel('Received Healing increase','Soins reçus augmentés'),'3–7%'],
+      ['Slot 2',navLabel('Variable Casting reduction','Réduction du Variable Cast'),'5–10%'],
+      ['Slot 2',navLabel('Element-based physical / magical damage reduction','Réduction des dégâts physiques / magiques par élément'),'5–10%'],
+      ['Slot 3','MaxHP','150–350'],
+      ['Slot 3','MaxSP','25–50'],
+      ['Slot 3',navLabel('Race resistance','Résistance à une race'),'3–7%']
+    ];
+
+    return `${generalPageHeader(topic)}
+      <p class="article-lead">${navLabel(
+        'Affixes, also called Random Options, are additional stats generated on equipment. The possible stat and its value depend on the item category, its option slot and the system that produced the equipment.',
+        'Les affixes, aussi appelés Options aléatoires, sont des statistiques supplémentaires générées sur l’équipement. La statistique possible et sa valeur dépendent de la catégorie de l’objet, du slot d’option et du système qui a produit l’équipement.'
+      )}</p>
+
+      ${toc([
+        {id:'overview',label:navLabel('How affixes work','Fonctionnement des affixes')},
+        {id:'sources',label:navLabel('Affix sources','Sources des affixes')},
+        {id:'categories',label:navLabel('Equipment categories','Catégories d’équipement')},
+        {id:'slots',label:navLabel('Option slots','Slots d’options')},
+        {id:'examples',label:navLabel('Armor example','Exemple : Armor')}
+      ])}
+
+      <h2 id="overview">${navLabel('How affixes work','Fonctionnement des affixes')}</h2>
+      <p>${navLabel(
+        'Random options can be added automatically when equipment drops or when it is created through specific systems. A displayed range is not a fixed bonus: the actual value is rolled somewhere inside that range.',
+        'Les options aléatoires peuvent être ajoutées automatiquement lorsqu’un équipement tombe ou lorsqu’il est créé via certains systèmes. Une plage affichée n’est pas un bonus fixe : la valeur réelle est tirée à l’intérieur de cette plage.'
+      )}</p>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('item')}${navLabel('Option pool','Pool d’options')}</strong><p>${navLabel('Each equipment family and source has a defined list of stats it can roll.','Chaque famille d’équipement et chaque source possède une liste définie de statistiques pouvant apparaître.')}</p></div>
+        <div><strong>${miniIcon('tools')}${navLabel('Value range','Plage de valeur')}</strong><p>${navLabel('An affix can roll between its listed minimum and maximum values.','Un affixe peut obtenir une valeur comprise entre son minimum et son maximum indiqués.')}</p></div>
+        <div><strong>${miniIcon('mechanics')}${navLabel('Slot-specific','Dépend du slot')}</strong><p>${navLabel('Slot 1, Slot 2 and Slot 3 do not necessarily share the same possible stats.','Slot 1, Slot 2 et Slot 3 ne proposent pas forcément les mêmes statistiques.')}</p></div>
+      </div>
+
+      <h2 id="sources">${navLabel('Affix sources','Sources des affixes')}</h2>
+      <div class="wiki-feature-list">
+        ${sourceTypes.map(([name,desc])=>`<div><strong>${name}</strong><p>${desc}</p></div>`).join('')}
+      </div>
+
+      <h2 id="categories">${navLabel('Equipment categories','Catégories d’équipement')}</h2>
+      <div class="wiki-feature-list">
+        ${gearGroups.map(([glyph,name,desc])=>`<div><strong><span aria-hidden="true" style="margin-right:7px">${glyph}</span>${name}</strong><p>${desc}</p></div>`).join('')}
+      </div>
+
+      <h2 id="slots">${navLabel('Option slots','Slots d’options')}</h2>
+      <p>${navLabel(
+        'The option slot determines which pool is used. A stat available in Slot 1 is not automatically available in Slot 2 or Slot 3. Pools also change when switching source or equipment category.',
+        'Le slot d’option détermine le pool utilisé. Une statistique disponible en Slot 1 n’est pas automatiquement disponible en Slot 2 ou Slot 3. Les pools changent également selon la source et la catégorie d’équipement.'
+      )}</p>
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
+        'Forging and Activation use unique option pools that are not necessarily the same as normal monster-drop pools.',
+        'La Forge et l’Activation utilisent des pools d’options spécifiques qui ne sont pas forcément les mêmes que ceux des drops de monstres.'
+      )}</div></div>
+
+      <h2 id="examples">${navLabel('Example: Armor from Monster Drop','Exemple : Armor provenant d’un Monster Drop')}</h2>
+      <p>${navLabel(
+        'The table below gives a compact example of how the database separates options by slot. Elemental reductions in Slot 2 exist separately for physical and magical damage, while Slot 3 can roll resistance against monster races.',
+        'Le tableau ci-dessous montre de façon compacte comment la base sépare les options par slot. Les réductions élémentaires du Slot 2 existent séparément pour les dégâts physiques et magiques, tandis que le Slot 3 peut obtenir des résistances aux races de monstres.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr>
+          <th>Slot</th>
+          <th>${navLabel('Possible option','Option possible')}</th>
+          <th>${navLabel('Range','Plage')}</th>
+        </tr></thead>
+        <tbody>
+          ${armorExamples.map(([slot,opt,range])=>`<tr><td>${slot}</td><th>${opt}</th><td>${range}</td></tr>`).join('')}
+        </tbody>
+      </table></div>
+
+      <div class="notice warning-notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div>${navLabel(
+        'Race affixes and card effects are separate systems. Do not assume that a Demi-Human random option follows exactly the same Player interaction rules as a Demi-Human card.',
+        'Les affixes de race et les effets de cartes sont deux systèmes distincts. Il ne faut pas supposer qu’une option aléatoire Demi-Human suit exactement les mêmes règles d’interaction avec les joueurs qu’une carte Demi-Human.'
+      )}</div></div>
+
+      <h2 id="sources-link">${navLabel('Affix database','Base des affixes')}</h2>
+      <div class="source-box"><ul>
+        <li><a href="https://midgardhub.com/tools/affix" target="_blank" rel="noopener">Midgard Community Hub — Zero Gear Affix Simulator</a> — ${navLabel('interactive database for source, equipment category, option slot and value ranges','base interactive pour les sources, catégories d’équipement, slots d’options et plages de valeurs')}</li>
+      </ul></div>
+      <div class="hero-actions">
+        <a class="button primary" href="https://midgardhub.com/tools/affix" target="_blank" rel="noopener">${miniIcon('tools')}${navLabel('Open Affix Simulator','Ouvrir le simulateur d’affixes')}</a>
+        <a class="button" href="#/wiki/monster-races">${miniIcon('monster')}${navLabel('Monster Races','Races des monstres')}</a>
+        <a class="button" href="#/wiki/elements">${miniIcon('mechanics')}${navLabel('Elements','Éléments')}</a>
+      </div>`;
+  }
+
   function statusEffectsPage(topic) {
     const statuses = [
       {
@@ -5298,6 +5416,7 @@ window.RO_DATA = {
     if (id === 'monster-sizes') return monsterSizesPage(topic);
     if (id === 'monster-races') return monsterRacesPage(topic);
     if (id === 'status-effects') return statusEffectsPage(topic);
+    if (id === 'affixes') return affixesPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
