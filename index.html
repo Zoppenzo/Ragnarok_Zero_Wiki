@@ -3703,8 +3703,8 @@ window.RO_DATA = {
 
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
-        'Character progression in Ragnarok Zero: Global is split into two separate level tracks: Base Level for the character itself and Job Level for the current class.',
-        'La progression d’un personnage dans Ragnarok Zero: Global est divisée en deux niveaux distincts : le Base Level pour le personnage lui-même et le Job Level pour sa classe actuelle.'
+        'Character progression is split into two separate level tracks: Base Level for the character itself and Job Level for the current class.',
+        'La progression d’un personnage est divisée en deux niveaux distincts : le Base Level pour le personnage lui-même et le Job Level pour sa classe actuelle.'
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global scope — 1 September 2026','Périmètre Global actuel — 1er septembre 2026')}</strong><br>${navLabel(
@@ -3793,7 +3793,7 @@ window.RO_DATA = {
     const expSources = [
       [
         navLabel('Monster kills','Monstres vaincus'),
-        navLabel('Monsters award separate Base EXP and Job EXP values. Use the Zero monster database for the values of each monster.','Les monstres donnent des valeurs distinctes de Base EXP et de Job EXP. Utilise la base de monstres Zero pour les valeurs propres à chaque monstre.')
+        navLabel('Monsters award separate Base EXP and Job EXP values. Use the monster database for the values of each monster.','Les monstres donnent des valeurs distinctes de Base EXP et de Job EXP. Utilise la base de monstres pour les valeurs propres à chaque monstre.')
       ],
       [
         navLabel('Quests','Quêtes'),
@@ -3882,13 +3882,13 @@ window.RO_DATA = {
 
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
-        'Experience (EXP) is the progression resource used to raise Base Level and Job Level in Ragnarok Zero: Global. The two tracks use separate EXP values.',
-        'L’expérience (EXP) est la ressource de progression utilisée pour augmenter le Base Level et le Job Level dans Ragnarok Zero: Global. Les deux progressions utilisent des valeurs d’EXP distinctes.'
+        'Experience (EXP) is the progression resource used to raise Base Level and Job Level. The two tracks use separate EXP values.',
+        'L’expérience (EXP) est la ressource de progression utilisée pour augmenter le Base Level et le Job Level. Les deux progressions utilisent des valeurs d’EXP distinctes.'
       )}</p>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero-specific rule','Règle spécifique à Zero')}</strong><br>${navLabel(
-        'Do not use iRO Renewal’s level-difference EXP table for Ragnarok Zero: Global. Current Global references document the launch behavior without that Renewal scaling table, so it is intentionally absent here.',
-        'N’utilise pas le tableau iRO Renewal de modification d’EXP selon l’écart de niveau pour Ragnarok Zero: Global. Les références Global actuelles documentent le comportement de lancement sans cette table de scaling Renewal ; elle est donc volontairement absente ici.'
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Experience rule','Règle d’expérience')}</strong><br>${navLabel(
+        'Do not use iRO Renewal’s level-difference EXP table here. Current Global references document the launch behavior without that Renewal scaling table, so it is intentionally absent here.',
+        'N’utilise pas ici le tableau iRO Renewal de modification d’EXP selon l’écart de niveau. Les références Global actuelles documentent le comportement de lancement sans cette table de scaling Renewal ; elle est donc volontairement absente ici.'
       )}</div></div>
 
       ${toc([
@@ -3920,25 +3920,25 @@ window.RO_DATA = {
 
       <h2 id="earning">${navLabel('Ways to earn experience','Façons de gagner de l’expérience')}</h2>
       <div class="table-wrap"><table>
-        <thead><tr><th>${navLabel('Source','Source')}</th><th>${navLabel('How it works on Zero Global','Fonctionnement sur Zero Global')}</th></tr></thead>
+        <thead><tr><th>${navLabel('Source','Source')}</th><th>${navLabel('How it works','Fonctionnement')}</th></tr></thead>
         <tbody>${expSources.map(([a,b])=>`<tr><th>${a}</th><td>${b}</td></tr>`).join('')}</tbody>
       </table></div>
 
       <h2 id="monster-exp">${navLabel('Experience from monsters','Expérience des monstres')}</h2>
       <p>${navLabel(
-        'Each monster has its own Base EXP and Job EXP reward. These are Zero-specific database values and must not be replaced by iRO Classic, Pre-Renewal or Renewal monster EXP.',
-        'Chaque monstre possède sa propre récompense de Base EXP et de Job EXP. Il s’agit de valeurs propres à Zero et elles ne doivent pas être remplacées par l’EXP des monstres d’iRO Classic, Pre-Renewal ou Renewal.'
+        'Each monster has its own Base EXP and Job EXP reward. These values come from the current database and must not be replaced by iRO Classic, Pre-Renewal or Renewal monster EXP.',
+        'Chaque monstre possède sa propre récompense de Base EXP et de Job EXP. Ces valeurs proviennent de la base actuelle et ne doivent pas être remplacées par l’EXP des monstres d’iRO Classic, Pre-Renewal ou Renewal.'
       )}</p>
       <p>${navLabel(
         'The current Global launch behavior does not use the Renewal-style level-difference table shown on iRO Wiki. This is why farming a comfortable lower-level monster can remain useful when its kills per minute are high.',
         'Le comportement actuel du lancement Global n’utilise pas la table Renewal d’écart de niveau affichée sur iRO Wiki. C’est pourquoi farmer un monstre de niveau inférieur mais confortable peut rester rentable si le nombre de kills par minute est élevé.'
       )}</p>
-      <div class="hero-actions"><a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Open Zero monster database','Ouvrir la base de monstres Zero')}</a><a class="button" href="#/leveling">${miniIcon('level')}${navLabel('Leveling Finder','Leveling Finder')}</a></div>
+      <div class="hero-actions"><a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Open monster database','Ouvrir la base de monstres')}</a><a class="button" href="#/leveling">${miniIcon('level')}${navLabel('Leveling Finder','Leveling Finder')}</a></div>
 
       <h2 id="exp-requirements">${navLabel('EXP tables by level','Tables d’EXP par niveau')}</h2>
       <p>${navLabel(
-        'The tables below reproduce the Ragnarok Zero Global LV / EXP values supplied by Encyclop’Elvyl. They are used as a community data source alongside the official GNJOY Game Guide 21. No iRO, Classic, Pre-Renewal or Renewal EXP table has been substituted.',
-        'Les tableaux ci-dessous reprennent les valeurs LV / EXP de Ragnarok Zero Global fournies par Encyclop’Elvyl. Elles sont utilisées comme source communautaire en complément du Guide du jeu officiel GNJOY n°21. Aucun tableau d’EXP iRO, Classic, Pre-Renewal ou Renewal n’a été substitué.'
+        'The tables below reproduce the LV / EXP values supplied by Encyclop’Elvyl. They are used as a community data source alongside the official GNJOY Game Guide 21. No iRO, Classic, Pre-Renewal or Renewal EXP table has been substituted.',
+        'Les tableaux ci-dessous reprennent les valeurs LV / EXP fournies par Encyclop’Elvyl. Elles sont utilisées comme source communautaire en complément du Guide du jeu officiel GNJOY n°21. Aucun tableau d’EXP iRO, Classic, Pre-Renewal ou Renewal n’a été substitué.'
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Sources used','Sources utilisées')}</strong><br>
@@ -4131,7 +4131,7 @@ window.RO_DATA = {
     ];
 
     const secondaryStats = [
-      ['ATK', navLabel('Physical attack. Zero displays the stat-derived part separately from the equipment / weapon part.','Attaque physique. Zero affiche séparément la partie provenant des statistiques et celle provenant de l’équipement / de l’arme.')],
+      ['ATK', navLabel('Physical attack. The interface displays the stat-derived part separately from the equipment / weapon part.','Attaque physique. L’interface affiche séparément la partie provenant des statistiques et celle provenant de l’équipement / de l’arme.')],
       ['MATK', navLabel('Magic attack. Status MATK is derived mainly from INT, with smaller DEX, LUK and Base Level contributions.','Attaque magique. Le Status MATK provient surtout de l’INT, avec de plus petites contributions de DEX, LUK et du Base Level.')],
       ['DEF', navLabel('Physical defense is split between Soft DEF from stats/level and Hard DEF from equipment and refinement.','La défense physique est séparée entre la Soft DEF provenant des stats/niveau et la Hard DEF provenant de l’équipement et du refine.')],
       ['MDEF', navLabel('Magic defense is likewise split between Soft MDEF and equipment-derived Hard MDEF.','La défense magique est également séparée entre Soft MDEF et Hard MDEF provenant de l’équipement.')],
@@ -4145,13 +4145,13 @@ window.RO_DATA = {
 
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
-        'Ragnarok Zero: Global uses six primary character stats: STR, AGI, VIT, INT, DEX and LUK. These stats feed into secondary combat values such as ATK, MATK, HIT, FLEE, DEF, MDEF and CRIT.',
-        'Ragnarok Zero: Global utilise six statistiques principales : STR, AGI, VIT, INT, DEX et LUK. Ces statistiques alimentent ensuite des valeurs de combat secondaires comme ATK, MATK, HIT, FLEE, DEF, MDEF et CRIT.'
+        'Characters use six primary stats: STR, AGI, VIT, INT, DEX and LUK. These stats feed into secondary combat values such as ATK, MATK, HIT, FLEE, DEF, MDEF and CRIT.',
+        'Les personnages utilisent six statistiques principales : STR, AGI, VIT, INT, DEX et LUK. Ces statistiques alimentent ensuite des valeurs de combat secondaires comme ATK, MATK, HIT, FLEE, DEF, MDEF et CRIT.'
       )}</p>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero-specific formulas','Formules spécifiques à Zero')}</strong><br>${navLabel(
-        'The exact formulas shown on this page are limited to values verified in-game on Ragnarok Zero: Global. Formulas that are still unconfirmed for Global, such as the complete ASPD and variable-cast calculations, are deliberately not presented as established facts.',
-        'Les formules exactes affichées sur cette page sont limitées aux valeurs vérifiées en jeu sur Ragnarok Zero: Global. Les formules qui ne sont pas encore confirmées sur Global, comme les calculs complets d’ASPD et d’incantation variable, ne sont volontairement pas présentées comme certaines.'
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Verified formulas','Formules vérifiées')}</strong><br>${navLabel(
+        'The exact formulas shown on this page are limited to values verified in-game on the current server. Formulas that are still unconfirmed for Global, such as the complete ASPD and variable-cast calculations, are deliberately not presented as established facts.',
+        'Les formules exactes affichées sur cette page sont limitées aux valeurs vérifiées en jeu sur le serveur actuel. Les formules qui ne sont pas encore confirmées sur Global, comme les calculs complets d’ASPD et d’incantation variable, ne sont volontairement pas présentées comme certaines.'
       )}</div></div>
 
       ${toc([
@@ -4180,8 +4180,8 @@ window.RO_DATA = {
 
       <h2 id="str">STR — ${navLabel('Strength','Force')}</h2>
       <p>${navLabel(
-        'STR is the main offensive stat for melee physical attacks. In Zero’s verified Status ATK formula, every point of STR contributes directly to melee Status ATK. With a ranged weapon, STR still contributes, but only at one fifth of its value.',
-        'STR est la statistique offensive principale pour les attaques physiques de mêlée. Dans la formule de Status ATK vérifiée sur Zero, chaque point de STR contribue directement au Status ATK de mêlée. Avec une arme à distance, STR contribue encore, mais seulement à hauteur d’un cinquième de sa valeur.'
+        'STR is the main offensive stat for melee physical attacks. In the verified Status ATK formula, every point of STR contributes directly to melee Status ATK. With a ranged weapon, STR still contributes, but only at one fifth of its value.',
+        'STR est la statistique offensive principale pour les attaques physiques de mêlée. Dans la formule de Status ATK vérifiée, chaque point de STR contribue directement au Status ATK de mêlée. Avec une arme à distance, STR contribue encore, mais seulement à hauteur d’un cinquième de sa valeur.'
       )}</p>
       <ul>
         <li>${navLabel('Main stat for melee Status ATK.','Statistique principale du Status ATK de mêlée.')}</li>
@@ -4236,8 +4236,8 @@ window.RO_DATA = {
 
       <h2 id="luk">LUK — ${navLabel('Luck','Chance')}</h2>
       <p>${navLabel(
-        'LUK contributes small amounts to several combat values instead of specializing in only one. Its Zero Global contributions to CRIT, HIT, FLEE, ATK, MATK and Perfect Dodge are all represented in verified formulas.',
-        'LUK apporte de petites quantités à plusieurs valeurs de combat au lieu de se spécialiser dans une seule. Ses contributions Zero Global au CRIT, HIT, FLEE, ATK, MATK et Perfect Dodge apparaissent toutes dans des formules vérifiées.'
+        'LUK contributes small amounts to several combat values instead of specializing in only one. Its contributions to CRIT, HIT, FLEE, ATK, MATK and Perfect Dodge are all represented in verified formulas.',
+        'LUK apporte de petites quantités à plusieurs valeurs de combat au lieu de se spécialiser dans une seule. Ses contributions au CRIT, HIT, FLEE, ATK, MATK et Perfect Dodge apparaissent toutes dans des formules vérifiées.'
       )}</p>
       <ul>
         <li>${navLabel('+0.3% base CRIT per point of LUK, plus the Base Level contribution.','+0,3 % de CRIT de base par point de LUK, auquel s’ajoute la contribution du Base Level.')}</li>
@@ -4249,11 +4249,11 @@ window.RO_DATA = {
 
       <h2 id="derived">${navLabel('Derived stats','Statistiques dérivées')}</h2>
       <div class="table-wrap"><table>
-        <thead><tr><th>${navLabel('Stat','Stat')}</th><th>${navLabel('Meaning on Zero Global','Signification sur Zero Global')}</th></tr></thead>
+        <thead><tr><th>${navLabel('Stat','Stat')}</th><th>${navLabel('Meaning','Signification')}</th></tr></thead>
         <tbody>${secondaryStats.map(([name,desc])=>`<tr><th>${name}</th><td>${desc}</td></tr>`).join('')}</tbody>
       </table></div>
 
-      <h2 id="formulas">${navLabel('Verified Zero Global formulas','Formules Zero Global vérifiées')}</h2>
+      <h2 id="formulas">${navLabel('Verified formulas','Formules vérifiées')}</h2>
       <p>${navLabel(
         'The following formulas were marked as verified from current-server measurements, with the latest in-game verification dated 18 August 2026 (4 August for ranged Status ATK). floor() means round down.',
         'Les formules suivantes sont marquées comme vérifiées à partir de mesures sur le serveur actuel, avec une dernière vérification en jeu datée du 18 août 2026 (4 août pour le Status ATK à distance). floor() signifie arrondir à l’entier inférieur.'
@@ -4265,8 +4265,8 @@ window.RO_DATA = {
 
       <h2 id="defense">${navLabel('Soft DEF / MDEF and Hard DEF / MDEF','Soft DEF / MDEF et Hard DEF / MDEF')}</h2>
       <p>${navLabel(
-        'Zero keeps two defensive layers. Soft defense comes from character stats and Base Level. Hard defense comes primarily from equipment and refinement. They are not interchangeable values.',
-        'Zero conserve deux couches de défense. La Soft defense provient des statistiques du personnage et du Base Level. La Hard defense provient principalement de l’équipement et du refine. Ce ne sont pas des valeurs interchangeables.'
+        'The game uses two defensive layers. Soft defense comes from character stats and Base Level. Hard defense comes primarily from equipment and refinement. They are not interchangeable values.',
+        'Le jeu utilise deux couches de défense. La Soft defense provient des statistiques du personnage et du Base Level. La Hard defense provient principalement de l’équipement et du refine. Ce ne sont pas des valeurs interchangeables.'
       )}</p>
       <div class="wiki-feature-list">
         <div><strong>Soft DEF</strong><p>${navLabel('Derived from Base Level, VIT and AGI. It acts as a flat physical reduction after the percentage armor-defense step.','Dérivée du Base Level, de VIT et d’AGI. Elle agit comme une réduction physique fixe après l’étape de réduction en pourcentage de l’armure.')}</p></div>
@@ -4277,8 +4277,8 @@ window.RO_DATA = {
 
       <h2 id="unconfirmed">${navLabel('Mechanics not fully verified yet','Mécaniques pas encore totalement vérifiées')}</h2>
       <div class="notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div>${navLabel(
-        'Do not copy the complete Renewal formulas for these values into Zero yet. Current Zero references still mark them as unconfirmed or dependent on class-specific measurements.',
-        'Ne copie pas encore les formules Renewal complètes de ces valeurs dans Zero. Les références Zero actuelles les marquent toujours comme non confirmées ou dépendantes de mesures propres à chaque classe.'
+        'Do not copy the complete Renewal formulas for these values here yet. Current references still mark them as unconfirmed or dependent on class-specific measurements.',
+        'Ne copie pas encore ici les formules Renewal complètes de ces valeurs. Les références actuelles les marquent toujours comme non confirmées ou dépendantes de mesures propres à chaque classe.'
       )}</div></div>
       <ul>
         <li><strong>ASPD:</strong> ${navLabel('AGI and DEX definitely matter, but class, weapon, shield, skills and potions are also involved. The full Global formula is still unconfirmed.','AGI et DEX comptent bien, mais la classe, l’arme, le bouclier, les skills et potions interviennent aussi. La formule Global complète reste non confirmée.')}</li>
@@ -4649,7 +4649,7 @@ window.RO_DATA = {
     }, {});
 
     const categories = [
-      ['equipment', navLabel('Equipment','Équipement'), navLabel('Weapons, armor and wearable equipment. Zero equipment can carry slots, refine levels, random options / affixes and other item-specific effects.','Armes, armures et équipements portés. Sur Zero, l’équipement peut avoir des slots, du refine, des options aléatoires / affixes et d’autres effets propres à l’objet.')],
+      ['equipment', navLabel('Equipment','Équipement'), navLabel('Weapons, armor and wearable equipment. Equipment can carry slots, refine levels, random options / affixes and other item-specific effects.','Armes, armures et équipements portés. L’équipement peut avoir des slots, du refine, des options aléatoires / affixes et d’autres effets propres à l’objet.')],
       ['cards', navLabel('Cards','Cartes'), navLabel('Cards are inserted into compatible slotted equipment to add their effect.','Les cartes sont insérées dans un équipement compatible disposant d’un slot afin d’ajouter leur effet.')],
       ['consumables', navLabel('Consumable Items','Objets consommables'), navLabel('Usable items that provide healing, buffs, utility, teleportation, ammunition or another temporary effect.','Objets utilisables fournissant soin, buff, utilité, téléportation, munitions ou autre effet temporaire.')],
       ['materials', navLabel('Materials & Etc.','Matériaux & Etc.'), navLabel('Monster loot, ores and other materials used for selling, crafting, quests or future systems.','Loot de monstres, minerais et autres matériaux servant à la vente, au craft, aux quêtes ou à d’autres systèmes.')],
@@ -4660,8 +4660,8 @@ window.RO_DATA = {
     return `${breadcrumbs([{label:navLabel('Items','Objets')}])}
       <div class="article-heading"><h1>${icon('item')}${navLabel('Items','Objets')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'Items are objects obtained, equipped, consumed, traded, crafted or used by the different systems of Ragnarok Zero: Global. This page is the system overview; the searchable database below contains the individual Zero item entries.',
-        'Les objets sont obtenus, équipés, consommés, échangés, craftés ou utilisés par les différents systèmes de Ragnarok Zero: Global. Cette page présente le système ; la base de données consultable plus bas contient les fiches individuelles des objets Zero.'
+        'Items are objects obtained, equipped, consumed, traded, crafted or used by the game’s different systems. This page explains the main item categories and mechanics.',
+        'Les objets sont obtenus, équipés, consommés, échangés, craftés ou utilisés par les différents systèmes du jeu. Cette page explique les principales catégories d’objets et leurs mécaniques.'
       )}</p>
 
       ${toc([
@@ -4678,13 +4678,13 @@ window.RO_DATA = {
 
       <h2 id="equipment">${navLabel('Equipment','Équipement')}</h2>
       <p>${navLabel(
-        'Equipment is worn by the character and can provide defensive, offensive or utility effects. On Zero Global, dropped equipment can also carry random options / affixes, so two copies of the same base item may not be equivalent.',
-        'L’équipement est porté par le personnage et peut fournir des effets défensifs, offensifs ou utilitaires. Sur Zero Global, les équipements obtenus en drop peuvent aussi posséder des options aléatoires / affixes ; deux exemplaires du même objet de base ne sont donc pas forcément équivalents.'
+        'Equipment is worn by the character and can provide defensive, offensive or utility effects. Dropped equipment can also carry random options / affixes, so two copies of the same base item may not be equivalent.',
+        'L’équipement est porté par le personnage et peut fournir des effets défensifs, offensifs ou utilitaires. Les équipements obtenus en drop peuvent aussi posséder des options aléatoires / affixes ; deux exemplaires du même objet de base ne sont donc pas forcément équivalents.'
       )}</p>
       <ul>
         <li>${navLabel('Common equipment groups include weapons, headgear, armor, shields, garments, footgear and accessories.','Les groupes d’équipement courants comprennent les armes, headgears, armures, boucliers, garments, chaussures et accessoires.')}</li>
         <li>${navLabel('Required level, class restrictions, slots, refine level and options are stored on the individual item page when verified.','Le niveau requis, les restrictions de classe, les slots, le refine et les options sont indiqués sur la fiche de l’objet lorsqu’ils sont vérifiés.')}</li>
-        <li>${navLabel('Do not use iRO item stats as substitutes: Zero equipment frequently has different stats, slots, drops or random-option behavior.','N’utilise pas les statistiques d’objets iRO comme remplacement : l’équipement Zero possède fréquemment des stats, slots, drops ou options aléatoires différents.')}</li>
+        <li>${navLabel('Do not use iRO item stats as substitutes: this version frequently has different stats, slots, drops or random-option behavior.','N’utilise pas les statistiques d’objets iRO comme remplacement : cette version possède fréquemment des stats, slots, drops ou options aléatoires différents.')}</li>
       </ul>
 
       <h2 id="cards">${navLabel('Cards','Cartes')}</h2>
@@ -4702,14 +4702,14 @@ window.RO_DATA = {
 
       <h2 id="materials">${navLabel('Materials, crafting and miscellaneous items','Matériaux, craft et objets divers')}</h2>
       <p>${navLabel(
-        'Monster loot is not automatically junk. Zero uses many drops for crafting, forging, refinement-related systems, class consumables, quests and player trade. Check an item’s sources and uses before selling large quantities.',
-        'Le loot de monstres n’est pas automatiquement inutile. Zero utilise de nombreux drops pour le craft, la forge, les systèmes liés au refine, les consommables de classe, les quêtes et le commerce entre joueurs. Vérifie les sources et utilisations d’un objet avant d’en vendre de grandes quantités.'
+        'Monster loot is not automatically junk. Many drops are used for crafting, forging, refinement-related systems, class consumables, quests and player trade. Check an item’s sources and uses before selling large quantities.',
+        'Le loot de monstres n’est pas automatiquement inutile. De nombreux drops sont utilisés pour le craft, la forge, les systèmes liés au refine, les consommables de classe, les quêtes et le commerce entre joueurs. Vérifie les sources et utilisations d’un objet avant d’en vendre de grandes quantités.'
       )}</p>
 
       <h2 id="drops">${navLabel('Drops and item safety','Drops et sécurité des objets')}</h2>
       <p>${navLabel(
-        'Drop rates and drop sources on this wiki are Zero-specific database data. Zero Global also provides Item Sale Lock / Favorites functionality so valuable items can be protected from appearing in the NPC-sale list.',
-        'Les taux et sources de drop affichés sur ce wiki proviennent de données spécifiques à Zero. Zero Global propose aussi la fonction Item Sale Lock / Favorites afin d’empêcher les objets importants d’apparaître dans la liste de vente aux NPC.'
+        'Drop rates and drop sources on this wiki come from the current database. The game also provides Item Sale Lock / Favorites functionality so valuable items can be protected from appearing in the NPC-sale list.',
+        'Les taux et sources de drop affichés sur ce wiki proviennent de la base actuelle. Le jeu propose aussi la fonction Item Sale Lock / Favorites afin d’empêcher les objets importants d’apparaître dans la liste de vente aux NPC.'
       )}</p>
 
       ${officialSources([
@@ -4725,8 +4725,8 @@ window.RO_DATA = {
     return `${breadcrumbs([{label:navLabel('Card System','Système de cartes')}])}
       <div class="article-heading"><h1>${icon('card')}${navLabel('Card System','Système de cartes')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'Cards are special Ragnarok Zero items that can be compounded into compatible slotted equipment to grant the card’s effect.',
-        'Les cartes sont des objets spéciaux de Ragnarok Zero pouvant être insérés dans un équipement compatible disposant d’un slot afin d’accorder l’effet de la carte.'
+        'Cards are special items that can be compounded into compatible slotted equipment to grant the card’s effect.',
+        'Les cartes sont des objets spéciaux pouvant être insérés dans un équipement compatible disposant d’un slot afin d’accorder l’effet de la carte.'
       )}</p>
 
       ${toc([
@@ -4738,12 +4738,12 @@ window.RO_DATA = {
 
       <h2 id="acquiring">${navLabel('Acquiring cards','Obtenir des cartes')}</h2>
       <p>${navLabel(
-        'The official Zero guide states that nearly all monsters can drop a card bearing their name at a low rate. Exact card rates are recorded only when they are verified for Zero Global; this wiki does not substitute Classic or Renewal drop rates.',
-        'Le guide officiel Zero indique que presque tous les monstres peuvent laisser tomber à faible taux une carte portant leur nom. Les taux exacts ne sont enregistrés que lorsqu’ils sont vérifiés pour Zero Global ; ce wiki ne remplace jamais ces taux par ceux de Classic ou Renewal.'
+        'The official guide states that nearly all monsters can drop a card bearing their name at a low rate. Exact card rates are recorded only when they are verified for the current server; this wiki does not substitute Classic or Renewal drop rates.',
+        'Le guide officiel indique que presque tous les monstres peuvent laisser tomber à faible taux une carte portant leur nom. Les taux exacts ne sont enregistrés que lorsqu’ils sont vérifiés pour le serveur actuel ; ce wiki ne remplace jamais ces taux par ceux de Classic ou Renewal.'
       )}</p>
       <ul>
         <li>${navLabel('Monster card drops are linked from both the monster page and the card page when the relation is known.','Les drops de cartes sont reliés à la fois depuis la page du monstre et depuis la page de la carte lorsque la relation est connue.')}</li>
-        <li>${navLabel('Additional acquisition methods are documented only if they exist on the current Global release.','Les méthodes d’obtention supplémentaires ne sont documentées que si elles existent sur la version Global actuelle.')}</li>
+        <li>${navLabel('Additional acquisition methods are documented only if they exist on the current release.','Les méthodes d’obtention supplémentaires ne sont documentées que si elles existent sur la version actuelle.')}</li>
       </ul>
 
       <h2 id="installing">${navLabel('Installing cards','Insérer des cartes')}</h2>
@@ -4760,20 +4760,20 @@ window.RO_DATA = {
 
       <h2 id="slots">${navLabel('Slots and compatibility','Slots et compatibilité')}</h2>
       <p>${navLabel(
-        'Slot count belongs to the individual Zero equipment item. Different versions of similarly named equipment can have different slots, so always use the Zero item entry rather than assuming an iRO slot count.',
-        'Le nombre de slots appartient à l’objet d’équipement Zero concerné. Des versions portant un nom proche peuvent avoir un nombre de slots différent ; utilise donc toujours la fiche Zero au lieu de supposer un nombre de slots venant d’iRO.'
+        'Slot count belongs to the individual equipment item. Different versions of similarly named equipment can have different slots, so always use the item entry rather than assuming an iRO slot count.',
+        'Le nombre de slots appartient à l’objet d’équipement concerné. Des versions portant un nom proche peuvent avoir un nombre de slots différent ; utilise donc toujours la fiche de l’objet au lieu de supposer un nombre de slots venant d’iRO.'
       )}</p>
       <div class="wiki-feature-list">
         <div><strong>${navLabel('Weapon cards','Cartes d’arme')}</strong><p>${navLabel('Install only into compatible weapon slots.','S’insèrent uniquement dans les slots d’armes compatibles.')}</p></div>
         <div><strong>${navLabel('Armor cards','Cartes d’armure')}</strong><p>${navLabel('Install into the armor category specified by the card.','S’insèrent dans la catégorie d’armure indiquée par la carte.')}</p></div>
         <div><strong>${navLabel('Garment / Footgear / Shield','Garment / Chaussures / Bouclier')}</strong><p>${navLabel('Each card is restricted to its own compatible equipment category.','Chaque carte est limitée à sa propre catégorie d’équipement compatible.')}</p></div>
-        <div><strong>${navLabel('Accessory / Headgear','Accessoire / Headgear')}</strong><p>${navLabel('Compatibility is determined by the Zero card description, not by another RO version.','La compatibilité est déterminée par la description de la carte Zero et non par une autre version de RO.')}</p></div>
+        <div><strong>${navLabel('Accessory / Headgear','Accessoire / Headgear')}</strong><p>${navLabel('Compatibility is determined by the card description, not by another RO version.','La compatibilité est déterminée par la description de la carte et non par une autre version de RO.')}</p></div>
       </div>
 
       <h2 id="removing">${navLabel('Removing cards','Retirer des cartes')}</h2>
       <div class="notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div>${navLabel(
-        'Do not treat card installation as freely reversible. The official Global guide warns players to be careful because removing a compounded card can be difficult. Any specific removal NPC, material, cost or success rule must be documented from the current Zero system before being added here.',
-        'Ne considère pas l’insertion d’une carte comme librement réversible. Le guide officiel Global avertit qu’il faut être prudent car retirer une carte insérée peut être difficile. Tout NPC, matériau, coût ou règle de réussite de retrait doit être documenté depuis le système Zero actuel avant d’être ajouté ici.'
+        'Do not treat card installation as freely reversible. The official Global guide warns players to be careful because removing a compounded card can be difficult. Any specific removal NPC, material, cost or success rule must be documented from the current system before being added here.',
+        'Ne considère pas l’insertion d’une carte comme librement réversible. Le guide officiel Global avertit qu’il faut être prudent car retirer une carte insérée peut être difficile. Tout NPC, matériau, coût ou règle de réussite de retrait doit être documenté depuis le système actuel avant d’être ajouté ici.'
       )}</div></div>
 
       ${officialSources([
@@ -4787,21 +4787,21 @@ window.RO_DATA = {
 
   function monstersOverviewPage() {
     const properties = [
-      ['Level', navLabel('Used for progression context and encounter difficulty. Monster level is a Zero database value.','Sert de contexte pour la progression et la difficulté de rencontre. Le niveau du monstre est une donnée de la base Zero.')],
+      ['Level', navLabel('Used for progression context and encounter difficulty. Monster level comes from the current database.','Sert de contexte pour la progression et la difficulté de rencontre. Le niveau du monstre provient de la base actuelle.')],
       ['HP / SP', navLabel('The monster’s resource values.','Les ressources du monstre.')],
       [navLabel('Race','Race'), navLabel('One of the properties used by equipment, cards and skills to modify damage or defenses.','Une des propriétés utilisées par les équipements, cartes et skills pour modifier les dégâts ou défenses.')],
-      [navLabel('Element','Élément'), navLabel('Element and element level determine elemental interactions. Use the Zero Elements page for the damage table.','L’élément et son niveau déterminent les interactions élémentaires. Utilise la page Éléments de Zero pour le tableau de dégâts.')],
-      [navLabel('Size','Taille'), navLabel('Small, Medium or Large. Weapon interactions and size modifiers must use Zero-specific data.','Small, Medium ou Large. Les interactions d’armes et modificateurs de taille doivent utiliser des données spécifiques à Zero.')],
-      ['Base EXP / Job EXP', navLabel('Experience awarded by the monster. These values are independent and Zero-specific.','Expérience accordée par le monstre. Ces valeurs sont distinctes et spécifiques à Zero.')],
-      [navLabel('Drops','Drops'), navLabel('Items and cards that can be obtained from the monster, with Zero drop rates when verified.','Objets et cartes pouvant être obtenus sur le monstre, avec les taux de drop Zero lorsqu’ils sont vérifiés.')],
+      [navLabel('Element','Élément'), navLabel('Element and element level determine elemental interactions. Use the Elements page for the damage table.','L’élément et son niveau déterminent les interactions élémentaires. Utilise la page Éléments pour le tableau de dégâts.')],
+      [navLabel('Size','Taille'), navLabel('Small, Medium or Large. Weapon interactions and size modifiers must use verified data for the current server.','Small, Medium ou Large. Les interactions d’armes et modificateurs de taille doivent utiliser des données vérifiées pour le serveur actuel.')],
+      ['Base EXP / Job EXP', navLabel('Experience awarded by the monster. These are independent values.','Expérience accordée par le monstre. Ces valeurs sont distinctes.')],
+      [navLabel('Drops','Drops'), navLabel('Items and cards that can be obtained from the monster, with verified drop rates when available.','Objets et cartes pouvant être obtenus sur le monstre, avec les taux de drop vérifiés lorsqu’ils sont disponibles.')],
       [navLabel('Maps / Spawn','Maps / Spawn'), navLabel('Maps where the monster appears, including amount / respawn information when verified.','Maps où le monstre apparaît, avec quantité / respawn lorsqu’ils sont vérifiés.')]
     ];
 
     return `${breadcrumbs([{label:navLabel('Monsters','Monstres')}])}
       <div class="article-heading"><h1>${icon('monster')}${navLabel('Monsters','Monstres')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'Monsters are creatures encountered throughout Ragnarok Zero: Global. Defeating them can award Base EXP, Job EXP and item drops. Each monster also has combat properties such as race, element and size that can be exploited by the player.',
-        'Les monstres sont les créatures rencontrées dans Ragnarok Zero: Global. Les vaincre peut accorder de la Base EXP, de la Job EXP et des drops. Chaque monstre possède aussi des propriétés de combat comme la race, l’élément et la taille que le joueur peut exploiter.'
+        'Monsters are creatures encountered throughout the game world. Defeating them can award Base EXP, Job EXP and item drops. Each monster also has combat properties such as race, element and size that can be exploited by the player.',
+        'Les monstres sont les créatures rencontrées dans le monde du jeu. Les vaincre peut accorder de la Base EXP, de la Job EXP et des drops. Chaque monstre possède aussi des propriétés de combat comme la race, l’élément et la taille que le joueur peut exploiter.'
       )}</p>
 
       ${toc([
@@ -4825,21 +4825,21 @@ window.RO_DATA = {
       <div class="wiki-feature-list">
         <div><strong>${navLabel('Passive / non-aggressive','Passif / non agressif')}</strong><p>${navLabel('Does not automatically engage a player solely because they entered normal sight range.','N’engage pas automatiquement un joueur uniquement parce qu’il entre dans sa portée de vision normale.')}</p></div>
         <div><strong>${navLabel('Aggressive','Agressif')}</strong><p>${navLabel('Can initiate combat when a player enters its detection conditions.','Peut initier le combat lorsqu’un joueur remplit ses conditions de détection.')}</p></div>
-        <div><strong>Boss</strong><p>${navLabel('Special boss flag used by certain monsters and mechanics. Boss-specific immunities or rules are recorded only when verified for Zero.','Flag spécial utilisé par certains monstres et mécaniques. Les immunités ou règles propres aux Boss ne sont enregistrées que lorsqu’elles sont vérifiées pour Zero.')}</p></div>
-        <div><strong>MVP</strong><p>${navLabel('High-value boss category used by Ragnarok’s MVP systems. Zero Global also has its own MVP Raid / Ruler systems, which should not be replaced with iRO MVP behavior.','Catégorie de boss majeure utilisée par les systèmes MVP de Ragnarok. Zero Global possède aussi ses propres systèmes MVP Raid / Ruler, qui ne doivent pas être remplacés par le comportement MVP d’iRO.')}</p></div>
+        <div><strong>Boss</strong><p>${navLabel('Special boss flag used by certain monsters and mechanics. Boss-specific immunities or rules are recorded only when verified.','Flag spécial utilisé par certains monstres et mécaniques. Les immunités ou règles propres aux Boss ne sont enregistrées que lorsqu’elles sont vérifiées.')}</p></div>
+        <div><strong>MVP</strong><p>${navLabel('High-value boss category used by Ragnarok’s MVP systems. The current release also has its own MVP Raid / Ruler systems, which should not be replaced with iRO MVP behavior.','Catégorie de boss majeure utilisée par les systèmes MVP de Ragnarok. La version actuelle possède aussi ses propres systèmes MVP Raid / Ruler, qui ne doivent pas être remplacés par le comportement MVP d’iRO.')}</p></div>
       </div>
 
       <h2 id="boss">${navLabel('Bosses and MVPs','Bosses et MVP')}</h2>
       <p>${navLabel(
-        'Boss and MVP flags are shown in the database when known. Because Zero Global has its own live MVP systems and update schedule, spawn rules, rewards, immunities and raid behavior are documented from Zero sources only.',
-        'Les flags Boss et MVP sont affichés dans la base lorsqu’ils sont connus. Comme Zero Global possède ses propres systèmes MVP et son propre calendrier de mises à jour, les règles de spawn, récompenses, immunités et comportements de raid sont documentés uniquement depuis des sources Zero.'
+        'Boss and MVP flags are shown in the database when known. Because Zero Global has its own live MVP systems and update schedule, spawn rules, rewards, immunities and raid behavior are documented from current-server sources only.',
+        'Les flags Boss et MVP sont affichés dans la base lorsqu’ils sont connus. Comme Zero Global possède ses propres systèmes MVP et son propre calendrier de mises à jour, les règles de spawn, récompenses, immunités et comportements de raid sont documentés uniquement depuis des sources du serveur actuel.'
       )}</p>
       <div class="hero-actions"><a class="button" href="#/wiki/mvp-raid">${miniIcon('monster')}${navLabel('MVP Raid system','Système MVP Raid')}</a></div>
 
       <h2 id="exp-drops">${navLabel('Experience and drops','Expérience et drops')}</h2>
       <p>${navLabel(
-        'Monster Base EXP, Job EXP and drop tables are among the values that differ frequently between Ragnarok versions. The database below therefore accepts only Zero-specific values and keeps unverified entries visibly marked instead of filling them with iRO data.',
-        'La Base EXP, la Job EXP et les tables de drops sont parmi les valeurs qui diffèrent fréquemment entre les versions de Ragnarok. La base ci-dessous n’accepte donc que des valeurs spécifiques à Zero et conserve les entrées non vérifiées clairement marquées plutôt que de les remplir avec des données iRO.'
+        'Monster Base EXP, Job EXP and drop tables are among the values that differ frequently between Ragnarok versions. This wiki therefore uses only verified current-server values instead of filling missing information with iRO data.',
+        'La Base EXP, la Job EXP et les tables de drops sont parmi les valeurs qui diffèrent fréquemment entre les versions de Ragnarok. Ce wiki utilise donc uniquement des valeurs vérifiées pour le serveur actuel au lieu de compléter les informations manquantes avec des données iRO.'
       )}</p>
 
       ${officialSources([
@@ -4926,8 +4926,8 @@ window.RO_DATA = {
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Interactive behavior','Fonctionnement interactif')}</strong><br>${navLabel(
-        'Blue points are cities and red points are dungeons. Hover or focus a point to see the monsters currently linked to matching Zero maps in this wiki’s dataset.',
-        'Les points bleus représentent les villes et les points rouges les donjons. Passe la souris sur un point ou sélectionne-le au clavier pour voir les monstres actuellement reliés aux maps Zero correspondantes dans la base du wiki.'
+        'Blue points are cities and red points are dungeons. Hover or focus a point to see the monsters currently linked to matching maps in this wiki’s dataset.',
+        'Les points bleus représentent les villes et les points rouges les donjons. Passe la souris sur un point ou sélectionne-le au clavier pour voir les monstres actuellement reliés aux maps correspondantes dans la base du wiki.'
       )}</div></div>
 
       ${toc([
@@ -4992,8 +4992,8 @@ window.RO_DATA = {
       [
         '2. ' + navLabel('Cast Time','Temps de cast'),
         navLabel(
-          'If the skill has a Cast value, the cast must complete before the effect is executed. Skills with no Cast value execute without this waiting phase. Normal interruptible casts can be cancelled by incoming damage; Zero’s Phen Card explicitly prevents cast interruption at the cost of +25% Variable Casting Time.',
-          'Si le skill possède une valeur de Cast, l’incantation doit se terminer avant l’exécution de l’effet. Les skills sans valeur de Cast passent cette attente. Les casts normalement interruptibles peuvent être annulés par des dégâts reçus ; sur Zero, la Phen Card empêche explicitement l’interruption du cast en échange de +25 % de Variable Casting Time.'
+          'If the skill has a Cast value, the cast must complete before the effect is executed. Skills with no Cast value execute without this waiting phase. Normal interruptible casts can be cancelled by incoming damage; Phen Card explicitly prevents cast interruption at the cost of +25% Variable Casting Time.',
+          'Si le skill possède une valeur de Cast, l’incantation doit se terminer avant l’exécution de l’effet. Les skills sans valeur de Cast passent cette attente. Les casts normalement interruptibles peuvent être annulés par des dégâts reçus ; Phen Card empêche explicitement l’interruption du cast en échange de +25 % de Variable Casting Time.'
         )
       ],
       [
@@ -5006,15 +5006,15 @@ window.RO_DATA = {
       [
         '4. ' + navLabel('Global / After-Cast Delay','Global / After-Cast Delay'),
         navLabel(
-          'This is a shared post-skill delay that can prevent the use of other skills. Zero client data contains modifiers named Global Delay. A numerical after-cast delay is only documented on this wiki when a Zero-specific source exposes it; it is never copied from iRO.',
-          'Il s’agit d’un délai partagé après l’utilisation d’un skill qui peut empêcher l’utilisation d’autres skills. Les données du client Zero contiennent des modificateurs nommés Global Delay. Une valeur numérique d’after-cast delay n’est documentée sur ce wiki que lorsqu’une source spécifique à Zero la fournit ; elle n’est jamais copiée depuis iRO.'
+          'This is a shared post-skill delay that can prevent the use of other skills. Client data contains modifiers named Global Delay. A numerical after-cast delay is only documented on this wiki when a current-server source exposes it; it is never copied from iRO.',
+          'Il s’agit d’un délai partagé après l’utilisation d’un skill qui peut empêcher l’utilisation d’autres skills. Les données du client contiennent des modificateurs nommés Global Delay. Une valeur numérique d’after-cast delay n’est documentée sur ce wiki que lorsqu’une source du serveur actuel la fournit ; elle n’est jamais copiée depuis iRO.'
         )
       ],
       [
         '5. ' + navLabel('Cooldown','Cooldown'),
         navLabel(
-          'Cooldown is tied to the skill that was just used. While that cooldown remains, the same skill cannot be used again, but other skills are not blocked by that cooldown itself. Individual Zero skill pages list cooldown per level when the data provides one.',
-          'Le cooldown est lié au skill qui vient d’être utilisé. Tant qu’il reste actif, ce même skill ne peut pas être relancé, mais ce cooldown ne bloque pas à lui seul les autres skills. Les pages de skills Zero affichent le cooldown par niveau lorsque la donnée est disponible.'
+          'Cooldown is tied to the skill that was just used. While that cooldown remains, the same skill cannot be used again, but other skills are not blocked by that cooldown itself. Individual skill pages list cooldown per level when the data provides one.',
+          'Le cooldown est lié au skill qui vient d’être utilisé. Tant qu’il reste actif, ce même skill ne peut pas être relancé, mais ce cooldown ne bloque pas à lui seul les autres skills. Les pages de skills affichent le cooldown par niveau lorsque la donnée est disponible.'
         )
       ]
     ];
@@ -5023,13 +5023,13 @@ window.RO_DATA = {
       <div class="article-heading"><h1>${icon('skill')}${navLabel('Skills','Compétences')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
 
       <p class="article-lead">${navLabel(
-        'Skills in Ragnarok Zero: Global are special actions and passive effects learned through a character’s Job Class. The exact skill set, prerequisites and maximum levels depend on the class.',
-        'Les skills de Ragnarok Zero: Global sont des actions spéciales et des effets passifs appris via la Job Class du personnage. La liste exacte des skills, leurs prérequis et leurs niveaux maximum dépendent de la classe.'
+        'Skills are special actions and passive effects learned through a character’s Job Class. The exact skill set, prerequisites and maximum levels depend on the class.',
+        'Les skills sont des actions spéciales et des effets passifs appris via la Job Class du personnage. La liste exacte des skills, leurs prérequis et leurs niveaux maximum dépendent de la classe.'
       )}</p>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero-specific page','Page spécifique à Zero')}</strong><br>${navLabel(
-        'This article follows the useful organization of iRO Wiki’s Skills article, but its mechanics and numbers are not copied from iRO. Cast, cooldown and skill data on this wiki come from Ragnarok Zero / Zero Global sources.',
-        'Cet article reprend l’organisation utile de la page Skills d’iRO Wiki, mais ses mécaniques et ses chiffres ne sont pas copiés depuis iRO. Les valeurs de cast, cooldown et les données de skills de ce wiki proviennent de sources Ragnarok Zero / Zero Global.'
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Version-specific data','Données propres à cette version')}</strong><br>${navLabel(
+        'This article follows the useful organization of iRO Wiki’s Skills article, but its mechanics and numbers are not copied from iRO. Cast, cooldown and skill data on this wiki come from current-server sources.',
+        'Cet article reprend l’organisation utile de la page Skills d’iRO Wiki, mais ses mécaniques et ses chiffres ne sont pas copiés depuis iRO. Les valeurs de cast, cooldown et les données de skills de ce wiki proviennent de sources du serveur actuel.'
       )}</div></div>
 
       ${toc([
@@ -5055,8 +5055,8 @@ window.RO_DATA = {
           'S’appliquent automatiquement une fois appris et n’ont pas besoin d’être lancés manuellement. Leur effet reste disponible tant que les conditions propres au skill sont remplies.'
         )}</p></div>
         <div><strong>${navLabel('Offensive active skills','Skills actifs offensifs')}</strong><p>${navLabel(
-          'Deal physical or magical damage to one or more targets. Element, range, number of hits and damage formula depend on the individual Zero skill.',
-          'Infligent des dégâts physiques ou magiques à une ou plusieurs cibles. L’élément, la portée, le nombre de coups et la formule de dégâts dépendent du skill Zero concerné.'
+          'Deal physical or magical damage to one or more targets. Element, range, number of hits and damage formula depend on the individual skill.',
+          'Infligent des dégâts physiques ou magiques à une ou plusieurs cibles. L’élément, la portée, le nombre de coups et la formule de dégâts dépendent du skill concerné.'
         )}</p></div>
         <div><strong>${navLabel('Support / utility active skills','Skills actifs de support / utilitaires')}</strong><p>${navLabel(
           'Heal, buff, reveal, move, control, create an area or provide another non-damage effect. Some skills combine support and offensive effects.',
@@ -5075,46 +5075,46 @@ window.RO_DATA = {
 
       <h2 id="cast-time">Cast Time</h2>
       <p>${navLabel(
-        'Zero distinguishes Variable Casting Time and Fixed Casting Time as separate modifier categories. Equipment and effects in the Zero client explicitly use both names.',
-        'Zero distingue Variable Casting Time et Fixed Casting Time comme deux catégories de modificateurs séparées. Les équipements et effets du client Zero utilisent explicitement ces deux termes.'
+        'The game distinguishes Variable Casting Time and Fixed Casting Time as separate modifier categories. Equipment and effects in the Zero client explicitly use both names.',
+        'Le jeu distingue Variable Casting Time et Fixed Casting Time comme deux catégories de modificateurs séparées. Les équipements et effets du client Zero utilisent explicitement ces deux termes.'
       )}</p>
 
       <h3>Variable Casting Time (VCT)</h3>
       <ul>
         <li>${navLabel('This is the reducible part of casting affected by cast-speed mechanics such as DEX / INT and effects that explicitly modify Variable Casting Time.','Il s’agit de la partie réductible du cast affectée par les mécaniques de vitesse d’incantation comme DEX / INT et par les effets qui modifient explicitement la Variable Casting Time.')}</li>
-        <li>${navLabel('Phen Card is a confirmed Zero example: casting cannot be interrupted, but Variable Casting Time is increased by 25%.','Phen Card est un exemple confirmé sur Zero : le cast ne peut pas être interrompu, mais la Variable Casting Time augmente de 25 %.')}</li>
+        <li>${navLabel('Phen Card is a confirmed example: casting cannot be interrupted, but Variable Casting Time is increased by 25%.','Phen Card est un exemple confirmé : le cast ne peut pas être interrompu, mais la Variable Casting Time augmente de 25 %.')}</li>
         <li><strong>${navLabel('No universal formula is published here yet.','Aucune formule universelle n’est encore publiée ici.')}</strong> ${navLabel(
-          'The commonly quoted Renewal formula based on 2×DEX + INT is still marked unverified by the current Zero formula database, so it is not treated as established Zero Global data.',
-          'La formule Renewal souvent citée basée sur 2×DEX + INT est encore marquée comme non vérifiée par la base de formules Zero actuelle ; elle n’est donc pas présentée comme une donnée établie de Zero Global.'
+          'The commonly quoted Renewal formula based on 2×DEX + INT is still marked unverified by the current formula database, so it is not treated as established data for the current server.',
+          'La formule Renewal souvent citée basée sur 2×DEX + INT est encore marquée comme non vérifiée par la base de formules actuelle ; elle n’est donc pas présentée comme une donnée établie pour le serveur actuel.'
         )}</li>
       </ul>
 
       <h3>Fixed Casting Time (FCT)</h3>
       <ul>
         <li>${navLabel('Fixed Casting Time is handled separately from Variable Casting Time and is only affected by effects that explicitly reduce fixed casting.','Le Fixed Casting Time est traité séparément du Variable Casting Time et n’est affecté que par les effets qui réduisent explicitement le fixed casting.')}</li>
-        <li>${navLabel('Zero items can directly provide “Fixed Casting Time -X%”.','Des objets Zero peuvent directement fournir « Fixed Casting Time -X% ».')}</li>
-        <li>${navLabel('The current Zero cash-shop description for Challenge Drink explicitly states that percentage-based Fixed Casting Time reductions do not stack and only the largest percentage effect applies.','La description Zero actuelle de Challenge Drink précise explicitement que les réductions en pourcentage du Fixed Casting Time ne se cumulent pas et que seul le plus gros pourcentage s’applique.')}</li>
+        <li>${navLabel('Some items can directly provide “Fixed Casting Time -X%”.','Certains objets peuvent directement fournir « Fixed Casting Time -X% ».')}</li>
+        <li>${navLabel('The current cash-shop description for Challenge Drink explicitly states that percentage-based Fixed Casting Time reductions do not stack and only the largest percentage effect applies.','La description actuelle de Challenge Drink précise explicitement que les réductions en pourcentage du Fixed Casting Time ne se cumulent pas et que seul le plus gros pourcentage s’applique.')}</li>
       </ul>
 
       <div class="wiki-callout">${navLabel(
-        'Do not assume that every Zero skill has the Renewal default split of 80% VCT / 20% FCT. Current community skill data often exposes a single Cast value and does not reliably expose a separate base VCT/FCT split. This wiki therefore records the verified Cast value per skill and only separates VCT/FCT when a Zero-specific source does so.',
-        'Ne pars pas du principe que chaque skill Zero utilise le découpage Renewal par défaut 80 % VCT / 20 % FCT. Les données communautaires actuelles affichent souvent une seule valeur Cast et ne donnent pas de manière fiable un découpage VCT/FCT de base. Ce wiki enregistre donc la valeur Cast vérifiée du skill et ne sépare VCT/FCT que lorsqu’une source spécifique à Zero le fait.'
+        'Do not assume that every skill has the Renewal default split of 80% VCT / 20% FCT. Current skill data often exposes a single Cast value and does not reliably expose a separate base VCT/FCT split. This wiki therefore records the verified Cast value per skill and only separates VCT/FCT when a Zero-specific source does so.',
+        'Ne pars pas du principe que chaque skill utilise le découpage Renewal par défaut 80 % VCT / 20 % FCT. Les données actuelles affichent souvent une seule valeur Cast et ne donnent pas de manière fiable un découpage VCT/FCT de base. Ce wiki enregistre donc la valeur Cast vérifiée du skill et ne sépare VCT/FCT que lorsqu’une source spécifique à Zero le fait.'
       )}</div>
 
       <h2 id="delay-cooldown">${navLabel('Cast Delay and Cooldown','Cast Delay et Cooldown')}</h2>
       <div class="table-wrap"><table>
         <thead><tr><th>${navLabel('Mechanic','Mécanique')}</th><th>${navLabel('What it blocks','Ce que cela bloque')}</th><th>${navLabel('How this wiki handles it','Traitement sur le wiki')}</th></tr></thead>
         <tbody>
-          <tr><th>Global / After-Cast Delay</th><td>${navLabel('A shared delay affecting access to other skills after execution.','Un délai partagé affectant l’accès aux autres skills après l’exécution.')}</td><td>${navLabel('Only shown numerically when a Zero-specific source exposes the value. Zero client equipment data confirms the existence of “Global Delay” modifiers.','Affiché numériquement uniquement lorsqu’une source spécifique à Zero donne la valeur. Les données d’équipement du client Zero confirment l’existence de modificateurs « Global Delay ».')}</td></tr>
+          <tr><th>Global / After-Cast Delay</th><td>${navLabel('A shared delay affecting access to other skills after execution.','Un délai partagé affectant l’accès aux autres skills après l’exécution.')}</td><td>${navLabel('Only shown numerically when a current-server source exposes the value. Client equipment data confirms the existence of “Global Delay” modifiers.','Affiché numériquement uniquement lorsqu’une source du serveur actuel donne la valeur. Les données d’équipement du client confirment l’existence de modificateurs « Global Delay ».')}</td></tr>
           <tr><th>Cooldown</th><td>${navLabel('The same skill cannot be reused until its own cooldown ends.','Le même skill ne peut pas être relancé avant la fin de son propre cooldown.')}</td><td>${navLabel('Stored per skill level in the database when available. It is not replaced by an iRO cooldown value.','Stocké par niveau de skill dans la base lorsque disponible. Il n’est jamais remplacé par une valeur de cooldown iRO.')}</td></tr>
-          <tr><th>${navLabel('Attack / animation timing','Timing d’attaque / animation')}</th><td>${navLabel('Can still limit how quickly actions can be chained even when cast and cooldown are very short.','Peut encore limiter la vitesse d’enchaînement des actions même lorsque le cast et le cooldown sont très courts.')}</td><td>${navLabel('Not merged into Cooldown unless the Zero source explicitly records it that way.','N’est pas fusionné avec le Cooldown sauf si la source Zero l’enregistre explicitement ainsi.')}</td></tr>
+          <tr><th>${navLabel('Attack / animation timing','Timing d’attaque / animation')}</th><td>${navLabel('Can still limit how quickly actions can be chained even when cast and cooldown are very short.','Peut encore limiter la vitesse d’enchaînement des actions même lorsque le cast et le cooldown sont très courts.')}</td><td>${navLabel('Not merged into Cooldown unless the source explicitly records it that way.','N’est pas fusionné avec le Cooldown sauf si la source l’enregistre explicitement ainsi.')}</td></tr>
         </tbody>
       </table></div>
 
-      <h2 id="examples">${navLabel('Current Zero skill examples','Exemples de skills Zero actuels')}</h2>
+      <h2 id="examples">${navLabel('Current skill examples','Exemples de skills actuels')}</h2>
       <p>${navLabel(
-        'These examples illustrate why Cast and Cooldown must be stored separately. Values are taken from current Zero skill data rather than iRO.',
-        'Ces exemples montrent pourquoi Cast et Cooldown doivent être stockés séparément. Les valeurs proviennent des données Zero actuelles et non d’iRO.'
+        'These examples illustrate why Cast and Cooldown must be stored separately. Values are taken from current skill data rather than iRO.',
+        'Ces exemples montrent pourquoi Cast et Cooldown doivent être stockés séparément. Les valeurs proviennent des données actuelles et non d’iRO.'
       )}</p>
       <div class="table-wrap"><table>
         <thead><tr><th>${navLabel('Skill','Skill')}</th><th>${navLabel('Level','Niveau')}</th><th>Cast</th><th>Cooldown</th><th>${navLabel('Observation','Observation')}</th></tr></thead>
