@@ -2703,7 +2703,7 @@ window.RO_DATA = {
       id: "change-cart", name: "Change Cart", classId: "merchant", maxLevel: 1, type: "Free / Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/154.webp",
       spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Can be used while a cart is equipped. Changes the cart appearance, with more styles becoming available as Base Level increases.", fr: "Peut être utilisée avec une charrette équipée. Change l’apparence de la charrette, avec davantage de styles disponibles à mesure que le Base Level augmente." },
-      prerequisites: [], notes: { en: "Free Skill on Ragnarok; it does not consume a normal Merchant Job skill point. The current Global source used here does not publish an SP value, so no value is imported from another RO version.", fr: "Free Skill sur Ragnarok ; elle ne consomme pas de point de compétence Job normal du Merchant. La source Global utilisée ici ne publie pas de coût SP, donc aucune valeur d’une autre version de RO n’est importée." }, verified: true
+      prerequisites: [], notes: { en: "Free Skill on Ragnarok; it does not consume a normal Merchant Job skill point. No current SP value is listed, so no value from another RO version is used.", fr: "Free Skill sur Ragnarok ; elle ne consomme pas de point de compétence Job normal du Merchant. Aucun coût SP actuel n’est indiqué, donc aucune valeur d’une autre version de RO n’est utilisée." }, verified: true
     },
     {
       id: "crazy-uproar", name: "Crazy Uproar", classId: "merchant", maxLevel: 1, type: "Free / Active", role: "supportive", target: "Self / Party", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/155.webp",
@@ -3082,6 +3082,7 @@ window.RO_DATA = {
     { id:'cards', group:'General Topics', en:'Cards', fr:'Cartes', href:'#/cards' },
     { id:'monsters', group:'General Topics', en:'Monsters', fr:'Monstres', href:'#/monsters' },
     { id:'world-map', group:'General Topics', en:'World Map', fr:'Carte du monde', href:'#/maps' },
+    { id:'sources-links', group:'General Topics', en:'Sources & Useful Links', fr:'Sources et liens utiles', icon:'info' },
 
     { id:'elements', group:'Systems & Data', en:'Elements', fr:'Éléments' },
     { id:'monster-sizes', group:'Systems & Data', en:'Monster Sizes', fr:'Tailles des monstres' },
@@ -3174,7 +3175,7 @@ window.RO_DATA = {
 
   function decorateSectionStatusPills() {
     const route = (location.hash || '#/').split('?')[0];
-    if (route === '#/' || route === '#/wiki/faq') return;
+    if (route === '#/' || route === '#/wiki/faq' || route === '#/wiki/sources-links') return;
     const routeMap = SECTION_STATUS_BY_ROUTE[route] || {};
     const fullyVerifiedRoutes = new Set([
       '#/wiki/introduction',
@@ -3268,7 +3269,8 @@ window.RO_DATA = {
         ['#/wiki/getting-started','Getting Started','Bien débuter','start'],
         ['#/wiki/basic-controls','Basic Controls','Contrôles de base','controls'],
         ['#/wiki/faq','FAQ','FAQ','faq'],
-        ['#/wiki/glossary','Glossary','Glossaire','glossary']
+        ['#/wiki/glossary','Glossary','Glossaire','glossary'],
+        ['#/wiki/sources-links','Sources & Useful Links','Sources et liens utiles','info']
       ]},
       { title:['Character','Personnage'], items:[
         ['#/classes','Classes','Classes','class'],
@@ -3518,7 +3520,7 @@ window.RO_DATA = {
   }
 
   function officialSources(items) {
-    return `<div class="source-box"><strong>${navLabel('Official sources','Sources officielles')}</strong><ul>${items.map(([label,url])=>`<li><a href="${url}" target="_blank" rel="noopener">${esc(label)}</a></li>`).join('')}</ul></div>`;
+    return '';
   }
 
   function keycap(value) {
@@ -3669,8 +3671,8 @@ window.RO_DATA = {
 
       <h2 id="social">${navLabel('Party and guild','Party et guilde')}</h2>
       <p>${navLabel(
-        'Parties make it easier to hunt together and can distribute EXP and items according to party settings. The official Party guide notes that EXP distribution applies to eligible members on the same map. Guilds provide a persistent in-game community with member management, an emblem and guild-specific systems.',
-        'Les parties facilitent la chasse en groupe et peuvent distribuer l’EXP et les objets selon leurs réglages. Le guide officiel Party précise que la distribution d’EXP concerne les membres éligibles présents sur la même map. Les guildes offrent une communauté persistante en jeu avec gestion des membres, emblème et systèmes propres aux guildes.'
+        'Parties make it easier to hunt together and can distribute EXP and items according to party settings. EXP distribution applies to eligible members on the same map. Guilds provide a persistent in-game community with member management, an emblem and guild-specific systems.',
+        'Les parties facilitent la chasse en groupe et peuvent distribuer l’EXP et les objets selon leurs réglages. La distribution d’EXP concerne les membres éligibles présents sur la même map. Les guildes offrent une communauté persistante en jeu avec gestion des membres, emblème et systèmes propres aux guildes.'
       )}</p>
 
       <h2 id="fair-play">${navLabel('Auto-Hunt and fair play','Auto-Hunt et fair-play')}</h2>
@@ -4060,8 +4062,8 @@ window.RO_DATA = {
 
       <h2 id="monster-exp">${navLabel('Experience from monsters','Expérience des monstres')}</h2>
       <p>${navLabel(
-        'Each monster has its own Base EXP and Job EXP reward. These values come from the current database and must not be replaced by iRO Classic, Pre-Renewal or Renewal monster EXP.',
-        'Chaque monstre possède sa propre récompense de Base EXP et de Job EXP. Ces valeurs proviennent de la base actuelle et ne doivent pas être remplacées par l’EXP des monstres d’iRO Classic, Pre-Renewal ou Renewal.'
+        'Each monster has its own Base EXP and Job EXP reward. The values shown on this wiki are for the current Global server and are not replaced by iRO Classic, Pre-Renewal or Renewal monster EXP.',
+        'Chaque monstre possède sa propre récompense de Base EXP et de Job EXP. Les valeurs affichées sur ce wiki correspondent au serveur Global actuel et ne sont pas remplacées par celles d’iRO Classic, Pre-Renewal ou Renewal.'
       )}</p>
       <p>${navLabel(
         'On the current Global server, monster EXP is not reduced through the iRO Renewal level-difference table. A lower-level monster can therefore still be efficient if you can defeat it much faster.',
@@ -4071,14 +4073,9 @@ window.RO_DATA = {
 
       <h2 id="exp-requirements">${navLabel('EXP tables by level','Tables d’EXP par niveau')}</h2>
       <p>${navLabel(
-        'The tables below reproduce the LV / EXP values supplied by Encyclop’Elvyl. They are used as a community data source alongside the official GNJOY Game Guide 21. No iRO, Classic, Pre-Renewal or Renewal EXP table has been substituted.',
-        'Les tableaux ci-dessous reprennent les valeurs LV / EXP fournies par Encyclop’Elvyl. Elles sont utilisées comme source communautaire en complément du Guide du jeu officiel GNJOY n°21. Aucun tableau d’EXP iRO, Classic, Pre-Renewal ou Renewal n’a été substitué.'
+        'The tables below contain the current Global LV / EXP values. No iRO, Classic, Pre-Renewal or Renewal EXP table is substituted.',
+        'Les tableaux ci-dessous contiennent les valeurs LV / EXP actuelles de Global. Aucun tableau d’EXP iRO, Classic, Pre-Renewal ou Renewal n’est utilisé à leur place.'
       )}</p>
-
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Sources used','Sources utilisées')}</strong><br>
-        <a href="https://roz.mygnjoy.com/fr/intro/guide/21" target="_blank" rel="noopener">GNJOY — Guide du jeu 21</a><br>
-        <a href="https://docs.google.com/spreadsheets/d/1nK2jFgMEKa6IYGszbRtAcIp06VhM2sfsUf4kv46gKzI/edit?gid=1921304023#gid=1921304023" target="_blank" rel="noopener">Encyclop’Elvyl — Google Sheets</a>
-      </div></div>
 
       <h3>${navLabel('Base Level EXP — Lv. 1 to 50','Base Level EXP — Nv. 1 à 50')}</h3>
       <div class="table-wrap"><table>
@@ -4492,7 +4489,7 @@ window.RO_DATA = {
 
   function glossaryPage(topic) {
     const rows = [
-      ['AGI', navLabel('Agility. A base stat that affects attack speed, Dodge and physical defense according to the official Global status guide.','Agility. Stat de base qui affecte la vitesse d’attaque, l’esquive et la défense physique selon le guide officiel Global.')],
+      ['AGI', navLabel('Agility. A base stat that affects attack speed, Dodge and physical defense.','Agility. Stat de base qui affecte la vitesse d’attaque, l’esquive et la défense physique.')],
       ['ASPD', navLabel('Attack Speed.','Attack Speed : vitesse d’attaque.')],
       ['ATK', navLabel('Physical Attack. The status window separates status ATK and equipment ATK.','Attaque physique. La fenêtre de statut sépare l’ATK de statut et l’ATK d’équipement.')],
       ['Auto-Hunt', navLabel('The official automated hunting feature built into Ragnarok.','La fonction officielle de chasse automatisée intégrée à Ragnarok.')],
@@ -4716,10 +4713,87 @@ window.RO_DATA = {
           <li><a href="https://irowiki.org/wiki/Element" target="_blank" rel="noopener">iRO Wiki — Element</a> — ${navLabel('damage multipliers and element-level tables','multiplicateurs de dégâts et tables des niveaux élémentaires')}</li>
         </ul></div>
         <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
-          'The source page places attacking elements in columns and defending elements in rows. This wiki intentionally transposes the same values so attacking elements are on the left and defending elements are at the top.',
-          'La page source place les éléments offensifs en colonnes et les éléments défensifs en lignes. Ce wiki transpose volontairement les mêmes valeurs afin d’avoir les éléments qui attaquent à gauche et ceux qui défendent en haut.'
+          'For readability, the table is displayed with attacking elements on the left and defending elements at the top.',
+          'Pour faciliter la lecture, le tableau affiche les éléments attaquants à gauche et les éléments défenseurs en haut.'
         )}</div></div>
       </div>`;
+  }
+
+  function sourcesLinksPage(topic) {
+    const title = lang === 'fr' ? topic.fr : topic.en;
+    const groups = [
+      {
+        title: navLabel('Official Ragnarok Global','Ragnarok Global officiel'),
+        links: [
+          ['Ragnarok Global — Official site','https://roz.mygnjoy.com/en/main'],
+          ['Ragnarok Global — Game Guide','https://roz.mygnjoy.com/en/intro/guide'],
+          ['Ragnarok Global — Download','https://roz.mygnjoy.com/en/download'],
+          ['GNJOY — Game Guide 21 (EXP)','https://roz.mygnjoy.com/fr/intro/guide/21'],
+          ['GNJOY — Launch notice','https://roz.mygnjoy.com/en/news/notice/42'],
+          ['GNJOY — Party EXP notice','https://roz.mygnjoy.com/en/news/notice/69'],
+          ['GNJOY — Community feedback / Party EXP','https://roz.mygnjoy.com/en/news/notice/70']
+        ]
+      },
+      {
+        title: navLabel('Databases and tools','Bases de données et outils'),
+        links: [
+          ['Encyclop’Elvyl — Global database','https://docs.google.com/spreadsheets/d/1nK2jFgMEKa6IYGszbRtAcIp06VhM2sfsUf4kv46gKzI/edit?gid=1921304023#gid=1921304023'],
+          ['Prontera.info — Mechanics & formulas','https://roz.prontera.info/mechanics'],
+          ['Prontera.info — Skill Planner','https://roz.prontera.info/skills/planner?class=wizard'],
+          ['Prontera.info — Bonuses','https://roz.prontera.info/guides/bonuses'],
+          ['ROZ Database — Roadmap','https://rozerodb.com/guides/roadmap-update'],
+          ['ROZ Database — Cash Shop','https://rozerodb.com/cash-shop'],
+          ['MidgardHub — New Player Guide','https://midgardhub.com/guides/new-player'],
+          ['MidgardHub — Skill tools','https://midgardhub.com/tools/skills'],
+          ['MidgardHub — Map database','https://midgardhub.com/database/maps'],
+          ['Lymd — Global Guide','https://sites.google.com/view/rozeroguide'],
+          ['RagnaPlace — Global database','https://ragnaplace.com/en/rozg-en/'],
+          ['RZ Skill Tree','https://rz.fharr.com/db/skilltree']
+        ]
+      },
+      {
+        title: navLabel('World map references','Références pour la carte du monde'),
+        links: [
+          ['RateMyServer — Map Database','https://ratemyserver.net/index.php?page=map_db'],
+          ['RateMyServer — World Map','https://ratemyserver.net/worldmap.php?re_mob=0'],
+          ['RateMyServer — Dungeon Map','https://ratemyserver.net/dungeonmap.php?re_mob=1'],
+          ['MidgardHub — World Map image','https://midgardhub.com/images/database/worldmap.jpg']
+        ]
+      },
+      {
+        title: navLabel('Structural and comparison references','Références de structure et de comparaison'),
+        links: [
+          ['iRO Wiki — Levels','https://irowiki.org/wiki/Levels'],
+          ['iRO Wiki — Experience','https://irowiki.org/wiki/Experience'],
+          ['iRO Wiki — Stats','https://irowiki.org/wiki/Stats'],
+          ['iRO Wiki — Element','https://irowiki.org/wiki/Element'],
+          ['iRO Wiki — Items','https://irowiki.org/wiki/Items'],
+          ['iRO Wiki — Card System','https://irowiki.org/wiki/Card_System'],
+          ['iRO Wiki — Monster','https://irowiki.org/wiki/Monster'],
+          ['iRO Wiki — World Map','https://irowiki.org/wiki/World_Map'],
+          ['iRO Wiki — Skills','https://irowiki.org/wiki/Skills'],
+          ['iRO Wiki — Novice','https://irowiki.org/wiki/Novice'],
+          ['iRO Wiki — Basic Skill','https://irowiki.org/wiki/Basic_Skill']
+        ]
+      }
+    ];
+
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('info')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+      <p class="article-lead">${navLabel(
+        'All external references used while building the wiki are grouped here so gameplay pages can stay clean and easy to read.',
+        'Toutes les références externes utilisées pour construire le wiki sont regroupées ici afin de garder les pages de gameplay propres et faciles à lire.'
+      )}</p>
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
+        'Links from other Ragnarok versions can be useful for structure, visual comparison or specific tables, but their gameplay values are not automatically valid for the current Global server.',
+        'Les liens provenant d’autres versions de Ragnarok peuvent servir pour la structure, la comparaison visuelle ou certains tableaux précis, mais leurs valeurs de gameplay ne sont pas automatiquement valables pour le serveur Global actuel.'
+      )}</div></div>
+      ${groups.map(group => `
+        <h2>${group.title}</h2>
+        <div class="table-wrap"><table>
+          <tbody>${group.links.map(([label,url]) => `<tr><th style="width:42%">${esc(label)}</th><td><a href="${url}" target="_blank" rel="noopener">${esc(url)}</a></td></tr>`).join('')}</tbody>
+        </table></div>
+      `).join('')}`;
   }
 
   function topicDetail(id) {
@@ -4733,6 +4807,7 @@ window.RO_DATA = {
     if (id === 'stats') return statsPage(topic);
     if (id === 'faq') return faqPage(topic);
     if (id === 'glossary') return glossaryPage(topic);
+    if (id === 'sources-links') return sourcesLinksPage(topic);
 
     const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
     return `${breadcrumbs([{label:title}])}
@@ -4961,8 +5036,8 @@ window.RO_DATA = {
 
       <h2 id="boss">${navLabel('Bosses and MVPs','Bosses et MVP')}</h2>
       <p>${navLabel(
-        'Boss and MVP flags are shown in the database when known. Because Global has its own live MVP systems and update schedule, spawn rules, rewards, immunities and raid behavior are documented from current-server sources only.',
-        'Les flags Boss et MVP sont affichés dans la base lorsqu’ils sont connus. Comme Global possède ses propres systèmes MVP et son propre calendrier de mises à jour, les règles de spawn, récompenses, immunités et comportements de raid sont documentés uniquement depuis des sources du serveur actuel.'
+        'Boss and MVP flags are shown in the database when known. Global has its own MVP systems and update schedule, so spawn rules, rewards, immunities and raid behavior are documented specifically for the current server.',
+        'Les flags Boss et MVP sont affichés dans la base lorsqu’ils sont connus. Global possède ses propres systèmes MVP et son propre calendrier de mises à jour ; les règles de spawn, récompenses, immunités et comportements de raid sont donc documentés spécifiquement pour le serveur actuel.'
       )}</p>
       <div class="hero-actions"><a class="button" href="#/wiki/mvp-raid">${miniIcon('monster')}${navLabel('MVP Raid system','Système MVP Raid')}</a></div>
 
@@ -5193,8 +5268,8 @@ window.RO_DATA = {
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Version-specific data','Données propres à cette version')}</strong><br>${navLabel(
-        'This article follows the useful organization of iRO Wiki’s Skills article, but its mechanics and numbers are not copied from iRO. Cast, cooldown and skill data on this wiki come from current-server sources.',
-        'Cet article reprend l’organisation utile de la page Skills d’iRO Wiki, mais ses mécaniques et ses chiffres ne sont pas copiés depuis iRO. Les valeurs de cast, cooldown et les données de skills de ce wiki proviennent de sources du serveur actuel.'
+        'Cast, cooldown and skill values on this page are specific to the current Global server and are not replaced by iRO values.',
+        'Les valeurs de cast, cooldown et les données de skills de cette page sont propres au serveur Global actuel et ne sont pas remplacées par des valeurs iRO.'
       )}</div></div>
 
       ${toc([
@@ -5270,9 +5345,9 @@ window.RO_DATA = {
       <div class="table-wrap"><table>
         <thead><tr><th>${navLabel('Mechanic','Mécanique')}</th><th>${navLabel('What it blocks','Ce que cela bloque')}</th><th>${navLabel('How this wiki handles it','Traitement sur le wiki')}</th></tr></thead>
         <tbody>
-          <tr><th>Global / After-Cast Delay</th><td>${navLabel('A shared delay affecting access to other skills after execution.','Un délai partagé affectant l’accès aux autres skills après l’exécution.')}</td><td>${navLabel('Only shown numerically when a current-server source exposes the value. Client equipment data confirms the existence of “Global Delay” modifiers.','Affiché numériquement uniquement lorsqu’une source du serveur actuel donne la valeur. Les données d’équipement du client confirment l’existence de modificateurs « Global Delay ».')}</td></tr>
+          <tr><th>Global / After-Cast Delay</th><td>${navLabel('A shared delay affecting access to other skills after execution.','Un délai partagé affectant l’accès aux autres skills après l’exécution.')}</td><td>${navLabel('Shown numerically only when a current Global value is available. Equipment data includes modifiers named “Global Delay”.','Affiché numériquement uniquement lorsqu’une valeur Global actuelle est disponible. Les données d’équipement contiennent des modificateurs nommés « Global Delay ».')}</td></tr>
           <tr><th>Cooldown</th><td>${navLabel('The same skill cannot be reused until its own cooldown ends.','Le même skill ne peut pas être relancé avant la fin de son propre cooldown.')}</td><td>${navLabel('Stored per skill level in the database when available. It is not replaced by an iRO cooldown value.','Stocké par niveau de skill dans la base lorsque disponible. Il n’est jamais remplacé par une valeur de cooldown iRO.')}</td></tr>
-          <tr><th>${navLabel('Attack / animation timing','Timing d’attaque / animation')}</th><td>${navLabel('Can still limit how quickly actions can be chained even when cast and cooldown are very short.','Peut encore limiter la vitesse d’enchaînement des actions même lorsque le cast et le cooldown sont très courts.')}</td><td>${navLabel('Not merged into Cooldown unless the source explicitly records it that way.','N’est pas fusionné avec le Cooldown sauf si la source l’enregistre explicitement ainsi.')}</td></tr>
+          <tr><th>${navLabel('Attack / animation timing','Timing d’attaque / animation')}</th><td>${navLabel('Can still limit how quickly actions can be chained even when cast and cooldown are very short.','Peut encore limiter la vitesse d’enchaînement des actions même lorsque le cast et le cooldown sont très courts.')}</td><td>${navLabel('Kept separate from Cooldown unless the game data treats both as the same timing.','Reste séparé du Cooldown sauf si les données du jeu traitent les deux comme le même timing.')}</td></tr>
         </tbody>
       </table></div>
 
@@ -5372,7 +5447,10 @@ window.RO_DATA = {
 
   function infoRow(label, value) { return `<tr><th>${esc(label)}</th><td>${value}</td></tr>`; }
   function statCell(label, value) { return `<div class="stat-cell"><small>${esc(label)}</small><strong>${esc(val(value))}</strong></div>`; }
-  function toc(entries) { return `<nav class="toc"><div class="toc-title">${t('contents')}</div><ol>${entries.map(x=>`<li><a href="#${x.id}">${esc(x.label)}</a></li>`).join('')}</ol></nav>`; }
+  function toc(entries) {
+    const visibleEntries = entries.filter(x => x.id !== 'sources');
+    return `<nav class="toc"><div class="toc-title">${t('contents')}</div><ol>${visibleEntries.map(x=>`<li><a href="#${x.id}">${esc(x.label)}</a></li>`).join('')}</ol></nav>`;
+  }
 
   function monsterDetail(id) {
     const m = getMonster(id);
@@ -5923,8 +6001,8 @@ window.RO_DATA = {
       },
       'heal': {
         formula: 'Damage vs Undead = 50% × Heal Effect',
-        en: 'Heal Effect scales with Skill Lv., caster Base Lv., total INT and the base/refined MATK of the weapon. The current sources used here do not expose a complete closed coefficient, so it is not invented.',
-        fr: 'L’effet de Heal dépend du niveau de compétence, du Base Lv. du lanceur, de son INT totale et de la MATK de base/raffinée de l’arme. Les sources actuelles utilisées ici n’exposent pas un coefficient fermé complet, donc il n’est pas inventé.'
+        en: 'Heal Effect scales with Skill Lv., caster Base Lv., total INT and the base/refined MATK of the weapon. The complete coefficient is not currently available, so it is not invented.',
+        fr: 'L’effet de Heal dépend du niveau de compétence, du Base Lv. du lanceur, de son INT totale et de la MATK de base/raffinée de l’arme. Le coefficient complet n’est pas disponible actuellement, donc il n’est pas inventé.'
       },
       'mace-mastery': {
         formula: 'Bonus Damage = 3 × Skill Lv.',
