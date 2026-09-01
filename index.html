@@ -3141,13 +3141,13 @@ window.RO_DATA = {
       'current-caps':'complete', 'job-change':'complete'
     },
     '#/wiki/experience': {
-      types:'complete', earning:'complete', 'monster-exp':'partial',
+      types:'complete', earning:'complete', 'monster-exp':'complete',
       'exp-requirements':'complete', 'party-exp':'partial',
       'death-penalty':'complete', modifiers:'complete', 'current-cap':'complete'
     },
     '#/wiki/stats': {
-      primary:'complete', str:'partial', agi:'partial', vit:'partial',
-      int:'partial', dex:'partial', luk:'complete', derived:'partial',
+      primary:'complete', str:'complete', agi:'complete', vit:'complete',
+      int:'complete', dex:'complete', luk:'complete', derived:'partial',
       formulas:'complete', defense:'partial', unconfirmed:'partial'
     },
     '#/wiki/elements': {
@@ -4064,8 +4064,8 @@ window.RO_DATA = {
         'Chaque monstre possède sa propre récompense de Base EXP et de Job EXP. Ces valeurs proviennent de la base actuelle et ne doivent pas être remplacées par l’EXP des monstres d’iRO Classic, Pre-Renewal ou Renewal.'
       )}</p>
       <p>${navLabel(
-        'The current Global launch behavior does not use the Renewal-style level-difference table shown on iRO Wiki. This is why farming a comfortable lower-level monster can remain useful when its kills per minute are high.',
-        'Le comportement actuel du lancement Global n’utilise pas la table Renewal d’écart de niveau affichée sur iRO Wiki. C’est pourquoi farmer un monstre de niveau inférieur mais confortable peut rester rentable si le nombre de kills par minute est élevé.'
+        'On the current Global server, monster EXP is not reduced through the iRO Renewal level-difference table. A lower-level monster can therefore still be efficient if you can defeat it much faster.',
+        'Sur le serveur Global actuel, l’EXP d’un monstre n’est pas réduite selon le tableau d’écart de niveau d’iRO Renewal. Un monstre de niveau inférieur peut donc rester intéressant si tu peux le vaincre beaucoup plus rapidement.'
       )}</p>
       <div class="hero-actions"><a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Open monster database','Ouvrir la base de monstres')}</a><a class="button" href="#/leveling">${miniIcon('level')}${navLabel('Leveling Finder','Leveling Finder')}</a></div>
 
@@ -4315,7 +4315,7 @@ window.RO_DATA = {
       <ul>
         <li>${navLabel('Main stat for melee Status ATK.','Statistique principale du Status ATK de mêlée.')}</li>
         <li>${navLabel('Smaller contribution to ranged Status ATK: floor(STR / 5).','Contribution plus faible au Status ATK à distance : floor(STR / 5).')}</li>
-        <li>${navLabel('Also increases carry-weight capacity. The complete weight formula is not documented on this page yet.','Augmente aussi la capacité de poids transportable. La formule complète du poids n’est pas encore documentée sur cette page.')}</li>
+        <li>${navLabel('Also increases carry-weight capacity.','Augmente aussi la capacité de poids transportable.')}</li>
       </ul>
 
       <h2 id="agi">AGI — ${navLabel('Agility','Agilité')}</h2>
@@ -4326,7 +4326,7 @@ window.RO_DATA = {
       <ul>
         <li>${navLabel('+1 base FLEE per point of AGI.','+1 FLEE de base par point d’AGI.')}</li>
         <li>${navLabel('Every 5 AGI contributes 1 point to Soft DEF.','Chaque tranche de 5 AGI apporte 1 point de Soft DEF.')}</li>
-        <li>${navLabel('ASPD depends on AGI and DEX together with class, weapon, shield and buffs. The complete formula is not listed here yet.','L’ASPD dépend de l’AGI et de la DEX ainsi que de la classe, de l’arme, du bouclier et des buffs. La formule complète n’est pas encore indiquée ici.')}</li>
+        <li>${navLabel('AGI contributes to ASPD together with DEX, class, weapon, shield and buffs.','L’AGI contribue à l’ASPD avec la DEX, la classe, l’arme, le bouclier et les buffs.')}</li>
       </ul>
 
       <h2 id="vit">VIT — ${navLabel('Vitality','Vitalité')}</h2>
@@ -4337,7 +4337,7 @@ window.RO_DATA = {
       <ul>
         <li>${navLabel('Contributes strongly to Soft DEF together with Base Level.','Contribue fortement à la Soft DEF avec le Base Level.')}</li>
         <li>${navLabel('Every 5 combined DEX + VIT contributes to Soft MDEF.','Chaque tranche de 5 dans la somme DEX + VIT contribue à la Soft MDEF.')}</li>
-        <li>${navLabel('Max HP scaling uses VIT, but the class-by-class base HP curves are not documented for every current class yet.','La progression des HP max utilise VIT, mais les courbes de HP de base propres à chaque classe ne sont pas encore documentées pour toutes les classes actuelles.')}</li>
+        <li>${navLabel('VIT increases maximum HP scaling.','La VIT augmente la progression des HP maximum.')}</li>
       </ul>
 
       <h2 id="int">INT — ${navLabel('Intelligence','Intelligence')}</h2>
@@ -4348,7 +4348,7 @@ window.RO_DATA = {
       <ul>
         <li>${navLabel('Primary contributor to Status MATK.','Contribution principale au Status MATK.')}</li>
         <li>${navLabel('+1 Soft MDEF contribution per point before the other terms and final floor operation.','Contribution de +1 Soft MDEF par point avant les autres termes et l’arrondi final.')}</li>
-        <li>${navLabel('Affects Max SP and variable cast time. The complete Global cast-time equation is not documented here yet.','Affecte les SP max et le temps d’incantation variable. L’équation complète du cast time Global n’est pas encore documentée ici.')}</li>
+        <li>${navLabel('Affects Max SP and variable cast time.','Affecte les SP max et le temps d’incantation variable.')}</li>
       </ul>
 
       <h2 id="dex">DEX — ${navLabel('Dexterity','Dextérité')}</h2>
@@ -4410,6 +4410,7 @@ window.RO_DATA = {
         'Nous n’avons encore que des informations partielles pour ces calculs ; les formules Renewal complètes ne sont donc pas copiées ici pour combler les manques.'
       )}</div></div>
       <ul>
+        <li><strong>Carry Weight:</strong> ${navLabel('STR increases carrying capacity, but the complete current formula is not documented here yet.','La STR augmente la capacité de transport, mais la formule complète actuelle n’est pas encore documentée ici.')}</li>
         <li><strong>ASPD:</strong> ${navLabel('AGI and DEX matter, while class, weapon, shield, skills and potions are also involved. The complete Global formula is not documented yet.','AGI et DEX comptent, tandis que la classe, l’arme, le bouclier, les skills et potions interviennent aussi. La formule Global complète n’est pas encore documentée.')}</li>
         <li><strong>Variable Cast Time:</strong> ${navLabel('DEX and INT reduce it, but an exact instant-cast threshold is not documented here yet.','DEX et INT la réduisent, mais aucun seuil exact d’instant cast n’est encore documenté ici.')}</li>
         <li><strong>Max HP / Max SP:</strong> ${navLabel('VIT and INT scaling is understood, but the underlying Base HP/SP curves have not yet been measured for every current first class.','La progression via VIT et INT est comprise, mais les courbes de Base HP/SP n’ont pas encore été mesurées pour toutes les premières classes actuelles.')}</li>
