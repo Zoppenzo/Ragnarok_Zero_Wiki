@@ -4830,17 +4830,17 @@ window.RO_DATA = {
 
   function monsterRacesPage(topic) {
     const races = [
-      ['✨','Angel',navLabel('Angelic or celestial monsters.','Monstres angéliques ou célestes.')],
-      ['🐾','Brute',navLabel('Animals and beast-like monsters. Also called Animal in some translations.','Animaux et monstres de type bestial. Aussi appelé Animal dans certaines traductions.')],
-      ['👤','Demi-Human',navLabel('Humanoid monsters such as Orcs, Goblins and similar creatures. Some card effects that target Demi-Human also apply to Player (Human).','Monstres humanoïdes comme les Orcs, Goblins et créatures similaires. Certains effets de cartes visant Demi-Human s’appliquent aussi à Player (Human).')],
-      ['👹','Demon',navLabel('Demonic or devil-like monsters.','Monstres démoniaques ou de type Devil.')],
-      ['🐉','Dragon',navLabel('Dragons and draconic creatures.','Dragons et créatures draconiques.')],
-      ['🐟','Fish',navLabel('Fish and aquatic creatures classified under this race.','Poissons et créatures aquatiques classées dans cette race.')],
-      ['⚙️','Formless',navLabel('Constructs, objects and creatures without a conventional biological form.','Constructions, objets et créatures sans forme biologique conventionnelle.')],
-      ['🪲','Insect',navLabel('Insects and insect-like creatures.','Insectes et créatures apparentées.')],
-      ['🌿','Plant',navLabel('Plants and monsters classified under the Plant race.','Plantes et monstres classés dans la race Plant.')],
-      ['🧑','Player (Human)',navLabel('The race used for player characters. It is internally distinct from Demi-Human, but some card effects treat both categories together.','Race utilisée pour les personnages joueurs. Elle est distincte de Demi-Human en interne, mais certains effets de cartes traitent les deux catégories ensemble.')],
-      ['☠️','Undead',navLabel('Undead creatures. Undead race and Undead element are two separate attributes.','Créatures mortes-vivantes. La race Undead et l’élément Undead sont deux caractéristiques différentes.')]
+      ['✨','Angel',navLabel('A relatively rare monster race; many Angel monsters are bosses.','Race de monstres relativement rare ; beaucoup de monstres Angel sont des boss.')],
+      ['🐾','Brute',navLabel('Mostly animals or monsters with clear animal-like traits. Also called Animal in some translations.','Principalement des animaux ou des monstres possédant des caractéristiques animales marquées. Aussi appelée Animal dans certaines traductions.')],
+      ['👤','Demi-Human',navLabel('Humanlike monsters or creatures with humanlike characteristics. Demi-Human modifiers generally also affect Human players.','Monstres d’apparence humaine ou possédant des caractéristiques humaines. Les modificateurs Demi-Human affectent généralement aussi les joueurs Human.')],
+      ['👹','Demon',navLabel('A monster race also referred to as Devil in some terminology.','Race de monstres également appelée Devil dans certaines terminologies.')],
+      ['🐉','Dragon',navLabel('The monster race used for dragons.','Race de monstres utilisée pour les dragons.')],
+      ['🐟','Fish',navLabel('The monster race used for fish; many Fish monsters are Water element.','Race de monstres utilisée pour les poissons ; beaucoup de monstres Fish sont de l’élément Water.')],
+      ['⚙️','Formless',navLabel('A catch-all race for monsters that do not fit the other races, including many machines, robots and animated objects.','Race regroupant les monstres qui ne rentrent pas dans les autres catégories, notamment de nombreuses machines, robots et objets animés.')],
+      ['🪲','Insect',navLabel('The monster race used for insects.','Race de monstres utilisée pour les insectes.')],
+      ['🌿','Plant',navLabel('The monster race used for plants.','Race de monstres utilisée pour les plantes.')],
+      ['🧑','Player (Human)',navLabel('The playable Human race. It shares race modifiers with Demi-Human, although not every game system treats both categories identically.','Race des personnages Human jouables. Elle partage les modificateurs de race avec Demi-Human, même si tous les systèmes du jeu ne traitent pas les deux catégories de façon identique.')],
+      ['☠️','Undead',navLabel('A monster race associated with the dead. Undead race is separate from Undead element, even though the two are often paired.','Race de monstres associée aux morts-vivants. La race Undead est distincte de l’élément Undead, même si les deux sont souvent associés.')]
     ];
 
     return `${generalPageHeader(topic)}
@@ -4879,8 +4879,8 @@ window.RO_DATA = {
 
       <div class="wiki-feature-list">
         <div><strong>${miniIcon('card')}${navLabel('Cards: Demi-Human and players','Cartes : Demi-Human et joueurs')}</strong><p>${navLabel(
-          'Some cards treat Demi-Human monsters and Player (Human) together. Hydra Card is the clearest example: its +20% physical damage against Demi-Human also applies against player characters.',
-          'Certaines cartes traitent les monstres Demi-Human et Player (Human) ensemble. Hydra Card est l’exemple le plus clair : son bonus de +20 % de dégâts physiques contre Demi-Human s’applique aussi contre les personnages joueurs.'
+          'All card effects that target the Demi-Human race also apply to Human players. Hydra Card is a simple example: its +20% physical damage against Demi-Human also works against player characters.',
+          'Tous les effets de cartes qui ciblent la race Demi-Human s’appliquent aussi aux joueurs Human. Hydra Card est un exemple simple : son bonus de +20 % de dégâts physiques contre Demi-Human fonctionne aussi contre les personnages joueurs.'
         )}</p></div>
         <div><strong>${miniIcon('item')}${navLabel('Affixes: current PvP behavior','Affixes : comportement PvP actuel')}</strong><p>${navLabel(
           'Demi-Human affixes do not currently appear to affect Player (Human) targets in PvP. For now, treat a Demi-Human affix as a monster-race bonus rather than a player-damage bonus.',
