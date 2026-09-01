@@ -3157,21 +3157,21 @@ window.RO_DATA = {
       'element-table':'complete', 'elements-list':'complete'
     },
     '#/items': {
-      equipment:'partial', cards:'partial', consumables:'partial',
-      materials:'partial', drops:'partial'
+      equipment:'complete', cards:'complete', consumables:'complete',
+      materials:'complete', drops:'complete'
     },
     '#/cards': {
-      acquiring:'partial', installing:'complete', slots:'partial', removing:'partial'
+      acquiring:'complete', installing:'complete', slots:'complete', removing:'partial'
     },
     '#/monsters': {
-      properties:'partial', behavior:'partial', boss:'partial', 'exp-drops':'partial'
+      properties:'complete', behavior:'complete', boss:'complete', 'exp-drops':'complete'
     },
     '#/maps': {
       'interactive-map':'partial', remote:'partial'
     },
     '#/skills': {
       types:'complete', usage:'complete', 'cast-time':'partial',
-      'delay-cooldown':'partial', examples:'complete'
+      'delay-cooldown':'complete', examples:'complete'
     }
   };
 
@@ -3182,7 +3182,8 @@ window.RO_DATA = {
     const fullyVerifiedRoutes = new Set([
       '#/wiki/introduction',
       '#/wiki/getting-started',
-      '#/wiki/basic-controls'
+      '#/wiki/basic-controls',
+      '#/wiki/glossary'
     ]);
     const housekeepingIds = new Set(['sources','related','see-also','skill-see-also']);
     const housekeepingLabels = new Set([
