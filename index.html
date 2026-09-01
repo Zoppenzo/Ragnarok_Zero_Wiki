@@ -3672,7 +3672,7 @@ window.RO_DATA = {
       ${officialSources([
         ['Official Game Guide','https://roz.mygnjoy.com/en/intro/guide'],
         ['Lymd — current settings and commands','https://sites.google.com/view/rozeroguide'],
-        ['Ragnarok Zero Tip Box — extracted client tips','https://old.criatura-academy.com/tipbox/ko']
+        ['Tip Box — extracted client tips','https://old.criatura-academy.com/tipbox/ko']
       ])}`;
   }
 
@@ -5993,7 +5993,7 @@ window.RO_DATA = {
           ${hasDetailedLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
             <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://rz.fharr.com/db/skilltree':(sk.classId==='thief'?'https://roz.prontera.info/skills/planner?class=assassin':(sk.classId==='acolyte'?'https://roz.prontera.info/skills/planner?class=high-priest':'https://roz.prontera.info/skills/planner?class=crusader'))))}" target="_blank" rel="noopener">Prontera.info — Skill Planner</a></li>
-            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero extracted skill tree reference</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — extracted skill-tree reference</a></li>
             ${sk.classId==='mage' ? '<li><a href="https://ragnaplace.com/en/rozg-en/skill/16/stone-curse" target="_blank" rel="noopener">RagnaPlace — fixed / variable / global delay tables</a></li>' : ''}
           </ul></div>` : ''}
 
@@ -6110,7 +6110,7 @@ window.RO_DATA = {
 
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('The Swordman skill list, max levels, current effects and skill icons on this page are based on Ragnarok Global sources. Spear Mastery is a 1st-class Swordsman skill in Zero, unlike iRO Classic.','La liste des compétences Swordman, leurs niveaux max, leurs effets Zero et leurs icônes sont basés sur des sources Ragnarok Global. Spear Mastery est bien une compétence de première classe Swordsman sur le serveur actuel, contrairement à iRO Classic.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('The Swordman skill list, max levels, current effects and skill icons on this page are based on Ragnarok Global sources. Spear Mastery is a 1st-class Swordsman skill in this version, unlike iRO Classic.','La liste des compétences Swordman, leurs niveaux max, leurs effets et leurs icônes sont basés sur des sources Ragnarok Global. Spear Mastery est bien une compétence de première classe Swordsman sur le serveur actuel, contrairement à iRO Classic.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Swordman develops into Knight or Crusader. These second classes are kept in the wiki as upcoming Global content.','Swordman évolue vers Knight ou Crusader. Ces secondes classes sont conservées dans le wiki comme contenu Global à venir.')}</p>
@@ -6132,7 +6132,7 @@ window.RO_DATA = {
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
-            <li><a href="https://midgardhub.com/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Skill Database</a></li>
+            <li><a href="https://midgardhub.com/skills" target="_blank" rel="noopener">MidgardHub — Skill Database</a></li>
             <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Skill Planner — Knight / Swordsman line</a></li>
           </ul></div>
         </div>
@@ -6181,7 +6181,7 @@ window.RO_DATA = {
         </aside>
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Mage uses the current skill tree: 15 skills total, including Energy Coat as a quest skill. Level values, SP costs, range, cast times and cooldowns are taken from sources for this version.','Mage utilise l’arbre de compétences Zero : 15 compétences au total, dont Energy Coat en compétence de quête. Les valeurs par niveau, coûts SP, portées, temps de cast et cooldowns proviennent de sources propres à cette version.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Mage uses the current skill tree: 15 skills total, including Energy Coat as a quest skill. Level values, SP costs, range, cast times and cooldowns are taken from sources for this version.','Mage utilise l’arbre de compétences actuel : 15 compétences au total, dont Energy Coat en compétence de quête. Les valeurs par niveau, coûts SP, portées, temps de cast et cooldowns proviennent de sources propres à cette version.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Mage advances to Wizard or Sage from Job Level 40. Both are kept in the wiki as upcoming Global second classes.','Mage évolue vers Wizard ou Sage à partir du Job Level 40. Les deux sont conservées dans le wiki comme secondes classes Global à venir.')}</p>
@@ -6202,10 +6202,10 @@ window.RO_DATA = {
           ${classSeeAlso(c)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
-            <li><a href="https://roz.prontera.info/jobs/mage" target="_blank" rel="noopener">Prontera.info — Mage — Ragnarok Zero: Global</a></li>
+            <li><a href="https://roz.prontera.info/jobs/mage" target="_blank" rel="noopener">Prontera.info — Mage</a></li>
             <li><a href="https://roz.prontera.info/skills/planner?class=wizard" target="_blank" rel="noopener">Prontera.info — Mage/Wizard Skill Planner</a></li>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
-            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero skill-tree reference</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — skill-tree reference</a></li>
           </ul></div>
         </div>
       </article>`;
@@ -6254,7 +6254,7 @@ window.RO_DATA = {
         </aside>
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Archer uses the current skill tree: 7 skills total, including Arrow Crafting and Arrow Repel as quest skills. Skill effects, SP costs, ranges, cast information and prerequisites below come from sources for this version.','Archer utilise l’arbre de compétences Zero : 7 compétences au total, dont Arrow Crafting et Arrow Repel comme compétences de quête. Les effets, coûts SP, portées, informations de cast et prérequis ci-dessous proviennent de sources propres à cette version.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Archer uses the current skill tree: 7 skills total, including Arrow Crafting and Arrow Repel as quest skills. Skill effects, SP costs, ranges, cast information and prerequisites below come from sources for this version.','Archer utilise l’arbre de compétences actuel : 7 compétences au total, dont Arrow Crafting et Arrow Repel comme compétences de quête. Les effets, coûts SP, portées, informations de cast et prérequis ci-dessous proviennent de sources propres à cette version.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Archer has a maximum Job Level of 50 and 49 normal skill points. It advances to Hunter, Bard or Dancer from Job Level 40.','Archer possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Hunter, Bard ou Dancer à partir du Job Level 40.')}</p>
@@ -6275,9 +6275,9 @@ window.RO_DATA = {
           ${classSeeAlso(c)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
-            <li><a href="https://ragnaplace.com/en/rozg-en/class/3/archer" target="_blank" rel="noopener">RagnaPlace — Archer — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/class/3/archer" target="_blank" rel="noopener">RagnaPlace — Archer</a></li>
             <li><a href="https://roz.prontera.info/skills/planner?class=hunter" target="_blank" rel="noopener">Prontera.info — Archer/Hunter Skill Planner</a></li>
-            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero skill-tree reference</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — skill-tree reference</a></li>
           </ul></div>
         </div>
       </article>`;
@@ -6327,7 +6327,7 @@ window.RO_DATA = {
         </aside>
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Merchant uses the current skill tree: 12 skills total. Axe Mastery and Cart Boost are part of the Merchant tree, and Cart Revolution, Change Cart, Crazy Uproar and Cart Boost are displayed here as Free Skills rather than normal Job-point skills.','Merchant utilise l’arbre de compétences Zero : 12 compétences au total. Axe Mastery et Cart Boost font partie de l’arbre Merchant, et Cart Revolution, Change Cart, Crazy Uproar et Cart Boost sont affichées ici comme Free Skills plutôt que comme compétences consommant des points de Job normaux.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Merchant uses the current skill tree: 12 skills total. Axe Mastery and Cart Boost are part of the Merchant tree, and Cart Revolution, Change Cart, Crazy Uproar and Cart Boost are displayed here as Free Skills rather than normal Job-point skills.','Merchant utilise l’arbre de compétences actuel : 12 compétences au total. Axe Mastery et Cart Boost font partie de l’arbre Merchant, et Cart Revolution, Change Cart, Crazy Uproar et Cart Boost sont affichées ici comme Free Skills plutôt que comme compétences consommant des points de Job normaux.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Merchant has a maximum Job Level of 50 and 49 normal skill points. It advances to Blacksmith or Alchemist from Job Level 40.','Merchant possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Blacksmith ou Alchemist à partir du Job Level 40.')}</p>
@@ -6348,12 +6348,12 @@ window.RO_DATA = {
           ${classSeeAlso(c)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
-            <li><a href="https://ragnaplace.com/pt/rozg-en/class/5/merchant" target="_blank" rel="noopener">RagnaPlace — Merchant — Ragnarok Zero Global</a></li>
-            <li><a href="https://rozerodb.com/player-skills/axe-mastery" target="_blank" rel="noopener">RO Zero Database — Axe Mastery</a></li>
-            <li><a href="https://rozerodb.com/player-skills/cart-boost" target="_blank" rel="noopener">RO Zero Database — Cart Boost</a></li>
-            <li><a href="https://rozerodb.com/player-skills/cart-revolution" target="_blank" rel="noopener">RO Zero Database — Cart Revolution</a></li>
+            <li><a href="https://ragnaplace.com/pt/rozg-en/class/5/merchant" target="_blank" rel="noopener">RagnaPlace — Merchant</a></li>
+            <li><a href="https://rozerodb.com/player-skills/axe-mastery" target="_blank" rel="noopener">ROZ Database — Axe Mastery</a></li>
+            <li><a href="https://rozerodb.com/player-skills/cart-boost" target="_blank" rel="noopener">ROZ Database — Cart Boost</a></li>
+            <li><a href="https://rozerodb.com/player-skills/cart-revolution" target="_blank" rel="noopener">ROZ Database — Cart Revolution</a></li>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
-            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — Zero skill-tree reference</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — skill-tree reference</a></li>
           </ul></div>
         </div>
       </article>`;
@@ -6403,7 +6403,7 @@ window.RO_DATA = {
         </aside>
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Thief uses the current skill tree with 11 first-job skills. Sword Mastery is part of the Zero Thief tree, and Find Stone uses the Global 70% weight threshold rather than the 50% value found on older RO pages.','Thief utilise l’arbre actuel avec 11 compétences de première classe. Sword Mastery fait partie de l’arbre Thief de Zero, et Find Stone utilise le seuil de poids Global de 70 % au lieu de la valeur de 50 % présente sur d’anciennes pages RO.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Thief uses the current skill tree with 11 first-job skills. Sword Mastery is part of the current Thief tree, and Find Stone uses the Global 70% weight threshold rather than the 50% value found on older RO pages.','Thief utilise l’arbre actuel avec 11 compétences de première classe. Sword Mastery fait partie de l’arbre Thief actuel, et Find Stone utilise le seuil de poids Global de 70 % au lieu de la valeur de 50 % présente sur d’anciennes pages RO.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Thief has a maximum Job Level of 50 and 49 normal skill points. It advances to Assassin or Rogue from Job Level 40.','Thief possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Assassin ou Rogue à partir du Job Level 40.')}</p>
@@ -6424,10 +6424,10 @@ window.RO_DATA = {
           ${classSeeAlso(c)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
-            <li><a href="https://roz.prontera.info/skills/planner?class=assassin" target="_blank" rel="noopener">Prontera.info — Thief/Assassin Skill Planner — Ragnarok Zero Global</a></li>
-            <li><a href="https://rozerodb.com/player-skills/double-attack" target="_blank" rel="noopener">RO Zero Database — Double Attack</a></li>
-            <li><a href="https://rozerodb.com/player-skills/back-slide" target="_blank" rel="noopener">RO Zero Database — Back Slide</a></li>
-            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — Zero skill-tree reference</a></li>
+            <li><a href="https://roz.prontera.info/skills/planner?class=assassin" target="_blank" rel="noopener">Prontera.info — Thief/Assassin Skill Planner</a></li>
+            <li><a href="https://rozerodb.com/player-skills/double-attack" target="_blank" rel="noopener">ROZ Database — Double Attack</a></li>
+            <li><a href="https://rozerodb.com/player-skills/back-slide" target="_blank" rel="noopener">ROZ Database — Back Slide</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — skill-tree reference</a></li>
           </ul></div>
         </div>
       </article>`;
@@ -6498,13 +6498,13 @@ window.RO_DATA = {
           ${classSeeAlso(c)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
-            <li><a href="https://roz.prontera.info/jobs/acolyte" target="_blank" rel="noopener">Prontera.info — Acolyte — Ragnarok Zero Global</a></li>
+            <li><a href="https://roz.prontera.info/jobs/acolyte" target="_blank" rel="noopener">Prontera.info — Acolyte</a></li>
             <li><a href="https://roz.prontera.info/skills/planner?class=high-priest" target="_blank" rel="noopener">Prontera.info — Acolyte / Priest Skill Planner</a></li>
-            <li><a href="https://ragnaplace.com/en/rozg-en/skill/28/heal" target="_blank" rel="noopener">RagnaPlace — Heal — Ragnarok Zero Global</a></li>
-            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/31/aqua-benedicta" target="_blank" rel="noopener">RagnaPlace — Aqua Benedicta — Ragnarok Zero Global</a></li>
-            <li><a href="https://ragnaplace.com/en/rozg-en/skill/33/angelus" target="_blank" rel="noopener">RagnaPlace — Angelus — Ragnarok Zero Global</a></li>
-            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/156/holy-light" target="_blank" rel="noopener">RagnaPlace — Holy Light — Ragnarok Zero Global</a></li>
-            <li><a href="https://rozerodb.com/player-skills/mace-mastery" target="_blank" rel="noopener">RO Zero Database — Mace Mastery</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/skill/28/heal" target="_blank" rel="noopener">RagnaPlace — Heal</a></li>
+            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/31/aqua-benedicta" target="_blank" rel="noopener">RagnaPlace — Aqua Benedicta</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/skill/33/angelus" target="_blank" rel="noopener">RagnaPlace — Angelus</a></li>
+            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/156/holy-light" target="_blank" rel="noopener">RagnaPlace — Holy Light</a></li>
+            <li><a href="https://rozerodb.com/player-skills/mace-mastery" target="_blank" rel="noopener">ROZ Database — Mace Mastery</a></li>
           </ul></div>
         </div>
       </article>`;
