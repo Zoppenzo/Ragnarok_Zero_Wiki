@@ -2283,13 +2283,13 @@ window.RO_DATA = {
       prerequisites: [], notes: { en: "HP recovery does not occur while moving or while recovery is blocked by weight penalties.", fr: "La récupération de HP ne se produit pas en mouvement ni lorsque les pénalités de poids empêchent la récupération." }, verified: true
     },
     {
-      id: "bash", name: "Bash", classId: "swordman", maxLevel: 10, type: "Active", target: "Enemy", image: "https://static.divine-pride.net/images/skill/5.png",
+      id: "bash", name: "Bash", classId: "swordman", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", image: "https://static.divine-pride.net/images/skill/5.png",
       spCost: null, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
       description: { en: "Hits one target with a powerful melee strike. From Bash Lv.6 onward, Fatal Blow can add a chance to inflict Stun.", fr: "Frappe une cible avec une puissante attaque de mêlée. À partir de Bash Lv.6, Fatal Blow peut ajouter une chance d'infliger Stun." },
       prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
     },
     {
-      id: "provoke", name: "Provoke", classId: "swordman", maxLevel: 10, type: "Active", target: "Enemy", image: "https://static.divine-pride.net/images/skill/6.png",
+      id: "provoke", name: "Provoke", classId: "swordman", maxLevel: 10, type: "Active", role: "supportive", target: "Enemy", image: "https://static.divine-pride.net/images/skill/6.png",
       spCost: null, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
       description: { en: "Provokes a target, lowering its defense while increasing its attack power. On monsters, it also draws aggression toward the caster. It does not affect Undead or boss monsters.", fr: "Provoque une cible, réduisant sa défense tout en augmentant sa puissance d'attaque. Sur les monstres, la compétence attire aussi leur agressivité vers le lanceur. Elle ne fonctionne pas sur les monstres Undead ni les boss." },
       prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
@@ -2326,16 +2326,106 @@ window.RO_DATA = {
       prerequisites: [{ skillId: "sword-mastery", level: 1, verified: true }], notes: { en: "Max Lv.10 in the Ragnarok Zero skill database.", fr: "Niveau max 10 dans la base de compétences Ragnarok Zero." }, verified: true
     },
     {
-      id: "magnum-break", name: "Magnum Break", classId: "swordman", maxLevel: 10, type: "Active", target: "Self / Area", image: "https://static.divine-pride.net/images/skill/7.png",
+      id: "magnum-break", name: "Magnum Break", classId: "swordman", maxLevel: 10, type: "Active", role: "damage", target: "Self / Area", image: "https://static.divine-pride.net/images/skill/7.png",
       spCost: 30, castTime: "None", castDelay: "0.3 s", cooldown: "2 s",
       description: { en: "Deals Fire-property physical damage in a 5×5 area around the caster, knocks enemies back by 2 cells, and temporarily adds Fire-property weapon damage.", fr: "Inflige des dégâts physiques de propriété Fire dans une zone de 5×5 autour du lanceur, repousse les ennemis de 2 cellules et ajoute temporairement des dégâts d'arme de propriété Fire." },
       prerequisites: [{ skillId: "bash", level: 5, verified: true }], notes: { en: "MidgardHub lists Bash Lv.5 as the first-job prerequisite and Max Lv.10.", fr: "MidgardHub indique Bash Lv.5 comme prérequis de première classe et un niveau max de 10." }, verified: true
     },
     {
-      id: "endure", name: "Endure", classId: "swordman", maxLevel: 10, type: "Active", target: "Self", image: "https://static.divine-pride.net/images/skill/8.png",
+      id: "endure", name: "Endure", classId: "swordman", maxLevel: 10, type: "Active", role: "supportive", target: "Self", image: "https://static.divine-pride.net/images/skill/8.png",
       spCost: 10, castTime: "None", castDelay: "ASPD-based", cooldown: "10 s",
       description: { en: "Lets the caster keep moving and attacking while taking normal hit stun for a limited duration. The effect ends after enough hits and does not apply in Siege.", fr: "Permet au lanceur de continuer à se déplacer et à attaquer malgré les coups reçus pendant une durée limitée. L'effet prend fin après un certain nombre de coups et ne s'applique pas en Siege." },
       prerequisites: [{ skillId: "provoke", level: 5, verified: true }], notes: { en: "MidgardHub lists Provoke Lv.5 as the first-job prerequisite and Max Lv.10.", fr: "MidgardHub indique Provoke Lv.5 comme prérequis de première classe et un niveau max de 10." }, verified: true
+    },
+    {
+      id: "stone-curse", name: "Stone Curse", classId: "mage", maxLevel: 10, type: "Active", role: "supportive", target: "Enemy", image: "https://roz.prontera.info/assets/193bc327-398b-4e47-9b0a-7980af6ccbca",
+      spCost: null, castTime: "1 s", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Attempts to inflict Petrification on one target. Consumes 1 Red Gemstone when used.", fr: "Tente d'infliger Petrification à une cible. Consomme 1 Red Gemstone à l'utilisation." },
+      prerequisites: [], notes: { en: "Ragnarok Zero: Global Mage skill. Petrification chance rises from 24% to 60%.", fr: "Compétence Mage de Ragnarok Zero: Global. La chance de Petrification passe de 24 % à 60 %." }, verified: true
+    },
+    {
+      id: "cold-bolt", name: "Cold Bolt", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", image: "https://roz.prontera.info/assets/3ea71e5d-a730-4a1c-949c-d7b27d2707cb",
+      spCost: null, castTime: null, castDelay: "ASPD-based", cooldown: "0.7 s",
+      description: { en: "Strikes one target with Water-property magical hits. The number of hits increases with skill level.", fr: "Frappe une cible avec des dégâts magiques Water. Le nombre de coups augmente avec le niveau de la compétence." },
+      prerequisites: [], notes: { en: "Each hit is listed as MATK 100% in the Zero skill data.", fr: "Chaque coup est indiqué à MATK 100 % dans les données de compétences Zero." }, verified: true
+    },
+    {
+      id: "lightning-bolt", name: "Lightning Bolt", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", image: "https://roz.prontera.info/assets/5899135b-873f-4761-b478-4dd1f3543b60",
+      spCost: null, castTime: null, castDelay: "ASPD-based", cooldown: "0.7 s",
+      description: { en: "Calls lightning onto one target, dealing Wind-property magical hits. The number of hits increases with skill level.", fr: "Fait tomber la foudre sur une cible et inflige des dégâts magiques Wind. Le nombre de coups augmente avec le niveau." },
+      prerequisites: [], notes: { en: "Each hit is listed as MATK 100% in the Zero skill data.", fr: "Chaque coup est indiqué à MATK 100 % dans les données de compétences Zero." }, verified: true
+    },
+    {
+      id: "napalm-beat", name: "Napalm Beat", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy / Area", image: "https://roz.prontera.info/assets/9a03c20e-e51a-4b4a-84d7-5927d778863e",
+      spCost: null, castTime: "0.25 s", castDelay: "ASPD-based", cooldown: "0.25 s",
+      description: { en: "Deals Ghost-property magical damage to a target and enemies in a 3×3 area around it. Damage is divided when multiple enemies are hit.", fr: "Inflige des dégâts magiques Ghost à une cible et aux ennemis dans une zone de 3×3 autour d'elle. Les dégâts sont répartis si plusieurs ennemis sont touchés." },
+      prerequisites: [], notes: { en: "MATK scaling rises from 80% at Lv.1 to 170% at Lv.10.", fr: "Le multiplicateur MATK passe de 80 % au Lv.1 à 170 % au Lv.10." }, verified: true
+    },
+    {
+      id: "fire-bolt", name: "Fire Bolt", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", image: "https://roz.prontera.info/assets/fd03527c-b0a1-4c44-8552-95dc585a6e6e",
+      spCost: null, castTime: null, castDelay: "ASPD-based", cooldown: "0.7 s",
+      description: { en: "Strikes one target with Fire-property magical hits. Hit count rises with skill level and Zero data also applies additional INT-based scaling.", fr: "Frappe une cible avec des dégâts magiques Fire. Le nombre de coups augmente avec le niveau et les données Zero indiquent aussi un bonus basé sur l'INT." },
+      prerequisites: [], notes: { en: "Each base hit is listed as MATK 100%.", fr: "Chaque coup de base est indiqué à MATK 100 %." }, verified: true
+    },
+    {
+      id: "sight", name: "Sight", classId: "mage", maxLevel: 1, type: "Active", role: "supportive", target: "Self / Area", image: "https://roz.prontera.info/assets/faea4d80-bc3f-40bb-ae29-8904a3331f23",
+      spCost: 10, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Reveals hidden targets within a 7×7 area around the caster for 10 seconds.", fr: "Révèle les cibles cachées dans une zone de 7×7 autour du lanceur pendant 10 secondes." },
+      prerequisites: [], notes: { en: "Utility skill; it does not deal damage in the Mage version.", fr: "Compétence utilitaire ; la version Mage n'inflige pas de dégâts." }, verified: true
+    },
+    {
+      id: "earth-spike", name: "Earth Spike", classId: "mage", maxLevel: 5, type: "Active", role: "damage", target: "Enemy", image: "https://roz.prontera.info/assets/7ead65de-fc63-4545-9800-2fbc564f5ad5",
+      spCost: null, castTime: null, castDelay: "ASPD-based", cooldown: "0.7 s",
+      description: { en: "Raises earth spikes beneath one target, dealing Earth-property magical damage. The hit count increases with skill level.", fr: "Fait surgir des pics de terre sous une cible et inflige des dégâts magiques Earth. Le nombre de coups augmente avec le niveau." },
+      prerequisites: [{ skillId: "stone-curse", level: 1, verified: true }], notes: { en: "Zero data lists MATK 200% base damage with additional INT scaling.", fr: "Les données Zero indiquent des dégâts de base à MATK 200 % avec un bonus supplémentaire basé sur l'INT." }, verified: true
+    },
+    {
+      id: "frost-driver", name: "Frost Driver", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", image: "https://roz.prontera.info/assets/3fc8c7ce-3b2e-4bcf-a17b-c02640eed46d",
+      spCost: null, castTime: "0.4 s", castDelay: "ASPD-based", cooldown: "0.25 s",
+      description: { en: "Deals Water-property magical damage and has a chance to inflict Frozen.", fr: "Inflige des dégâts magiques Water et possède une chance d'infliger Frozen." },
+      prerequisites: [{ skillId: "cold-bolt", level: 5, verified: true }], notes: { en: "MATK and Frozen chance both increase by level.", fr: "Le multiplicateur MATK et la chance de Frozen augmentent avec le niveau." }, verified: true
+    },
+    {
+      id: "thunder-storm", name: "Thunder Storm", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Ground / Area", image: "https://roz.prontera.info/assets/1cf16638-dfe0-4198-a542-ca20e5ed3fd0",
+      spCost: null, castTime: null, castDelay: "ASPD-based", cooldown: "1 s",
+      description: { en: "Calls lightning onto a targeted 5×5 area, dealing Wind-property magical damage. Hit count increases with level.", fr: "Fait tomber la foudre sur une zone ciblée de 5×5 et inflige des dégâts magiques Wind. Le nombre de coups augmente avec le niveau." },
+      prerequisites: [{ skillId: "lightning-bolt", level: 4, verified: true }], notes: { en: "Each hit is listed as MATK 100%.", fr: "Chaque coup est indiqué à MATK 100 %." }, verified: true
+    },
+    {
+      id: "soul-strike", name: "Soul Strike", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", image: "https://roz.prontera.info/assets/b669cef9-d210-4656-8a84-318affb4f4d5",
+      spCost: null, castTime: "0.25 s", castDelay: "ASPD-based", cooldown: "0.7 s",
+      description: { en: "Summons spirits to deal Ghost-property magical damage to one target, with bonus damage against Undead-property enemies.", fr: "Invoque des esprits pour infliger des dégâts magiques Ghost à une cible, avec des dégâts supplémentaires contre les ennemis de propriété Undead." },
+      prerequisites: [{ skillId: "napalm-beat", level: 4, verified: true }], notes: { en: "Hit count rises every two skill levels; the Undead bonus reaches +50% at Lv.10.", fr: "Le nombre de coups augmente tous les deux niveaux ; le bonus contre Undead atteint +50 % au Lv.10." }, verified: true
+    },
+    {
+      id: "fire-ball", name: "Fire Ball", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy / Area", image: "https://roz.prontera.info/assets/bf5befb8-566c-46f7-b303-e22f98237b37",
+      spCost: 25, castTime: null, castDelay: "ASPD-based", cooldown: "0.35 s",
+      description: { en: "Throws a fireball that damages the target and enemies in a 5×5 area. The central target takes more damage than the outer area.", fr: "Projette une boule de feu qui touche la cible et les ennemis dans une zone de 5×5. La cible centrale subit davantage de dégâts que la zone extérieure." },
+      prerequisites: [{ skillId: "fire-bolt", level: 4, verified: true }], notes: { en: "Center damage rises from MATK 160% to 340%; outer damage rises from 120% to 255%.", fr: "Les dégâts centraux passent de MATK 160 % à 340 % ; les dégâts extérieurs passent de 120 % à 255 %." }, verified: true
+    },
+    {
+      id: "energy-coat", name: "Energy Coat", classId: "mage", maxLevel: 1, type: "Quest / Active", role: "supportive", target: "Self", image: "https://roz.prontera.info/assets/7807f8c5-acc6-4548-aed3-b46e378094bf",
+      spCost: 30, castTime: "2.5 s", castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Uses mental energy to reduce physical and magical damage taken. Reduction and SP consumed per hit depend on the caster's current SP percentage.", fr: "Utilise l'énergie mentale pour réduire les dégâts physiques et magiques reçus. La réduction et le SP consommé par coup dépendent du pourcentage de SP actuel." },
+      prerequisites: [], notes: { en: "Quest skill learned without spending a normal job skill point.", fr: "Compétence de quête apprise sans dépenser de point de compétence de Job normal." }, verified: true
+    },
+    {
+      id: "increase-sp-recovery", name: "Increase SP Recovery", classId: "mage", maxLevel: 10, type: "Passive", role: "passive", target: "Self", image: "https://roz.prontera.info/assets/cdc6ebb2-1c15-4e98-b500-3c3066b3c615",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Improves natural SP recovery every 10 seconds while standing still, using a fixed amount plus a percentage of Max SP.", fr: "Améliore la récupération naturelle de SP toutes les 10 secondes à l'arrêt, selon une valeur fixe plus un pourcentage des SP max." },
+      prerequisites: [], notes: { en: "Passive skill; no cast time, cast delay or cooldown.", fr: "Compétence passive ; aucun temps de cast, délai après cast ou cooldown." }, verified: true
+    },
+    {
+      id: "safety-wall", name: "Safety Wall", classId: "mage", maxLevel: 10, type: "Active", role: "supportive", target: "Ground", image: "https://roz.prontera.info/assets/ae5f72d0-d8d4-4c86-8ce5-811dbabe016c",
+      spCost: null, castTime: null, castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Creates a magical barrier on the ground that blocks a fixed number of enemy attacks and has skill-level-based durability.", fr: "Crée au sol une barrière magique qui bloque un nombre défini d'attaques ennemies et possède une durabilité dépendant du niveau." },
+      prerequisites: [{ skillId: "soul-strike", level: 5, verified: true }, { skillId: "napalm-beat", level: 7, verified: true }], notes: { en: "Durability and blocked-hit count both increase with skill level.", fr: "La durabilité et le nombre de coups bloqués augmentent avec le niveau." }, verified: true
+    },
+    {
+      id: "fire-wall", name: "Fire Wall", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Ground", image: "https://roz.prontera.info/assets/6c69dc05-3a8a-42a4-8242-cdd8d8f1a0a9",
+      spCost: 40, castTime: null, castDelay: "ASPD-based", cooldown: "None",
+      description: { en: "Creates a wall of fire that deals Fire-property magical damage to approaching enemies and knocks them back by 2 cells.", fr: "Crée un mur de feu qui inflige des dégâts magiques Fire aux ennemis qui s'en approchent et les repousse de 2 cellules." },
+      prerequisites: [{ skillId: "fire-ball", level: 5, verified: true }, { skillId: "sight", level: 1, verified: true }], notes: { en: "Zero data lists MATK 50% per wall hit; hit capacity and duration increase by level.", fr: "Les données Zero indiquent MATK 50 % par coup du mur ; le nombre de coups et la durée augmentent avec le niveau." }, verified: true
     },
     {
       id: "envenom", name: "Envenom", classId: "thief", maxLevel: 10, type: "Active", target: "Enemy", image: null,
@@ -2361,7 +2451,7 @@ window.RO_DATA = {
     { id: "novice", name: "Novice", tier: "Base Class", group: "novice", parentId: null, releaseStatus: "available", image: null, description: { en: "Novice is the starting class for every new character in Ragnarok Zero: Global. It introduces the basic game functions before the character chooses a first class.", fr: "Novice est la classe de départ de tous les nouveaux personnages dans Ragnarok Zero: Global. Elle sert à découvrir les fonctions de base du jeu avant de choisir une première classe." }, notes: { en: "At Job Level 10 or higher, a Novice can advance to one of the six first classes currently live on Global: Swordsman, Mage, Archer, Merchant, Thief or Acolyte.", fr: "À partir du Job Level 10, un Novice peut évoluer vers l’une des six premières classes actuellement disponibles sur Global : Swordsman, Mage, Archer, Merchant, Thief ou Acolyte." } },
 
     { id: "swordman", name: "Swordman", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Swordman is the melee-focused first class of Ragnarok Zero: Global, built around weapon mastery, strong single-target attacks, survivability and close-range utility.", fr: "Swordman est la première classe orientée mêlée de Ragnarok Zero: Global, centrée sur les maîtrises d'armes, les attaques puissantes sur cible unique, la survie et les outils de combat rapproché." }, notes: { en: "Ragnarok Zero: Global lists 11 Swordman skills: eight normal first-job skills and three quest skills.", fr: "Ragnarok Zero: Global liste 11 compétences Swordman : huit compétences normales de première classe et trois compétences de quête." } },
-    { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Mage pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
+    { id: "mage", name: "Mage", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Mage is the ranged magic first class of Ragnarok Zero: Global. It uses elemental and Ghost magic for single-target and area damage while also providing control and defensive utility.", fr: "Mage est la première classe de magie à distance de Ragnarok Zero: Global. Elle utilise les éléments et la magie Ghost pour infliger des dégâts monocible ou de zone, tout en disposant de contrôle et d'outils défensifs." }, notes: { en: "Ragnarok Zero: Global lists 15 Mage skills: 14 normal first-job skills and the Energy Coat quest skill. Mage advances to Wizard or Sage from Job Lv.40.", fr: "Ragnarok Zero: Global liste 15 compétences Mage : 14 compétences normales de première classe et la compétence de quête Energy Coat. Mage évolue en Wizard ou Sage à partir du Job Lv.40." } },
     { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Archer pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Merchant pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
     { id: "thief", name: "Thief", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Thief class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Thief pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
@@ -3477,6 +3567,55 @@ window.RO_DATA = {
     return rows[id] || null;
   }
 
+
+  function mageSkillLevelData(id) {
+    const A = 'ASPD-based', N = 'None';
+    const boltCast = ['0.8 s','1.2 s','1.6 s','2 s','2.4 s','2.8 s','3.2 s','3.6 s','4 s','4.4 s'];
+    const boltRows = Array.from({length:10},(_,i)=>[i+1,`${i+1} hit${i?'s':''}`,12+i*2,9,boltCast[i],A,'0.7 s']);
+    const rows = {
+      'stone-curse': Array.from({length:10},(_,i)=>[i+1,`Petrification chance: ${24+i*4}%`,25-i,2,'1 s',A,N]),
+      'cold-bolt': boltRows.map(r=>[...r]),
+      'lightning-bolt': boltRows.map(r=>[...r]),
+      'fire-bolt': boltRows.map(r=>[...r]),
+      'napalm-beat': [
+        [1,'MATK 80%',9,9,'0.25 s',A,'0.25 s'],[2,'MATK 90%',9,9,'0.25 s',A,'0.25 s'],[3,'MATK 100%',9,9,'0.25 s',A,'0.25 s'],
+        [4,'MATK 110%',12,9,'0.25 s',A,'0.25 s'],[5,'MATK 120%',12,9,'0.25 s',A,'0.25 s'],[6,'MATK 130%',12,9,'0.25 s',A,'0.25 s'],
+        [7,'MATK 140%',15,9,'0.25 s',A,'0.25 s'],[8,'MATK 150%',15,9,'0.25 s',A,'0.25 s'],[9,'MATK 160%',15,9,'0.25 s',A,'0.25 s'],[10,'MATK 170%',18,9,'0.25 s',A,'0.25 s']
+      ],
+      'sight': [[1,'Reveal hidden targets in 7×7 area · Duration 10 sec',10,1,N,A,N]],
+      'earth-spike': [
+        [1,'Hits: 1',14,9,'0.28 s',A,'0.7 s'],[2,'Hits: 2',18,9,'0.56 s',A,'0.7 s'],[3,'Hits: 3',22,9,'0.84 s',A,'0.7 s'],[4,'Hits: 4',26,9,'1.1 s',A,'0.7 s'],[5,'Hits: 5',30,9,'1.4 s',A,'0.7 s']
+      ],
+      'frost-driver': Array.from({length:10},(_,i)=>[i+1,`MATK ${110+i*10}% · Frozen chance: ${38+i*3}%`,25-i,9,'0.4 s',A,'0.25 s']),
+      'thunder-storm': Array.from({length:10},(_,i)=>[i+1,`${i+1} hit${i?'s':''}`,29+i*5,9,`${((i+1)*0.4).toFixed(1).replace('.0','')} s`,A,'1 s']),
+      'soul-strike': [
+        [1,'1 hit · Bonus vs Undead +5%',18,9,'0.25 s',A,'0.7 s'],[2,'1 hit · Bonus vs Undead +10%',14,9,'0.25 s',A,'0.7 s'],
+        [3,'2 hits · Bonus vs Undead +15%',24,9,'0.25 s',A,'0.7 s'],[4,'2 hits · Bonus vs Undead +20%',20,9,'0.25 s',A,'0.7 s'],
+        [5,'3 hits · Bonus vs Undead +25%',30,9,'0.25 s',A,'0.7 s'],[6,'3 hits · Bonus vs Undead +30%',26,9,'0.25 s',A,'0.7 s'],
+        [7,'4 hits · Bonus vs Undead +35%',36,9,'0.25 s',A,'0.7 s'],[8,'4 hits · Bonus vs Undead +40%',32,9,'0.25 s',A,'0.7 s'],
+        [9,'5 hits · Bonus vs Undead +45%',42,9,'0.25 s',A,'0.7 s'],[10,'5 hits · Bonus vs Undead +50%',38,9,'0.25 s',A,'0.7 s']
+      ],
+      'fire-ball': Array.from({length:10},(_,i)=>[i+1,`Center: MATK ${160+i*20}% · Outer: MATK ${120+i*15}%`,25,9,i<5?'0.8 s':'0.5 s',A,'0.35 s']),
+      'energy-coat': [[1,'SP 81–100%: DMG -30%, cost 3.0% SP · 61–80%: -24%/2.5% · 41–60%: -18%/2.0% · 21–40%: -12%/1.5% · 1–20%: -6%/1.0%',30,1,'2.5 s',A,N]],
+      'increase-sp-recovery': Array.from({length:10},(_,i)=>[i+1,`SP / 10 sec: +(${(i+1)*3} + ${((i+1)*0.2).toFixed(1)}% MSP)`,0,1,N,N,N]),
+      'safety-wall': [
+        [1,'Durability 300 · Blocks 2',30,9,'4 s',A,N],[2,'Durability 600 · Blocks 3',30,9,'3.6 s',A,N],[3,'Durability 900 · Blocks 4',30,9,'3.2 s',A,N],
+        [4,'Durability 1200 · Blocks 5',35,9,'2.8 s',A,N],[5,'Durability 1500 · Blocks 6',35,9,'2.4 s',A,N],[6,'Durability 1800 · Blocks 7',35,9,'2 s',A,N],
+        [7,'Durability 2100 · Blocks 8',40,9,'1.6 s',A,N],[8,'Durability 2400 · Blocks 9',40,9,'1.2 s',A,N],[9,'Durability 2700 · Blocks 10',40,9,'0.8 s',A,N],[10,'Durability 3000 · Blocks 11',40,9,'0.4 s',A,N]
+      ],
+      'fire-wall': [
+        [1,'3 hits per wall · Duration 5 sec',40,9,'1 s',A,N],[2,'4 hits per wall · Duration 6 sec',40,9,'0.9 s',A,N],[3,'5 hits per wall · Duration 7 sec',40,9,'0.8 s',A,N],
+        [4,'6 hits per wall · Duration 8 sec',40,9,'0.7 s',A,N],[5,'7 hits per wall · Duration 9 sec',40,9,'0.6 s',A,N],[6,'8 hits per wall · Duration 10 sec',40,9,'0.55 s',A,N],
+        [7,'9 hits per wall · Duration 11 sec',40,9,'0.5 s',A,N],[8,'10 hits per wall · Duration 12 sec',40,9,'0.45 s',A,N],[9,'11 hits per wall · Duration 13 sec',40,9,'0.4 s',A,N],[10,'12 hits per wall · Duration 14 sec',40,9,'0.35 s',A,N]
+      ]
+    };
+    return rows[id] || null;
+  }
+
+  function wikiSkillLevelData(id) {
+    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || null;
+  }
+
   function swordmanSkillExtraText(sk) {
     const en = {
       'bash': 'Deals a strong single-target melee hit. Starting at Bash Lv.6, learning Fatal Blow allows Bash to inflict Stun with a chance that scales upward.',
@@ -3494,7 +3633,7 @@ window.RO_DATA = {
   }
 
   function detailedSkillLevelTable(sk) {
-    const rows = swordmanSkillLevelData(sk.id);
+    const rows = wikiSkillLevelData(sk.id);
     if (!rows) return '';
     return `
       <h2 id="levels">${navLabel('Level-by-level effects','Effets par niveau')}</h2>
@@ -3527,8 +3666,8 @@ window.RO_DATA = {
       ? `<div class="infobox-image" style="height:96px"><img src="${sk.image}" alt="${esc(sk.name)}" width="34" height="34"></div>`
       : imagePlaceholder('skill');
 
-    const hasSwordmanLevels = !!swordmanSkillLevelData(sk.id);
-    const rows = swordmanSkillLevelData(sk.id);
+    const rows = wikiSkillLevelData(sk.id);
+    const hasDetailedLevels = !!rows;
     const inferredSP = rows ? [...new Set(rows.map(r=>r[2]))].join(' / ') : val(sk.spCost);
     const inferredRange = rows ? [...new Set(rows.map(r=>r[3]))].join(' / ') : val(sk.range);
     const inferredCast = rows ? [...new Set(rows.map(r=>r[4]))].join(' / ') : val(sk.castTime);
@@ -3548,23 +3687,23 @@ window.RO_DATA = {
             ${infoRow(t('maxLevel'),String(sk.maxLevel))}
             ${infoRow(t('spCost'),esc(String(inferredSP)))}
             ${infoRow(navLabel('Range','Portée'),esc(String(inferredRange)))}
-            ${infoRow(t('castTime'),esc(val(sk.castTime)))}
-            ${infoRow(navLabel('Cast Delay','Délai après lancement'),esc(val(sk.castDelay)))}
+            ${infoRow(t('castTime'),esc(String(inferredCast)))}
+            ${infoRow(navLabel('Cast Delay','Délai après lancement'),esc(String(inferredDelay)))}
             ${infoRow(t('cooldown'),esc(String(inferredCooldown)))}
           </tbody></table>
           <div class="infobox-footer">${badge(sk.verified)}</div>
         </aside>
 
         <div class="article-body">
-          <p class="article-lead">${esc(hasSwordmanLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}</p>
+          <p class="article-lead">${esc(sk.classId==='swordman' && hasDetailedLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}</p>
           ${toc([
-            ...(hasSwordmanLevels ? [{id:'levels',label:navLabel('Level-by-level effects','Effets par niveau')}] : []),
+            ...(hasDetailedLevels ? [{id:'levels',label:navLabel('Level-by-level effects','Effets par niveau')}] : []),
             {id:'prereq',label:t('prerequisites')},
             {id:'notes',label:t('notes')},
-            ...(hasSwordmanLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
+            ...(hasDetailedLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
           ])}
 
-          ${hasSwordmanLevels ? detailedSkillLevelTable(sk) : ''}
+          ${hasDetailedLevels ? detailedSkillLevelTable(sk) : ''}
 
           <h2 id="prereq">${t('prerequisites')}</h2>
           <div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div>
@@ -3574,10 +3713,9 @@ window.RO_DATA = {
 
           ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
 
-          ${hasSwordmanLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
+          ${hasDetailedLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
-            <li><a href="https://roz.prontera.info/skills/planner?class=crusader" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
-            <li><a href="https://ragnaplace.com/en/rozg-en/skill/7/magnum-break" target="_blank" rel="noopener">RagnaPlace — Zero Global skill delay data</a></li>
+            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':'https://roz.prontera.info/skills/planner?class=crusader'}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero extracted skill tree reference</a></li>
           </ul></div>` : ''}
 
@@ -3638,6 +3776,21 @@ window.RO_DATA = {
 
 
 
+
+  function skillVisualCategory(sk) {
+    if (sk?.role === 'damage') return 'damage';
+    if (sk?.role === 'supportive') return 'supportive';
+    if (sk?.role === 'passive' || String(sk?.type||'').includes('Passive')) return 'passive';
+    return 'supportive';
+  }
+
+  function skillTypeBackground(sk) {
+    const kind = skillVisualCategory(sk);
+    if (kind === 'damage') return '#ffd9d9';
+    if (kind === 'passive') return '#e6f0ff';
+    return '#dff6df';
+  }
+
   function swordmanDetail() {
     const c = getClass('swordman');
     const regularIds = ['sword-mastery','increase-hp-recovery','bash','provoke','spear-mastery','two-handed-sword-mastery','magnum-break','endure'];
@@ -3647,18 +3800,17 @@ window.RO_DATA = {
     const classGenders = classGenderList('swordman');
     const spriteBlock = `<div class="class-infobox-sprites">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot('swordman',g,false)}</div>`).join('')}</div>`;
     const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
-    const typeColor = type => type.includes('Passive') ? '#eef5ff' : '#fff';
     const regularRows = regular.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
       <td>${esc(txt(sk.description))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
-      <td style="background:${typeColor(sk.type)}">${esc(sk.type)}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
     </tr>`).join('');
     const freeRows = free.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
       <td>${esc(txt(sk.description))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
-      <td style="background:#d8fbfb">${navLabel('FREE','FREE')}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
       <td><span class="badge unverified">${navLabel('Quest details pending','Détails de quête à vérifier')}</span></td>
     </tr>`).join('');
 
@@ -3704,6 +3856,78 @@ window.RO_DATA = {
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
             <li><a href="https://midgardhub.com/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Skill Database</a></li>
             <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Skill Planner — Knight / Swordsman line</a></li>
+          </ul></div>
+        </div>
+      </article>`;
+  }
+
+
+  function mageDetail() {
+    const c = getClass('mage');
+    const regularIds = ['stone-curse','cold-bolt','lightning-bolt','napalm-beat','fire-bolt','sight','earth-spike','frost-driver','thunder-storm','soul-strike','fire-ball','increase-sp-recovery','safety-wall','fire-wall'];
+    const questIds = ['energy-coat'];
+    const regular = regularIds.map(getSkill).filter(Boolean);
+    const quest = questIds.map(getSkill).filter(Boolean);
+    const classGenders = classGenderList('mage');
+    const spriteBlock = `<div class="class-infobox-sprites">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot('mage',g,false)}</div>`).join('')}</div>`;
+    const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
+    const rows = regular.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+    </tr>`).join('');
+    const questRows = quest.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+      <td>${navLabel('Quest skill — no normal Job skill point','Compétence de quête — aucun point de Job normal')}</td>
+    </tr>`).join('');
+
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:'Mage'}])}
+      <article class="article-with-infobox">
+        <div class="article-heading"><h1>${icon('class')}Mage</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+        <aside class="infobox class-infobox">
+          <div class="infobox-title">Mage<span class="infobox-subtitle">${navLabel('First Class','Première classe')}</span></div>
+          ${spriteBlock}
+          <table><tbody>
+            ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
+            ${infoRow(t('status'),navLabel('Available','Disponible'))}
+            ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
+            ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/wizard">Wizard</a> / <a href="#/classes/sage">Sage</a>')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(t('skills'),String(regular.length + quest.length))}
+          </tbody></table>
+          <div class="infobox-footer">${badge(true)}</div>
+        </aside>
+        <div class="article-body">
+          <p class="article-lead">${esc(txt(c.description))}</p>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok Zero: Global data','Données Ragnarok Zero: Global')}</strong><br>${navLabel('Mage uses the Zero skill tree: 15 skills total, including Energy Coat as a quest skill. Level values, SP costs, range, cast times and cooldowns are taken from Zero-specific sources.','Mage utilise l’arbre de compétences Zero : 15 compétences au total, dont Energy Coat en compétence de quête. Les valeurs par niveau, coûts SP, portées, temps de cast et cooldowns proviennent de sources spécifiques à Zero.')}</div></div>
+
+          <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
+          <p>${navLabel('Mage advances to Wizard or Sage from Job Level 40. Both are kept in the wiki as upcoming Global second classes.','Mage évolue vers Wizard ou Sage à partir du Job Level 40. Les deux sont conservées dans le wiki comme secondes classes Global à venir.')}</p>
+          <div class="related-list"><a href="#/classes/wizard">Wizard</a> · <a href="#/classes/sage">Sage</a></div>
+
+          <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table></div>
+
+          <h3 id="quest-skills" style="font-size:21px;margin-top:30px">${navLabel('Quest Skills','Compétences de quête')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th><th style="width:220px">${navLabel('Quest','Quête')}</th></tr></thead>
+            <tbody>${questRows}</tbody>
+          </table></div>
+
+          ${classSeeAlso(c)}
+          <h2 id="sources">${navLabel('Sources','Sources')}</h2>
+          <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
+            <li><a href="https://roz.prontera.info/jobs/mage" target="_blank" rel="noopener">Prontera.info — Mage — Ragnarok Zero: Global</a></li>
+            <li><a href="https://roz.prontera.info/skills/planner?class=wizard" target="_blank" rel="noopener">Prontera.info — Mage/Wizard Skill Planner</a></li>
+            <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero skill-tree reference</a></li>
           </ul></div>
         </div>
       </article>`;
@@ -3822,6 +4046,7 @@ window.RO_DATA = {
   function classDetail(id) {
     if (id === 'novice') return noviceDetail();
     if (id === 'swordman') return swordmanDetail();
+    if (id === 'mage') return mageDetail();
     const c = getClass(id);
     if (!c) return notFound();
     const skills = DATA.skills.filter(s=>s.classId===id);
