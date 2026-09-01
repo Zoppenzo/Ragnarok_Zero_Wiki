@@ -3311,6 +3311,11 @@ window.RO_DATA = {
       leadership:'complete', emblem:'complete', 'guild-leveling':'complete',
       'daily-quests':'complete', 'guild-exp-table':'complete'
     },
+    '#/wiki/auto-hunt': {
+      overview:'complete', activation:'complete', basic:'complete',
+      monsters:'complete', skills:'complete', loot:'complete',
+      'items-potions':'complete', 'auto-pot':'complete', restrictions:'complete'
+    },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
       materials:'complete', drops:'complete'
@@ -6041,6 +6046,167 @@ window.RO_DATA = {
       </div>`;
   }
 
+
+  function autoHuntPage(topic) {
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('tools')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+      <p class="article-lead">${navLabel(
+        'Auto-Hunt is the built-in automatic hunting system. It can move around a field, choose monsters, use attacks and skills, pick up selected loot, consume items and manage HP/SP recovery according to the settings configured by the player.',
+        'Auto-Hunt est le système de chasse automatique intégré au jeu. Il peut se déplacer sur une map, choisir ses monstres, utiliser des attaques et compétences, ramasser certains objets, utiliser des consommables et gérer la récupération des HP/SP selon les réglages du joueur.'
+      )}</p>
+
+      ${toc([
+        {id:'overview',label:navLabel('Overview','Aperçu')},
+        {id:'activation',label:navLabel('Activating Auto-Hunt','Activer Auto-Hunt')},
+        {id:'basic',label:navLabel('Basic settings','Réglages Basic')},
+        {id:'monsters',label:navLabel('Monster settings','Réglages Monsters')},
+        {id:'skills',label:navLabel('Skill settings','Réglages Skills')},
+        {id:'loot',label:navLabel('Loot settings','Réglages Loot')},
+        {id:'items-potions',label:navLabel('Items and Potions','Items et Potions')},
+        {id:'auto-pot',label:'Auto Pot'},
+        {id:'restrictions',label:navLabel('Important behavior and restrictions','Comportements et restrictions')}
+      ])}
+
+      <h2 id="overview">${navLabel('Overview','Aperçu')}</h2>
+      <p>${navLabel(
+        'Auto-Hunt is configured from its own panel. The system is designed around several independent tabs, so combat behavior, target selection, survival rules, loot and consumables can all be adjusted separately.',
+        'Auto-Hunt se configure depuis sa propre fenêtre. Le système est organisé en plusieurs onglets indépendants afin de régler séparément le comportement en combat, les cibles, les règles de survie, le loot et les consommables.'
+      )}</p>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('monster')}${navLabel('Targets','Cibles')}</strong><p>${navLabel(
+          'Choose which monsters Auto-Hunt is allowed to attack.',
+          'Choisis les monstres qu’Auto-Hunt est autorisé à attaquer.'
+        )}</p></div>
+        <div><strong>${miniIcon('skill')}${navLabel('Skills','Compétences')}</strong><p>${navLabel(
+          'Configure the skills used automatically and their intervals.',
+          'Configure les compétences utilisées automatiquement et leurs intervalles.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}${navLabel('Loot','Butin')}</strong><p>${navLabel(
+          'Filter the categories of items that the character should pick up.',
+          'Filtre les catégories d’objets que le personnage doit ramasser.'
+        )}</p></div>
+        <div><strong>${miniIcon('tools')}${navLabel('Survival','Survie')}</strong><p>${navLabel(
+          'Teleport, potion and resurrection rules can be configured to reduce the risk of dying.',
+          'Des règles de téléportation, de potions et de résurrection peuvent être configurées pour réduire les risques de mort.'
+        )}</p></div>
+      </div>
+
+      <h2 id="activation">${navLabel('Activating Auto-Hunt','Activer Auto-Hunt')}</h2>
+      <p>${navLabel(
+        'After configuring the panel, use the crossed-swords Auto-Hunt button. The swords turn blue while Auto-Hunt is active and the character begins hunting according to the saved settings. A keyboard shortcut can also be assigned in Game Settings to toggle Auto-Hunt on or off.',
+        'Après avoir configuré la fenêtre, utilise le bouton Auto-Hunt représenté par deux épées croisées. Les épées deviennent bleues lorsque l’Auto-Hunt est actif et le personnage commence à chasser selon les réglages enregistrés. Un raccourci clavier peut aussi être attribué dans les Game Settings pour activer ou désactiver Auto-Hunt.'
+      )}</p>
+
+      <h2 id="basic">${navLabel('Basic settings','Réglages Basic')}</h2>
+      <p>${navLabel(
+        'The Basic tab contains the main safety conditions used to decide when the character should teleport away instead of continuing the fight.',
+        'L’onglet Basic contient les principales conditions de sécurité permettant de décider quand le personnage doit se téléporter au lieu de continuer le combat.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Setting','Réglage')}</th><th>${navLabel('Behavior','Comportement')}</th></tr></thead>
+        <tbody>
+          <tr><th>${navLabel('No-combat timer','Temps sans combat')}</th><td>${navLabel('Teleports after the configured time without engaging a monster.','Téléporte le personnage après la durée configurée sans engager de monstre.')}</td></tr>
+          <tr><th>${navLabel('Visible monster count','Nombre de monstres visibles')}</th><td>${navLabel('Teleports when the number of monsters on screen reaches the configured danger threshold.','Téléporte le personnage lorsque le nombre de monstres visibles atteint le seuil de danger configuré.')}</td></tr>
+          <tr><th>${navLabel('Damage threshold','Seuil de dégâts')}</th><td>${navLabel('Teleports when a single received hit reaches the configured percentage of Max HP.','Téléporte le personnage lorsqu’un coup reçu atteint le pourcentage de Max HP configuré.')}</td></tr>
+          <tr><th>${navLabel('Resurrection item','Objet de résurrection')}</th><td>${navLabel('Can automatically use a resurrection item, with a configurable use limit.','Peut utiliser automatiquement un objet de résurrection, avec une limite d’utilisation configurable.')}</td></tr>
+        </tbody>
+      </table></div>
+      <p>${navLabel(
+        'Several safety triggers can be enabled at the same time. The Basic tab also contains PvP-specific behavior such as counterattack and kill-steal handling.',
+        'Plusieurs conditions de sécurité peuvent être activées en même temps. L’onglet Basic contient également des comportements spécifiques au PvP, notamment la contre-attaque et la gestion du kill-steal.'
+      )}</p>
+
+      <h2 id="monsters">${navLabel('Monster settings','Réglages Monsters')}</h2>
+      <p>${navLabel(
+        'The Monsters tab controls which monster types the character will attack. Monsters can be selected or excluded so Auto-Hunt does not waste time or resources on unwanted targets.',
+        'L’onglet Monsters détermine quels types de monstres le personnage va attaquer. Les monstres peuvent être sélectionnés ou exclus afin qu’Auto-Hunt ne perde pas de temps ou de ressources sur des cibles indésirables.'
+      )}</p>
+      <div class="wiki-callout warning-lite"><strong>${navLabel('Reset after changing map or channel','Réinitialisation après un changement de map ou de channel')}</strong><br>${navLabel(
+        'The Monsters selection resets when changing map, including a channel change on the same map. Recheck this tab before restarting Auto-Hunt.',
+        'La sélection de l’onglet Monsters est réinitialisée lors d’un changement de map, y compris lors d’un changement de channel sur la même map. Vérifie de nouveau cet onglet avant de relancer Auto-Hunt.'
+      )}</div>
+
+      <h2 id="skills">${navLabel('Skill settings','Réglages Skills')}</h2>
+      <p>${navLabel(
+        'The Skills tab defines the automatic attack rotation. Several skills can be registered, including different levels of the same skill, and each entry can use its own interval. The Skills tab contains three pages of slots.',
+        'L’onglet Skills définit la rotation d’attaque automatique. Plusieurs compétences peuvent être enregistrées, y compris différents niveaux d’une même compétence, et chaque entrée peut avoir son propre intervalle. L’onglet Skills possède trois pages d’emplacements.'
+      )}</p>
+      <ul>
+        <li>${navLabel(
+          'Shorter intervals make a skill available again sooner, while longer intervals can be used for follow-up attacks.',
+          'Un intervalle plus court rend une compétence disponible plus rapidement, tandis qu’un intervalle plus long peut servir pour une attaque de suivi.'
+        )}</li>
+        <li>${navLabel(
+          'Ground-targeted skills such as Firewall cannot be aimed at a monster target by Auto-Hunt in the same way as targetable skills.',
+          'Les compétences ciblant le sol, comme Firewall, ne peuvent pas être dirigées automatiquement sur un monstre de la même manière qu’une compétence ciblable.'
+        )}</li>
+        <li>${navLabel(
+          'If Normal Attack is disabled but no skill is registered, the character falls back to normal attacks. A skill-only setup therefore needs at least one skill in the rotation.',
+          'Si Normal Attack est désactivé mais qu’aucune compétence n’est enregistrée, le personnage revient aux attaques normales. Une configuration utilisant uniquement des compétences doit donc contenir au moins une compétence.'
+        )}</li>
+      </ul>
+
+      <h2 id="loot">${navLabel('Loot settings','Réglages Loot')}</h2>
+      <p>${navLabel(
+        'The Loot tab controls what the character picks up. Loot can be filtered by item category, including weapons, armor, cards, costumes, consumables and miscellaneous items. A weight limit can also be used so Auto-Hunt stops adding loot before the character becomes overloaded.',
+        'L’onglet Loot contrôle ce que le personnage ramasse. Le butin peut être filtré par catégorie d’objet, notamment armes, armures, cartes, costumes, consommables et objets divers. Une limite de poids peut également être utilisée afin qu’Auto-Hunt évite de continuer à charger l’inventaire jusqu’à la surcharge.'
+      )}</p>
+
+      <h2 id="items-potions">${navLabel('Items and Potions','Items et Potions')}</h2>
+      <p>${navLabel(
+        'The Potion tab handles automatic HP/SP recovery. Different recovery items can be assigned to different HP or SP percentage thresholds. The Item tab is used for other automatic consumables and buffs.',
+        'L’onglet Potion gère automatiquement la récupération des HP/SP. Différents objets de récupération peuvent être associés à différents seuils de pourcentage de HP ou de SP. L’onglet Item sert aux autres consommables et buffs automatiques.'
+      )}</p>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('item')}${navLabel('Potions','Potions')}</strong><p>${navLabel(
+          'Several healing items can be configured at different HP/SP thresholds.',
+          'Plusieurs objets de soin peuvent être configurés avec des seuils de HP/SP différents.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}${navLabel('Buff items','Objets de buff')}</strong><p>${navLabel(
+          'Buff consumables are used again after their current effect expires.',
+          'Les consommables de buff sont réutilisés après expiration de leur effet actuel.'
+        )}</p></div>
+        <div><strong>${miniIcon('tools')}${navLabel('Unlimited Fly Wing','Unlimited Fly Wing')}</strong><p>${navLabel(
+          'Unlimited Fly Wing is supported by the Auto-Hunt item settings.',
+          'Unlimited Fly Wing est pris en charge dans les réglages d’objets d’Auto-Hunt.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}${navLabel('Boxed potions','Potions en boîte')}</strong><p>${navLabel(
+          'Recovery items stored in their boxes can continue to be consumed automatically after the loose supply is exhausted.',
+          'Les objets de récupération stockés dans leurs boîtes peuvent continuer à être consommés automatiquement une fois le stock hors boîte épuisé.'
+        )}</p></div>
+      </div>
+
+      <h2 id="auto-pot">Auto Pot</h2>
+      <p>${navLabel(
+        'Auto Pot is a separate mode that can be used while hunting manually. It uses the same potion configuration defined for Auto-Hunt and automatically consumes the selected HP/SP recovery items when their thresholds are reached. Auto Pot can also be assigned to a keyboard shortcut; its icon turns blue while active.',
+        'Auto Pot est un mode séparé utilisable pendant la chasse manuelle. Il reprend la même configuration de potions que celle définie dans Auto-Hunt et utilise automatiquement les objets de récupération HP/SP sélectionnés lorsque leurs seuils sont atteints. Auto Pot peut également être attribué à un raccourci clavier ; son icône devient bleue lorsqu’il est actif.'
+      )}</p>
+
+      <h2 id="restrictions">${navLabel('Important behavior and restrictions','Comportements et restrictions')}</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Situation','Situation')}</th><th>${navLabel('Result','Résultat')}</th></tr></thead>
+        <tbody>
+          <tr><th>${navLabel('Instance','Instance')}</th><td>${navLabel('Auto-Hunt cannot be used.','Auto-Hunt ne peut pas être utilisé.')}</td></tr>
+          <tr><th>War of Emperium</th><td>${navLabel('Auto-Hunt cannot be used.','Auto-Hunt ne peut pas être utilisé.')}</td></tr>
+          <tr><th>${navLabel('Map / channel change','Changement de map / channel')}</th><td>${navLabel('The Monsters selection is reset and must be configured again.','La sélection Monsters est réinitialisée et doit être configurée de nouveau.')}</td></tr>
+          <tr><th>${navLabel('Opening a Cash Shop item','Ouverture d’un objet du Cash Shop')}</th><td>${navLabel('Auto-Hunt is disabled and must be enabled again.','Auto-Hunt est désactivé et doit être réactivé.')}</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Built-in Auto-Hunt only','Uniquement l’Auto-Hunt intégré')}</strong><br>${navLabel(
+        'The in-game Auto-Hunt system is an official feature. Bots, macros and third-party automated gameplay tools are prohibited.',
+        'Le système Auto-Hunt intégré au jeu est une fonctionnalité officielle. Les bots, macros et outils tiers automatisant le gameplay sont interdits.'
+      )}</div></div>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#/wiki/leveling-spots">${miniIcon('level')}${navLabel('Leveling Spots','Zones de leveling')}</a>
+        <a class="button" href="#/wiki/party">${miniIcon('class')}${navLabel('Party','Party')}</a>
+        <a class="button" href="#/wiki/mvp-raid">${miniIcon('monster')}${navLabel('MVP Raid','MVP Raid')}</a>
+      </div>`;
+  }
+
   function topicDetail(id) {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
     if (id === 'elements') return elementsPage(topic);
@@ -6051,6 +6217,7 @@ window.RO_DATA = {
     if (id === 'refinement-system') return refinementSystemPage(topic);
     if (id === 'party') return partyPage(topic);
     if (id === 'guild-system') return guildSystemPage(topic);
+    if (id === 'auto-hunt') return autoHuntPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
