@@ -3955,11 +3955,16 @@ window.RO_DATA = {
 
     const rows = wikiSkillLevelData(sk.id);
     const hasDetailedLevels = !!rows;
-    const inferredSP = rows ? [...new Set(rows.map(r=>r[2]))].join(' / ') : val(sk.spCost);
-    const inferredRange = rows ? [...new Set(rows.map(r=>r[3]))].join(' / ') : val(sk.range);
-    const inferredCast = rows ? [...new Set(rows.map(r=>r[4]))].join(' / ') : val(sk.castTime);
-    const inferredDelay = rows ? [...new Set(rows.map(r=>r[5]))].join(' / ') : val(sk.castDelay);
-    const inferredCooldown = rows ? [...new Set(rows.map(r=>r[6]))].join(' / ') : val(sk.cooldown);
+    const summarizeByLevel = (values, fallback) => {
+      if (!rows) return fallback;
+      const unique = [...new Set(values.map(v=>String(v)))];
+      return unique.length <= 1 ? (unique[0] ?? fallback) : navLabel('Variable','Variable');
+    };
+    const inferredSP = summarizeByLevel(rows ? rows.map(r=>r[2]) : [], val(sk.spCost));
+    const inferredRange = summarizeByLevel(rows ? rows.map(r=>r[3]) : [], val(sk.range));
+    const inferredCast = summarizeByLevel(rows ? rows.map(r=>r[4]) : [], val(sk.castTime));
+    const inferredDelay = summarizeByLevel(rows ? rows.map(r=>r[5]) : [], val(sk.castDelay));
+    const inferredCooldown = summarizeByLevel(rows ? rows.map(r=>r[6]) : [], val(sk.cooldown));
 
     return `${breadcrumbs([{label:t('skills'),href:'#/skills'},{label:sk.name}])}
       <article class="article-with-infobox">
