@@ -4020,9 +4020,14 @@ window.RO_DATA = {
     if (!sk) return notFound();
     if (id === 'basic-skill') return basicSkillDetail();
 
+    const catalystBySkill = {
+      'stone-curse': '1 Red Gemstone',
+      'safety-wall': '1 Blue Gemstone'
+    };
+    const catalyst = catalystBySkill[sk.id] || t('none');
     const prereq = sk.prerequisites.length
-      ? sk.prerequisites.map(p=>`<tr><td>${entityCell(getSkill(p.skillId)?.name||p.skillId,`#/skills/${p.skillId}`,'skill')}</td><td>${p.level}</td><td>${badge(p.verified)}</td></tr>`).join('')
-      : `<tr><td colspan="3">${t('none')}</td></tr>`;
+      ? sk.prerequisites.map((p,index)=>`<tr><td>${entityCell(getSkill(p.skillId)?.name||p.skillId,`#/skills/${p.skillId}`,'skill')}</td><td>${p.level}</td><td>${index===0?esc(catalyst):'—'}</td><td>${badge(p.verified)}</td></tr>`).join('')
+      : `<tr><td>${t('none')}</td><td>—</td><td>${esc(catalyst)}</td><td>${badge(sk.verified)}</td></tr>`;
 
     const media = sk.image
       ? `<div class="infobox-image" style="height:96px"><img src="${sk.image}" alt="${esc(sk.name)}" width="34" height="34"></div>`
@@ -4074,7 +4079,7 @@ window.RO_DATA = {
           ${hasDetailedLevels ? detailedSkillLevelTable(sk) : ''}
 
           <h2 id="prereq">${t('prerequisites')}</h2>
-          <div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${navLabel('Catalyst','Catalyseur')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div>
 
           <h2 id="notes">${t('notes')}</h2>
           <div class="notes-box">${esc(txt(sk.notes))}</div>
