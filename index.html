@@ -3754,8 +3754,8 @@ window.RO_DATA = {
 
     return `${generalPageHeader(topic)}
       <p class="article-lead">${navLabel(
-        'Only shortcuts and commands that are confirmed for Ragnarok / the current Global client are listed here. Generic iRO Classic commands are deliberately excluded unless they are also verified on the current server.',
-        'Cette page ne liste que les raccourcis et commandes confirmés sur Ragnarok / le client Global actuel. Les commandes génériques d’iRO Classic sont volontairement exclues tant qu’elles ne sont pas aussi vérifiées sur le serveur actuel.'
+        'This page lists shortcuts and commands for the current Global client. Generic iRO Classic commands are excluded when they are not known to work on the current server.',
+        'Cette page liste les raccourcis et commandes du client Global actuel. Les commandes génériques d’iRO Classic sont exclues lorsqu’elles ne sont pas connues comme fonctionnelles sur le serveur actuel.'
       )}</p>
 
       <div class="wiki-callout">${navLabel(
@@ -3765,10 +3765,10 @@ window.RO_DATA = {
 
       ${toc([
         {id:'mouse',label:navLabel('Mouse controls','Contrôles souris')},
-        {id:'keys',label:navLabel('Confirmed keys','Touches confirmées')},
+        {id:'keys',label:navLabel('Keyboard shortcuts','Raccourcis clavier')},
         {id:'legacy',label:navLabel('Legacy combinations','Combinaisons classiques')},
         {id:'commands-global',label:navLabel('Current Global commands','Commandes Global actuelles')},
-        {id:'commands-zero',label:navLabel('Other confirmed commands','Autres commandes confirmées')}
+        {id:'commands-zero',label:navLabel('Other commands','Autres commandes')}
       ])}
 
       <h2 id="mouse">${navLabel('Mouse controls','Contrôles souris')}</h2>
@@ -3777,7 +3777,7 @@ window.RO_DATA = {
         <tbody>${controlRows.map(([a,b])=>`<tr><th>${a}</th><td>${b}</td></tr>`).join('')}</tbody>
       </table></div>
 
-      <h2 id="keys">${navLabel('Confirmed keys','Touches confirmées')}</h2>
+      <h2 id="keys">${navLabel('Keyboard shortcuts','Raccourcis clavier')}</h2>
       ${listRows(fixedShortcuts)}
 
       <h2 id="legacy">${navLabel('Legacy combinations','Combinaisons classiques')}</h2>
@@ -3790,7 +3790,7 @@ window.RO_DATA = {
       <h2 id="commands-global">${navLabel('Current Global commands','Commandes Global actuelles')}</h2>
       ${listRows(globalCommands)}
 
-      <h2 id="commands-zero">${navLabel('Other confirmed commands','Autres commandes confirmées')}</h2>
+      <h2 id="commands-zero">${navLabel('Other commands','Autres commandes')}</h2>
       ${listRows(zeroCommands)}
 
       <div class="notice info"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
@@ -4114,8 +4114,8 @@ window.RO_DATA = {
         'L’EXP en Party est un système encore ajusté en direct sur Global. Gravity a retiré l’ancien bonus de Party EXP lors du patch du 20 août, puis a annoncé son retour sous une forme révisée pour la maintenance du 27 août après les retours des joueurs.'
       )}</p>
       <div class="wiki-callout">${navLabel(
-        'Because the operator is still tuning this system, this wiki does not copy iRO’s fixed party table or hard-code an old multiplier. The exact live bonus/range should be updated only from a confirmed Global patch or direct in-game verification.',
-        'Comme l’opérateur ajuste encore ce système, ce wiki ne copie pas le tableau fixe d’iRO et ne fige pas un ancien multiplicateur. Le bonus et la portée exacts doivent être mis à jour uniquement à partir d’un patch Global confirmé ou d’une vérification directe en jeu.'
+        'Because the operator is still tuning this system, this wiki does not copy iRO’s fixed party table or hard-code an old multiplier. The exact live bonus/range will be updated when current Global values are available.',
+        'Comme l’opérateur ajuste encore ce système, ce wiki ne copie pas le tableau fixe d’iRO et ne fige pas un ancien multiplicateur. Le bonus et la portée exacts seront ajoutés lorsque les valeurs Global actuelles seront disponibles.'
       )}</div>
       <ul>
         <li>${navLabel('Party EXP sharing must be enabled by the Party leader.','Le partage d’EXP doit être activé par le chef de Party.')}</li>
@@ -4134,7 +4134,7 @@ window.RO_DATA = {
         <li>${navLabel('Some special maps or content can disable the death penalty; use the rules of that specific content rather than assuming every map behaves the same way.','Certaines maps ou certains contenus spéciaux peuvent désactiver la pénalité de mort ; utilise les règles du contenu concerné au lieu de supposer que toutes les maps fonctionnent de la même façon.')}</li>
       </ul>
 
-      <h2 id="modifiers">${navLabel('EXP modifiers confirmed on Global','Modificateurs d’EXP confirmés sur Global')}</h2>
+      <h2 id="modifiers">${navLabel('EXP modifiers on Global','Modificateurs d’EXP sur Global')}</h2>
       <div class="table-wrap"><table>
         <thead><tr><th>${navLabel('Effect','Effet')}</th><th>${navLabel('EXP bonus','Bonus EXP')}</th><th>${navLabel('Notes','Notes')}</th></tr></thead>
         <tbody>${modifiers.map(([a,b,c])=>`<tr><th>${a}</th><td><strong>${b}</strong></td><td>${c}</td></tr>`).join('')}</tbody>
@@ -4524,7 +4524,7 @@ window.RO_DATA = {
       <div class="table-wrap"><table class="glossary-table"><thead><tr><th>${navLabel('Term','Terme')}</th><th>${navLabel('Meaning','Signification')}</th></tr></thead><tbody>
         ${rows.map(([term,meaning],i)=>{const letter=term[0].toUpperCase(); const prev=i?rows[i-1][0][0].toUpperCase():''; return `<tr${letter!==prev?` id="letter-${letter}"`:''}><th>${esc(term)}</th><td>${meaning}</td></tr>`}).join('')}
       </tbody></table></div>
-      <p class="muted-note">${navLabel('This glossary will grow as the wiki documents more verified systems.','Ce glossaire s’agrandira à mesure que le wiki documentera davantage de systèmes vérifiés.')}</p>
+      <p class="muted-note">${navLabel('This glossary will grow as the wiki documents more systems.','Ce glossaire s’agrandira à mesure que le wiki documentera davantage de systèmes.')}</p>
       ${officialSources([
         ['Official Status guide','https://roz.mygnjoy.com/en/intro/guide/2'],
         ['Official Cards guide','https://roz.mygnjoy.com/en/intro/guide/7'],
@@ -4733,9 +4733,9 @@ window.RO_DATA = {
       <div class="article-heading"><h1>${icon(topic.icon || 'guide')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok article shell','Structure d’article Ragnarok')}</strong><br>${navLabel('This page is part of the current Ragnarok wiki structure. No Pre-Renewal gameplay values have been copied into it.','Cette page fait partie de la structure actuelle du wiki Ragnarok. Aucune valeur de gameplay Pre-Renewal n’y a été copiée.')}</div></div>
       <h2>${navLabel('Overview','Aperçu')}</h2>
-      <p>${navLabel('version-specific information for this topic will be added here after verification. The page is already linked from the main page and sidebar so the final wiki structure is ready.','Les informations propres à cette version pour ce sujet seront ajoutées ici après vérification. La page est déjà reliée depuis l’accueil et la barre latérale afin que la structure finale du wiki soit prête.')}</p>
+      <p>${navLabel('version-specific information for this topic will be added here when it becomes available. The page is already linked from the main page and sidebar so the final wiki structure is ready.','Les informations propres à cette version pour ce sujet seront ajoutées ici après vérification. La page est déjà reliée depuis l’accueil et la barre latérale afin que la structure finale du wiki soit prête.')}</p>
       <h2>${navLabel('Ragnarok data status','État des données Ragnarok')}</h2>
-      <div class="notes-box">${navLabel('Pending verified Ragnarok sources.','En attente de sources Ragnarok vérifiées.')}</div>`;
+      <div class="notes-box">${navLabel('No current data available yet.','Aucune donnée actuelle disponible pour le moment.')}</div>`;
   }
 
   const listConfig = {
@@ -4862,8 +4862,8 @@ window.RO_DATA = {
 
       <h2 id="acquiring">${navLabel('Acquiring cards','Obtenir des cartes')}</h2>
       <p>${navLabel(
-        'The official guide states that nearly all monsters can drop a card bearing their name at a low rate. Exact card rates are recorded only when they are verified for the current server; this wiki does not substitute Classic or Renewal drop rates.',
-        'Le guide officiel indique que presque tous les monstres peuvent laisser tomber à faible taux une carte portant leur nom. Les taux exacts ne sont enregistrés que lorsqu’ils sont vérifiés pour le serveur actuel ; ce wiki ne remplace jamais ces taux par ceux de Classic ou Renewal.'
+        'The official guide states that nearly all monsters can drop a card bearing their name at a low rate. Exact current-server card rates are recorded when available; this wiki does not substitute Classic or Renewal drop rates.',
+        'Le guide officiel indique que presque tous les monstres peuvent laisser tomber à faible taux une carte portant leur nom. Les taux exacts du serveur actuel sont indiqués lorsqu’ils sont disponibles ; ce wiki ne les remplace jamais par ceux de Classic ou Renewal.'
       )}</p>
       <ul>
         <li>${navLabel('Monster card drops are linked from both the monster page and the card page when the relation is known.','Les drops de cartes sont reliés à la fois depuis la page du monstre et depuis la page de la carte lorsque la relation est connue.')}</li>
@@ -4962,8 +4962,8 @@ window.RO_DATA = {
 
       <h2 id="exp-drops">${navLabel('Experience and drops','Expérience et drops')}</h2>
       <p>${navLabel(
-        'Monster Base EXP, Job EXP and drop tables are among the values that differ frequently between Ragnarok versions. This wiki therefore uses only verified current-server values instead of filling missing information with iRO data.',
-        'La Base EXP, la Job EXP et les tables de drops sont parmi les valeurs qui diffèrent fréquemment entre les versions de Ragnarok. Ce wiki utilise donc uniquement des valeurs vérifiées pour le serveur actuel au lieu de compléter les informations manquantes avec des données iRO.'
+        'Monster Base EXP, Job EXP and drop tables are among the values that differ frequently between Ragnarok versions. This wiki therefore uses current-server values instead of filling missing information with iRO data.',
+        'La Base EXP, la Job EXP et les tables de drops sont parmi les valeurs qui diffèrent fréquemment entre les versions de Ragnarok. Ce wiki utilise donc les valeurs du serveur actuel au lieu de compléter les informations manquantes avec des données iRO.'
       )}</p>
 
       ${officialSources([
@@ -5095,8 +5095,8 @@ window.RO_DATA = {
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Interactive behavior','Fonctionnement interactif')}</strong><br>${navLabel(
-        'Blue points are cities and red points are confirmed dungeon entrances. Each marker is centered on the corresponding atlas cell. A dungeon is left off the map until its entrance position has been confirmed instead of being placed approximately.',
-        'Les points bleus sont les villes et les points rouges les entrées de donjons confirmées. Chaque marqueur est centré sur la case correspondante de l’atlas. Un donjon reste absent de la carte tant que la position de son entrée n’est pas confirmée, plutôt que d’être placé approximativement.'
+        'Blue points are cities and red points are dungeon entrances whose position is known. Each marker is centered on the corresponding atlas cell. A dungeon is left off the map when its entrance position is still unknown instead of being placed approximately.',
+        'Les points bleus sont les villes et les points rouges les entrées de donjons dont la position est connue. Chaque marqueur est centré sur la case correspondante de l’atlas. Un donjon reste absent de la carte tant que la position de son entrée est inconnue, plutôt que d’être placé approximativement.'
       )}</div></div>
 
       ${toc([
@@ -5241,10 +5241,10 @@ window.RO_DATA = {
       <h3>Variable Casting Time (VCT)</h3>
       <ul>
         <li>${navLabel('This is the reducible part of casting affected by cast-speed mechanics such as DEX / INT and effects that explicitly modify Variable Casting Time.','Il s’agit de la partie réductible du cast affectée par les mécaniques de vitesse d’incantation comme DEX / INT et par les effets qui modifient explicitement la Variable Casting Time.')}</li>
-        <li>${navLabel('Phen Card is a confirmed example: casting cannot be interrupted, but Variable Casting Time is increased by 25%.','Phen Card est un exemple confirmé : le cast ne peut pas être interrompu, mais la Variable Casting Time augmente de 25 %.')}</li>
+        <li>${navLabel('Phen Card is an example: casting cannot be interrupted, but Variable Casting Time is increased by 25%.','Phen Card est un exemple : le cast ne peut pas être interrompu, mais la Variable Casting Time augmente de 25 %.')}</li>
         <li><strong>${navLabel('No universal formula is published here yet.','Aucune formule universelle n’est encore publiée ici.')}</strong> ${navLabel(
-          'The commonly quoted Renewal formula based on 2×DEX + INT is still marked unverified by the current formula database, so it is not treated as established data for the current server.',
-          'La formule Renewal souvent citée basée sur 2×DEX + INT est encore marquée comme non vérifiée par la base de formules actuelle ; elle n’est donc pas présentée comme une donnée établie pour le serveur actuel.'
+          'The commonly quoted Renewal formula based on 2×DEX + INT is not used here because current data does not establish it for the server.',
+          'La formule Renewal souvent citée basée sur 2×DEX + INT n’est pas utilisée ici, car les données actuelles ne l’établissent pas pour le serveur.'
         )}</li>
       </ul>
 
@@ -5256,8 +5256,8 @@ window.RO_DATA = {
       </ul>
 
       <div class="wiki-callout">${navLabel(
-        'Do not assume that every skill has the Renewal default split of 80% VCT / 20% FCT. Current skill data often exposes a single Cast value and does not reliably expose a separate base VCT/FCT split. This wiki therefore records the verified Cast value per skill and only separates VCT/FCT when a source for this version does so.',
-        'Ne pars pas du principe que chaque skill utilise le découpage Renewal par défaut 80 % VCT / 20 % FCT. Les données actuelles affichent souvent une seule valeur Cast et ne donnent pas de manière fiable un découpage VCT/FCT de base. Ce wiki enregistre donc la valeur Cast vérifiée du skill et ne sépare VCT/FCT que lorsqu’une source propre à cette version le fait.'
+        'Do not assume that every skill has the Renewal default split of 80% VCT / 20% FCT. Current skill data often exposes a single Cast value and does not reliably expose a separate base VCT/FCT split. This wiki therefore records the Cast value per skill and only separates VCT/FCT when current-version data does so.',
+        'Ne pars pas du principe que chaque skill utilise le découpage Renewal par défaut 80 % VCT / 20 % FCT. Les données actuelles affichent souvent une seule valeur Cast et ne donnent pas de manière fiable un découpage VCT/FCT de base. Ce wiki enregistre donc la valeur Cast du skill et ne sépare VCT/FCT que lorsque les données de cette version le permettent.'
       )}</div>
 
       <h2 id="delay-cooldown">${navLabel('Cast Delay and Cooldown','Cast Delay et Cooldown')}</h2>
@@ -5840,18 +5840,18 @@ window.RO_DATA = {
       // Mage
       'cold-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Verified base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok also adds INT-based damage scaling to this skill family; the exact coefficient is not publicly verified here, so it is not invented.',
-        fr: 'Formule de base vérifiée : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok ajoute aussi un scaling de dégâts basé sur l’INT à cette famille de compétences ; le coefficient exact n’est pas publiquement vérifié ici, donc il n’est pas inventé.'
+        en: 'Base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok also adds INT-based damage scaling to this skill family; the exact coefficient is not documented here, so it is not invented.',
+        fr: 'Formule de base : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok ajoute aussi un scaling de dégâts basé sur l’INT à cette famille de compétences ; le coefficient exact n’est pas documenté ici, donc il n’est pas inventé.'
       },
       'lightning-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Verified base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok also adds INT-based scaling; its exact coefficient is not publicly verified here.',
-        fr: 'Formule de base vérifiée : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok ajoute aussi un scaling basé sur l’INT ; son coefficient exact n’est pas publiquement vérifié ici.'
+        en: 'Base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok also adds INT-based scaling; its exact coefficient is not publicly verified here.',
+        fr: 'Formule de base : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok ajoute aussi un scaling basé sur l’INT ; son coefficient exact n’est pas publiquement vérifié ici.'
       },
       'fire-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Verified base formula: each hit uses MATK 100%. Ragnarok explicitly adds extra damage based on the caster\'s INT; the exact coefficient is not publicly verified here, so only the verified base component is shown.',
-        fr: 'Formule de base vérifiée : chaque coup utilise MATK 100 %. Ragnarok ajoute explicitement des dégâts supplémentaires selon l’INT du lanceur ; le coefficient exact n’est pas publiquement vérifié ici, donc seule la composante de base vérifiée est affichée.'
+        en: 'Base formula: each hit uses MATK 100%. Ragnarok explicitly adds extra damage based on the caster\'s INT; the exact coefficient is not documented here, so only the verified base component is shown.',
+        fr: 'Formule de base : chaque coup utilise MATK 100 %. Ragnarok ajoute explicitement des dégâts supplémentaires selon l’INT du lanceur ; le coefficient exact n’est pas documenté ici, donc seule la composante de base vérifiée est affichée.'
       },
       'napalm-beat': {
         formula: 'Damage (MATK) = [70 + (10 × Skill Lv.)]% ÷ Number of targets hit',
@@ -5860,8 +5860,8 @@ window.RO_DATA = {
       },
       'earth-spike': {
         formula: 'Base Damage = MATK 200% × Skill Lv. hits',
-        en: 'Verified base formula: each spike deals MATK 200%, with the number of hits equal to Skill Lv. Ragnarok also adds INT-based scaling; the exact coefficient is not publicly verified here.',
-        fr: 'Formule de base vérifiée : chaque pic inflige MATK 200 %, avec un nombre de coups égal au niveau de compétence. Ragnarok ajoute aussi un scaling basé sur l’INT ; le coefficient exact n’est pas publiquement vérifié ici.'
+        en: 'Base formula: each spike deals MATK 200%, with the number of hits equal to Skill Lv. Ragnarok also adds INT-based scaling; the exact coefficient is not documented here.',
+        fr: 'Formule de base : chaque pic inflige MATK 200 %, avec un nombre de coups égal au niveau de compétence. Ragnarok ajoute aussi un scaling basé sur l’INT ; le coefficient exact n’est pas documenté ici.'
       },
       'frost-diver': {
         formula: 'Damage (MATK) = [100 + (10 × Skill Lv.)]%',
@@ -5870,8 +5870,8 @@ window.RO_DATA = {
       },
       'thunder-storm': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Verified base formula: each hit deals MATK 100% in the 5×5 area, with hit count equal to Skill Lv. Ragnarok also adds INT-based scaling; the exact coefficient is not publicly verified here.',
-        fr: 'Formule de base vérifiée : chaque coup inflige MATK 100 % dans la zone 5×5, avec un nombre de coups égal au niveau de compétence. Ragnarok ajoute aussi un scaling basé sur l’INT ; le coefficient exact n’est pas publiquement vérifié ici.'
+        en: 'Base formula: each hit deals MATK 100% in the 5×5 area, with hit count equal to Skill Lv. Ragnarok also adds INT-based scaling; the exact coefficient is not documented here.',
+        fr: 'Formule de base : chaque coup inflige MATK 100 % dans la zone 5×5, avec un nombre de coups égal au niveau de compétence. Ragnarok ajoute aussi un scaling basé sur l’INT ; le coefficient exact n’est pas documenté ici.'
       },
       'soul-strike': {
         formula: 'Base Damage = MATK 100% × ceil(Skill Lv. ÷ 2) hits',
@@ -5917,8 +5917,8 @@ window.RO_DATA = {
       },
       'heal': {
         formula: 'Damage vs Undead = 50% × Heal Effect',
-        en: 'Heal Effect scales with Skill Lv., caster Base Lv., total INT and the base/refined MATK of the weapon. The verified sources used here do not expose a complete closed coefficient, so it is not invented.',
-        fr: 'L’effet de Heal dépend du niveau de compétence, du Base Lv. du lanceur, de son INT totale et de la MATK de base/raffinée de l’arme. Les sources vérifiées utilisées ici n’exposent pas un coefficient fermé complet, donc il n’est pas inventé.'
+        en: 'Heal Effect scales with Skill Lv., caster Base Lv., total INT and the base/refined MATK of the weapon. The current sources used here do not expose a complete closed coefficient, so it is not invented.',
+        fr: 'L’effet de Heal dépend du niveau de compétence, du Base Lv. du lanceur, de son INT totale et de la MATK de base/raffinée de l’arme. Les sources actuelles utilisées ici n’exposent pas un coefficient fermé complet, donc il n’est pas inventé.'
       },
       'mace-mastery': {
         formula: 'Bonus Damage = 3 × Skill Lv.',
@@ -5927,7 +5927,7 @@ window.RO_DATA = {
         fr: 'S’applique lors de l’utilisation d’une Mace.'
       },
       'demon-bane': {
-        formula: 'Verified Damage Bonus = 3 × Skill Lv.',
+        formula: 'Damage Bonus = 3 × Skill Lv.',
         en: 'Applies against Demon-race and Undead-property enemies. Ragnarok also states that attack power increases with character level; the exact public coefficient is not verified here.',
         fr: 'S’applique contre les ennemis de race Demon et de propriété Undead. La base actuelle indique aussi que la puissance augmente avec le niveau du personnage ; le coefficient public exact n’est pas vérifié ici.'
       },
@@ -5983,8 +5983,8 @@ window.RO_DATA = {
     if (formulas[sk.id]) return { type:'formula', ...formulas[sk.id] };
     if (!sk.verified) return {
       type:'unverified',
-      en:'The Ragnarok damage formula for this skill has not been verified yet. No formula from another RO version is imported.',
-      fr:'La formule de dégâts Ragnarok de cette compétence n’est pas encore vérifiée. Aucune formule d’une autre version de RO n’est importée.'
+      en:'The current damage formula for this skill is not documented yet. No formula from another RO version is imported.',
+      fr:'La formule de dégâts actuelle de cette compétence n’est pas encore documentée. Aucune formule d’une autre version de RO n’est importée.'
     };
     return {
       type:'none',
@@ -5997,7 +5997,7 @@ window.RO_DATA = {
     const data = skillDamageFormulaData(sk);
     if (data.type === 'unverified') {
       return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
-        <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Verification pending','Vérification en attente')}</strong><br>${navLabel(data.en,data.fr)}</div></div>`;
+        <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Formula unavailable','Formule indisponible')}</strong><br>${navLabel(data.en,data.fr)}</div></div>`;
     }
     if (data.type === 'none') {
       return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
@@ -6681,7 +6681,7 @@ window.RO_DATA = {
         <thead><tr><th colspan="2" style="text-align:center"><em>${esc(c.name)}</em></th></tr></thead>
         <tbody>
           <tr><th style="width:170px">${navLabel('Skills','Compétences')}</th><td>${skillLinks}</td></tr>
-          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — Verification pending','Détails des quêtes de compétences Novice — vérification the current server en attente') : navLabel('No verified class quest page added yet','Aucune page de quête de classe vérifiée pour le moment')}</td></tr>
+          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — Formula unavailable','Détails des quêtes de compétences Novice — vérification the current server en attente') : navLabel('No verified class quest page added yet','Aucune page de quête de classe vérifiée pour le moment')}</td></tr>
           <tr><th>${navLabel('Weapons','Armes')}</th><td>${esc(weapons)}</td></tr>
         </tbody>
       </table></div>
@@ -6730,8 +6730,8 @@ window.RO_DATA = {
       : navLabel('No skills listed','Aucune compétence listée');
     const weapons = (weaponsByClass[c.id] || []).join(' • ') || navLabel('Not listed yet','Pas encore renseigné');
     const questText = c.id==='novice'
-      ? navLabel('Novice skill quest details — Verification pending','Détails des quêtes de compétences Novice — vérification the current server en attente')
-      : navLabel('Class quest details — Verification pending','Détails des quêtes de classe — vérification the current server en attente');
+      ? navLabel('Novice skill quest details — Formula unavailable','Détails des quêtes de compétences Novice — vérification the current server en attente')
+      : navLabel('Class quest details — Formula unavailable','Détails des quêtes de classe — vérification the current server en attente');
 
     return `
       <h2 id="skill-see-also">${navLabel('See Also','Voir aussi')}</h2>
