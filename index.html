@@ -4113,8 +4113,8 @@ window.RO_DATA = {
       // Swordman
       'sword-mastery': {
         formula: 'Bonus Damage = 4 × Skill Lv.',
-        en: 'Adds flat physical damage while using a One-Handed Sword.',
-        fr: 'Ajoute des dégâts physiques fixes avec une épée à une main.'
+        en: 'Adds flat physical damage while using a One-Handed Sword or Dagger.',
+        fr: 'Ajoute des dégâts physiques fixes avec une épée à une main ou une dague.'
       },
       'spear-mastery': {
         formula: 'Bonus Damage = 4 × Skill Lv.  |  Mounted = 5 × Skill Lv.',
@@ -4140,18 +4140,18 @@ window.RO_DATA = {
       // Mage
       'cold-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Each hit uses MATK 100%. Total base multiplier is therefore 100 × Skill Lv.% MATK before defenses, element and other modifiers. Zero balance data also documents INT-based scaling for the Bolt family, but the exact public coefficient is not exposed here and is not guessed.',
-        fr: 'Chaque coup utilise MATK 100 %. Le multiplicateur total de base est donc 100 × niveau de compétence % MATK avant défenses, élément et autres modificateurs. Les données d’équilibrage Zero indiquent aussi un scaling basé sur l’INT pour la famille des Bolt, mais le coefficient public exact n’est pas exposé ici et n’est pas inventé.'
+        en: 'Verified base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok Zero also adds INT-based damage scaling to this skill family; the exact coefficient is not publicly verified here, so it is not invented.',
+        fr: 'Formule de base vérifiée : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok Zero ajoute aussi un scaling de dégâts basé sur l’INT à cette famille de compétences ; le coefficient exact n’est pas publiquement vérifié ici, donc il n’est pas inventé.'
       },
       'lightning-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Each hit uses MATK 100%. Total base multiplier is 100 × Skill Lv.% MATK. INT-based Zero scaling is documented, but its exact public coefficient is not guessed.',
-        fr: 'Chaque coup utilise MATK 100 %. Le multiplicateur total de base est 100 × niveau de compétence % MATK. Un scaling INT propre à Zero est documenté, mais son coefficient public exact n’est pas inventé.'
+        en: 'Verified base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok Zero also adds INT-based scaling; its exact coefficient is not publicly verified here.',
+        fr: 'Formule de base vérifiée : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok Zero ajoute aussi un scaling basé sur l’INT ; son coefficient exact n’est pas publiquement vérifié ici.'
       },
       'fire-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Each hit uses MATK 100%. Zero explicitly adds extra damage based on the caster\'s INT; the exact public coefficient is not available in the verified Global source used here, so only the verified base formula is shown.',
-        fr: 'Chaque coup utilise MATK 100 %. Zero ajoute explicitement des dégâts supplémentaires selon l’INT du lanceur ; le coefficient public exact n’est pas disponible dans la source Global vérifiée utilisée ici, donc seule la formule de base vérifiée est affichée.'
+        en: 'Verified base formula: each hit uses MATK 100%. Ragnarok Zero explicitly adds extra damage based on the caster\'s INT; the exact coefficient is not publicly verified here, so only the verified base component is shown.',
+        fr: 'Formule de base vérifiée : chaque coup utilise MATK 100 %. Ragnarok Zero ajoute explicitement des dégâts supplémentaires selon l’INT du lanceur ; le coefficient exact n’est pas publiquement vérifié ici, donc seule la composante de base vérifiée est affichée.'
       },
       'napalm-beat': {
         formula: 'Damage (MATK) = [70 + (10 × Skill Lv.)]% ÷ Number of targets hit',
@@ -4160,8 +4160,8 @@ window.RO_DATA = {
       },
       'earth-spike': {
         formula: 'Base Damage = MATK 200% × Skill Lv. hits',
-        en: 'Each spike deals MATK 200%, with one additional hit per skill level. Zero also increases the damage based on INT; the exact public coefficient is not guessed.',
-        fr: 'Chaque pic inflige MATK 200 %, avec un coup supplémentaire par niveau de compétence. Zero augmente aussi les dégâts selon l’INT ; le coefficient public exact n’est pas inventé.'
+        en: 'Verified base formula: each spike deals MATK 200%, with the number of hits equal to Skill Lv. Ragnarok Zero also adds INT-based scaling; the exact coefficient is not publicly verified here.',
+        fr: 'Formule de base vérifiée : chaque pic inflige MATK 200 %, avec un nombre de coups égal au niveau de compétence. Ragnarok Zero ajoute aussi un scaling basé sur l’INT ; le coefficient exact n’est pas publiquement vérifié ici.'
       },
       'frost-diver': {
         formula: 'Damage (MATK) = [100 + (10 × Skill Lv.)]%',
@@ -4170,8 +4170,8 @@ window.RO_DATA = {
       },
       'thunder-storm': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Each hit deals MATK 100% in the 5×5 area. Zero balance data also documents INT-based scaling; its exact public coefficient is not guessed.',
-        fr: 'Chaque coup inflige MATK 100 % dans la zone 5×5. Les données d’équilibrage Zero documentent aussi un scaling INT ; son coefficient public exact n’est pas inventé.'
+        en: 'Verified base formula: each hit deals MATK 100% in the 5×5 area, with hit count equal to Skill Lv. Ragnarok Zero also adds INT-based scaling; the exact coefficient is not publicly verified here.',
+        fr: 'Formule de base vérifiée : chaque coup inflige MATK 100 % dans la zone 5×5, avec un nombre de coups égal au niveau de compétence. Ragnarok Zero ajoute aussi un scaling basé sur l’INT ; le coefficient exact n’est pas publiquement vérifié ici.'
       },
       'soul-strike': {
         formula: 'Base Damage = MATK 100% × ceil(Skill Lv. ÷ 2) hits',
@@ -4187,9 +4187,9 @@ window.RO_DATA = {
       },
       'fire-wall': {
         formula: 'Damage per hit = MATK 50%',
-        formula2: 'Maximum per wall if every hit connects = MATK [50 × (Skill Lv. + 2)]%',
-        en: 'A wall has Skill Lv. + 2 available hits. Actual damage depends on how many wall hits the enemy triggers.',
-        fr: 'Un mur possède niveau de compétence + 2 coups disponibles. Les dégâts réels dépendent du nombre de coups du mur déclenchés par l’ennemi.'
+        formula2: 'Hit capacity per wall = Skill Lv. + 2',
+        en: 'Each triggered hit deals MATK 50%. Do not treat the hit capacity as a guaranteed total-damage multiplier: actual damage depends on how the enemy contacts the Fire Wall cells.',
+        fr: 'Chaque coup déclenché inflige MATK 50 %. La capacité de coups ne doit pas être considérée comme un multiplicateur total garanti : les dégâts réels dépendent de la façon dont l’ennemi entre en contact avec les cellules du Fire Wall.'
       },
 
       // Archer
