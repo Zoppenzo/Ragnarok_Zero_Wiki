@@ -3173,6 +3173,10 @@ window.RO_DATA = {
       overview:'partial', sources:'partial', slots:'partial',
       'affix-database-link':'partial'
     },
+    '#/wiki/refinement-system': {
+      overview:'complete', materials:'complete', rates:'complete',
+      'weapon-basic':'complete', 'weapon-extra':'complete', armor:'complete'
+    },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
       materials:'complete', drops:'complete'
@@ -4943,6 +4947,162 @@ window.RO_DATA = {
       </div>`;
   }
 
+  function refinementSystemPage(topic) {
+    const rateRows = [
+      [1,90,100,90,100,90,100,90,100,90,100],
+      [2,90,100,90,100,90,100,90,100,90,100],
+      [3,90,100,90,100,90,100,90,100,90,100],
+      [4,80,100,90,100,90,100,90,100,80,100],
+      [5,60,90,90,100,90,100,80,100,60,90],
+      [6,40,70,90,100,80,100,60,90,40,70],
+      [7,40,70,80,100,60,90,50,80,40,70],
+      [8,20,40,60,90,40,70,20,40,20,40],
+      [9,20,40,40,70,20,40,20,40,20,40],
+      [10,9,20,19,30,19,30,19,30,9,20],
+      [11,8,8,18,18,18,18,15,15,8,8],
+      [12,8,8,18,18,18,18,15,15,8,8],
+      [13,8,8,18,18,18,18,15,15,8,8],
+      [14,8,8,18,18,18,18,15,15,8,8],
+      [15,7,7,18,18,18,18,11,11,7,7],
+      [16,7,7,17,17,17,17,11,11,7,7],
+      [17,7,7,17,17,17,17,11,11,7,7],
+      [18,7,7,17,17,17,17,11,11,7,7],
+      [19,5,5,15,15,15,15,9,9,5,5],
+      [20,5,5,15,15,15,15,9,9,5,5]
+    ];
+
+    const basicWeapon = [
+      [1,2,3,5,8],[2,4,6,10,16],[3,6,9,15,24],[4,8,12,20,32],
+      [5,10,15,25,40],[6,12,18,30,48],[7,14,21,35,56],[8,16,24,40,64],
+      [9,18,27,45,72],[10,20,30,50,80],[11,22,33,55,88],[12,24,36,60,96],
+      [13,26,39,65,104],[14,28,42,70,112],[15,30,45,75,120],[16,48,80,134,215],
+      [17,66,115,193,310],[18,84,150,252,405],[19,102,185,311,500],[20,120,220,370,595]
+    ];
+
+    const extraWeapon = [
+      [1,'—','—','—','—'],[2,'—','—','—','—'],[3,'—','—','—','—'],[4,'—','—','—','—'],
+      [5,'—','—','—','1–14'],[6,'—','—','1–8','1–28'],[7,'—','1–5','1–16','1–42'],
+      [8,'1–3','1–10','1–24','1–56'],[9,'1–6','1–15','1–32','1–70'],
+      [10,'1–9','1–20','1–40','1–84'],[11,'1–12','1–25','1–48','1–98'],
+      [12,'1–15','1–30','1–56','1–112'],[13,'1–18','1–35','1–64','1–126'],
+      [14,'1–21','1–40','1–72','1–140'],[15,'1–24','1–45','1–80','1–154'],
+      [16,'1–27','1–50','1–88','1–168'],[17,'1–30','1–55','1–96','1–182'],
+      [18,'1–33','1–60','1–104','1–196'],[19,'1–36','1–65','1–112','1–210'],
+      [20,'1–39','1–70','1–120','1–224']
+    ];
+
+    const materialRows = [
+      [navLabel('Lv.1 Weapon','Arme niv.1'),'Phracon','200 Zeny','1,000 Zeny',navLabel('Item destroyed','Objet détruit')],
+      [navLabel('Lv.2 Weapon','Arme niv.2'),'Emveretarcon','1,000 Zeny','2,000 Zeny',navLabel('Item destroyed','Objet détruit')],
+      [navLabel('Lv.3 Weapon','Arme niv.3'),'Oridecon',navLabel('Monster Drop','Drop de monstre'),'10,000 Zeny',navLabel('Item destroyed','Objet détruit')],
+      [navLabel('Lv.3 Weapon','Arme niv.3'),'Concentrated Oridecon',navLabel('NPC Exchange','Échange NPC'),'10,000 Zeny',navLabel('Item destroyed','Objet détruit')],
+      [navLabel('Lv.3 Weapon','Arme niv.3'),'HD Oridecon',navLabel('NPC Exchange','Échange NPC'),'20,000 Zeny',navLabel('+7 to +9 only · Refine −1','+7 à +9 uniquement · Refine −1')],
+      [navLabel('Lv.4 Weapon','Arme niv.4'),'Oridecon',navLabel('Monster Drop','Drop de monstre'),'10,000 Zeny',navLabel('Item destroyed','Objet détruit')],
+      [navLabel('Lv.4 Weapon','Arme niv.4'),'Concentrated Oridecon',navLabel('NPC Exchange','Échange NPC'),'10,000 Zeny',navLabel('Item destroyed','Objet détruit')],
+      [navLabel('Lv.4 Weapon','Arme niv.4'),'HD Oridecon',navLabel('NPC Exchange','Échange NPC'),'20,000 Zeny',navLabel('+7 to +9 only · Refine −1','+7 à +9 uniquement · Refine −1')],
+      [navLabel('Armor','Armure'),'Elunium',navLabel('Monster Drop','Drop de monstre'),'10,000 Zeny',navLabel('Item destroyed','Objet détruit')],
+      [navLabel('Armor','Armure'),'Concentrated Elunium',navLabel('NPC Exchange','Échange NPC'),'10,000 Zeny',navLabel('Item destroyed','Objet détruit')],
+      [navLabel('Armor','Armure'),'HD Elunium',navLabel('NPC Exchange','Échange NPC'),'20,000 Zeny',navLabel('+7 to +9 only · Refine −1','+7 à +9 uniquement · Refine −1')]
+    ];
+
+    const pairHead = label => `<th colspan="2" style="text-align:center">${label}</th>`;
+
+    return `${generalPageHeader(topic)}
+      <p class="article-lead">${navLabel(
+        'Refinement increases the stats of weapons and armor. A successful attempt raises the refine level by +1; the consequence of failure depends on the material used.',
+        'Le raffinement augmente les statistiques des armes et des armures. Une tentative réussie augmente le niveau de refine de +1 ; la conséquence d’un échec dépend du matériau utilisé.'
+      )}</p>
+
+      ${toc([
+        {id:'overview',label:navLabel('How refinement works','Fonctionnement')},
+        {id:'materials',label:navLabel('Materials & costs','Matériaux & coûts')},
+        {id:'rates',label:navLabel('Success rates','Taux de réussite')},
+        {id:'weapon-basic',label:navLabel('Weapon basic bonus','Bonus de base des armes')},
+        {id:'weapon-extra',label:navLabel('Weapon additional bonus','Bonus supplémentaire des armes')},
+        {id:'armor',label:navLabel('Armor DEF bonus','Bonus DEF des armures')}
+      ])}
+
+      <h2 id="overview">${navLabel('How refinement works','Fonctionnement du raffinement')}</h2>
+      <div class="wiki-feature-list">
+        <div><strong>✓ ${navLabel('Success','Réussite')}</strong><p>${navLabel('Refine level +1. The item keeps its current state and gains one refine level.','Niveau de refine +1. L’objet conserve son état et gagne un niveau de refine.')}</p></div>
+        <div><strong>✕ ${navLabel('Standard failure','Échec standard')}</strong><p>${navLabel('The equipment is destroyed. The material, refinement fee and cards inserted into the equipment are lost with it.','L’équipement est détruit. Le matériau, le coût du raffinement et les cartes insérées dans l’équipement sont perdus avec lui.')}</p></div>
+        <div><strong>↓ ${navLabel('HD failure','Échec HD')}</strong><p>${navLabel('The equipment survives but loses one refine level. HD Oridecon / Elunium is listed for equipment from +7 to +9.','L’équipement survit mais perd un niveau de refine. HD Oridecon / Elunium est indiqué pour les équipements de +7 à +9.')}</p></div>
+      </div>
+      <div class="notice warning-notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div><strong>${navLabel('No guaranteed normal refine level','Aucun niveau de refine normal garanti')}</strong><br>${navLabel(
+        'The official rate toward +1 is 90% with normal materials, so a standard refinement attempt can already fail at the first level.',
+        'Le taux officiel vers +1 est de 90 % avec les matériaux normaux : une tentative de raffinement standard peut donc déjà échouer dès le premier niveau.'
+      )}</div></div>
+
+      <h2 id="materials">${navLabel('Materials & costs','Matériaux & coûts')}</h2>
+      <div class="table-wrap"><table>
+        <thead><tr>
+          <th>${navLabel('Equipment','Équipement')}</th>
+          <th>${navLabel('Material','Matériau')}</th>
+          <th>${navLabel('Material source / cost','Source / coût du matériau')}</th>
+          <th>${navLabel('Refinement fee','Coût du raffinement')}</th>
+          <th>${navLabel('On failure','En cas d’échec')}</th>
+        </tr></thead>
+        <tbody>${materialRows.map(r=>`<tr>${r.map((v,i)=>i===0?`<th>${v}</th>`:`<td>${v}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="rates">${navLabel('Refinement success rates','Taux de réussite du raffinement')}</h2>
+      <p>${navLabel(
+        'Normal uses the standard material rate. Special is the higher success-rate column used by Concentrated Oridecon / Elunium. The table shows the chance of reaching the target refine level.',
+        'Normal correspond au taux des matériaux standards. Spécial correspond à la colonne de taux amélioré utilisée par Concentrated Oridecon / Elunium. Le tableau indique la chance d’atteindre le niveau de refine ciblé.'
+      )}</p>
+      <div class="table-wrap"><table style="font-size:.82rem">
+        <thead>
+          <tr><th rowspan="2">${navLabel('Target','Cible')}</th>
+            ${pairHead(navLabel('Armor','Armure'))}
+            ${pairHead(navLabel('Lv.1 Weapon','Arme niv.1'))}
+            ${pairHead(navLabel('Lv.2 Weapon','Arme niv.2'))}
+            ${pairHead(navLabel('Lv.3 Weapon','Arme niv.3'))}
+            ${pairHead(navLabel('Lv.4 Weapon','Arme niv.4'))}
+          </tr>
+          <tr>${Array.from({length:5},()=>`<th>Normal</th><th>${navLabel('Special','Spécial')}</th>`).join('')}</tr>
+        </thead>
+        <tbody>${rateRows.map(r=>`<tr><th>+${r[0]}</th>${r.slice(1).map(v=>`<td style="text-align:center">${v}%</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="weapon-basic">${navLabel('Basic weapon refinement effect','Effet de base du raffinement des armes')}</h2>
+      <p>${navLabel(
+        'This is the total ATK / MATK increase supplied by the basic refine level.',
+        'Il s’agit de l’augmentation totale d’ATK / MATK fournie par le niveau de refine de base.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Refine</th><th>${navLabel('Lv.1 Weapon','Arme niv.1')}</th><th>${navLabel('Lv.2 Weapon','Arme niv.2')}</th><th>${navLabel('Lv.3 Weapon','Arme niv.3')}</th><th>${navLabel('Lv.4 Weapon','Arme niv.4')}</th></tr></thead>
+        <tbody>${basicWeapon.map(r=>`<tr><th>+${r[0]}</th>${r.slice(1).map(v=>`<td style="text-align:center">+${v}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="weapon-extra">${navLabel('Additional weapon refinement effect','Effet supplémentaire du raffinement des armes')}</h2>
+      <p>${navLabel(
+        'Weapons can receive an additional ATK / MATK refine bonus. Where a range is shown, the minimum is 1 and the table gives the maximum possible additional value.',
+        'Les armes peuvent recevoir un bonus supplémentaire d’ATK / MATK lié au refine. Lorsqu’une plage est affichée, le minimum est 1 et le tableau indique la valeur supplémentaire maximale possible.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Refine</th><th>${navLabel('Lv.1 Weapon','Arme niv.1')}</th><th>${navLabel('Lv.2 Weapon','Arme niv.2')}</th><th>${navLabel('Lv.3 Weapon','Arme niv.3')}</th><th>${navLabel('Lv.4 Weapon','Arme niv.4')}</th></tr></thead>
+        <tbody>${extraWeapon.map(r=>`<tr><th>+${r[0]}</th>${r.slice(1).map(v=>`<td style="text-align:center">${v}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="armor">${navLabel('Armor DEF refinement effect','Effet du raffinement sur la DEF des armures')}</h2>
+      <p>${navLabel(
+        'Armor refinement increases DEF following refine level².',
+        'Le raffinement des armures augmente la DEF selon niveau de refine².'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Refine</th><th>${navLabel('DEF gained','DEF gagnée')}</th><th>Refine</th><th>${navLabel('DEF gained','DEF gagnée')}</th></tr></thead>
+        <tbody>${Array.from({length:10},(_,i)=>{
+          const a=i+1,b=i+11;
+          return `<tr><th>+${a}</th><td style="text-align:center">+${a*a}</td><th>+${b}</th><td style="text-align:center">+${b*b}</td></tr>`;
+        }).join('')}</tbody>
+      </table></div>
+
+      <h2 id="sources">${navLabel('Source','Source')}</h2>
+      <div class="source-box"><ul>
+        <li><a href="https://roz.mygnjoy.com/fr/intro/guide/20" target="_blank" rel="noopener">Ragnarok Zero: Global — ${navLabel('Official Refinement Guide','Guide officiel du raffinement')}</a></li>
+      </ul></div>`;
+  }
+
   function affixesPage(topic) {
     const sourceTypes = [
       [navLabel('Monster Drop','Drop de monstre'), navLabel('Equipment dropped by normal monsters can receive random options from pools tied to its equipment family.','Les équipements obtenus sur des monstres normaux peuvent recevoir des options aléatoires provenant de pools liés à leur famille d’équipement.')],
@@ -5517,6 +5677,7 @@ window.RO_DATA = {
     if (id === 'monster-races') return monsterRacesPage(topic);
     if (id === 'status-effects') return statusEffectsPage(topic);
     if (id === 'affixes') return affixesPage(topic);
+    if (id === 'refinement-system') return refinementSystemPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
