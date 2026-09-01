@@ -430,6 +430,40 @@ tbody tr:hover { background: #eef4fb; }
 .badge.verified { border-color: var(--green-line); background: var(--green-pale); color: #315f37; }
 .badge.unverified { border-color: var(--gold-line); background: var(--gold-pale); color: #745a22; }
 .badge.danger { border-color: var(--red-line); background: var(--red-pale); color: #783e3e; }
+
+.section-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  margin-left: 9px;
+  padding: 2px 9px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .025em;
+  vertical-align: middle;
+  white-space: nowrap;
+  transform: translateY(-2px);
+}
+.section-status-pill.status-complete {
+  border-color: var(--green-line);
+  background: var(--green-pale);
+  color: #315f37;
+}
+.section-status-pill.status-partial {
+  border-color: var(--gold-line);
+  background: var(--gold-pale);
+  color: #745a22;
+}
+.section-status-pill.status-missing {
+  border-color: var(--red-line);
+  background: var(--red-pale);
+  color: #783e3e;
+}
 .empty { padding: 16px; border: 1px dashed var(--line); background: #f8f9fa; color: var(--muted); text-align: center; }
 
 /* Article / detail page */
@@ -3083,6 +3117,101 @@ window.RO_DATA = {
   const miniIcon = name => `<svg class="mini-icon" aria-hidden="true"><use href="#i-${name}"></use></svg>`;
   const badge = verified => `<span class="badge ${verified ? 'verified' : 'unverified'}">${verified ? t('verified') : t('unverified')}</span>`;
 
+  function sectionStatusPill(status) {
+    const labels = {
+      complete: navLabel('Verified','Vérifié'),
+      partial: navLabel('Partial','Partiel'),
+      missing: navLabel('No data','Aucune donnée')
+    };
+    const safeStatus = ['complete','partial','missing'].includes(status) ? status : 'partial';
+    return `<span class="section-status-pill status-${safeStatus}">${labels[safeStatus]}</span>`;
+  }
+
+  const SECTION_STATUS_BY_ROUTE = {
+    '#/wiki/getting-started': {
+      install:'complete', 'first-character':'complete', 'first-minutes':'complete',
+      'equipment-cards':'partial', social:'partial', 'fair-play':'complete'
+    },
+    '#/wiki/basic-controls': {
+      mouse:'complete', keys:'complete', legacy:'partial',
+      'commands-global':'complete', 'commands-zero':'complete'
+    },
+    '#/wiki/levels': {
+      overview:'complete', 'base-level':'complete', 'job-level':'complete',
+      'current-caps':'complete', 'job-change':'complete'
+    },
+    '#/wiki/experience': {
+      types:'complete', earning:'complete', 'monster-exp':'partial',
+      'exp-requirements':'complete', 'party-exp':'partial',
+      'death-penalty':'complete', modifiers:'complete', 'current-cap':'complete'
+    },
+    '#/wiki/stats': {
+      primary:'complete', str:'partial', agi:'partial', vit:'partial',
+      int:'partial', dex:'partial', luk:'complete', derived:'partial',
+      formulas:'complete', defense:'partial', unconfirmed:'partial'
+    },
+    '#/wiki/elements': {
+      'element-table':'complete', 'elements-list':'complete'
+    },
+    '#/items': {
+      equipment:'partial', cards:'partial', consumables:'partial',
+      materials:'partial', drops:'partial'
+    },
+    '#/cards': {
+      acquiring:'partial', installing:'complete', slots:'partial', removing:'partial'
+    },
+    '#/monsters': {
+      properties:'partial', behavior:'partial', boss:'partial', 'exp-drops':'partial'
+    },
+    '#/maps': {
+      'interactive-map':'partial', remote:'partial'
+    },
+    '#/skills': {
+      types:'complete', usage:'complete', 'cast-time':'partial',
+      'delay-cooldown':'partial', examples:'complete'
+    }
+  };
+
+  function decorateSectionStatusPills() {
+    const route = (location.hash || '#/').split('?')[0];
+    if (route === '#/' || route === '#/wiki/faq') return;
+    const routeMap = SECTION_STATUS_BY_ROUTE[route] || {};
+    const housekeepingIds = new Set(['sources','related','see-also','skill-see-also']);
+    const housekeepingLabels = new Set([
+      'sources','related pages','pages associées','see also','voir aussi',
+      'official sources','sources officielles'
+    ]);
+
+    app.querySelectorAll('h2').forEach(h => {
+      if (h.querySelector('.section-status-pill')) return;
+      if (h.closest('.faq-item, .portal-box, .panel')) return;
+
+      const id = h.id || '';
+      const rawLabel = h.textContent.trim().toLowerCase();
+      if (housekeepingIds.has(id) || housekeepingLabels.has(rawLabel)) return;
+
+      let status = routeMap[id] || 'partial';
+
+      if (
+        rawLabel.includes('ragnarok data status') ||
+        rawLabel.includes('état des données ragnarok')
+      ) status = 'missing';
+
+      let node = h.nextElementSibling;
+      let sawEmpty = false;
+      let sawUseful = false;
+      while (node && node.tagName !== 'H2') {
+        if (node.classList?.contains('empty')) sawEmpty = true;
+        const txt = (node.textContent || '').trim();
+        if (txt.length > 80 && !node.classList?.contains('empty')) sawUseful = true;
+        node = node.nextElementSibling;
+      }
+      if (sawEmpty && !sawUseful) status = 'missing';
+
+      h.insertAdjacentHTML('beforeend', sectionStatusPill(status));
+    });
+  }
+
   const iconForType = type => ({ monsters:'monster', monster:'monster', items:'item', item:'item', cards:'card', card:'card', maps:'map', map:'map', classes:'class', class:'class', skills:'skill', skill:'skill', quests:'quest', quest:'quest', npcs:'npc', npc:'npc', leveling:'level', tools:'tools', guides:'guide' }[type] || 'info');
 
   function getMonster(id) { return DATA.monsters.find(x => x.id === id); }
@@ -4149,11 +4278,6 @@ window.RO_DATA = {
         'Les personnages utilisent six statistiques principales : STR, AGI, VIT, INT, DEX et LUK. Ces statistiques alimentent ensuite des valeurs de combat secondaires comme ATK, MATK, HIT, FLEE, DEF, MDEF et CRIT.'
       )}</p>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Verified formulas','Formules vérifiées')}</strong><br>${navLabel(
-        'The exact formulas shown on this page are limited to values verified in-game on the current server. Formulas that are still unconfirmed for Global, such as the complete ASPD and variable-cast calculations, are deliberately not presented as established facts.',
-        'Les formules exactes affichées sur cette page sont limitées aux valeurs vérifiées en jeu sur le serveur actuel. Les formules qui ne sont pas encore confirmées sur Global, comme les calculs complets d’ASPD et d’incantation variable, ne sont volontairement pas présentées comme certaines.'
-      )}</div></div>
-
       ${toc([
         {id:'primary',label:navLabel('Primary stats','Statistiques principales')},
         {id:'str',label:'STR'},
@@ -4163,9 +4287,9 @@ window.RO_DATA = {
         {id:'dex',label:'DEX'},
         {id:'luk',label:'LUK'},
         {id:'derived',label:navLabel('Derived stats','Statistiques dérivées')},
-        {id:'formulas',label:navLabel('Verified formulas','Formules vérifiées')},
+        {id:'formulas',label:navLabel('Formulas','Formules')},
         {id:'defense',label:navLabel('Soft vs Hard defense','Soft vs Hard defense')},
-        {id:'unconfirmed',label:navLabel('Not fully verified yet','Pas encore totalement vérifié')}
+        {id:'unconfirmed',label:navLabel('Incomplete mechanics','Mécaniques incomplètes')}
       ])}
 
       <h2 id="primary">${navLabel('Primary stats','Statistiques principales')}</h2>
@@ -4180,13 +4304,13 @@ window.RO_DATA = {
 
       <h2 id="str">STR — ${navLabel('Strength','Force')}</h2>
       <p>${navLabel(
-        'STR is the main offensive stat for melee physical attacks. In the verified Status ATK formula, every point of STR contributes directly to melee Status ATK. With a ranged weapon, STR still contributes, but only at one fifth of its value.',
-        'STR est la statistique offensive principale pour les attaques physiques de mêlée. Dans la formule de Status ATK vérifiée, chaque point de STR contribue directement au Status ATK de mêlée. Avec une arme à distance, STR contribue encore, mais seulement à hauteur d’un cinquième de sa valeur.'
+        'STR is the main offensive stat for melee physical attacks. In the Status ATK formula, every point of STR contributes directly to melee Status ATK. With a ranged weapon, STR still contributes, but only at one fifth of its value.',
+        'STR est la statistique offensive principale pour les attaques physiques de mêlée. Dans la formule de Status ATK, chaque point de STR contribue directement au Status ATK de mêlée. Avec une arme à distance, STR contribue encore, mais seulement à hauteur d’un cinquième de sa valeur.'
       )}</p>
       <ul>
         <li>${navLabel('Main stat for melee Status ATK.','Statistique principale du Status ATK de mêlée.')}</li>
         <li>${navLabel('Smaller contribution to ranged Status ATK: floor(STR / 5).','Contribution plus faible au Status ATK à distance : floor(STR / 5).')}</li>
-        <li>${navLabel('Also increases carry-weight capacity; the exact complete weight formula is not treated as fully verified on this page yet.','Augmente aussi la capacité de poids transportable ; la formule complète exacte du poids n’est pas encore considérée comme totalement vérifiée sur cette page.')}</li>
+        <li>${navLabel('Also increases carry-weight capacity. The complete weight formula is not documented on this page yet.','Augmente aussi la capacité de poids transportable. La formule complète du poids n’est pas encore documentée sur cette page.')}</li>
       </ul>
 
       <h2 id="agi">AGI — ${navLabel('Agility','Agilité')}</h2>
@@ -4196,30 +4320,30 @@ window.RO_DATA = {
       )}</p>
       <ul>
         <li>${navLabel('+1 base FLEE per point of AGI.','+1 FLEE de base par point d’AGI.')}</li>
-        <li>${navLabel('Every 5 AGI contributes 1 point inside the verified Soft DEF formula.','Chaque tranche de 5 AGI apporte 1 point dans la formule vérifiée de Soft DEF.')}</li>
-        <li>${navLabel('ASPD depends on AGI and DEX together with class, weapon, shield and buffs; no unverified full formula is shown here.','L’ASPD dépend de l’AGI et de la DEX ainsi que de la classe, de l’arme, du bouclier et des buffs ; aucune formule complète non vérifiée n’est affichée ici.')}</li>
+        <li>${navLabel('Every 5 AGI contributes 1 point to Soft DEF.','Chaque tranche de 5 AGI apporte 1 point de Soft DEF.')}</li>
+        <li>${navLabel('ASPD depends on AGI and DEX together with class, weapon, shield and buffs. The complete formula is not listed here yet.','L’ASPD dépend de l’AGI et de la DEX ainsi que de la classe, de l’arme, du bouclier et des buffs. La formule complète n’est pas encore indiquée ici.')}</li>
       </ul>
 
       <h2 id="vit">VIT — ${navLabel('Vitality','Vitalité')}</h2>
       <p>${navLabel(
-        'VIT is the main survivability stat. It increases the character’s HP scaling and directly enters both the verified Soft DEF and Soft MDEF formulas.',
-        'VIT est la statistique principale de survie. Elle augmente la progression des HP du personnage et entre directement dans les formules vérifiées de Soft DEF et Soft MDEF.'
+        'VIT is the main survivability stat. It increases the character’s HP scaling and directly enters both the Soft DEF and Soft MDEF formulas.',
+        'VIT est la statistique principale de survie. Elle augmente la progression des HP du personnage et entre directement dans les formules de Soft DEF et Soft MDEF.'
       )}</p>
       <ul>
         <li>${navLabel('Contributes strongly to Soft DEF together with Base Level.','Contribue fortement à la Soft DEF avec le Base Level.')}</li>
-        <li>${navLabel('Every 5 combined DEX + VIT contributes to Soft MDEF through the verified formula.','Chaque tranche de 5 dans la somme DEX + VIT contribue à la Soft MDEF via la formule vérifiée.')}</li>
-        <li>${navLabel('Max HP scaling uses VIT, but the exact class-by-class base HP curves are not yet fully verified for every current class.','La progression des HP max utilise VIT, mais les courbes de HP de base propres à chaque classe ne sont pas encore totalement vérifiées pour toutes les classes actuelles.')}</li>
+        <li>${navLabel('Every 5 combined DEX + VIT contributes to Soft MDEF.','Chaque tranche de 5 dans la somme DEX + VIT contribue à la Soft MDEF.')}</li>
+        <li>${navLabel('Max HP scaling uses VIT, but the class-by-class base HP curves are not documented for every current class yet.','La progression des HP max utilise VIT, mais les courbes de HP de base propres à chaque classe ne sont pas encore documentées pour toutes les classes actuelles.')}</li>
       </ul>
 
       <h2 id="int">INT — ${navLabel('Intelligence','Intelligence')}</h2>
       <p>${navLabel(
-        'INT is the main magic-attack stat. It is the largest contributor to Status MATK and counts in full in the verified Soft MDEF formula.',
-        'INT est la statistique principale d’attaque magique. Elle est la plus grosse contribution au Status MATK et compte entièrement dans la formule vérifiée de Soft MDEF.'
+        'INT is the main magic-attack stat. It is the largest contributor to Status MATK and counts in full in the Soft MDEF formula.',
+        'INT est la statistique principale d’attaque magique. Elle est la plus grosse contribution au Status MATK et compte entièrement dans la formule de Soft MDEF.'
       )}</p>
       <ul>
         <li>${navLabel('Primary contributor to Status MATK.','Contribution principale au Status MATK.')}</li>
         <li>${navLabel('+1 Soft MDEF contribution per point before the other terms and final floor operation.','Contribution de +1 Soft MDEF par point avant les autres termes et l’arrondi final.')}</li>
-        <li>${navLabel('Affects Max SP and variable cast time. The complete Global cast-time equation remains unconfirmed.','Affecte les SP max et le temps d’incantation variable. L’équation complète du cast time Global reste non confirmée.')}</li>
+        <li>${navLabel('Affects Max SP and variable cast time. The complete Global cast-time equation is not documented here yet.','Affecte les SP max et le temps d’incantation variable. L’équation complète du cast time Global n’est pas encore documentée ici.')}</li>
       </ul>
 
       <h2 id="dex">DEX — ${navLabel('Dexterity','Dextérité')}</h2>
@@ -4230,14 +4354,14 @@ window.RO_DATA = {
       <ul>
         <li>${navLabel('+1 base HIT per point of DEX.','+1 HIT de base par point de DEX.')}</li>
         <li>${navLabel('Main stat for ranged Status ATK.','Statistique principale du Status ATK à distance.')}</li>
-        <li>${navLabel('Every 5 DEX contributes 1 melee Status ATK and 1 Status MATK inside the verified formulas.','Chaque tranche de 5 DEX contribue à 1 Status ATK de mêlée et 1 Status MATK dans les formules vérifiées.')}</li>
+        <li>${navLabel('Every 5 DEX contributes 1 melee Status ATK and 1 Status MATK.','Chaque tranche de 5 DEX contribue à 1 Status ATK de mêlée et 1 Status MATK.')}</li>
         <li>${navLabel('Also contributes to Soft MDEF and affects variable cast time / ASPD.','Contribue aussi à la Soft MDEF et affecte le temps d’incantation variable / l’ASPD.')}</li>
       </ul>
 
       <h2 id="luk">LUK — ${navLabel('Luck','Chance')}</h2>
       <p>${navLabel(
-        'LUK contributes small amounts to several combat values instead of specializing in only one. Its contributions to CRIT, HIT, FLEE, ATK, MATK and Perfect Dodge are all represented in verified formulas.',
-        'LUK apporte de petites quantités à plusieurs valeurs de combat au lieu de se spécialiser dans une seule. Ses contributions au CRIT, HIT, FLEE, ATK, MATK et Perfect Dodge apparaissent toutes dans des formules vérifiées.'
+        'LUK contributes small amounts to several combat values instead of specializing in only one. Its contributions to CRIT, HIT, FLEE, ATK, MATK and Perfect Dodge are represented in the formulas below.',
+        'LUK apporte de petites quantités à plusieurs valeurs de combat au lieu de se spécialiser dans une seule. Ses contributions au CRIT, HIT, FLEE, ATK, MATK et Perfect Dodge apparaissent dans les formules ci-dessous.'
       )}</p>
       <ul>
         <li>${navLabel('+0.3% base CRIT per point of LUK, plus the Base Level contribution.','+0,3 % de CRIT de base par point de LUK, auquel s’ajoute la contribution du Base Level.')}</li>
@@ -4253,10 +4377,10 @@ window.RO_DATA = {
         <tbody>${secondaryStats.map(([name,desc])=>`<tr><th>${name}</th><td>${desc}</td></tr>`).join('')}</tbody>
       </table></div>
 
-      <h2 id="formulas">${navLabel('Verified formulas','Formules vérifiées')}</h2>
+      <h2 id="formulas">${navLabel('Formulas','Formules')}</h2>
       <p>${navLabel(
-        'The following formulas were marked as verified from current-server measurements, with the latest in-game verification dated 18 August 2026 (4 August for ranged Status ATK). floor() means round down.',
-        'Les formules suivantes sont marquées comme vérifiées à partir de mesures sur le serveur actuel, avec une dernière vérification en jeu datée du 18 août 2026 (4 août pour le Status ATK à distance). floor() signifie arrondir à l’entier inférieur.'
+        'The following formulas come from current-server measurements. The latest in-game check is dated 18 August 2026 (4 August for ranged Status ATK). floor() means round down.',
+        'Les formules suivantes proviennent de mesures sur le serveur actuel. Le dernier contrôle en jeu date du 18 août 2026 (4 août pour le Status ATK à distance). floor() signifie arrondir à l’entier inférieur.'
       )}</p>
       <div class="table-wrap"><table>
         <thead><tr><th style="width:180px">${navLabel('Derived stat','Stat dérivée')}</th><th>${navLabel('Formula','Formule')}</th><th>${navLabel('Explanation','Explication')}</th></tr></thead>
@@ -4275,16 +4399,16 @@ window.RO_DATA = {
         <div><strong>Hard MDEF</strong><p>${navLabel('Primarily supplied by equipment. The final displayed MDEF combines the stat-derived and equipment-derived portions.','Principalement fournie par l’équipement. La MDEF finale affichée combine les parties provenant des statistiques et de l’équipement.')}</p></div>
       </div>
 
-      <h2 id="unconfirmed">${navLabel('Mechanics not fully verified yet','Mécaniques pas encore totalement vérifiées')}</h2>
+      <h2 id="unconfirmed">${navLabel('Incomplete mechanics','Mécaniques incomplètes')}</h2>
       <div class="notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div>${navLabel(
-        'Do not copy the complete Renewal formulas for these values here yet. Current references still mark them as unconfirmed or dependent on class-specific measurements.',
-        'Ne copie pas encore ici les formules Renewal complètes de ces valeurs. Les références actuelles les marquent toujours comme non confirmées ou dépendantes de mesures propres à chaque classe.'
+        'Only partial information is available for these calculations, so complete Renewal formulas are not copied here as substitutes.',
+        'Nous n’avons encore que des informations partielles pour ces calculs ; les formules Renewal complètes ne sont donc pas copiées ici pour combler les manques.'
       )}</div></div>
       <ul>
-        <li><strong>ASPD:</strong> ${navLabel('AGI and DEX definitely matter, but class, weapon, shield, skills and potions are also involved. The full Global formula is still unconfirmed.','AGI et DEX comptent bien, mais la classe, l’arme, le bouclier, les skills et potions interviennent aussi. La formule Global complète reste non confirmée.')}</li>
-        <li><strong>Variable Cast Time:</strong> ${navLabel('DEX and INT reduce it, but this wiki does not yet publish an exact instant-cast threshold as a confirmed rule.','DEX et INT la réduisent, mais ce wiki ne publie pas encore de seuil exact d’instant cast comme règle confirmée.')}</li>
+        <li><strong>ASPD:</strong> ${navLabel('AGI and DEX matter, while class, weapon, shield, skills and potions are also involved. The complete Global formula is not documented yet.','AGI et DEX comptent, tandis que la classe, l’arme, le bouclier, les skills et potions interviennent aussi. La formule Global complète n’est pas encore documentée.')}</li>
+        <li><strong>Variable Cast Time:</strong> ${navLabel('DEX and INT reduce it, but an exact instant-cast threshold is not documented here yet.','DEX et INT la réduisent, mais aucun seuil exact d’instant cast n’est encore documenté ici.')}</li>
         <li><strong>Max HP / Max SP:</strong> ${navLabel('VIT and INT scaling is understood, but the underlying Base HP/SP curves have not yet been measured for every current first class.','La progression via VIT et INT est comprise, mais les courbes de Base HP/SP n’ont pas encore été mesurées pour toutes les premières classes actuelles.')}</li>
-        <li><strong>Natural regeneration:</strong> ${navLabel('HP/SP regeneration formulas are still reported with conflicting implementations and remain outside the verified table above.','Les formules de régénération HP/SP sont encore rapportées avec des implémentations contradictoires et restent en dehors du tableau vérifié ci-dessus.')}</li>
+        <li><strong>Natural regeneration:</strong> ${navLabel('HP/SP regeneration formulas are still reported with conflicting implementations and remain outside the formula table above.','Les formules de régénération HP/SP sont encore rapportées avec des implémentations contradictoires et restent en dehors du tableau de formules ci-dessus.')}</li>
       </ul>
 
       <div class="hero-actions">
@@ -4294,7 +4418,7 @@ window.RO_DATA = {
       </div>
 
       ${officialSources([
-        ['Prontera.info — verified formulas','https://roz.prontera.info/mechanics'],
+        ['Prontera.info — formulas','https://roz.prontera.info/mechanics'],
         ['Global Guide — progression & stat roles','https://roz-global.info/06-progression.html']
       ])}
       <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
@@ -6722,6 +6846,7 @@ window.RO_DATA = {
     else if(hash[0]==='tools'&&hash[1]==='build-planner') html=buildView();
     else html=notFound();
     app.innerHTML=html;
+    decorateSectionStatusPills();
     updateActiveNav();
     app.focus({preventScroll:true});
     window.scrollTo(0,0);
