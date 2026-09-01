@@ -3302,6 +3302,10 @@ window.RO_DATA = {
       overview:'complete', materials:'complete', rates:'complete',
       'weapon-basic':'complete', 'weapon-extra':'complete', armor:'complete'
     },
+    '#/wiki/party': {
+      overview:'complete', 'party-controls':'complete', 'setup-options':'complete',
+      'experience-setup':'complete', 'adventurer-agency':'complete', 'group-leveling':'complete'
+    },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
       materials:'complete', drops:'complete'
@@ -5807,6 +5811,142 @@ window.RO_DATA = {
       )}</div></div>`;
   }
 
+
+  function partyPage(topic) {
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+    const expRows = [
+      [2,'120%','60%'],
+      [3,'140%','47%'],
+      [4,'160%','40%'],
+      [5,'180%','36%'],
+      [6,'200%','33%'],
+      [7,'220%','31%'],
+      [8,'240%','30%'],
+      [9,'260%','29%'],
+      [10,'280%','28%'],
+      [11,'300%','27%'],
+      [12,'320%','27%']
+    ];
+    const commandRows = [
+      ['P',navLabel('Open the Party window.','Ouvre la fenêtre de Party.')],
+      ['/organize <name>',navLabel('Create a Party with the chosen name.','Crée une Party avec le nom choisi.')],
+      ['/expel <name>',navLabel('Party leader: remove a member from the Party.','Chef de Party : expulse un membre de la Party.')],
+      ['/leave',navLabel('Leave the current Party.','Quitte la Party actuelle.')],
+      ['D',navLabel('Open the Adventurer Agency.','Ouvre l’Adventurer Agency.')]
+    ];
+
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('class')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+      <p class="article-lead">${navLabel(
+        'A Party is a temporary group of players used to hunt, level and tackle cooperative content together. Ragnarok Zero: Global supports groups of up to 12 characters and includes the Adventurer Agency, a built-in Party finder.',
+        'Une Party est un groupe temporaire de joueurs utilisé pour chasser, monter de niveau et faire du contenu coopératif ensemble. Ragnarok Zero: Global permet des groupes allant jusqu’à 12 personnages et possède l’Adventurer Agency, un outil intégré de recherche de Party.'
+      )}</p>
+
+      ${toc([
+        {id:'overview',label:navLabel('Overview','Aperçu')},
+        {id:'party-controls',label:navLabel('Creating and managing a Party','Créer et gérer une Party')},
+        {id:'setup-options',label:navLabel('Setup Options','Options de groupe')},
+        {id:'experience-setup',label:navLabel('Experience Setup','Partage de l’EXP')},
+        {id:'adventurer-agency',label:'Adventurer Agency'},
+        {id:'group-leveling',label:navLabel('Group Leveling','Leveling en groupe')}
+      ])}
+
+      <h2 id="overview">${navLabel('Overview','Aperçu')}</h2>
+      <p>${navLabel(
+        'The Party system keeps a team together, displays its members and applies group settings such as EXP distribution. The Party leader manages the group and its main settings. Parties are useful for leveling, Memorial Dungeons and other cooperative content.',
+        'Le système de Party permet de regrouper une équipe, d’afficher ses membres et d’appliquer les réglages du groupe, notamment le partage d’EXP. Le chef de Party gère le groupe et ses principaux réglages. Les Parties sont utiles pour le leveling, les Mémorial Donjons et les autres contenus coopératifs.'
+      )}</p>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global Party EXP','EXP de Party actuelle sur Global')}</strong><br>${navLabel(
+        'After the August 20 change, Gravity officially brought back a revamped Party EXP system during the August 27, 2026 maintenance. Gravity confirmed the system itself, while the multipliers below come from Lymd’s latest live tests.',
+        'Après la modification du 20 août, Gravity a officiellement réintroduit un système d’EXP de Party remanié lors de la maintenance du 27 août 2026. Gravity a confirmé le système lui-même, tandis que les multiplicateurs ci-dessous proviennent des derniers tests en jeu de Lymd.'
+      )}</div></div>
+
+      <h2 id="party-controls">${navLabel('Creating and managing a Party','Créer et gérer une Party')}</h2>
+      <p>${navLabel(
+        'The Party window can be opened from the interface or with its shortcut. The current client also supports the usual Party commands for creating, leaving and removing members.',
+        'La fenêtre de Party peut être ouverte depuis l’interface ou avec son raccourci. Le client actuel prend également en charge les commandes habituelles pour créer une Party, la quitter et expulser un membre.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Shortcut / command','Raccourci / commande')}</th><th>${navLabel('Action','Action')}</th></tr></thead>
+        <tbody>${commandRows.map(([key,desc])=>`<tr><th>${key.length<=2?keycap(key):`<code>${esc(key)}</code>`}</th><td>${desc}</td></tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="setup-options">${navLabel('Setup Options','Options de groupe')}</h2>
+      <h3>${navLabel('Experience distribution','Distribution de l’EXP')}</h3>
+      <p>${navLabel(
+        'The Party leader can switch the group between Individual EXP and Shared EXP. Shared EXP must be enabled for Party EXP to be distributed between eligible nearby members.',
+        'Le chef de Party peut basculer le groupe entre EXP individuelle et EXP partagée. Shared EXP doit être activé pour que l’expérience soit répartie entre les membres éligibles suffisamment proches.'
+      )}</p>
+      <div class="wiki-callout warning-lite"><strong>${navLabel('Check this setting whenever the group changes.','Vérifie ce réglage dès que le groupe change.')}</strong><br>${navLabel(
+        'Lymd reports that when a member leaves the Party, Shared EXP is reset to Individual. The leader must manually enable Shared EXP again.',
+        'Lymd indique que lorsqu’un membre quitte la Party, Shared EXP repasse sur Individual. Le chef doit donc réactiver manuellement Shared EXP.'
+      )}</div>
+
+      <h3>${navLabel('Item distribution','Distribution des objets')}</h3>
+      <p>${navLabel(
+        'The Party window also contains item-distribution settings. The old iRO item-sharing modes are not copied here as Zero data until the exact Global labels and behavior are verified directly.',
+        'La fenêtre de Party contient aussi des réglages de distribution des objets. Les anciens modes de partage d’iRO ne sont pas repris ici comme données Zero tant que les intitulés et le comportement exacts de Global ne sont pas vérifiés directement.'
+      )}</p>
+
+      <h2 id="experience-setup">${navLabel('Experience Setup','Partage de l’EXP')}</h2>
+      <p>${navLabel(
+        'According to Lymd’s latest live tests, the current Party bonus increases total EXP by 20 percentage points for each additional character: 120% total EXP with 2 characters, up to 320% with 12. The result is then divided between eligible members.',
+        'D’après les derniers tests en jeu de Lymd, le bonus de Party actuel augmente l’EXP totale de 20 points de pourcentage par personnage supplémentaire : 120 % d’EXP totale à 2 personnages, jusqu’à 320 % à 12. Le résultat est ensuite réparti entre les membres éligibles.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Characters','Personnages')}</th><th>${navLabel('Total EXP','EXP totale')}</th><th>${navLabel('Per person','Par personne')}</th></tr></thead>
+        <tbody>${expRows.map(([n,total,each])=>`<tr><th>${n}</th><td>${total}</td><td>${each}</td></tr>`).join('')}</tbody>
+      </table></div>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
+        'Current Zero guides report an additional proximity rule: Shared EXP applies only to members inside a 31×31-cell area around the Party leader. Being on the same map is not enough if a member moves too far away.',
+        'Les guides Zero actuels indiquent également une règle de proximité : Shared EXP ne s’applique qu’aux membres situés dans une zone de 31×31 cellules autour du chef de Party. Être sur la même map ne suffit donc pas si un membre s’éloigne trop.'
+      )}</div></div>
+
+      <h2 id="adventurer-agency">Adventurer Agency</h2>
+      <p>${navLabel(
+        'The Adventurer Agency is the built-in Party finder for Ragnarok Zero: Global. It lists groups that are recruiting and lets a Party leader register a group so other players can find and join it without relying only on chat.',
+        'L’Adventurer Agency est l’outil de recherche de Party intégré à Ragnarok Zero: Global. Elle affiche les groupes qui recrutent et permet à un chef de Party d’enregistrer son groupe afin que d’autres joueurs puissent le trouver et le rejoindre sans dépendre uniquement du chat.'
+      )}</p>
+
+      <h3>${navLabel('Register your Party','Publier sa Party')}</h3>
+      <ol>
+        <li>${navLabel('Open the Party window with ','Ouvre la fenêtre de Party avec ')}${keycap('P')}${navLabel(' and create your group.',' et crée ton groupe.')}</li>
+        <li>${navLabel('Open the Adventurer Agency with ','Ouvre l’Adventurer Agency avec ')}${keycap('D')}.</li>
+        <li>${navLabel('Use the registration option to publish the Party in the Agency.','Utilise l’option d’enregistrement pour publier la Party dans l’Agency.')}</li>
+        <li>${navLabel('State useful recruitment information, especially the hunting area and the channel where the group is located.','Indique les informations utiles au recrutement, surtout la zone de chasse et le channel où se trouve le groupe.')}</li>
+      </ol>
+
+      <h3>${navLabel('Join a listed Party','Rejoindre une Party publiée')}</h3>
+      <p>${navLabel(
+        'Select a group in the Agency and use “Join Party”. If the Party still has a free slot, the character is added after a short delay. The Agency also offers a 1:1 Chat option if you want to contact the leader first.',
+        'Sélectionne un groupe dans l’Agency puis utilise « Join Party ». S’il reste une place, le personnage est ajouté après un court délai. L’Agency propose aussi une option de chat 1:1 si tu veux d’abord contacter le chef.'
+      )}</p>
+
+      <div class="wiki-callout warning-lite"><strong>${navLabel('Leader reminder','Rappel pour le chef')}</strong><br>${navLabel(
+        'After a member leaves, immediately check the Party EXP setting and switch it back to Shared if it returned to Individual.',
+        'Après le départ d’un membre, vérifie immédiatement le réglage d’EXP et remets-le sur Shared s’il est repassé sur Individual.'
+      )}</div>
+
+      <h2 id="group-leveling">${navLabel('Group Leveling','Leveling en groupe')}</h2>
+      <p>${navLabel(
+        'A coordinated Party can fight in areas that would be uncomfortable solo. Lymd notes that well-built groups of roughly 10–12 players can move into harder leveling areas earlier, while smaller duo/trio setups can work around a mobber, a damage dealer and a support.',
+        'Une Party coordonnée peut combattre dans des zones qui seraient difficiles en solo. Lymd indique que des groupes bien construits d’environ 10 à 12 joueurs peuvent aller plus tôt dans des zones de leveling plus difficiles, tandis que les petits groupes duo/trio peuvent s’organiser autour d’un mobber, d’un damage dealer et d’un support.'
+      )}</p>
+      <ul>
+        <li>${navLabel('Acolyte support is especially useful when a group lacks HIT: Blessing and Increase Agi improve the group’s consistency.','Un Acolyte est particulièrement utile lorsque le groupe manque de HIT : Blessing et Increase Agi améliorent la régularité du groupe.')}</li>
+        <li>${navLabel('Pneuma can make ranged-monster areas such as Parasite maps much safer for a coordinated group.','Pneuma peut rendre les zones avec des monstres à distance, comme les maps de Parasite, beaucoup plus sûres pour un groupe coordonné.')}</li>
+        <li>${navLabel('For Adventurer Agency listings, always state both the area and the channel so new members can actually find the Party.','Pour les annonces de l’Adventurer Agency, indique toujours la zone et le channel afin que les nouveaux membres puissent réellement retrouver la Party.')}</li>
+      </ul>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#/wiki/experience">${miniIcon('level')}${navLabel('Experience','Expérience')}</a>
+        <a class="button" href="#/wiki/basic-controls">${miniIcon('tools')}${navLabel('Basic Controls','Contrôles de base')}</a>
+        <a class="button" href="#/wiki/mvp-raid">${miniIcon('monster')}${navLabel('MVP Raid','Raid MVP')}</a>
+      </div>`;
+  }
+
   function topicDetail(id) {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
     if (id === 'elements') return elementsPage(topic);
@@ -5815,6 +5955,7 @@ window.RO_DATA = {
     if (id === 'status-effects') return statusEffectsPage(topic);
     if (id === 'affixes') return affixesPage(topic);
     if (id === 'refinement-system') return refinementSystemPage(topic);
+    if (id === 'party') return partyPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
