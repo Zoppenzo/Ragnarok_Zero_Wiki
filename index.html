@@ -921,16 +921,17 @@ tbody tr:hover { background: #eef4fb; }
 .world-hotspot {
   position: absolute;
   z-index: 4;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   padding: 0;
   transform: translate(-50%, -50%);
   border: 2px solid #fff;
   border-radius: 50%;
-  background: #3366cc;
   box-shadow: 0 1px 5px rgba(0,0,0,.65);
   cursor: help;
 }
+.world-hotspot.city { background: #3366cc; }
+.world-hotspot.dungeon { background: #c62828; }
 .world-hotspot::after {
   content: "";
   position: absolute;
@@ -977,8 +978,10 @@ tbody tr:hover { background: #eef4fb; }
 .world-map-legend span { display: inline-flex; align-items: center; gap: 5px; }
 .world-map-legend i {
   width: 10px; height: 10px; display: inline-block;
-  border: 1px solid #fff; border-radius: 50%; background: #3366cc;
+  border: 1px solid #fff; border-radius: 50%;
 }
+.world-map-legend i.city { background: #3366cc; }
+.world-map-legend i.dungeon { background: #c62828; }
 .world-region-grid {
   display: grid;
   grid-template-columns: repeat(3,minmax(0,1fr));
@@ -4848,26 +4851,37 @@ window.RO_DATA = {
       </ul></div>`;
   }
 
-  function worldMapRegionData() {
+  function worldMapPointData() {
+    // Coordinates are snapped to the visual centre of the atlas grid cells.
+    // Blue = city, red = dungeon.
     return [
-      {id:'umbala', name:'Umbala', x:26, y:67, patterns:['umbala','um_fild','um_']},
-      {id:'geffen', name:'Geffen', x:34, y:32, patterns:['geffen','gef_','glast']},
-      {id:'lutie', name:'Lutie / Xmas', x:67, y:8, patterns:['lutie','xmas']},
-      {id:'prontera', name:'Prontera', x:64, y:59, patterns:['prontera','prt_','demo_field']},
-      {id:'alberta', name:'Alberta', x:94, y:92, patterns:['alberta','alb_']},
-      {id:'mjolnir', name:'Mjolnir', x:44, y:25, patterns:['mjolnir','mjol_','mjo_']},
-      {id:'morocc', name:'Morocc', x:50, y:84, patterns:['morocc','moc_','anthell','ant hell']},
-      {id:'izlude', name:'Izlude', x:72, y:57, patterns:['izlude','izl_','byalan']},
-      {id:'payon', name:'Payon', x:78, y:73, patterns:['payon','pay_']},
-      {id:'comodo', name:'Comodo', x:40, y:87, patterns:['comodo','cmd_']},
-      {id:'aldebaran', name:'Al De Baran', x:52, y:26, patterns:['aldebaran','alde','alde_','clock']}
+      // Cities
+      {id:'umbala', name:'Umbala', type:'city', x:15, y:55, patterns:['umbala','um_fild','um_']},
+      {id:'geffen', name:'Geffen', type:'city', x:32.5, y:32.5, patterns:['geffen','gef_f','gef_']},
+      {id:'lutie', name:'Lutie / Xmas', type:'city', x:70, y:2.5, patterns:['lutie','xmas']},
+      {id:'prontera', name:'Prontera', type:'city', x:45, y:27.5, patterns:['prontera','prt_f','prt_','demo_field']},
+      {id:'aldebaran', name:'Al De Baran', type:'city', x:52.5, y:10, patterns:['aldebaran','alde_']},
+      {id:'izlude', name:'Izlude', type:'city', x:65, y:32.5, patterns:['izlude','izl_']},
+      {id:'morocc', name:'Morocc', type:'city', x:47.5, y:55, patterns:['morocc','moc_f','moc_']},
+      {id:'comodo', name:'Comodo', type:'city', x:25, y:67.5, patterns:['comodo','cmd_']},
+      {id:'payon', name:'Payon', type:'city', x:80, y:77.5, patterns:['payon','pay_f','pay_']},
+      {id:'alberta', name:'Alberta', type:'city', x:85, y:92.5, patterns:['alberta','alb_']},
+
+      // Dungeons
+      {id:'geffen-dungeon', name:'Geffen Dungeon', type:'dungeon', x:32.5, y:37.5, patterns:['gef_d','b_gef_d','geffen dungeon']},
+      {id:'orc-dungeon', name:'Orc Dungeon', type:'dungeon', x:22.5, y:37.5, patterns:['orcsdun','orc_dun','orc dungeon']},
+      {id:'clock-tower', name:'Clock Tower', type:'dungeon', x:52.5, y:15, patterns:['c_tower','alde_dun','tow_d','clock tower']},
+      {id:'hidden-dungeon', name:'Hidden Dungeon', type:'dungeon', x:42.5, y:22.5, patterns:['prt_maze','hidden dungeon']},
+      {id:'sphinx', name:'Sphinx', type:'dungeon', x:42.5, y:50, patterns:['in_sphinx','sp_d','sphinx']},
+      {id:'pyramids', name:'Pyramids', type:'dungeon', x:42.5, y:55, patterns:['moc_pryd','pyramid']},
+      {id:'payon-cave', name:'Payon Cave', type:'dungeon', x:80, y:72.5, patterns:['pay_dun','pay_d0','b_pay_d','payon cave']}
     ];
   }
 
-  function mapsForWorldRegion(region) {
+  function mapsForWorldPoint(point) {
     return DATA.maps.filter(map => {
       const haystack = `${map.id} ${map.name} ${map.internalName || ''}`.toLowerCase();
-      return region.patterns.some(pattern => haystack.includes(pattern));
+      return point.patterns.some(pattern => haystack.includes(pattern));
     });
   }
 
@@ -4876,39 +4890,49 @@ window.RO_DATA = {
   }
 
   function worldMapPage() {
-    const regions = worldMapRegionData();
-    const hotspotHtml = regions.map(region => {
-      const maps = mapsForWorldRegion(region);
+    const points = worldMapPointData();
+    const hotspotHtml = points.map(point => {
+      const maps = mapsForWorldPoint(point);
       const monsters = monstersForMapIds(maps.map(m=>m.id));
       const monsterNames = [...new Set(monsters.map(m=>m.name))];
       const mapNames = maps.map(m=>m.name);
       const monstersText = monsterNames.length
         ? monsterNames.slice(0,10).map(name=>esc(name)).join(', ') + (monsterNames.length > 10 ? '…' : '')
         : navLabel('No monster relation imported in the local wiki dataset yet.','Aucune relation de monstre importée dans la base locale du wiki pour le moment.');
-      const mapsText = mapNames.length ? mapNames.slice(0,6).map(name=>esc(name)).join(', ') : navLabel('No local map entry matched yet.','Aucune entrée locale correspondante pour le moment.');
-      return `<button class="world-hotspot" type="button" style="left:${region.x}%;top:${region.y}%" aria-label="${esc(region.name)}">
-        <span class="world-tooltip"><strong>${esc(region.name)}</strong>
+      const mapsText = mapNames.length
+        ? mapNames.slice(0,6).map(name=>esc(name)).join(', ')
+        : navLabel('No local map entry matched yet.','Aucune entrée locale correspondante pour le moment.');
+      const kind = point.type === 'dungeon'
+        ? navLabel('Dungeon','Donjon')
+        : navLabel('City','Ville');
+
+      return `<button class="world-hotspot ${point.type}" type="button" style="left:${point.x}%;top:${point.y}%" aria-label="${esc(point.name)} — ${esc(kind)}">
+        <span class="world-tooltip"><strong>${esc(point.name)}</strong>
+          <span><b>${navLabel('Type','Type')}:</b> ${kind}</span>
           <span><b>${navLabel('Monsters','Monstres')}:</b> ${monstersText}</span>
           <small><b>${navLabel('Maps loaded','Maps chargées')}:</b> ${mapsText}</small>
         </span>
       </button>`;
     }).join('');
 
+    const cities = points.filter(point => point.type === 'city');
+    const dungeons = points.filter(point => point.type === 'dungeon');
+
     return `${breadcrumbs([{label:navLabel('World Map','Carte du monde')}])}
       <div class="article-heading"><h1>${icon('map')}${navLabel('World Map','Carte du monde')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'The World Map gives an overview of Midgard and its major regions. The interactive Zero map below connects the atlas to this wiki’s own map and monster relations.',
-        'La Carte du monde donne une vue d’ensemble de Midgard et de ses principales régions. La carte Zero interactive ci-dessous relie l’atlas aux relations maps / monstres de notre propre base.'
+        'The World Map gives an overview of Midgard and its major cities and dungeons. The points below are aligned to the centre of the atlas grid cells instead of being placed approximately over the artwork.',
+        'La Carte du monde donne une vue d’ensemble des principales villes et donjons de Midgard. Les points ci-dessous sont alignés au centre des cases de la grille de l’atlas au lieu d’être placés approximativement sur l’illustration.'
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Interactive behavior','Fonctionnement interactif')}</strong><br>${navLabel(
-        'Hover a blue point with the mouse (or focus it with the keyboard) to see monsters currently linked to maps in that region. The list is generated from this wiki’s DATA, so it updates automatically as verified Zero spawn relations are imported.',
-        'Passe la souris sur un point bleu (ou sélectionne-le au clavier) pour voir les monstres actuellement reliés aux maps de cette région. La liste est générée depuis les DATA de ce wiki ; elle se met donc automatiquement à jour lorsque de nouveaux spawns Zero vérifiés sont importés.'
+        'Blue points are cities and red points are dungeons. Hover or focus a point to see the monsters currently linked to matching Zero maps in this wiki’s dataset.',
+        'Les points bleus représentent les villes et les points rouges les donjons. Passe la souris sur un point ou sélectionne-le au clavier pour voir les monstres actuellement reliés aux maps Zero correspondantes dans la base du wiki.'
       )}</div></div>
 
       ${toc([
         {id:'interactive-map',label:navLabel('Interactive map','Carte interactive')},
-        {id:'regions',label:navLabel('Regions','Régions')}
+        {id:'locations',label:navLabel('Mapped locations','Lieux indiqués')}
       ])}
 
       <h2 id="interactive-map">${navLabel('Interactive World Map','Carte du monde interactive')}</h2>
@@ -4917,19 +4941,32 @@ window.RO_DATA = {
           <img src="https://midgardhub.com/images/database/worldmap.jpg" alt="${esc(navLabel('Orbis of Midgard world atlas','Atlas mondial Orbis of Midgard'))}">
           ${hotspotHtml}
         </div>
-        <div class="world-map-legend"><span><i></i>${navLabel('Hover / focus: show monsters linked to local Zero maps in this region','Survol / focus : affiche les monstres reliés aux maps Zero locales de cette région')}</span></div>
+        <div class="world-map-legend">
+          <span><i class="city"></i>${navLabel('City','Ville')}</span>
+          <span><i class="dungeon"></i>${navLabel('Dungeon','Donjon')}</span>
+          <span>${navLabel('Hover / focus a point to show linked monsters','Survole / sélectionne un point pour afficher les monstres liés')}</span>
+        </div>
       </div>
       <p class="muted-note">${navLabel(
-        'The atlas is the in-game Orbis of Midgard artwork. The interactive overlays, region matching and monster tooltips are implemented by this wiki and do not copy another site’s interactive-map code.',
-        'L’atlas est l’illustration en jeu Orbis of Midgard. Les overlays interactifs, la correspondance des régions et les tooltips de monstres sont implémentés par ce wiki et ne copient pas le code de carte interactive d’un autre site.'
+        'The atlas is the in-game Orbis of Midgard artwork. Point overlays and tooltips are implemented by this wiki. Dungeon markers represent the dungeon entrance / world-map location rather than every dungeon floor.',
+        'L’atlas est l’illustration en jeu Orbis of Midgard. Les points et tooltips sont implémentés par ce wiki. Un point de donjon représente son entrée / emplacement sur la carte du monde et non chaque étage du donjon.'
       )}</p>
 
-      <h2 id="regions">${navLabel('Major regions','Principales régions')}</h2>
+      <h2 id="locations">${navLabel('Mapped locations','Lieux indiqués')}</h2>
+      <h3>${navLabel('Cities','Villes')}</h3>
       <div class="world-region-grid">
-        ${regions.map(region => {
-          const maps = mapsForWorldRegion(region);
+        ${cities.map(point => {
+          const maps = mapsForWorldPoint(point);
           const monsters = monstersForMapIds(maps.map(m=>m.id));
-          return `<div class="world-region-card"><strong>${esc(region.name)}</strong><small>${maps.length} ${navLabel('local maps','maps locales')} · ${monsters.length} ${navLabel('linked monsters','monstres reliés')}</small></div>`;
+          return `<div class="world-region-card"><strong>${esc(point.name)}</strong><small>${maps.length} ${navLabel('local maps','maps locales')} · ${monsters.length} ${navLabel('linked monsters','monstres reliés')}</small></div>`;
+        }).join('')}
+      </div>
+      <h3>${navLabel('Dungeons','Donjons')}</h3>
+      <div class="world-region-grid">
+        ${dungeons.map(point => {
+          const maps = mapsForWorldPoint(point);
+          const monsters = monstersForMapIds(maps.map(m=>m.id));
+          return `<div class="world-region-card"><strong>${esc(point.name)}</strong><small>${maps.length} ${navLabel('local maps','maps locales')} · ${monsters.length} ${navLabel('linked monsters','monstres reliés')}</small></div>`;
         }).join('')}
       </div>
 
