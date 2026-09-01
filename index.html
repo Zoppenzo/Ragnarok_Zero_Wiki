@@ -3087,7 +3087,7 @@ window.RO_DATA = {
     { id:'sources-links', group:'General Topics', en:'Sources & Useful Links', fr:'Sources et liens utiles', icon:'info' },
 
     { id:'elements', group:'Systems & Data', en:'Elements', fr:'Éléments' },
-    { id:'monster-sizes', group:'Systems & Data', en:'Monster Sizes', fr:'Tailles des monstres' },
+    { id:'monster-sizes', group:'Systems & Data', en:'Monster Sizes', fr:'Tailles des monstres', icon:'monster' },
     { id:'monster-races', group:'Systems & Data', en:'Monster Races', fr:'Races des monstres' },
     { id:'monster-exclusive-skills', group:'Systems & Data', en:'Monster Skills', fr:'Compétences des monstres' },
     { id:'status-effects', group:'Systems & Data', en:'Status Effects', fr:'Effets de statut' },
@@ -3155,6 +3155,9 @@ window.RO_DATA = {
     },
     '#/wiki/elements': {
       'element-table':'complete', 'elements-list':'complete'
+    },
+    '#/wiki/monster-sizes': {
+      'size-types':'complete', 'weapon-modifiers':'complete', 'reading-table':'complete'
     },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
@@ -4722,6 +4725,100 @@ window.RO_DATA = {
       </div>`;
   }
 
+  function monsterSizesPage(topic) {
+    const rows = [
+      ['Bare Handed',100,100,100],
+      ['Dagger',100,75,50],
+      ['1H Sword',75,100,75],
+      ['2H Sword',75,75,100],
+      ['Spear',75,75,100],
+      ['Spear · Peco / Gryphon',75,100,100],
+      ['Axe',50,75,100],
+      ['Mace',75,100,100],
+      ['Rod / Staff',100,100,100],
+      ['Bow',100,100,75],
+      ['Katar',75,100,75],
+      ['Book',100,100,50],
+      ['Knuckle',100,100,75],
+      ['Instrument',75,100,75],
+      ['Whip',75,100,50],
+      ['Gun',100,100,100],
+      ['Huuma Shuriken',75,75,100]
+    ];
+
+    const sizeCell = value => {
+      const cls = value === 100 ? 'element-mod-normal' : value >= 75 ? 'element-mod-midlow' : 'element-mod-low';
+      return `<td class="${cls}" style="font-weight:700;text-align:center">${value}%</td>`;
+    };
+
+    return `${generalPageHeader(topic)}
+      <p class="article-lead">${navLabel(
+        'Size is a monster attribute that can change the physical damage dealt by a weapon. Monsters are divided into three sizes: Small, Medium and Large.',
+        'La taille est une caractéristique des monstres qui peut modifier les dégâts physiques infligés par une arme. Les monstres sont répartis en trois tailles : Small, Medium et Large.'
+      )}</p>
+
+      ${toc([
+        {id:'size-types',label:navLabel('The three sizes','Les trois tailles')},
+        {id:'weapon-modifiers',label:navLabel('Weapon size modifiers','Modificateurs de taille des armes')},
+        {id:'reading-table',label:navLabel('How to read the table','Comment lire le tableau')}
+      ])}
+
+      <h2 id="size-types">${navLabel('The three sizes','Les trois tailles')}</h2>
+      <div class="wiki-feature-list">
+        <div><strong>Small</strong><p>${navLabel(
+          'Small monsters. Some weapons are particularly effective against them, while heavier weapon types can suffer a damage penalty.',
+          'Monstres de petite taille. Certaines armes sont particulièrement efficaces contre eux, tandis que des armes plus lourdes peuvent subir une pénalité de dégâts.'
+        )}</p></div>
+        <div><strong>Medium</strong><p>${navLabel(
+          'Medium monsters. Many common weapon types deal their full damage against this size.',
+          'Monstres de taille moyenne. De nombreux types d’armes courants infligent leurs dégâts complets contre cette taille.'
+        )}</p></div>
+        <div><strong>Large</strong><p>${navLabel(
+          'Large monsters. Heavy weapons such as Axes, Spears and Two-Handed Swords generally perform well against them, while some lighter or ranged weapon types lose damage.',
+          'Monstres de grande taille. Les armes lourdes comme les Axes, Spears et Two-Handed Swords sont généralement efficaces contre eux, tandis que certaines armes légères ou à distance perdent des dégâts.'
+        )}</p></div>
+      </div>
+
+      <h2 id="weapon-modifiers">${navLabel('Weapon size modifiers','Modificateurs de taille des armes')}</h2>
+      <p>${navLabel(
+        'The percentage below is applied to the physical weapon damage according to the target’s size.',
+        'Le pourcentage ci-dessous s’applique aux dégâts physiques de l’arme selon la taille de la cible.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr>
+          <th>${navLabel('Weapon','Arme')}</th>
+          <th style="text-align:center">Small</th>
+          <th style="text-align:center">Medium</th>
+          <th style="text-align:center">Large</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(([weapon,small,medium,large]) => `<tr>
+            <th>${esc(weapon)}</th>
+            ${sizeCell(small)}
+            ${sizeCell(medium)}
+            ${sizeCell(large)}
+          </tr>`).join('')}
+        </tbody>
+      </table></div>
+
+      <h2 id="reading-table">${navLabel('How to read the table','Comment lire le tableau')}</h2>
+      <div class="wiki-feature-list">
+        <div><strong>100%</strong><p>${navLabel('No size penalty: the weapon keeps its normal physical damage.','Aucune pénalité de taille : l’arme conserve ses dégâts physiques normaux.')}</p></div>
+        <div><strong>75%</strong><p>${navLabel('The weapon deals 75% of its normal physical damage, which means a 25% size penalty.','L’arme inflige 75 % de ses dégâts physiques normaux, soit une pénalité de taille de 25 %.')}</p></div>
+        <div><strong>50%</strong><p>${navLabel('The weapon deals half of its normal physical damage against that size.','L’arme inflige la moitié de ses dégâts physiques normaux contre cette taille.')}</p></div>
+      </div>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
+        'Example: a Dagger keeps 100% damage against a Small target, drops to 75% against Medium and to 50% against Large.',
+        'Exemple : une Dagger conserve 100 % de ses dégâts contre une cible Small, passe à 75 % contre Medium et à 50 % contre Large.'
+      )}</div></div>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Monster database','Base de monstres')}</a>
+        <a class="button" href="#/wiki/elements">${miniIcon('mechanics')}${navLabel('Elements','Éléments')}</a>
+      </div>`;
+  }
+
   function sourcesLinksPage(topic) {
     const title = lang === 'fr' ? topic.fr : topic.en;
     const resources = [
@@ -4763,6 +4860,7 @@ window.RO_DATA = {
   function topicDetail(id) {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
     if (id === 'elements') return elementsPage(topic);
+    if (id === 'monster-sizes') return monsterSizesPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
