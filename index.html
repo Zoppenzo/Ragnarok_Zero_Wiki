@@ -4853,50 +4853,43 @@ window.RO_DATA = {
 
   function worldMapPointData() {
     /*
-      Geography reference: RateMyServer Map Database / World Map.
-      Coordinates below are aligned to the actual Orbis of Midgard artwork used
-      on this page. Gameplay data (monsters, drops, EXP, etc.) still comes only
-      from this wiki's current-server dataset.
+      Geographic placement is aligned to the actual Orbis of Midgard atlas.
+      RateMyServer is used for town/dungeon grouping and map IDs; the atlas
+      screenshot is used to align each visible marker to its real grid cell.
+      Only locations whose position is currently confirmed are plotted.
     */
     return [
       // Cities — blue.
-      {id:'comodo', name:'Comodo', type:'city', x:14.7, y:54.8, mapIds:['comodo'], patterns:['cmd_fild']},
-      {id:'umbala', name:'Umbala', type:'city', x:26.0, y:67.0, mapIds:['umbala'], patterns:['um_fild']},
-      {id:'aldebaran', name:'Al De Baran', type:'city', x:44.8, y:26.0, mapIds:['aldebaran'], patterns:['mjolnir']},
-      {id:'geffen', name:'Geffen', type:'city', x:47.0, y:56.0, mapIds:['geffen'], patterns:['gef_fild']},
-      {id:'morocc', name:'Morocc', type:'city', x:49.2, y:84.4, mapIds:['morocc','moc_ruins'], patterns:['moc_fild']},
-      {id:'prontera', name:'Prontera', type:'city', x:65.5, y:60.4, mapIds:['prontera'], patterns:['prt_fild','demo_field']},
-      {id:'izlude', name:'Izlude', type:'city', x:73.5, y:64.0, mapIds:['izlude'], patterns:['izlude','izl_']},
-      {id:'payon', name:'Payon', type:'city', x:79.0, y:77.5, mapIds:['payon'], patterns:['pay_fild']},
-      {id:'alberta', name:'Alberta', type:'city', x:85.0, y:92.3, mapIds:['alberta'], patterns:['alb_']},
+      {id:'umbala', name:'Umbala', type:'city', x:25.6, y:67.3,
+        mapIds:['umbala'], patterns:['umbala','um_fild']},
+      {id:'comodo', name:'Comodo', type:'city', x:25.4, y:83.9,
+        mapIds:['comodo'], patterns:['comodo','cmd_fild']},
+      {id:'geffen', name:'Geffen', type:'city', x:46.9, y:53.6,
+        mapIds:['geffen'], patterns:['geffen','gef_fild']},
+      {id:'prontera', name:'Prontera', type:'city', x:64.5, y:60.8,
+        mapIds:['prontera','prt_mk'], patterns:['prontera','prt_fild','prt_mk','demo_field']},
+      {id:'aldebaran', name:'Al De Baran', type:'city', x:65.9, y:32.5,
+        mapIds:['aldebaran'], patterns:['aldebaran','alde_']},
+      {id:'morocc', name:'Morocc', type:'city', x:48.7, y:84.5,
+        mapIds:['morocc','moc_ruins'], patterns:['morocc','moc_fild']},
+      {id:'payon', name:'Payon', type:'city', x:78.9, y:77.5,
+        mapIds:['payon'], patterns:['payon','pay_fild']},
+      {id:'alberta', name:'Alberta', type:'city', x:84.5, y:92.8,
+        mapIds:['alberta'], patterns:['alberta','alb_']},
 
-      // Dungeons — red. Map IDs/floors are taken from the RMS area grouping.
-      {id:'glast-heim', name:'Glast Heim', type:'dungeon', x:42.5, y:50.4,
-        mapIds:['glast_01'], patterns:['gl_','glast']},
-      {id:'orc-dungeon', name:'Orc Dungeon', type:'dungeon', x:42.5, y:56.0,
-        mapIds:['orcsdun01','orcsdun02'], patterns:['orcsdun']},
-      {id:'geffen-dungeon', name:'Geffen Dungeon', type:'dungeon', x:47.0, y:56.0,
-        mapIds:['gef_dun00','gef_dun01','gef_dun02','gef_dun03'], patterns:['gef_dun']},
-      {id:'coal-mine', name:'Coal Mine / Mjolnir Dead Pit', type:'dungeon', x:38.0, y:31.6,
-        mapIds:['mjo_dun01','mjo_dun02','mjo_dun03'], patterns:['mjo_dun']},
-      {id:'clock-tower', name:'Clock Tower', type:'dungeon', x:44.8, y:26.0,
-        mapIds:['c_tower1','c_tower2','c_tower3','c_tower4'], patterns:['c_tower','alde_dun']},
-      {id:'hidden-temple', name:'Hidden Temple / Labyrinth Forest', type:'dungeon', x:60.5, y:54.8,
-        mapIds:['prt_maze01','prt_maze02','prt_maze03'], patterns:['prt_maze']},
-      {id:'prontera-culvert', name:'Prontera Culvert', type:'dungeon', x:69.5, y:54.8,
+      // Confirmed dungeon entrances — red.
+      {id:'beach-dungeon', name:'Comodo Dungeon / Beach Dungeon', type:'dungeon', x:27.5, y:85.3,
+        mapIds:['beach_dun','beach_dun2','beach_dun3'], patterns:['beach_dun']},
+      {id:'ant-hell', name:'Ant Hell', type:'dungeon', x:46.4, y:89.0,
+        mapIds:['anthell01','anthell02'], patterns:['anthell']},
+      {id:'prontera-culvert', name:'Prontera Culvert', type:'dungeon', x:60.2, y:62.3,
         mapIds:['prt_sewb1','prt_sewb2','prt_sewb3','prt_sewb4'], patterns:['prt_sewb']},
-      {id:'sphinx', name:'Sphinx', type:'dungeon', x:44.7, y:84.4,
-        mapIds:['in_sphinx1','in_sphinx2','in_sphinx3','in_sphinx4','in_sphinx5'], patterns:['in_sphinx']},
-      {id:'pyramid', name:'Pyramid', type:'dungeon', x:44.7, y:78.8,
-        mapIds:['moc_pryd01','moc_pryd02','moc_pryd03','moc_pryd04','moc_pryd05','moc_pryd06'], patterns:['moc_pryd']},
-      {id:'ant-hell-west', name:'Ant Hell', type:'dungeon', x:40.2, y:84.4,
-        mapIds:['anthell01','anthell02'], patterns:['anthell']},
-      {id:'ant-hell-east', name:'Ant Hell', type:'dungeon', x:53.7, y:89.9,
-        mapIds:['anthell01','anthell02'], patterns:['anthell']},
-      {id:'byalan', name:'Byalan Island Dungeon', type:'dungeon', x:78.0, y:67.5,
-        mapIds:['iz_dun00','iz_dun01','iz_dun02','iz_dun03','iz_dun04','iz_dun05'], patterns:['iz_dun']},
-      {id:'payon-cave', name:'Payon Cave', type:'dungeon', x:79.0, y:71.9,
-        mapIds:['pay_dun00','pay_dun01','pay_dun02','pay_dun03','pay_dun04'], patterns:['pay_dun']}
+      {id:'byalan', name:'Izlude Dungeon / Byalan Island', type:'dungeon', x:73.4, y:64.4,
+        mapIds:['izlu2dun','iz_dun00','iz_dun01','iz_dun02','iz_dun03','iz_dun04','iz_dun05'], patterns:['izlu2dun','iz_dun']},
+      {id:'payon-cave', name:'Payon Cave', type:'dungeon', x:79.0, y:69.7,
+        mapIds:['pay_arche','pay_dun00','pay_dun01','pay_dun02','pay_dun03','pay_dun04'], patterns:['pay_dun']},
+      {id:'sunken-ship', name:'Sunken Ship / Treasure Island', type:'dungeon', x:88.5, y:91.4,
+        mapIds:['alb2trea','treasure01','treasure02'], patterns:['alb2trea','treasure']}
     ];
   }
 
@@ -4978,8 +4971,8 @@ window.RO_DATA = {
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Interactive behavior','Fonctionnement interactif')}</strong><br>${navLabel(
-        'Blue points are cities and red points are dungeon entrances. Points are centered on the corresponding atlas cell; when a city and a dungeon share the same cell, the pair is spread a few pixels around the same center so both remain visible.',
-        'Les points bleus sont les villes et les points rouges les entrées de donjons. Les points sont centrés sur la case correspondante de l’atlas ; lorsqu’une ville et un donjon partagent la même case, les deux points sont légèrement écartés autour du même centre pour rester visibles.'
+        'Blue points are cities and red points are confirmed dungeon entrances. Each marker is centered on the corresponding atlas cell. A dungeon is left off the map until its entrance position has been confirmed instead of being placed approximately.',
+        'Les points bleus sont les villes et les points rouges les entrées de donjons confirmées. Chaque marqueur est centré sur la case correspondante de l’atlas. Un donjon reste absent de la carte tant que la position de son entrée n’est pas confirmée, plutôt que d’être placé approximativement.'
       )}</div></div>
 
       ${toc([
