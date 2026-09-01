@@ -2317,7 +2317,7 @@ tbody tr:hover { background: #fcf8f3; }
 
       <footer class="site-footer">
         <span>Ragnarok Zero Wiki — V8 Ergonomic Wiki</span>
-        <span id="footer-note">Demo data are not verified game data.</span>
+        <span id="footer-note">Demo data are incomplete and may not match live game values.</span>
       </footer>
     </div>
   </div>
@@ -2336,8 +2336,8 @@ window.RO_DATA = {
   meta: {
     title: "Ragnarok Zero Wiki",
     demo: true,
-    noteEn: "Prototype data only. The navigation and class roster are filtered to content currently available in Ragnarok as of August 31, 2026. Game values remain incomplete until verified.",
-    noteFr: "Données de prototype uniquement. La navigation et les classes sont filtrées sur le contenu actuellement disponible dans Ragnarok au 31 août 2026. Les valeurs de jeu restent incomplètes tant qu’elles ne sont pas vérifiées."
+    noteEn: "Prototype data only. The navigation and class roster are filtered to content currently available in Ragnarok as of August 31, 2026. Some game values are still incomplete.",
+    noteFr: "Données de prototype uniquement. La navigation et les classes sont filtrées sur le contenu actuellement disponible dans Ragnarok au 31 août 2026. Certaines valeurs de jeu sont encore incomplètes."
   },
 
   monsters: [
@@ -2352,7 +2352,7 @@ window.RO_DATA = {
         { itemId: "iron-ore", rate: null, amount: 1, verified: false }
       ],
       maps: [{ mapId: "ant-hell-01", amount: null, respawn: null, verified: false }],
-      notes: { en: "No Ragnarok-specific combat values have been verified yet.", fr: "Aucune valeur de combat spécifique à Ragnarok n'a encore été vérifiée." },
+      notes: { en: "Combat values are not available yet.", fr: "Les valeurs de combat ne sont pas encore disponibles." },
       verified: false
     },
     {
@@ -2360,7 +2360,7 @@ window.RO_DATA = {
       baseExp: null, jobExp: null, race: "Plant", element: "Water", elementLevel: null,
       size: "Medium", attackMin: null, attackMax: null, def: null, mdef: null, hit: null, flee: null,
       aggressive: false, boss: false, mvp: false, image: null,
-      description: { en: "Demo entry. Game values still need verification for Ragnarok.", fr: "Entrée de démonstration. Les valeurs doivent encore être vérifiées pour Ragnarok." },
+      description: { en: "Demo entry with incomplete game values.", fr: "Entrée de démonstration avec des valeurs de jeu incomplètes." },
       drops: [
         { itemId: "jellopy", rate: null, amount: 1, verified: false },
         { itemId: "poring-card", rate: null, amount: 1, verified: false }
@@ -2386,19 +2386,19 @@ window.RO_DATA = {
     {
       id: "andre-card", name: "Andre Card", type: "Card", subtype: "Weapon Card", requiredLevel: null,
       weight: null, slots: null, attack: null, defense: null, equipmentSlot: "Weapon", image: null,
-      description: { en: "Effect not yet verified for Ragnarok.", fr: "Effet pas encore vérifié pour Ragnarok." },
+      description: { en: "Effect currently unavailable.", fr: "Effet actuellement indisponible." },
       effect: { en: "Unverified", fr: "Non vérifié" }, verified: false
     },
     {
       id: "flora-card", name: "Flora Card", type: "Card", subtype: "Weapon Card", requiredLevel: null,
       weight: null, slots: null, attack: null, defense: null, equipmentSlot: "Weapon", image: null,
-      description: { en: "Effect not yet verified for Ragnarok.", fr: "Effet pas encore vérifié pour Ragnarok." },
+      description: { en: "Effect currently unavailable.", fr: "Effet actuellement indisponible." },
       effect: { en: "Unverified", fr: "Non vérifié" }, verified: false
     },
     {
       id: "poring-card", name: "Poring Card", type: "Card", subtype: "Armor Card", requiredLevel: null,
       weight: null, slots: null, attack: null, defense: null, equipmentSlot: "Armor", image: null,
-      description: { en: "Effect not yet verified for Ragnarok.", fr: "Effet pas encore vérifié pour Ragnarok." },
+      description: { en: "Effect currently unavailable.", fr: "Effet actuellement indisponible." },
       effect: { en: "Unverified", fr: "Non vérifié" }, verified: false
     },
     {
@@ -2422,7 +2422,7 @@ window.RO_DATA = {
     },
     {
       id: "prontera-field-demo", name: "Prontera Field (Demo)", internalName: "demo_field", type: "Field", image: null,
-      description: { en: "Placeholder map. Not intended as verified Ragnarok data.", fr: "Map factice. Ne doit pas être considérée comme une donnée Ragnarok vérifiée." },
+      description: { en: "Placeholder map with incomplete data.", fr: "Map factice avec des données incomplètes." },
       notes: { en: "Development-only map entry.", fr: "Entrée de map réservée au développement." },
       verified: false
     }
@@ -2451,7 +2451,7 @@ window.RO_DATA = {
       id: "sword-mastery", name: "Sword Mastery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", element: "Neutral", image: "https://static.divine-pride.net/images/skill/2.png",
       spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Increases physical damage dealt with one-handed swords and daggers, with the bonus scaling by skill level.", fr: "Augmente les dégâts physiques infligés avec les épées à une main et les dagues, avec un bonus qui augmente selon le niveau de la compétence." },
-      prerequisites: [], notes: { en: "Ragnarok first-job skill. MidgardHub lists Max Lv.10.", fr: "Compétence de première classe actuelle. MidgardHub indique un niveau max de 10." }, verified: true
+      prerequisites: [], notes: { en: "Ragnarok first-job skill. Max Lv.10.", fr: "Compétence de première classe actuelle. Niveau max 10." }, verified: true
     },
     {
       id: "increase-hp-recovery", name: "Increase HP Recovery", classId: "swordman", maxLevel: 10, type: "Passive", target: "Self", element: "Neutral", image: "https://static.divine-pride.net/images/skill/4.png",
@@ -2463,13 +2463,13 @@ window.RO_DATA = {
       id: "bash", name: "Bash", classId: "swordman", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Neutral", image: "https://static.divine-pride.net/images/skill/5.png",
       spCost: null, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
       description: { en: "Hits one target with a powerful melee strike. From Bash Lv.6 onward, Fatal Blow can add a chance to inflict Stun.", fr: "Frappe une cible avec une puissante attaque de mêlée. À partir de Bash Lv.6, Fatal Blow peut ajouter une chance d'infliger Stun." },
-      prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok skill database.", fr: "Niveau max 10 dans la base de compétences actuelle." }, verified: true
+      prerequisites: [], notes: { en: "Max Lv.10.", fr: "Niveau max 10." }, verified: true
     },
     {
       id: "provoke", name: "Provoke", classId: "swordman", maxLevel: 10, type: "Active", role: "supportive", target: "Enemy", element: "Neutral", image: "https://static.divine-pride.net/images/skill/6.png",
       spCost: null, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
       description: { en: "Provokes a target, lowering its defense while increasing its attack power. On monsters, it also draws aggression toward the caster. It does not affect Undead or boss monsters.", fr: "Provoque une cible, réduisant sa défense tout en augmentant sa puissance d'attaque. Sur les monstres, la compétence attire aussi leur agressivité vers le lanceur. Elle ne fonctionne pas sur les monstres Undead ni les boss." },
-      prerequisites: [], notes: { en: "Max Lv.10 in the Ragnarok skill database.", fr: "Niveau max 10 dans la base de compétences actuelle." }, verified: true
+      prerequisites: [], notes: { en: "Max Lv.10.", fr: "Niveau max 10." }, verified: true
     },
     {
       id: "berserk-swordman", name: "Berserk", classId: "swordman", maxLevel: 1, type: "Quest / Passive", target: "Self", element: "Neutral", image: "https://static.divine-pride.net/images/skill/146.png",
@@ -2500,19 +2500,19 @@ window.RO_DATA = {
       spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       levels: null,
       description: { en: "Increases physical damage dealt while using a two-handed sword, with the bonus scaling by skill level.", fr: "Augmente les dégâts physiques infligés avec une épée à deux mains, avec un bonus qui augmente selon le niveau de la compétence." },
-      prerequisites: [{ skillId: "sword-mastery", level: 1, verified: true }], notes: { en: "Max Lv.10 in the Ragnarok skill database.", fr: "Niveau max 10 dans la base de compétences actuelle." }, verified: true
+      prerequisites: [{ skillId: "sword-mastery", level: 1, verified: true }], notes: { en: "Max Lv.10.", fr: "Niveau max 10." }, verified: true
     },
     {
       id: "magnum-break", name: "Magnum Break", classId: "swordman", maxLevel: 10, type: "Active", role: "damage", target: "Self / Area", element: "Fire", image: "https://static.divine-pride.net/images/skill/7.png",
       spCost: 30, castTime: "None", castDelay: "0.3 s", cooldown: "2 s",
       description: { en: "Deals Fire-property physical damage in a 5×5 area around the caster, knocks enemies back by 2 cells, and temporarily adds Fire-property weapon damage.", fr: "Inflige des dégâts physiques de propriété Fire dans une zone de 5×5 autour du lanceur, repousse les ennemis de 2 cellules et ajoute temporairement des dégâts d'arme de propriété Fire." },
-      prerequisites: [{ skillId: "bash", level: 5, verified: true }], notes: { en: "MidgardHub lists Bash Lv.5 as the first-job prerequisite and Max Lv.10.", fr: "MidgardHub indique Bash Lv.5 comme prérequis de première classe et un niveau max de 10." }, verified: true
+      prerequisites: [{ skillId: "bash", level: 5, verified: true }], notes: { en: "Requires Bash Lv.5. Max Lv.10.", fr: "Nécessite Bash Lv.5. Niveau max 10." }, verified: true
     },
     {
       id: "endure", name: "Endure", classId: "swordman", maxLevel: 10, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://static.divine-pride.net/images/skill/8.png",
       spCost: 10, castTime: "None", castDelay: "ASPD-based", cooldown: "10 s",
       description: { en: "Lets the caster keep moving and attacking while taking normal hit stun for a limited duration. The effect ends after enough hits and does not apply in Siege.", fr: "Permet au lanceur de continuer à se déplacer et à attaquer malgré les coups reçus pendant une durée limitée. L'effet prend fin après un certain nombre de coups et ne s'applique pas en Siege." },
-      prerequisites: [{ skillId: "provoke", level: 5, verified: true }], notes: { en: "MidgardHub lists Provoke Lv.5 as the first-job prerequisite and Max Lv.10.", fr: "MidgardHub indique Provoke Lv.5 comme prérequis de première classe et un niveau max de 10." }, verified: true
+      prerequisites: [{ skillId: "provoke", level: 5, verified: true }], notes: { en: "Requires Provoke Lv.5. Max Lv.10.", fr: "Nécessite Provoke Lv.5. Niveau max 10." }, verified: true
     },
     {
       id: "stone-curse", name: "Stone Curse", classId: "mage", maxLevel: 10, type: "Active", role: "supportive", target: "Enemy", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/16.webp",
@@ -2524,13 +2524,13 @@ window.RO_DATA = {
       id: "cold-bolt", name: "Cold Bolt", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Water", image: "https://game.ragnaplace.com/ro/rozg/skill/14.webp",
       spCost: null, castTime: "0.8–4.4 s", castDelay: "0.3 s", cooldown: "0.7 s",
       description: { en: "Strikes one target with Water-property magical hits. The number of hits increases with skill level.", fr: "Frappe une cible avec des dégâts magiques Water. Le nombre de coups augmente avec le niveau de la compétence." },
-      prerequisites: [], notes: { en: "Each hit is listed as MATK 100% in the current skill data.", fr: "Chaque coup est indiqué à MATK 100 % dans les données de compétences actuelles." }, verified: true
+      prerequisites: [], notes: { en: "Each hit deals MATK 100%.", fr: "Chaque coup inflige MATK 100 %." }, verified: true
     },
     {
       id: "lightning-bolt", name: "Lightning Bolt", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Wind", image: "https://game.ragnaplace.com/ro/rozg/skill/20.webp",
       spCost: null, castTime: "0.8–4.4 s", castDelay: "0.3 s", cooldown: "0.7 s",
       description: { en: "Calls lightning onto one target, dealing Wind-property magical hits. The number of hits increases with skill level.", fr: "Fait tomber la foudre sur une cible et inflige des dégâts magiques Wind. Le nombre de coups augmente avec le niveau." },
-      prerequisites: [], notes: { en: "Each hit is listed as MATK 100% in the current skill data.", fr: "Chaque coup est indiqué à MATK 100 % dans les données de compétences actuelles." }, verified: true
+      prerequisites: [], notes: { en: "Each hit deals MATK 100%.", fr: "Chaque coup inflige MATK 100 %." }, verified: true
     },
     {
       id: "napalm-beat", name: "Napalm Beat", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy / Area", element: "Ghost", image: "https://game.ragnaplace.com/ro/rozg/skill/11.webp",
@@ -2542,7 +2542,7 @@ window.RO_DATA = {
       id: "fire-bolt", name: "Fire Bolt", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Fire", image: "https://game.ragnaplace.com/ro/rozg/skill/19.webp",
       spCost: null, castTime: "0.8–4.4 s", castDelay: "0.3 s", cooldown: "0.7 s",
       description: { en: "Strikes one target with Fire-property magical hits. Hit count rises with skill level and current data also applies additional INT-based scaling.", fr: "Frappe une cible avec des dégâts magiques Fire. Le nombre de coups augmente avec le niveau et les données actuelles indiquent aussi un bonus basé sur l'INT." },
-      prerequisites: [], notes: { en: "Each base hit is listed as MATK 100%.", fr: "Chaque coup de base est indiqué à MATK 100 %." }, verified: true
+      prerequisites: [], notes: { en: "Each base hit deals MATK 100%.", fr: "Chaque coup de base inflige MATK 100 %." }, verified: true
     },
     {
       id: "sight", name: "Sight", classId: "mage", maxLevel: 1, type: "Active", role: "supportive", target: "Self / Area", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/10.webp",
@@ -2554,7 +2554,7 @@ window.RO_DATA = {
       id: "earth-spike", name: "Earth Spike", classId: "mage", maxLevel: 5, type: "Active", role: "damage", target: "Enemy", element: "Earth", image: "https://game.ragnaplace.com/ro/rozg/skill/90.webp",
       spCost: null, castTime: "0.28–1.4 s", castDelay: "0.3 s", cooldown: "0.7 s",
       description: { en: "Raises earth spikes beneath one target, dealing Earth-property magical damage. The hit count increases with skill level.", fr: "Fait surgir des pics de terre sous une cible et inflige des dégâts magiques Earth. Le nombre de coups augmente avec le niveau." },
-      prerequisites: [{ skillId: "stone-curse", level: 1, verified: true }], notes: { en: "current data lists MATK 200% base damage with additional INT scaling.", fr: "Les données actuelles indiquent des dégâts de base à MATK 200 % avec un bonus supplémentaire basé sur l'INT." }, verified: true
+      prerequisites: [{ skillId: "stone-curse", level: 1, verified: true }], notes: { en: "Base damage is MATK 200%, with additional INT scaling.", fr: "Les dégâts de base sont de MATK 200 %, avec un bonus supplémentaire basé sur l'INT." }, verified: true
     },
     {
       id: "frost-diver", name: "Frost Diver", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Water", image: "https://game.ragnaplace.com/ro/rozg/skill/15.webp",
@@ -2602,7 +2602,7 @@ window.RO_DATA = {
       id: "fire-wall", name: "Fire Wall", classId: "mage", maxLevel: 10, type: "Active", role: "damage", target: "Ground", element: "Fire", image: "https://game.ragnaplace.com/ro/rozg/skill/18.webp",
       spCost: 40, castTime: "1.0–0.35 s", castDelay: "ASPD-based", cooldown: "None",
       description: { en: "Creates a wall of fire that deals Fire-property magical damage to approaching enemies and knocks them back by 2 cells.", fr: "Crée un mur de feu qui inflige des dégâts magiques Fire aux ennemis qui s'en approchent et les repousse de 2 cellules." },
-      prerequisites: [{ skillId: "fire-ball", level: 5, verified: true }, { skillId: "sight", level: 1, verified: true }], notes: { en: "current data lists MATK 50% per wall hit; hit capacity and duration increase by level.", fr: "Les données actuelles indiquent MATK 50 % par coup du mur ; le nombre de coups et la durée augmentent avec le niveau." }, verified: true
+      prerequisites: [{ skillId: "fire-ball", level: 5, verified: true }, { skillId: "sight", level: 1, verified: true }], notes: { en: "Each wall hit deals MATK 50%; hit capacity and duration increase by level.", fr: "Chaque coup du mur inflige MATK 50 % ; le nombre de coups et la durée augmentent avec le niveau." }, verified: true
     },
     {
       id: "owls-eye", name: "Owl's Eye", classId: "archer", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/43.webp",
@@ -2663,37 +2663,37 @@ window.RO_DATA = {
       id: "discount", name: "Discount", classId: "merchant", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/37.webp",
       spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Reduces the price paid when purchasing items from standard NPC shops.", fr: "Réduit le prix payé lors de l’achat d’objets auprès des boutiques NPC standard." },
-      prerequisites: [{ skillId: "enlarge-weight-limit", level: 3, verified: true }], notes: { en: "Merchant prerequisite on Global is Enlarge Weight Limit Lv.3. The discount reaches 24% at Lv.10.", fr: "Le prérequis Merchant sur Global est Enlarge Weight Limit Lv.3. La réduction atteint 24 % au niveau 10." }, verified: true
+      prerequisites: [{ skillId: "enlarge-weight-limit", level: 3, verified: true }], notes: { en: "Requires Enlarge Weight Limit Lv.3. The discount reaches 24% at Lv.10.", fr: "Nécessite Enlarge Weight Limit Lv.3. La réduction atteint 24 % au niveau 10." }, verified: true
     },
     {
       id: "overcharge", name: "Overcharge", classId: "merchant", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/38.webp",
       spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Increases the amount of Zeny received when selling items to NPC shops.", fr: "Augmente la quantité de Zeny obtenue lors de la vente d’objets aux boutiques NPC." },
-      prerequisites: [{ skillId: "discount", level: 3, verified: true }], notes: { en: "Merchant prerequisite on Global is Discount Lv.3. The markup reaches 24% at Lv.10.", fr: "Le prérequis Merchant sur Global est Discount Lv.3. Le bonus de vente atteint 24 % au niveau 10." }, verified: true
+      prerequisites: [{ skillId: "discount", level: 3, verified: true }], notes: { en: "Requires Discount Lv.3. The markup reaches 24% at Lv.10.", fr: "Nécessite Discount Lv.3. Le bonus de vente atteint 24 % au niveau 10." }, verified: true
     },
     {
       id: "pushcart", name: "Pushcart", classId: "merchant", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/39.webp",
       spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Allows the Merchant to use a cart for carrying items. The movement-speed penalty while using a cart decreases with skill level and disappears at Lv.10.", fr: "Permet au Merchant d’utiliser une charrette pour transporter des objets. La pénalité de vitesse de déplacement diminue avec le niveau et disparaît au niveau 10." },
-      prerequisites: [{ skillId: "enlarge-weight-limit", level: 5, verified: true }], notes: { en: "Merchant prerequisite on Global is Enlarge Weight Limit Lv.5.", fr: "Le prérequis Merchant sur Global est Enlarge Weight Limit Lv.5." }, verified: true
+      prerequisites: [{ skillId: "enlarge-weight-limit", level: 5, verified: true }], notes: { en: "Requires Enlarge Weight Limit Lv.5.", fr: "Nécessite Enlarge Weight Limit Lv.5." }, verified: true
     },
     {
       id: "item-appraisal", name: "Item Appraisal", classId: "merchant", maxLevel: 1, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/40.webp",
       spCost: 10, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Identifies a selected unidentified item without using a Magnifier.", fr: "Identifie un objet non identifié sélectionné sans utiliser de Magnifier." },
-      prerequisites: [], notes: { en: "current skill data lists 10 SP and range 1.", fr: "Les données de compétence actuelles indiquent 10 SP et une portée de 1." }, verified: true
+      prerequisites: [], notes: { en: "Costs 10 SP and has a range of 1.", fr: "Coûte 10 SP et possède une portée de 1." }, verified: true
     },
     {
       id: "vending", name: "Vending", classId: "merchant", maxLevel: 10, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/41.webp",
       spCost: 30, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "While a cart is equipped, opens a temporary shop that sells items stored in the cart. The number of different items that can be listed increases with skill level.", fr: "Avec une charrette équipée, ouvre une boutique temporaire permettant de vendre les objets stockés dans la charrette. Le nombre d’objets différents pouvant être mis en vente augmente avec le niveau." },
-      prerequisites: [{ skillId: "pushcart", level: 3, verified: true }], notes: { en: "Merchant prerequisite on Global is Pushcart Lv.3. Vending lists 3 items at Lv.1 up to 12 at Lv.10.", fr: "Le prérequis Merchant sur Global est Pushcart Lv.3. Vending permet de proposer 3 objets au niveau 1 jusqu’à 12 au niveau 10." }, verified: true
+      prerequisites: [{ skillId: "pushcart", level: 3, verified: true }], notes: { en: "Requires Pushcart Lv.3. Vending lists 3 items at Lv.1 up to 12 at Lv.10.", fr: "Nécessite Pushcart Lv.3. Vending permet de proposer 3 objets au niveau 1 jusqu’à 12 au niveau 10." }, verified: true
     },
     {
       id: "mammonite", name: "Mammonite", classId: "merchant", maxLevel: 10, type: "Active", role: "damage", target: "Enemy", element: "Weapon", image: "https://game.ragnaplace.com/ro/rozg/skill/42.webp",
       spCost: 5, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
       description: { en: "Strikes one enemy with a powerful melee physical attack fueled by Zeny. Both damage and Zeny cost increase with skill level.", fr: "Frappe un ennemi avec une puissante attaque physique de mêlée alimentée par des Zeny. Les dégâts et le coût en Zeny augmentent avec le niveau." },
-      prerequisites: [], notes: { en: "Global lists ATK 150% / 100 Zeny at Lv.1 up to ATK 600% / 1,000 Zeny at Lv.10. The skill costs 5 SP.", fr: "Global indique ATK 150 % / 100 Zeny au niveau 1 jusqu’à ATK 600 % / 1 000 Zeny au niveau 10. La compétence coûte 5 SP." }, verified: true
+      prerequisites: [], notes: { en: "Deals ATK 150% for 100 Zeny at Lv.1 up to ATK 600% for 1,000 Zeny at Lv.10. Costs 5 SP.", fr: "Inflige ATK 150 % pour 100 Zeny au niveau 1 jusqu’à ATK 600 % pour 1 000 Zeny au niveau 10. Coûte 5 SP." }, verified: true
     },
     {
       id: "cart-revolution", name: "Cart Revolution", classId: "merchant", maxLevel: 1, type: "Free / Active", role: "damage", target: "Enemy / Area", element: "Weapon", image: "https://game.ragnaplace.com/ro/rozg/skill/153.webp",
@@ -2705,7 +2705,7 @@ window.RO_DATA = {
       id: "change-cart", name: "Change Cart", classId: "merchant", maxLevel: 1, type: "Free / Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/154.webp",
       spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Can be used while a cart is equipped. Changes the cart appearance, with more styles becoming available as Base Level increases.", fr: "Peut être utilisée avec une charrette équipée. Change l’apparence de la charrette, avec davantage de styles disponibles à mesure que le Base Level augmente." },
-      prerequisites: [], notes: { en: "Free Skill on Ragnarok; it does not consume a normal Merchant Job skill point. No current SP value is listed, so no value from another RO version is used.", fr: "Free Skill sur Ragnarok ; elle ne consomme pas de point de compétence Job normal du Merchant. Aucun coût SP actuel n’est indiqué, donc aucune valeur d’une autre version de RO n’est utilisée." }, verified: true
+      prerequisites: [], notes: { en: "Free Skill on Ragnarok; it does not consume a normal Merchant Job skill point.", fr: "Free Skill sur Ragnarok ; elle ne consomme pas de point de compétence Job normal du Merchant." }, verified: true
     },
     {
       id: "crazy-uproar", name: "Crazy Uproar", classId: "merchant", maxLevel: 1, type: "Free / Active", role: "supportive", target: "Self / Party", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/155.webp",
@@ -2718,7 +2718,7 @@ window.RO_DATA = {
       id: "cart-boost", name: "Cart Boost", classId: "merchant", maxLevel: 1, type: "Free / Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/387.webp",
       spCost: 20, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "While a cart is equipped, increases Movement Speed and allows the caster to ignore Decrease Agility and other Movement Speed-reducing effects.", fr: "Avec une charrette équipée, augmente la vitesse de déplacement et permet d’ignorer Decrease Agility ainsi que les autres effets réduisant la vitesse de déplacement." },
-      prerequisites: [{ skillId: "pushcart", level: 5, verified: true }], notes: { en: "Free Skill on the Merchant current skill tree. Merchant-specific current data lists Pushcart Lv.5 as its prerequisite; the skill costs 20 SP.", fr: "Free Skill de l’arbre Merchant actuel. Les données actuelles du Merchant indiquent Pushcart Lv.5 comme prérequis ; la compétence coûte 20 SP." }, verified: true
+      prerequisites: [{ skillId: "pushcart", level: 5, verified: true }], notes: { en: "Free Skill on the Merchant tree. Requires Pushcart Lv.5 and costs 20 SP.", fr: "Free Skill de l’arbre Merchant. Nécessite Pushcart Lv.5 et coûte 20 SP." }, verified: true
     },
 
     {
@@ -2755,7 +2755,7 @@ window.RO_DATA = {
       id: "detoxify", name: "Detoxify", classId: "thief", maxLevel: 1, type: "Active", role: "supportive", target: "Self / Ally", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/53.webp",
       spCost: 10, castTime: "None", castDelay: "ASPD-based", cooldown: "None",
       description: { en: "Cures the Poison status from a target.", fr: "Soigne le statut Poison d'une cible." },
-      prerequisites: [{ skillId: "envenom", level: 3, verified: true }], notes: { en: "Global lists Envenom Lv.3 as prerequisite and range 9.", fr: "Global indique Envenom Lv.3 comme prérequis et une portée de 9." }, verified: true
+      prerequisites: [{ skillId: "envenom", level: 3, verified: true }], notes: { en: "Requires Envenom Lv.3 and has a range of 9.", fr: "Nécessite Envenom Lv.3 et possède une portée de 9." }, verified: true
     },
     {
       id: "sand-attack", name: "Sand Attack", classId: "thief", maxLevel: 1, type: "Free / Active", role: "damage", target: "Enemy", element: "Earth", image: "https://game.ragnaplace.com/ro/rozg/skill/149.webp",
@@ -2779,7 +2779,7 @@ window.RO_DATA = {
       id: "find-stone", name: "Find Stone", classId: "thief", maxLevel: 1, type: "Free / Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/151.webp",
       spCost: 2, castTime: "0.5 s", castDelay: "None", cooldown: "None",
       description: { en: "Creates a Stone from the ground. On Ragnarok Global, it cannot be used when current carried weight exceeds 70%.", fr: "Ramasse une Stone au sol. Sur Ragnarok Global, la compétence ne peut pas être utilisée lorsque le poids transporté actuel dépasse 70 %." },
-      prerequisites: [], notes: { en: "Important version-specific value: the weight threshold is 70% on the Global planner.", fr: "Valeur importante propre à cette version : le seuil de poids est de 70 % sur le planner Global." }, verified: true
+      prerequisites: [], notes: { en: "The weight threshold is 70%.", fr: "Le seuil de poids est de 70 %." }, verified: true
     },
     {
       id: "ruwach", name: "Ruwach", classId: "acolyte", maxLevel: 1, type: "Active", role: "damage", target: "Self / Area", element: "Holy", image: "https://game.ragnaplace.com/ro/rozg/skill/24.webp",
@@ -2821,13 +2821,13 @@ window.RO_DATA = {
       id: "teleport", name: "Teleport", classId: "acolyte", maxLevel: 2, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/26.webp",
       spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
       description: { en: "Teleports the caster. Lv.1 sends the caster to a random location on the current map; Lv.2 allows returning to the saved point.", fr: "Téléporte le lanceur. Le Lv.1 l’envoie à un emplacement aléatoire de la map actuelle ; le Lv.2 permet de retourner au point de sauvegarde." },
-      prerequisites: [{ skillId: "ruwach", level: 1, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Ruwach Lv.1.", fr: "Prérequis actuel d’Acolyte : Ruwach Lv.1." }, verified: true
+      prerequisites: [{ skillId: "ruwach", level: 1, verified: true }], notes: { en: "Requires Ruwach Lv.1.", fr: "Nécessite Ruwach Lv.1." }, verified: true
     },
     {
       id: "cure", name: "Cure", classId: "acolyte", maxLevel: 1, type: "Active", role: "supportive", target: "Self / Ally", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/35.webp",
       spCost: 15, castTime: "None", castDelay: "0.3 s", cooldown: "0.5 s",
       description: { en: "Cures Silence, Confusion and Blind from the target.", fr: "Soigne Silence, Confusion et Blind sur la cible." },
-      prerequisites: [{ skillId: "heal", level: 2, verified: true }], notes: { en: "Acolyte-specific current prerequisite: Heal Lv.2.", fr: "Prérequis actuel d’Acolyte : Heal Lv.2." }, verified: true
+      prerequisites: [{ skillId: "heal", level: 2, verified: true }], notes: { en: "Requires Heal Lv.2.", fr: "Nécessite Heal Lv.2." }, verified: true
     },
     {
       id: "increase-agility", name: "Increase Agility", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Self / Ally", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/29.webp",
@@ -2955,7 +2955,7 @@ window.RO_DATA = {
       id: "mechanics", title: { en: "Game Mechanics", fr: "Mécaniques de jeu" }, icon: "mechanics",
       intro: { en: "Reference hub for stats, elements, size, races, refine, EXP and combat rules.", fr: "Hub de référence pour les stats, éléments, tailles, races, refine, EXP et règles de combat." },
       sections: [
-        { title: { en: "Stats", fr: "Stats" }, body: { en: "STR, AGI, VIT, INT, DEX and LUK formulas will be added only from verified sources for this version.", fr: "Les formules STR, AGI, VIT, INT, DEX et LUK seront ajoutées uniquement depuis des sources propres à cette version et vérifiées." } },
+        { title: { en: "Stats", fr: "Stats" }, body: { en: "STR, AGI, VIT, INT, DEX and LUK formulas will be added to this section.", fr: "Les formules STR, AGI, VIT, INT, DEX et LUK seront ajoutées à cette section." } },
         { title: { en: "Elements & races", fr: "Éléments & races" }, body: { en: "Future tables will centralize elemental modifiers, race interactions and size modifiers.", fr: "De futurs tableaux centraliseront les modificateurs élémentaires, interactions de race et modificateurs de taille." } }
       ]
     }
@@ -2982,7 +2982,7 @@ window.RO_DATA = {
       home: 'Main Page', monsters: 'Monsters', items: 'Items', cards: 'Cards', maps: 'Maps', classes: 'Classes', skills: 'Skills', quests: 'Quests', npcs: 'NPCs', leveling: 'Leveling', tools: 'Tools',
       nav: 'Navigation', database: 'Database', guides: 'Guides', gettingStarted: 'Getting Started', mechanics: 'Game Mechanics', questIndex: 'Quest Index',
       article: 'Article', discussion: 'Discussion', search: 'Search', searchPlaceholder: 'Search Ragnarok Wiki',
-      subtitle: 'English / Français', footer: 'Demo data are not verified game data.', sidebarNote: 'Community reference project for Ragnarok.',
+      subtitle: 'English / Français', footer: 'Demo data are incomplete and may not match live game values.', sidebarNote: 'Community reference project for Ragnarok.',
       fromWiki: 'From Ragnarok Wiki', welcome: 'Welcome to Ragnarok Wiki',
       welcomeText: 'A bilingual community reference for Ragnarok Online. Game entities keep their English names; the interface and explanatory text can switch between English and French.',
       prototype: 'Prototype data',
@@ -3010,7 +3010,7 @@ window.RO_DATA = {
       contents: 'Contents', overview: 'Overview',
       levelingTitle: 'Leveling Finder', levelingText: 'Compare monsters around your level once verified Ragnarok EXP and monster levels are loaded.', yourLevel: 'Your level', expMultiplier: 'EXP multiplier', suggested: 'Suggested monsters',
       buildTitle: 'Build Planner', buildText: 'Allocate STR, AGI, VIT, INT, DEX and LUK. Official stat-cost formulas are not guessed.', pointsUsed: 'Points used', reset: 'Reset',
-      noVerifiedLevels: 'No verified monster levels are loaded yet. Import real Ragnarok data and this tool will immediately become useful.',
+      noVerifiedLevels: 'No monster levels are loaded yet.',
       back: 'Back to Main Page', notFound: 'Page not found', notFoundText: 'The requested page does not exist in this prototype.',
       imagePlaceholder: 'Image placeholder', sourceStatus: 'Data status', pageType: 'Page type',
       listIntroMonster: 'Browse monster statistics, elements, races, drops and spawn locations.',
@@ -3026,7 +3026,7 @@ window.RO_DATA = {
       home: 'Accueil', monsters: 'Monstres', items: 'Objets', cards: 'Cartes', maps: 'Maps', classes: 'Classes', skills: 'Compétences', quests: 'Quêtes', npcs: 'NPCs', leveling: 'Leveling', tools: 'Outils',
       nav: 'Navigation', database: 'Base de données', guides: 'Guides', gettingStarted: 'Bien débuter', mechanics: 'Mécaniques de jeu', questIndex: 'Index des quêtes',
       article: 'Article', discussion: 'Discussion', search: 'Rechercher', searchPlaceholder: 'Rechercher dans Ragnarok Wiki',
-      subtitle: 'English / Français', footer: 'Les données de démo ne sont pas des données de jeu vérifiées.', sidebarNote: 'Projet de référence communautaire pour Ragnarok.',
+      subtitle: 'English / Français', footer: 'Les données de démo sont incomplètes et peuvent différer des valeurs en jeu.', sidebarNote: 'Projet de référence communautaire pour Ragnarok.',
       fromWiki: 'De Ragnarok Wiki', welcome: 'Bienvenue sur Ragnarok Wiki',
       welcomeText: "Une référence communautaire bilingue pour Ragnarok Online. Les noms des éléments du jeu restent en anglais ; l'interface et les explications peuvent passer entre anglais et français.",
       prototype: 'Données de prototype',
@@ -3054,7 +3054,7 @@ window.RO_DATA = {
       contents: 'Sommaire', overview: 'Présentation',
       levelingTitle: 'Leveling Finder', levelingText: 'Compare les monstres autour de ton niveau dès que les niveaux et EXP Ragnarok vérifiés sont chargés.', yourLevel: 'Ton niveau', expMultiplier: 'Multiplicateur EXP', suggested: 'Monstres suggérés',
       buildTitle: 'Build Planner', buildText: "Répartis STR, AGI, VIT, INT, DEX et LUK. Les formules officielles ne sont pas inventées.", pointsUsed: 'Points utilisés', reset: 'Réinitialiser',
-      noVerifiedLevels: "Aucun niveau de monstre vérifié n'est encore chargé. Importe les vraies données Ragnarok et cet outil deviendra immédiatement utile.",
+      noVerifiedLevels: "Aucun niveau de monstre n’est encore chargé.",
       back: "Retour à l'accueil", notFound: 'Page introuvable', notFoundText: "La page demandée n'existe pas dans ce prototype.",
       imagePlaceholder: "Emplacement d'image", sourceStatus: 'Statut des données', pageType: 'Type de page',
       listIntroMonster: 'Consulte les statistiques, éléments, races, drops et maps des monstres.',
@@ -5513,7 +5513,7 @@ window.RO_DATA = {
         <div class="article-body"><p class="article-lead">${esc(txt(item.description))}</p>${toc([{id:'effect',label:t('effect')},{id:'obtained',label:t('obtainedFrom')},{id:'notes',label:t('notes')}])}
           <h2 id="effect">${t('effect')}</h2><div class="notes-box">${esc(item.effect?txt(item.effect):t('unknown'))}</div>
           <h2 id="obtained">${t('obtainedFrom')}</h2><div class="table-wrap"><table><thead><tr><th>${t('monsters')}</th><th>${t('dropRate')}</th><th>${t('amount')}</th><th>${t('status')}</th></tr></thead><tbody>${sourceRows}</tbody></table></div>
-          <h2 id="notes">${t('notes')}</h2><p>${lang==='en'?'Additional item sources, crafting and NPC shops will appear here when verified data is imported.':'Les autres sources, crafts et boutiques NPC apparaîtront ici une fois les données vérifiées importées.'}</p>
+          <h2 id="notes">${t('notes')}</h2><p>${lang==='en'?'Additional item sources, crafting and NPC shops can also appear on item pages.':'Les fiches d’objets peuvent aussi indiquer d’autres sources, crafts et boutiques NPC.'}</p>
         </div>
       </article>`;
   }
@@ -5568,11 +5568,11 @@ window.RO_DATA = {
           <div class="table-wrap"><table><thead><tr><th>${t('level')}</th><th>${navLabel('Unlocked function','Fonction débloquée')}</th><th>SP</th><th>${navLabel('Range','Portée')}</th></tr></thead><tbody>
             ${rows.map(([lv,effect])=>`<tr><td>Lv. ${lv}</td><td>${esc(String(effect))}</td><td>0</td><td>1</td></tr>`).join('')}
           </tbody></table></div>
-          <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel('The current Ragnarok database records no named function for Basic Skill Lv.8, so it is left blank instead of importing a value from another RO version.','La base Ragnarok actuelle n’enregistre aucune fonction nommée pour Basic Skill Lv.8 ; ce niveau est donc laissé vide au lieu d’importer une valeur d’une autre version de RO.')}</div></div>
+          <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel('Basic Skill Lv.8 has no named function.','Basic Skill Lv.8 n’a aucune fonction nommée.')}</div></div>
           <h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
           <div class="notes-box">${navLabel('Basic Skill does not inflict damage, so it has no direct damage formula.','Basic Skill n’inflige pas de dégâts ; elle n’a donc pas de formule de dégâts directe.')}</div>
           <h2 id="notes">${t('notes')}</h2>
-          <div class="notes-box">${navLabel('Basic Skill reaches level 9. Job Change is recorded at Lv.9 in the current skill data.','Basic Skill atteint le niveau 9. Job Change est enregistré au Lv.9 dans les données de compétences actuelles.')}</div>
+          <div class="notes-box">${navLabel('Basic Skill reaches level 9. Job Change is unlocked at Lv.9.','Basic Skill atteint le niveau 9. Job Change est débloqué au Lv.9.')}</div>
           ${skillClassNav(sk)}
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><ul>
@@ -5941,18 +5941,18 @@ window.RO_DATA = {
       // Mage
       'cold-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok also adds INT-based damage scaling to this skill family; the exact coefficient is not documented here, so it is not invented.',
-        fr: 'Formule de base : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok ajoute aussi un scaling de dégâts basé sur l’INT à cette famille de compétences ; le coefficient exact n’est pas documenté ici, donc il n’est pas inventé.'
+        en: 'Base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok also adds INT-based damage scaling to this skill family; the exact coefficient is currently unknown.',
+        fr: 'Formule de base : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok ajoute aussi un scaling de dégâts basé sur l’INT à cette famille de compétences ; le coefficient exact est actuellement inconnu.'
       },
       'lightning-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok also adds INT-based scaling; its exact coefficient is not publicly verified here.',
-        fr: 'Formule de base : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok ajoute aussi un scaling basé sur l’INT ; son coefficient exact n’est pas publiquement vérifié ici.'
+        en: 'Base formula: each hit uses MATK 100%, for a base total of 100 × Skill Lv.% MATK. Ragnarok also adds INT-based scaling; its exact coefficient is currently unknown.',
+        fr: 'Formule de base : chaque coup utilise MATK 100 %, soit un total de base de 100 × niveau de compétence % MATK. Ragnarok ajoute aussi un scaling basé sur l’INT ; son coefficient exact est actuellement inconnu.'
       },
       'fire-bolt': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Base formula: each hit uses MATK 100%. Ragnarok explicitly adds extra damage based on the caster\'s INT; the exact coefficient is not documented here, so only the verified base component is shown.',
-        fr: 'Formule de base : chaque coup utilise MATK 100 %. Ragnarok ajoute explicitement des dégâts supplémentaires selon l’INT du lanceur ; le coefficient exact n’est pas documenté ici, donc seule la composante de base vérifiée est affichée.'
+        en: 'Base formula: each hit uses MATK 100%. Ragnarok explicitly adds extra damage based on the caster\'s INT; the exact coefficient is currently unknown.',
+        fr: 'Formule de base : chaque coup utilise MATK 100 %. Ragnarok ajoute explicitement des dégâts supplémentaires selon l’INT du lanceur ; le coefficient exact est actuellement inconnu.'
       },
       'napalm-beat': {
         formula: 'Damage (MATK) = [70 + (10 × Skill Lv.)]% ÷ Number of targets hit',
@@ -5961,8 +5961,8 @@ window.RO_DATA = {
       },
       'earth-spike': {
         formula: 'Base Damage = MATK 200% × Skill Lv. hits',
-        en: 'Base formula: each spike deals MATK 200%, with the number of hits equal to Skill Lv. Ragnarok also adds INT-based scaling; the exact coefficient is not documented here.',
-        fr: 'Formule de base : chaque pic inflige MATK 200 %, avec un nombre de coups égal au niveau de compétence. Ragnarok ajoute aussi un scaling basé sur l’INT ; le coefficient exact n’est pas documenté ici.'
+        en: 'Base formula: each spike deals MATK 200%, with the number of hits equal to Skill Lv. Ragnarok also adds INT-based scaling; the exact coefficient is currently unknown.',
+        fr: 'Formule de base : chaque pic inflige MATK 200 %, avec un nombre de coups égal au niveau de compétence. Ragnarok ajoute aussi un scaling basé sur l’INT ; le coefficient exact est actuellement inconnu.'
       },
       'frost-diver': {
         formula: 'Damage (MATK) = [100 + (10 × Skill Lv.)]%',
@@ -5971,8 +5971,8 @@ window.RO_DATA = {
       },
       'thunder-storm': {
         formula: 'Base Damage = MATK 100% × Skill Lv. hits',
-        en: 'Base formula: each hit deals MATK 100% in the 5×5 area, with hit count equal to Skill Lv. Ragnarok also adds INT-based scaling; the exact coefficient is not documented here.',
-        fr: 'Formule de base : chaque coup inflige MATK 100 % dans la zone 5×5, avec un nombre de coups égal au niveau de compétence. Ragnarok ajoute aussi un scaling basé sur l’INT ; le coefficient exact n’est pas documenté ici.'
+        en: 'Base formula: each hit deals MATK 100% in the 5×5 area, with hit count equal to Skill Lv. Ragnarok also adds INT-based scaling; the exact coefficient is currently unknown.',
+        fr: 'Formule de base : chaque coup inflige MATK 100 % dans la zone 5×5, avec un nombre de coups égal au niveau de compétence. Ragnarok ajoute aussi un scaling basé sur l’INT ; le coefficient exact est actuellement inconnu.'
       },
       'soul-strike': {
         formula: 'Base Damage = MATK 100% × ceil(Skill Lv. ÷ 2) hits',
@@ -6029,8 +6029,8 @@ window.RO_DATA = {
       },
       'demon-bane': {
         formula: 'Damage Bonus = 3 × Skill Lv.',
-        en: 'Applies against Demon-race and Undead-property enemies. Ragnarok also states that attack power increases with character level; the exact public coefficient is not verified here.',
-        fr: 'S’applique contre les ennemis de race Demon et de propriété Undead. La base actuelle indique aussi que la puissance augmente avec le niveau du personnage ; le coefficient public exact n’est pas vérifié ici.'
+        en: 'Applies against Demon-race and Undead-property enemies. Ragnarok also states that attack power increases with character level; the exact coefficient is currently unknown.',
+        fr: 'S’applique contre les ennemis de race Demon et de propriété Undead. La base actuelle indique aussi que la puissance augmente avec le niveau du personnage ; le coefficient exact est actuellement inconnu.'
       },
       'holy-light': {
         formula: 'Damage (MATK) = 125%',
@@ -6084,8 +6084,8 @@ window.RO_DATA = {
     if (formulas[sk.id]) return { type:'formula', ...formulas[sk.id] };
     if (!sk.verified) return {
       type:'unverified',
-      en:'The current damage formula for this skill is not documented yet. No formula from another RO version is imported.',
-      fr:'La formule de dégâts actuelle de cette compétence n’est pas encore documentée. Aucune formule d’une autre version de RO n’est importée.'
+      en:'Damage formula unavailable.',
+      fr:'Formule de dégâts indisponible.'
     };
     return {
       type:'none',
@@ -6265,8 +6265,8 @@ window.RO_DATA = {
           <div class="table-wrap"><table class="novice-skill-table">
             <thead><tr><th style="width:180px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th><th style="width:150px">${navLabel('Base Level Requirement','Niveau de base requis')}</th><th style="width:150px">${navLabel('Quest','Quête')}</th></tr></thead>
             <tbody>
-              <tr><td>${skillNameCell(aid)}</td><td>${navLabel('Consume 3 SP to restore 5 HP.','Consomme 3 SP pour restaurer 5 HP.')}</td><td style="text-align:center">1</td><td style="background:#d8fbfb">Supportive</td><td><span class="badge unverified">${navLabel('Needs verification','À vérifier')}</span></td><td><span class="badge unverified">${navLabel('Pending quest data','Données de quête à vérifier')}</span></td></tr>
-              <tr><td>${skillNameCell(dead)}</td><td>${navLabel('Pretend to fall dead on the ground, becoming immune from all attacks from Players and monsters.','Fait semblant de tomber mort au sol, rendant le personnage immunisé aux attaques des joueurs et des monstres.')}</td><td style="text-align:center">1</td><td style="background:#d8fbfb">Supportive</td><td><span class="badge unverified">${navLabel('Needs verification','À vérifier')}</span></td><td><span class="badge unverified">${navLabel('Pending quest data','Données de quête à vérifier')}</span></td></tr>
+              <tr><td>${skillNameCell(aid)}</td><td>${navLabel('Consume 3 SP to restore 5 HP.','Consomme 3 SP pour restaurer 5 HP.')}</td><td style="text-align:center">1</td><td style="background:#d8fbfb">Supportive</td><td><span class="badge unverified">${navLabel('Incomplete','Incomplet')}</span></td><td><span class="badge unverified">${navLabel('Quest data unavailable','Données de quête indisponibles')}</span></td></tr>
+              <tr><td>${skillNameCell(dead)}</td><td>${navLabel('Pretend to fall dead on the ground, becoming immune from all attacks from Players and monsters.','Fait semblant de tomber mort au sol, rendant le personnage immunisé aux attaques des joueurs et des monstres.')}</td><td style="text-align:center">1</td><td style="background:#d8fbfb">Supportive</td><td><span class="badge unverified">${navLabel('Incomplete','Incomplet')}</span></td><td><span class="badge unverified">${navLabel('Quest data unavailable','Données de quête indisponibles')}</span></td></tr>
             </tbody>
           </table></div>
 
@@ -6314,7 +6314,7 @@ window.RO_DATA = {
       <td>${esc(txt(sk.description))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
-      <td><span class="badge unverified">${navLabel('Quest details pending','Détails de quête à vérifier')}</span></td>
+      <td><span class="badge unverified">${navLabel('Quest details unavailable','Détails de quête indisponibles')}</span></td>
     </tr>`).join('');
 
     return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:'Swordman'}])}
@@ -6335,7 +6335,7 @@ window.RO_DATA = {
 
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('The Swordman skill list, max levels, current effects and skill icons on this page match the current Global server. Spear Mastery is a 1st-class Swordsman skill in this version, unlike iRO Classic.','La liste des compétences Swordman, leurs niveaux max, leurs effets et leurs icônes correspondent au serveur Global actuel. Spear Mastery est bien une compétence de première classe Swordsman sur le serveur actuel, contrairement à iRO Classic.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Spear Mastery is a 1st-class Swordsman skill in this version.','Spear Mastery est une compétence de première classe Swordsman dans cette version.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Swordman develops into Knight or Crusader. These second classes are kept in the wiki as upcoming Global content.','Swordman évolue vers Knight ou Crusader. Ces secondes classes sont conservées dans le wiki comme contenu Global à venir.')}</p>
@@ -6406,7 +6406,7 @@ window.RO_DATA = {
         </aside>
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Mage uses the current skill tree: 15 skills total, including Energy Coat as a quest skill. Level values, SP costs, range, cast times and cooldowns are for the current Global version.','Mage utilise l’arbre de compétences actuel : 15 compétences au total, dont Energy Coat en compétence de quête. Les valeurs par niveau, coûts SP, portées, temps de cast et cooldowns proviennent de sources propres à cette version.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Mage has 15 skills, including Energy Coat as a quest skill.','Mage possède 15 compétences, dont Energy Coat en compétence de quête.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Mage advances to Wizard or Sage from Job Level 40. Both are kept in the wiki as upcoming Global second classes.','Mage évolue vers Wizard ou Sage à partir du Job Level 40. Les deux sont conservées dans le wiki comme secondes classes Global à venir.')}</p>
@@ -6479,7 +6479,7 @@ window.RO_DATA = {
         </aside>
         <div class="article-body">
           <p class="article-lead">${esc(txt(c.description))}</p>
-          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Archer uses the current skill tree: 7 skills total, including Arrow Crafting and Arrow Repel as quest skills. Skill effects, SP costs, ranges, cast information and prerequisites below come from sources for this version.','Archer utilise l’arbre de compétences actuel : 7 compétences au total, dont Arrow Crafting et Arrow Repel comme compétences de quête. Les effets, coûts SP, portées, informations de cast et prérequis ci-dessous proviennent de sources propres à cette version.')}</div></div>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Archer has 7 skills, including Arrow Crafting and Arrow Repel as quest skills.','Archer possède 7 compétences, dont Arrow Crafting et Arrow Repel comme compétences de quête.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
           <p>${navLabel('Archer has a maximum Job Level of 50 and 49 normal skill points. It advances to Hunter, Bard or Dancer from Job Level 40.','Archer possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Hunter, Bard ou Dancer à partir du Job Level 40.')}</p>
@@ -6740,7 +6740,7 @@ window.RO_DATA = {
     const skills = DATA.skills.filter(sk=>sk.classId===c.id);
     const skillLinks = skills.length
       ? skills.map(sk=>`<a href="#/skills/${sk.id}">${esc(sk.name)}</a>`).join(' • ')
-      : navLabel('No verified skills added yet','Aucune compétence vérifiée ajoutée pour le moment');
+      : navLabel('No skills added yet','Aucune compétence ajoutée pour le moment');
 
     const weaponsByClass = {
       novice: ['Dagger','One Handed Sword'],
@@ -6782,7 +6782,7 @@ window.RO_DATA = {
         <thead><tr><th colspan="2" style="text-align:center"><em>${esc(c.name)}</em></th></tr></thead>
         <tbody>
           <tr><th style="width:170px">${navLabel('Skills','Compétences')}</th><td>${skillLinks}</td></tr>
-          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — Formula unavailable','Détails des quêtes de compétences Novice — vérification the current server en attente') : navLabel('No verified class quest page added yet','Aucune page de quête de classe vérifiée pour le moment')}</td></tr>
+          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — Formula unavailable','Détails des quêtes de compétences Novice — vérification the current server en attente') : navLabel('No class quest page added yet','Aucune page de quête de classe pour le moment')}</td></tr>
           <tr><th>${navLabel('Weapons','Armes')}</th><td>${esc(weapons)}</td></tr>
         </tbody>
       </table></div>
