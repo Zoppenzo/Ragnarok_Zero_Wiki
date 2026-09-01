@@ -3843,12 +3843,14 @@ window.RO_DATA = {
         </aside>
         <div class="article-body">
           <p class="article-lead">${navLabel('Enables the use of Basic Interface Skills.','Permet l’utilisation des fonctions d’interface de base.')}</p>
-          ${toc([{id:'levels',label:navLabel('Levels','Niveaux')},{id:'notes',label:t('notes')},{id:'sources',label:navLabel('Sources','Sources')}])}
+          ${toc([{id:'levels',label:navLabel('Levels','Niveaux')},{id:'formula',label:navLabel('Damage formula','Formule des dégâts')},{id:'notes',label:t('notes')},{id:'sources',label:navLabel('Sources','Sources')}])}
           <h2 id="levels">${navLabel('Levels','Niveaux')}</h2>
           <div class="table-wrap"><table><thead><tr><th>${t('level')}</th><th>${navLabel('Unlocked function','Fonction débloquée')}</th><th>SP</th><th>${navLabel('Range','Portée')}</th></tr></thead><tbody>
             ${rows.map(([lv,effect])=>`<tr><td>Lv. ${lv}</td><td>${esc(String(effect))}</td><td>0</td><td>1</td></tr>`).join('')}
           </tbody></table></div>
           <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel('The current Ragnarok Zero database records no named function for Basic Skill Lv.8, so it is left blank instead of importing a value from another RO version.','La base Ragnarok Zero actuelle n’enregistre aucune fonction nommée pour Basic Skill Lv.8 ; ce niveau est donc laissé vide au lieu d’importer une valeur d’une autre version de RO.')}</div></div>
+          <h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
+          <div class="notes-box">${navLabel('Basic Skill does not inflict damage, so it has no direct damage formula.','Basic Skill n’inflige pas de dégâts ; elle n’a donc pas de formule de dégâts directe.')}</div>
           <h2 id="notes">${t('notes')}</h2>
           <div class="notes-box">${navLabel('Basic Skill reaches level 9. Job Change is recorded at Lv.9 in the Zero skill data.','Basic Skill atteint le niveau 9. Job Change est enregistré au Lv.9 dans les données de compétences Zero.')}</div>
           ${skillClassNav(sk)}
@@ -4106,6 +4108,158 @@ window.RO_DATA = {
     return (lang==='fr' ? fr[sk.id] : en[sk.id]) || txt(sk.description);
   }
 
+  function skillDamageFormulaData(sk) {
+    const formulas = {
+      // Swordman
+      'sword-mastery': {
+        formula: 'Bonus Damage = 4 × Skill Lv.',
+        en: 'Adds flat physical damage while using a One-Handed Sword.',
+        fr: 'Ajoute des dégâts physiques fixes avec une épée à une main.'
+      },
+      'spear-mastery': {
+        formula: 'Bonus Damage = 4 × Skill Lv.  |  Mounted = 5 × Skill Lv.',
+        en: 'Flat physical-damage bonus with Spears; the mounted value is higher.',
+        fr: 'Bonus fixe de dégâts physiques avec les lances ; la valeur montée est plus élevée.'
+      },
+      'two-handed-sword-mastery': {
+        formula: 'Bonus Damage = 4 × Skill Lv.',
+        en: 'Adds flat physical damage while using a Two-Handed Sword.',
+        fr: 'Ajoute des dégâts physiques fixes avec une épée à deux mains.'
+      },
+      'bash': {
+        formula: 'Damage (ATK) = [100 + (30 × Skill Lv.)]%',
+        en: 'Lv.1 = 130% ATK · Lv.10 = 400% ATK.',
+        fr: 'Lv.1 = 130 % ATK · Lv.10 = 400 % ATK.'
+      },
+      'magnum-break': {
+        formula: 'Damage (ATK) = [100 + (20 × Skill Lv.)]%',
+        en: 'Lv.1 = 120% ATK · Lv.10 = 300% ATK. This is the initial Fire-property hit; the 10-second Fire weapon-damage effect is separate.',
+        fr: 'Lv.1 = 120 % ATK · Lv.10 = 300 % ATK. Il s’agit du coup Fire initial ; l’effet de dégâts d’arme Fire pendant 10 secondes est séparé.'
+      },
+
+      // Mage
+      'cold-bolt': {
+        formula: 'Base Damage = MATK 100% × Skill Lv. hits',
+        en: 'Each hit uses MATK 100%. Total base multiplier is therefore 100 × Skill Lv.% MATK before defenses, element and other modifiers. Zero balance data also documents INT-based scaling for the Bolt family, but the exact public coefficient is not exposed here and is not guessed.',
+        fr: 'Chaque coup utilise MATK 100 %. Le multiplicateur total de base est donc 100 × niveau de compétence % MATK avant défenses, élément et autres modificateurs. Les données d’équilibrage Zero indiquent aussi un scaling basé sur l’INT pour la famille des Bolt, mais le coefficient public exact n’est pas exposé ici et n’est pas inventé.'
+      },
+      'lightning-bolt': {
+        formula: 'Base Damage = MATK 100% × Skill Lv. hits',
+        en: 'Each hit uses MATK 100%. Total base multiplier is 100 × Skill Lv.% MATK. INT-based Zero scaling is documented, but its exact public coefficient is not guessed.',
+        fr: 'Chaque coup utilise MATK 100 %. Le multiplicateur total de base est 100 × niveau de compétence % MATK. Un scaling INT propre à Zero est documenté, mais son coefficient public exact n’est pas inventé.'
+      },
+      'fire-bolt': {
+        formula: 'Base Damage = MATK 100% × Skill Lv. hits',
+        en: 'Each hit uses MATK 100%. Zero explicitly adds extra damage based on the caster\'s INT; the exact public coefficient is not available in the verified Global source used here, so only the verified base formula is shown.',
+        fr: 'Chaque coup utilise MATK 100 %. Zero ajoute explicitement des dégâts supplémentaires selon l’INT du lanceur ; le coefficient public exact n’est pas disponible dans la source Global vérifiée utilisée ici, donc seule la formule de base vérifiée est affichée.'
+      },
+      'napalm-beat': {
+        formula: 'Damage (MATK) = [70 + (10 × Skill Lv.)]% ÷ Number of targets hit',
+        en: 'Lv.1 = 80% MATK and Lv.10 = 170% MATK. When several enemies are hit in the 3×3 area, the damage is distributed between them.',
+        fr: 'Lv.1 = 80 % MATK et Lv.10 = 170 % MATK. Lorsque plusieurs ennemis sont touchés dans la zone 3×3, les dégâts sont répartis entre eux.'
+      },
+      'earth-spike': {
+        formula: 'Base Damage = MATK 200% × Skill Lv. hits',
+        en: 'Each spike deals MATK 200%, with one additional hit per skill level. Zero also increases the damage based on INT; the exact public coefficient is not guessed.',
+        fr: 'Chaque pic inflige MATK 200 %, avec un coup supplémentaire par niveau de compétence. Zero augmente aussi les dégâts selon l’INT ; le coefficient public exact n’est pas inventé.'
+      },
+      'frost-diver': {
+        formula: 'Damage (MATK) = [100 + (10 × Skill Lv.)]%',
+        en: 'Lv.1 = 110% MATK · Lv.10 = 200% MATK. The Frozen chance is a separate effect.',
+        fr: 'Lv.1 = 110 % MATK · Lv.10 = 200 % MATK. La chance de Frozen est un effet séparé.'
+      },
+      'thunder-storm': {
+        formula: 'Base Damage = MATK 100% × Skill Lv. hits',
+        en: 'Each hit deals MATK 100% in the 5×5 area. Zero balance data also documents INT-based scaling; its exact public coefficient is not guessed.',
+        fr: 'Chaque coup inflige MATK 100 % dans la zone 5×5. Les données d’équilibrage Zero documentent aussi un scaling INT ; son coefficient public exact n’est pas inventé.'
+      },
+      'soul-strike': {
+        formula: 'Base Damage = MATK 100% × ceil(Skill Lv. ÷ 2) hits',
+        formula2: 'Vs Undead: Base Damage × [1 + (0.05 × Skill Lv.)]',
+        en: 'The hit count rises every two levels. The Undead-property bonus is +5% per skill level, reaching +50% at Lv.10.',
+        fr: 'Le nombre de coups augmente tous les deux niveaux. Le bonus contre les cibles Undead est de +5 % par niveau, jusqu’à +50 % au Lv.10.'
+      },
+      'fire-ball': {
+        formula: 'Center Damage (MATK) = [140 + (20 × Skill Lv.)]%',
+        formula2: 'Outer Damage (MATK) = [105 + (15 × Skill Lv.)]%',
+        en: 'At Lv.10 the center is MATK 340% and the outer area is MATK 255%.',
+        fr: 'Au Lv.10, la cible centrale reçoit MATK 340 % et la zone extérieure MATK 255 %.'
+      },
+      'fire-wall': {
+        formula: 'Damage per hit = MATK 50%',
+        formula2: 'Maximum per wall if every hit connects = MATK [50 × (Skill Lv. + 2)]%',
+        en: 'A wall has Skill Lv. + 2 available hits. Actual damage depends on how many wall hits the enemy triggers.',
+        fr: 'Un mur possède niveau de compétence + 2 coups disponibles. Les dégâts réels dépendent du nombre de coups du mur déclenchés par l’ennemi.'
+      },
+
+      // Archer
+      'double-strafe': {
+        formula: 'Damage (ATK) = 2 × [90 + (10 × Skill Lv.)]%',
+        en: 'Two hits are dealt: 100% ATK each at Lv.1, up to 190% ATK each at Lv.10.',
+        fr: 'Deux coups sont infligés : 100 % ATK chacun au Lv.1, jusqu’à 190 % ATK chacun au Lv.10.'
+      },
+      'arrow-shower': {
+        formula: 'Damage (ATK) = [150 + (10 × Skill Lv.)]%',
+        en: 'Lv.1 = 160% ATK · Lv.10 = 250% ATK to enemies in the 3×3 area.',
+        fr: 'Lv.1 = 160 % ATK · Lv.10 = 250 % ATK aux ennemis dans la zone 3×3.'
+      },
+      'arrow-repel': {
+        formula: 'Damage (ATK) = 150%',
+        en: 'Fixed damage multiplier at Lv.1; the target is also knocked back 4 cells.',
+        fr: 'Multiplicateur fixe au Lv.1 ; la cible est également repoussée de 4 cases.'
+      },
+
+      // Merchant
+      'axe-mastery': {
+        formula: 'Bonus Damage = 3 × Skill Lv.',
+        en: 'Adds flat physical damage while using an Axe or One-Handed Sword.',
+        fr: 'Ajoute des dégâts physiques fixes avec une hache ou une épée à une main.'
+      },
+      'mammonite': {
+        formula: 'Damage (ATK) = [100 + (50 × Skill Lv.)]%',
+        formula2: 'Zeny Cost = 100 × Skill Lv.',
+        en: 'Lv.1 = 150% ATK / 100 Zeny · Lv.10 = 600% ATK / 1,000 Zeny.',
+        fr: 'Lv.1 = 150 % ATK / 100 Zeny · Lv.10 = 600 % ATK / 1 000 Zeny.'
+      },
+      'cart-revolution': {
+        formula: 'Damage (ATK) = [150 + (100 × Current Cart Weight ÷ Max Cart Weight)]%',
+        en: 'The multiplier ranges from 150% with an empty cart to 250% at maximum cart weight. The skill ignores the accuracy check and knocks affected enemies back 2 cells.',
+        fr: 'Le multiplicateur va de 150 % avec une charrette vide à 250 % au poids maximum. La compétence ignore le check de précision et repousse les ennemis touchés de 2 cases.'
+      }
+    };
+
+    if (formulas[sk.id]) return { type:'formula', ...formulas[sk.id] };
+    if (!sk.verified) return {
+      type:'unverified',
+      en:'The Ragnarok Zero damage formula for this skill has not been verified yet. No formula from another RO version is imported.',
+      fr:'La formule de dégâts Ragnarok Zero de cette compétence n’est pas encore vérifiée. Aucune formule d’une autre version de RO n’est importée.'
+    };
+    return {
+      type:'none',
+      en:'This skill does not directly inflict damage, so it has no direct damage formula.',
+      fr:'Cette compétence n’inflige pas directement de dégâts ; elle n’a donc pas de formule de dégâts directe.'
+    };
+  }
+
+  function skillDamageFormulaBlock(sk) {
+    const data = skillDamageFormulaData(sk);
+    if (data.type === 'unverified') {
+      return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
+        <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero verification pending','Vérification Zero en attente')}</strong><br>${navLabel(data.en,data.fr)}</div></div>`;
+    }
+    if (data.type === 'none') {
+      return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
+        <div class="notes-box">${navLabel(data.en,data.fr)}</div>`;
+    }
+    return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
+      <div class="notes-box">
+        <p><code>${esc(data.formula)}</code></p>
+        ${data.formula2 ? `<p><code>${esc(data.formula2)}</code></p>` : ''}
+        <p>${navLabel(data.en,data.fr)}</p>
+        ${sk.id==='cart-revolution' ? `<p><strong>${navLabel('Example with a full 8000 / 8000 cart:','Exemple avec une charrette pleine à 8000 / 8000 :')}</strong><br><code>ATK = [150 + (100 × 8000 ÷ 8000)]% = 250%</code></p>` : ''}
+      </div>`;
+  }
+
   function detailedSkillLevelTable(sk) {
     const rows = wikiSkillLevelData(sk.id);
     if (!rows) return '';
@@ -4184,7 +4338,7 @@ window.RO_DATA = {
           <p class="article-lead">${esc(sk.classId==='swordman' && hasDetailedLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}</p>
           ${toc([
             ...(hasDetailedLevels ? [{id:'levels',label:navLabel('Level-by-level effects','Effets par niveau')}] : []),
-            ...(sk.id==='cart-revolution' ? [{id:'formula',label:navLabel('Damage formula','Formule des dégâts')}] : []),
+            {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},
             {id:'prereq',label:t('prerequisites')},
             {id:'notes',label:t('notes')},
             ...(hasDetailedLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
@@ -4192,22 +4346,7 @@ window.RO_DATA = {
 
           ${hasDetailedLevels ? detailedSkillLevelTable(sk) : ''}
 
-          ${sk.id==='cart-revolution' ? `
-            <h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
-            <div class="notes-box">
-              <p>${navLabel(
-                'Cart Revolution ignores the accuracy check and therefore does not miss because of HIT/FLEE. Its damage scales with the current weight of the Pushcart:',
-                'Cart Revolution ignore le check de précision et ne miss donc pas à cause du HIT/FLEE. Ses dégâts augmentent selon le poids actuel du Pushcart :'
-              )}</p>
-              <p><code>Damage (ATK) = [150 + (100 × Current Cart Weight ÷ Max Cart Weight)]%</code></p>
-              <p><strong>${navLabel('Example with a full 8000 / 8000 cart:','Exemple avec une charrette pleine à 8000 / 8000 :')}</strong><br>
-              <code>ATK = [150 + (100 × 8000 ÷ 8000)]% = 250%</code></p>
-              <p>${navLabel(
-                'At an empty cart the base multiplier is 150% ATK; at maximum cart weight it reaches 250% ATK.',
-                'Avec une charrette vide, le multiplicateur de base est de 150 % ATK ; avec une charrette au poids maximum, il atteint 250 % ATK.'
-              )}</p>
-            </div>
-          ` : ''}
+          ${skillDamageFormulaBlock(sk)}
 
           <h2 id="prereq">${t('prerequisites')}</h2>
           <div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${navLabel('Catalyst','Catalyseur')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div>
