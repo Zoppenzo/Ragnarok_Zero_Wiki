@@ -3306,6 +3306,11 @@ window.RO_DATA = {
       overview:'complete', 'party-controls':'complete', 'setup-options':'complete',
       'experience-setup':'complete', 'adventurer-agency':'complete'
     },
+    '#/wiki/guild-system': {
+      overview:'complete', creation:'complete', membership:'complete',
+      leadership:'complete', emblem:'complete', 'guild-leveling':'complete',
+      'daily-quests':'complete', 'guild-exp-table':'complete'
+    },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
       materials:'complete', drops:'complete'
@@ -5904,6 +5909,138 @@ window.RO_DATA = {
       </div>`;
   }
 
+
+  function guildSystemPage(topic) {
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+    const guildExpRows = [
+      [1,400000,0],[2,900000,400000],[3,1600000,1300000],[4,2500000,2900000],[5,3600000,5400000],
+      [6,4900000,9000000],[7,6400000,13900000],[8,8100000,20300000],[9,10000000,28400000],[10,12100000,38400000],
+      [11,14400000,50500000],[12,16900000,64900000],[13,19600000,81800000],[14,22500000,101400000],[15,25600000,123900000],
+      [16,28900000,149500000],[17,32400000,178400000],[18,36100000,210800000],[19,40000000,246900000],[20,44100000,286900000],
+      [21,48400000,331000000],[22,52900000,379400000],[23,57600000,432300000],[24,62500000,489900000],[25,67600000,552400000],
+      [26,72900000,620000000],[27,78400000,692900000],[28,84100000,771300000],[29,90000000,855400000],[30,96100000,945400000],
+      [31,102400000,1041500000],[32,108900000,1143900000],[33,115600000,1252800000],[34,122500000,1368400000],[35,129600000,1490900000],
+      [36,136900000,1620500000],[37,144400000,1757400000],[38,152100000,1901800000],[39,160000000,2053900000],[40,168100000,2213900000],
+      [41,176400000,2382000000],[42,184900000,2558400000],[43,193600000,2743300000],[44,202500000,2936900000],[45,211600000,3139400000],
+      [46,220900000,3351000000],[47,230400000,3571900000],[48,240100000,3802300000],[49,250000000,4042400000],[50,0,4292400000]
+    ];
+    const fmtGuildExp = n => Number(n).toLocaleString(lang==='fr' ? 'fr-FR' : 'en-US');
+    const guildExpTable = rows => `
+      <div class="table-wrap"><table>
+        <thead><tr>
+          <th>${navLabel('Guild Level','Niveau de guilde')}</th>
+          <th>${navLabel('EXP to next level','EXP jusqu’au niveau suivant')}</th>
+          <th>${navLabel('Total EXP','EXP totale')}</th>
+        </tr></thead>
+        <tbody>${rows.map(([level,next,total]) => `<tr><th>${level}</th><td>${level===50?'—':fmtGuildExp(next)}</td><td>${fmtGuildExp(total)}</td></tr>`).join('')}</tbody>
+      </table></div>`;
+
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('class')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+      <p class="article-lead">${navLabel(
+        'A Guild is a persistent community of players used to organize members, group activities and shared progression. Guilds can contain up to 76 characters and level through Guild Quests completed by their members.',
+        'Une guilde est une communauté persistante de joueurs permettant d’organiser ses membres, les activités de groupe et une progression commune. Une guilde peut contenir jusqu’à 76 personnages et progresse grâce aux Guild Quests accomplies par ses membres.'
+      )}</p>
+
+      ${toc([
+        {id:'overview',label:navLabel('Overview','Aperçu')},
+        {id:'creation',label:navLabel('Creating a Guild','Créer une guilde')},
+        {id:'membership',label:navLabel('Members and Clans','Membres et Clans')},
+        {id:'leadership',label:navLabel('Guild Leader','Chef de guilde')},
+        {id:'emblem',label:navLabel('Guild Emblem','Emblème de guilde')},
+        {id:'guild-leveling',label:navLabel('Guild Leveling','Progression de la guilde')},
+        {id:'daily-quests',label:navLabel('Daily Guild Quests','Quêtes quotidiennes de guilde')},
+        {id:'guild-exp-table',label:navLabel('Guild EXP Table','Table d’EXP de guilde')}
+      ])}
+
+      <h2 id="overview">${navLabel('Overview','Aperçu')}</h2>
+      <p>${navLabel(
+        'Guilds provide a permanent structure for players who regularly play together. They are especially useful for organizing Memorial Dungeons, leveling parties, MVP Raids and PvP activities.',
+        'Les guildes offrent une structure permanente aux joueurs qui jouent régulièrement ensemble. Elles sont particulièrement utiles pour organiser les Mémorial Donjons, les groupes de leveling, les MVP Raids et les activités PvP.'
+      )}</p>
+
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('class')}${navLabel('76 members','76 membres')}</strong><p>${navLabel(
+          'A Guild can contain the leader plus 75 other members.',
+          'Une guilde peut contenir le chef ainsi que 75 autres membres.'
+        )}</p></div>
+        <div><strong>${miniIcon('tools')}${navLabel('Leader transfer','Transfert du chef')}</strong><p>${navLabel(
+          'The Guild Leader can be changed once every 24 hours.',
+          'Le chef de guilde peut être changé une fois toutes les 24 heures.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}${navLabel('Animated emblem','Emblème animé')}</strong><p>${navLabel(
+          'Guild emblems can be animated.',
+          'Les emblèmes de guilde peuvent être animés.'
+        )}</p></div>
+        <div><strong>${miniIcon('level')}${navLabel('Level 50','Niveau 50')}</strong><p>${navLabel(
+          'The Guild EXP table currently covers progression through Guild Level 50.',
+          'La table d’EXP de guilde couvre la progression jusqu’au niveau de guilde 50.'
+        )}</p></div>
+      </div>
+
+      <h2 id="creation">${navLabel('Creating a Guild','Créer une guilde')}</h2>
+      <p>${navLabel(
+        'Guild creation uses an Emperium. Once the Guild has been created, the Guild Leader can recruit members and manage the Guild through the Guild interface.',
+        'La création d’une guilde utilise un Emperium. Une fois la guilde créée, le chef peut recruter des membres et gérer la guilde depuis l’interface de guilde.'
+      )}</p>
+
+      <h2 id="membership">${navLabel('Members and Clans','Membres et Clans')}</h2>
+      <p>${navLabel(
+        'A character cannot belong to a Clan and a Guild at the same time. If the character is already registered in a Clan, they must first leave that Clan through the Clan Master they originally joined before they can join a Guild.',
+        'Un personnage ne peut pas appartenir à un Clan et à une guilde en même temps. S’il est déjà inscrit dans un Clan, il doit d’abord quitter ce Clan auprès du Clan Master avec lequel il s’était inscrit avant de pouvoir rejoindre une guilde.'
+      )}</p>
+      <div class="wiki-callout"><strong>${navLabel('Clan Masters','Clan Masters')}</strong><br>
+        ${navLabel('The Clan area can be reached with ','La zone des Clans est accessible avec ')}<code>/navi prt_in 37/112</code>.
+      </div>
+
+      <h2 id="leadership">${navLabel('Guild Leader','Chef de guilde')}</h2>
+      <p>${navLabel(
+        'The Guild Leader manages the Guild and can transfer leadership to another member. A Guild Leader change can only be performed once every 24 hours.',
+        'Le chef de guilde gère la guilde et peut transférer son rôle à un autre membre. Un changement de chef ne peut être effectué qu’une fois toutes les 24 heures.'
+      )}</p>
+
+      <h2 id="emblem">${navLabel('Guild Emblem','Emblème de guilde')}</h2>
+      <p>${navLabel(
+        'A Guild can use a custom emblem displayed as its visual identity. Animated Guild emblems are supported.',
+        'Une guilde peut utiliser un emblème personnalisé comme identité visuelle. Les emblèmes de guilde animés sont pris en charge.'
+      )}</p>
+
+      <h2 id="guild-leveling">${navLabel('Guild Leveling','Progression de la guilde')}</h2>
+      <p>${navLabel(
+        'Guild EXP is earned through Guild Quests completed by members. The old system that took a percentage of members’ Base EXP as a Guild tax is removed.',
+        'L’EXP de guilde s’obtient grâce aux Guild Quests accomplies par les membres. L’ancien système qui prélevait un pourcentage de la Base EXP des membres sous forme de taxe de guilde a été supprimé.'
+      )}</p>
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Guild Quest location','Emplacement des Guild Quests')}</strong><br>
+        <code>/navi prt_in 37/112</code>
+      </div></div>
+
+      <h2 id="daily-quests">${navLabel('Daily Guild Quests','Quêtes quotidiennes de guilde')}</h2>
+      <p>${navLabel(
+        'Guild members can complete daily quests suited to their level. These quests reward Organization’s Unity items, which provide Guild EXP. Higher-level quests provide better rewards.',
+        'Les membres de la guilde peuvent accomplir des quêtes quotidiennes adaptées à leur niveau. Ces quêtes récompensent avec des objets Organization’s Unity, qui fournissent de l’EXP de guilde. Les quêtes de niveau supérieur donnent de meilleures récompenses.'
+      )}</p>
+      <div class="wiki-callout warning-lite"><strong>${navLabel('No Base EXP tax','Aucune taxe de Base EXP')}</strong><br>${navLabel(
+        'Member Base EXP is not used to level the Guild. Guild progression comes from the Guild Quest system and Organization’s Unity.',
+        'La Base EXP des membres n’est pas utilisée pour faire monter la guilde. La progression repose sur les Guild Quests et les Organization’s Unity.'
+      )}</div>
+
+      <h2 id="guild-exp-table">${navLabel('Guild EXP Table','Table d’EXP de guilde')}</h2>
+      <p>${navLabel(
+        'The table below shows the Guild EXP required for each level and the cumulative total.',
+        'Le tableau ci-dessous indique l’EXP de guilde nécessaire pour chaque niveau ainsi que le total cumulé.'
+      )}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px;align-items:start">
+        ${guildExpTable(guildExpRows.slice(0,25))}
+        ${guildExpTable(guildExpRows.slice(25))}
+      </div>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#/wiki/party">${miniIcon('class')}${navLabel('Party','Party')}</a>
+        <a class="button" href="#/wiki/mvp-raid">${miniIcon('monster')}${navLabel('MVP Raid','MVP Raid')}</a>
+        <a class="button" href="#/wiki/experience">${miniIcon('level')}${navLabel('Experience','Expérience')}</a>
+      </div>`;
+  }
+
   function topicDetail(id) {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
     if (id === 'elements') return elementsPage(topic);
@@ -5913,6 +6050,7 @@ window.RO_DATA = {
     if (id === 'affixes') return affixesPage(topic);
     if (id === 'refinement-system') return refinementSystemPage(topic);
     if (id === 'party') return partyPage(topic);
+    if (id === 'guild-system') return guildSystemPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
