@@ -2642,6 +2642,102 @@ window.RO_DATA = {
       spCost: 2, castTime: "0.5 s", castDelay: "None", cooldown: "None",
       description: { en: "Creates a Stone from the ground. On Ragnarok Zero Global, it cannot be used when current carried weight exceeds 70%.", fr: "Ramasse une Stone au sol. Sur Ragnarok Zero Global, la compétence ne peut pas être utilisée lorsque le poids transporté actuel dépasse 70 %." },
       prerequisites: [], notes: { en: "Important Zero-specific value: the weight threshold is 70% on the Global planner.", fr: "Valeur importante spécifique à Zero : le seuil de poids est de 70 % sur le planner Global." }, verified: true
+    },
+    {
+      id: "ruwach", name: "Ruwach", classId: "acolyte", maxLevel: 1, type: "Active", role: "damage", target: "Self / Area", element: "Holy", image: "https://game.ragnaplace.com/ro/rozg/skill/24.webp",
+      spCost: 10, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Reveals hidden targets in a 5×5 area around the caster for 10 seconds. If a revealed target is an enemy, Ruwach deals MATK 145% Holy magical damage.", fr: "Révèle les cibles cachées dans une zone de 5×5 autour du lanceur pendant 10 secondes. Si une cible révélée est ennemie, Ruwach lui inflige MATK 145 % de dégâts magiques Holy." },
+      prerequisites: [], notes: { en: "Ragnarok Zero: Global Acolyte skill. Damage only occurs when an enemy is revealed.", fr: "Compétence Acolyte de Ragnarok Zero: Global. Les dégâts ne sont infligés que lorsqu’un ennemi est révélé." }, verified: true
+    },
+    {
+      id: "heal", name: "Heal", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Ally / Undead Enemy", element: "Holy", image: "https://game.ragnaplace.com/ro/rozg/skill/28.webp",
+      spCost: null, castTime: "None", castDelay: "0.3 s", cooldown: "0.25 s",
+      description: { en: "Restores HP to a target. Heal amount scales with skill level, caster Base Level, total INT and weapon MATK. When used offensively on Undead-property monsters, it deals Holy special magic damage equal to 50% of the Heal effect.", fr: "Restaure les HP d’une cible. La quantité soignée dépend du niveau de compétence, du Base Level du lanceur, de son INT totale et de la MATK de son arme. Utilisé offensivement sur les monstres de propriété Undead, Heal inflige des dégâts magiques spéciaux Holy égaux à 50 % de l’effet de soin." },
+      prerequisites: [], notes: { en: "Acolyte has no first-job prerequisite for Heal on the Zero Global skill tree. Shared skill pages for other classes can show different prerequisites.", fr: "Acolyte n’a aucun prérequis de première classe pour Heal dans l’arbre Zero Global. Les pages partagées avec d’autres classes peuvent afficher des prérequis différents." }, verified: true
+    },
+    {
+      id: "aqua-benedicta", name: "Aqua Benedicta", classId: "acolyte", maxLevel: 1, type: "Active", role: "supportive", target: "Self", element: "Holy", image: "https://game.ragnaplace.com/ro/rozg/skill/31.webp",
+      spCost: 10, castTime: "1.0 s (0.2 fixed + 0.8 variable)", castDelay: "0.3 s", cooldown: "None",
+      description: { en: "While standing in shallow water, converts 1 Empty Bottle into 1 Holy Water.", fr: "En se tenant dans de l’eau peu profonde, transforme 1 Empty Bottle en 1 Holy Water." },
+      prerequisites: [], notes: { en: "Consumes 1 Empty Bottle per use.", fr: "Consomme 1 Empty Bottle par utilisation." }, verified: true
+    },
+    {
+      id: "mace-mastery", name: "Mace Mastery", classId: "acolyte", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/65.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "While using a Mace, passively increases physical damage and CRIT. Both bonuses increase with skill level.", fr: "Avec une Mace, augmente passivement les dégâts physiques et le CRIT. Les deux bonus augmentent avec le niveau de compétence." },
+      prerequisites: [], notes: { en: "Zero first-job Acolyte skill: Damage +3 and CRIT +1 per skill level.", fr: "Compétence de première classe Acolyte propre à Zero : dégâts +3 et CRIT +1 par niveau." }, verified: true
+    },
+    {
+      id: "divine-protection", name: "Divine Protection", classId: "acolyte", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/22.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Reduces damage received from Demon-race and Undead-property enemies. The listed reduction increases by 3 per skill level.", fr: "Réduit les dégâts reçus des ennemis de race Demon et de propriété Undead. La réduction indiquée augmente de 3 par niveau de compétence." },
+      prerequisites: [], notes: { en: "No Acolyte first-job prerequisite on the Zero Global tree.", fr: "Aucun prérequis de première classe Acolyte dans l’arbre Zero Global." }, verified: true
+    },
+    {
+      id: "holy-light", name: "Holy Light", classId: "acolyte", maxLevel: 1, type: "Free / Active", role: "damage", target: "Enemy", element: "Holy", image: "https://game.ragnaplace.com/ro/rozg/skill/156.webp",
+      spCost: 15, castTime: "0.5 s (0.1 fixed + 0.4 variable)", castDelay: "None", cooldown: "None",
+      description: { en: "Deals MATK 125% Holy magical damage to one target. If the target has Kyrie Eleison, Holy Light removes it.", fr: "Inflige MATK 125 % de dégâts magiques Holy à une cible. Si la cible possède Kyrie Eleison, Holy Light le retire." },
+      prerequisites: [], notes: { en: "Free / quest-default skill on Ragnarok Zero: Global; no normal Acolyte Job skill point is consumed.", fr: "Free Skill / quest-default sur Ragnarok Zero: Global ; aucun point de compétence Job normal d’Acolyte n’est consommé." }, verified: true
+    },
+    {
+      id: "teleport", name: "Teleport", classId: "acolyte", maxLevel: 2, type: "Active", role: "supportive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/26.webp",
+      spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Teleports the caster. Lv.1 sends the caster to a random location on the current map; Lv.2 allows returning to the saved point.", fr: "Téléporte le lanceur. Le Lv.1 l’envoie à un emplacement aléatoire de la map actuelle ; le Lv.2 permet de retourner au point de sauvegarde." },
+      prerequisites: [{ skillId: "ruwach", level: 1, verified: true }], notes: { en: "Acolyte-specific Zero prerequisite: Ruwach Lv.1.", fr: "Prérequis Zero spécifique à Acolyte : Ruwach Lv.1." }, verified: true
+    },
+    {
+      id: "cure", name: "Cure", classId: "acolyte", maxLevel: 1, type: "Active", role: "supportive", target: "Self / Ally", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/35.webp",
+      spCost: 15, castTime: "None", castDelay: "0.3 s", cooldown: "0.5 s",
+      description: { en: "Cures Silence, Confusion and Blind from the target.", fr: "Soigne Silence, Confusion et Blind sur la cible." },
+      prerequisites: [{ skillId: "heal", level: 2, verified: true }], notes: { en: "Acolyte-specific Zero prerequisite: Heal Lv.2.", fr: "Prérequis Zero spécifique à Acolyte : Heal Lv.2." }, verified: true
+    },
+    {
+      id: "increase-agility", name: "Increase Agility", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Self / Ally", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/29.webp",
+      spCost: null, castTime: "1.0 s (0.2 fixed + 0.8 variable)", castDelay: "0.3 s", cooldown: "None",
+      description: { en: "Consumes an additional 15 HP to increase the target's AGI and ASPD for a limited duration.", fr: "Consomme 15 HP supplémentaires pour augmenter l’AGI et l’ASPD de la cible pendant une durée limitée." },
+      prerequisites: [{ skillId: "heal", level: 3, verified: true }], notes: { en: "AGI bonus is Skill Lv.+2; ASPD bonus is Skill Lv.%; duration and SP cost also scale by level.", fr: "Le bonus d’AGI vaut niveau+2 ; le bonus d’ASPD vaut niveau % ; la durée et le coût SP augmentent également avec le niveau." }, verified: true
+    },
+    {
+      id: "blessing", name: "Blessing", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Self / Ally / Enemy", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/34.webp",
+      spCost: null, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Increases STR, INT, DEX and HIT on players. It can cure Curse/Petrification on players; against Demon or Undead monsters it reduces STR, INT and DEX by 50%.", fr: "Augmente STR, INT, DEX et HIT sur les joueurs. Peut soigner Curse/Petrification sur les joueurs ; contre les monstres Demon ou Undead, réduit STR, INT et DEX de 50 %." },
+      prerequisites: [{ skillId: "divine-protection", level: 5, verified: true }], notes: { en: "Acolyte-specific Zero prerequisite: Divine Protection Lv.5.", fr: "Prérequis Zero spécifique à Acolyte : Divine Protection Lv.5." }, verified: true
+    },
+    {
+      id: "demon-bane", name: "Demon Bane", classId: "acolyte", maxLevel: 10, type: "Passive", role: "passive", target: "Self", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/23.webp",
+      spCost: 0, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Increases physical attack damage against Demon-race and Undead-property enemies. The listed skill-level bonus is +3 per level; Zero also states that the effect increases with character level.", fr: "Augmente les dégâts physiques contre les ennemis de race Demon et de propriété Undead. Le bonus indiqué par niveau est de +3 ; Zero précise aussi que l’effet augmente avec le niveau du personnage." },
+      prerequisites: [{ skillId: "divine-protection", level: 3, verified: true }], notes: { en: "The exact public coefficient of the additional character-level scaling is not verified here and is not guessed.", fr: "Le coefficient public exact du scaling supplémentaire avec le niveau du personnage n’est pas vérifié ici et n’est pas inventé." }, verified: true
+    },
+    {
+      id: "angelus", name: "Angelus", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Self / Party", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/33.webp",
+      spCost: null, castTime: "0.5 s (0.1 fixed + 0.4 variable)", castDelay: "0.3 s", cooldown: "30 s",
+      description: { en: "Temporarily increases VIT-based Defense and Max HP for the caster and nearby party members.", fr: "Augmente temporairement la défense basée sur la VIT et les HP max du lanceur et des membres du groupe à proximité." },
+      prerequisites: [{ skillId: "divine-protection", level: 3, verified: true }], notes: { en: "Defense +5% and Max HP +50 per skill level; 30-second cooldown on Zero Global.", fr: "Défense +5 % et HP max +50 par niveau ; cooldown de 30 secondes sur Zero Global." }, verified: true
+    },
+    {
+      id: "warp-portal", name: "Warp Portal", classId: "acolyte", maxLevel: 4, type: "Active", role: "supportive", target: "Ground", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/27.webp",
+      spCost: null, castTime: "1.0 s fixed", castDelay: "None", cooldown: "None",
+      description: { en: "Creates a Warp Portal to the save point or memorized locations. Consumes 1 Blue Gemstone and transports up to 8 players regardless of skill level.", fr: "Crée un Warp Portal vers le point de sauvegarde ou des destinations mémorisées. Consomme 1 Blue Gemstone et transporte jusqu’à 8 joueurs quel que soit le niveau de compétence." },
+      prerequisites: [{ skillId: "teleport", level: 2, verified: true }], notes: { en: "Lv.1: save point; Lv.2–4 progressively unlock up to three memorized destinations.", fr: "Lv.1 : point de sauvegarde ; Lv.2–4 débloquent progressivement jusqu’à trois destinations mémorisées." }, verified: true
+    },
+    {
+      id: "decrease-agility", name: "Decrease Agility", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Enemy", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/30.webp",
+      spCost: null, castTime: "1.0 s (0.2 fixed + 0.8 variable)", castDelay: "0.3 s", cooldown: "0.5 s",
+      description: { en: "Attempts to reduce the target's AGI and movement speed. AGI reduction, success chance and duration increase with skill level.", fr: "Tente de réduire l’AGI et la vitesse de déplacement de la cible. La réduction d’AGI, la chance de réussite et la durée augmentent avec le niveau." },
+      prerequisites: [{ skillId: "increase-agility", level: 1, verified: true }], notes: { en: "Zero Global timing: 0.2 s fixed + 0.8 s variable cast, 0.3 s global delay, 0.5 s cooldown.", fr: "Timing Zero Global : 0,2 s fixe + 0,8 s variable, délai global 0,3 s, cooldown 0,5 s." }, verified: true
+    },
+    {
+      id: "signum-crucis", name: "Signum Crucis", classId: "acolyte", maxLevel: 10, type: "Active", role: "supportive", target: "Area / Enemy", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/32.webp",
+      spCost: 35, castTime: "0.5 s (0.1 fixed + 0.4 variable)", castDelay: "0.3 s", cooldown: "1 s",
+      description: { en: "Attempts to reduce physical DEF of Demon-race and Undead-property monsters on screen.", fr: "Tente de réduire la DEF physique des monstres de race Demon et de propriété Undead présents à l’écran." },
+      prerequisites: [{ skillId: "demon-bane", level: 3, verified: true }], notes: { en: "DEF reduction and success chance both increase with skill level.", fr: "La réduction de DEF et la chance de réussite augmentent avec le niveau." }, verified: true
+    },
+    {
+      id: "pneuma", name: "Pneuma", classId: "acolyte", maxLevel: 1, type: "Active", role: "supportive", target: "Ground", element: "Neutral", image: "https://game.ragnaplace.com/ro/rozg/skill/25.webp",
+      spCost: 10, castTime: "None", castDelay: "None", cooldown: "None",
+      description: { en: "Creates a 3×3 protective area for 10 seconds that blocks ranged physical damage.", fr: "Crée une zone protectrice de 3×3 pendant 10 secondes qui bloque les dégâts physiques à distance." },
+      prerequisites: [{ skillId: "warp-portal", level: 4, verified: true }], notes: { en: "Acolyte-specific Zero prerequisite: Warp Portal Lv.4.", fr: "Prérequis Zero spécifique à Acolyte : Warp Portal Lv.4." }, verified: true
     }
   ],
 
@@ -2653,7 +2749,7 @@ window.RO_DATA = {
     { id: "archer", name: "Archer", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Archer is the ranged physical first class of Ragnarok Zero: Global. It specializes in Bows and Arrows, long-range accuracy, rapid single-target attacks and ranged area control.", fr: "Archer est la première classe physique à distance de Ragnarok Zero: Global. Elle se spécialise dans les arcs et les flèches, la précision à longue portée, les attaques rapides sur cible unique et le contrôle de zone à distance." }, notes: { en: "Ragnarok Zero: Global lists 7 Archer skills: five normal first-job skills and two quest skills, Arrow Crafting and Arrow Repel. Archer advances to Hunter, Bard or Dancer from Job Lv.40.", fr: "Ragnarok Zero: Global liste 7 compétences Archer : cinq compétences normales de première classe et deux compétences de quête, Arrow Crafting et Arrow Repel. Archer évolue en Hunter, Bard ou Dancer à partir du Job Lv.40." } },
     { id: "merchant", name: "Merchant", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Merchant is the economic and cart-focused first class of Ragnarok Zero: Global. It combines NPC trading skills, increased carrying capacity, Axe and one-handed Sword mastery, Pushcart utility and Zeny-powered melee attacks.", fr: "Merchant est la première classe orientée commerce et charrette de Ragnarok Zero: Global. Elle combine les compétences de commerce avec les NPC, une capacité de transport accrue, la maîtrise des haches et épées à une main, l’utilisation du Pushcart et des attaques de mêlée consommant des Zeny." }, notes: { en: "Ragnarok Zero: Global lists 12 Merchant skills: eight normal first-job skills and four Free Skills — Cart Revolution, Change Cart, Crazy Uproar and Cart Boost. Merchant advances to Blacksmith or Alchemist from Job Lv.40.", fr: "Ragnarok Zero: Global liste 12 compétences Merchant : huit compétences normales de première classe et quatre Free Skills — Cart Revolution, Change Cart, Crazy Uproar et Cart Boost. Merchant évolue en Blacksmith ou Alchemist à partir du Job Lv.40." } },
     { id: "thief", name: "Thief", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Thief is the agile melee first class of Ragnarok Zero: Global. It focuses on Daggers, evasion, stealing, poison attacks and mobility while also gaining Sword Mastery on the Zero skill tree.", fr: "Thief est la première classe de mêlée agile de Ragnarok Zero: Global. Elle se concentre sur les dagues, l’esquive, le vol, les attaques Poison et la mobilité, tout en disposant aussi de Sword Mastery dans l’arbre Zero." }, notes: { en: "Ragnarok Zero: Global lists 11 Thief skills: seven normal first-job skills and four no-Job-point quest/default skills — Sand Attack, Stone Fling, Back Slide and Find Stone. Thief advances to Assassin or Rogue from Job Lv.40.", fr: "Ragnarok Zero: Global liste 11 compétences Thief : sept compétences normales de première classe et quatre compétences quest/default ne consommant pas de point de Job — Sand Attack, Stone Fling, Back Slide et Find Stone. Thief évolue en Assassin ou Rogue à partir du Job Lv.40." } },
-    { id: "acolyte", name: "Acolyte", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Acolyte class article shell for Ragnarok Zero: Global.", fr: "Structure d’article Acolyte pour Ragnarok Zero: Global." }, notes: { en: "Currently available. Zero-specific skills and progression data will be added after verification.", fr: "Actuellement disponible. Les skills et données de progression spécifiques à Zero seront ajoutés après vérification." } },
+    { id: "acolyte", name: "Acolyte", tier: "First Class", group: "first", parentId: "novice", releaseStatus: "available", image: null, description: { en: "Acolyte is the support and Holy-magic first class of Ragnarok Zero: Global. It heals and buffs allies, debuffs enemies, protects against ranged attacks, uses teleportation magic and gains Mace Mastery on the Zero first-job tree.", fr: "Acolyte est la première classe de soutien et de magie Holy de Ragnarok Zero: Global. Elle soigne et renforce les alliés, affaiblit les ennemis, protège contre les attaques à distance, utilise la téléportation et dispose de Mace Mastery dans l’arbre de première classe Zero." }, notes: { en: "Ragnarok Zero: Global lists 16 Acolyte skills, including Mace Mastery as a normal first-job skill and Holy Light as a free / quest-default skill. Acolyte advances to Priest or Monk from Job Lv.40.", fr: "Ragnarok Zero: Global liste 16 compétences Acolyte, dont Mace Mastery comme compétence normale de première classe et Holy Light comme Free Skill / quest-default. Acolyte évolue en Priest ou Monk à partir du Job Lv.40." } },
 
     { id: "knight", name: "Knight", tier: "Second Class", group: "second", parentId: "swordman", releaseStatus: "coming-soon", image: "assets/classes/knight.png", description: { en: "Upcoming second class branching from Swordman.", fr: "Seconde classe à venir issue de Swordman." }, notes: { en: "Listed ahead of its planned Global release. Zero-specific skills, stats and job-change information will only be added after verification.", fr: "Répertoriée avant sa sortie prévue sur Global. Les skills, stats et informations de changement de classe spécifiques à Zero ne seront ajoutés qu’après vérification." } },
     { id: "crusader", name: "Crusader", tier: "Second Class", group: "second", parentId: "swordman", releaseStatus: "coming-soon", image: "assets/classes/crusader.png", description: { en: "Upcoming second class branching from Swordman.", fr: "Seconde classe à venir issue de Swordman." }, notes: { en: "Listed ahead of its planned Global release. Zero-specific gameplay data remains pending verification.", fr: "Répertoriée avant sa sortie prévue sur Global. Les données de gameplay spécifiques à Zero restent en attente de vérification." } },
@@ -4157,8 +4253,62 @@ window.RO_DATA = {
     return rows[id] || null;
   }
 
+  function acolyteSkillLevelData(id) {
+    const N = 'None';
+    const rows = {
+      'ruwach': [[1,'MATK 145% Holy damage when an enemy is revealed · Reveal area 5×5 · Duration 10 sec',10,10,N,N,N]],
+      'heal': Array.from({length:10},(_,i)=>[
+        i+1,'Restores HP · Vs Undead: Holy damage = 50% of Heal effect',13+i*3,9,N,'0.3 s','0.25 s'
+      ]),
+      'aqua-benedicta': [[1,'Creates 1 Holy Water · Consumes 1 Empty Bottle',10,1,'1.0 s (0.2 fixed + 0.8 variable)','0.3 s',N]],
+      'mace-mastery': Array.from({length:10},(_,i)=>[
+        i+1,`Mace Damage +${(i+1)*3} · CRIT +${i+1}`,0,1,N,N,N
+      ]),
+      'divine-protection': Array.from({length:10},(_,i)=>[
+        i+1,`Damage reduction vs Demon / Undead +${(i+1)*3}`,0,1,N,N,N
+      ]),
+      'holy-light': [[1,'MATK 125% Holy damage · Removes Kyrie Eleison from target',15,9,'0.5 s (0.1 fixed + 0.4 variable)',N,N]],
+      'teleport': [
+        [1,'Random location on current map',10,1,N,N,N],
+        [2,'Return to save point',9,1,N,N,N]
+      ],
+      'cure': [[1,'Cures Silence, Confusion and Blind',15,9,N,'0.3 s','0.5 s']],
+      'increase-agility': Array.from({length:10},(_,i)=>[
+        i+1,`AGI +${i+3} · ASPD +${i+1}% · Duration ${60+i*20} sec · Additional HP cost 15`,
+        18+i*3,9,'1.0 s (0.2 fixed + 0.8 variable)','0.3 s',N
+      ]),
+      'blessing': Array.from({length:10},(_,i)=>[
+        i+1,`STR/INT/DEX +${i+1} · HIT +${(i+1)*2} · Duration ${60+i*20} sec`,
+        28+i*4,9,N,N,N
+      ]),
+      'demon-bane': Array.from({length:10},(_,i)=>[
+        i+1,`Listed damage bonus vs Demon / Undead +${(i+1)*3}`,0,1,N,N,N
+      ]),
+      'angelus': Array.from({length:10},(_,i)=>[
+        i+1,`VIT-based Defense +${(i+1)*5}% · Max HP +${(i+1)*50} · Duration ${(i+1)*30} sec`,
+        23+i*3,1,'0.5 s (0.1 fixed + 0.4 variable)','0.3 s','30 s'
+      ]),
+      'warp-portal': [
+        [1,'Destination: Save Point · Max 8 players',35,9,'1.0 s fixed',N,N],
+        [2,'Save Point + 1 memorized destination · Max 8 players',32,9,'1.0 s fixed',N,N],
+        [3,'Save Point + 2 memorized destinations · Max 8 players',29,9,'1.0 s fixed',N,N],
+        [4,'Save Point + 3 memorized destinations · Max 8 players',26,9,'1.0 s fixed',N,N]
+      ],
+      'decrease-agility': Array.from({length:10},(_,i)=>[
+        i+1,`AGI -${i+3} · Success ${53+i*3}% · Duration ${20+i*5} sec`,
+        15+i*2,9,'1.0 s (0.2 fixed + 0.8 variable)','0.3 s','0.5 s'
+      ]),
+      'signum-crucis': Array.from({length:10},(_,i)=>[
+        i+1,`Physical DEF -${14+i*4}% · Success ${27+i*4}%`,
+        35,1,'0.5 s (0.1 fixed + 0.4 variable)','0.3 s','1 s'
+      ]),
+      'pneuma': [[1,'3×3 protection against ranged physical damage · Duration 10 sec',10,9,N,N,N]]
+    };
+    return rows[id] || null;
+  }
+
   function wikiSkillLevelData(id) {
-    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || archerSkillLevelData(id) || merchantSkillLevelData(id) || thiefSkillLevelData(id) || null;
+    return swordmanSkillLevelData(id) || mageSkillLevelData(id) || archerSkillLevelData(id) || merchantSkillLevelData(id) || thiefSkillLevelData(id) || acolyteSkillLevelData(id) || null;
   }
 
   function swordmanSkillExtraText(sk) {
@@ -4278,6 +4428,34 @@ window.RO_DATA = {
         fr: 'Multiplicateur fixe au Lv.1 ; la cible est également repoussée de 4 cases.'
       },
 
+      // Acolyte
+      'ruwach': {
+        formula: 'Damage (MATK) = 145%',
+        en: 'Holy magical damage is dealt when Ruwach reveals an enemy.',
+        fr: 'Inflige des dégâts magiques Holy lorsqu’un ennemi est révélé par Ruwach.'
+      },
+      'heal': {
+        formula: 'Damage vs Undead = 50% × Heal Effect',
+        en: 'Heal Effect scales with Skill Lv., caster Base Lv., total INT and the base/refined MATK of the weapon. The verified Zero sources used here do not expose a complete closed coefficient, so it is not invented.',
+        fr: 'L’effet de Heal dépend du niveau de compétence, du Base Lv. du lanceur, de son INT totale et de la MATK de base/raffinée de l’arme. Les sources Zero vérifiées utilisées ici n’exposent pas un coefficient fermé complet, donc il n’est pas inventé.'
+      },
+      'mace-mastery': {
+        formula: 'Bonus Damage = 3 × Skill Lv.',
+        formula2: 'CRIT Bonus = Skill Lv.',
+        en: 'Applies while using a Mace.',
+        fr: 'S’applique lors de l’utilisation d’une Mace.'
+      },
+      'demon-bane': {
+        formula: 'Verified Damage Bonus = 3 × Skill Lv.',
+        en: 'Applies against Demon-race and Undead-property enemies. Ragnarok Zero also states that attack power increases with character level; the exact public coefficient is not verified here.',
+        fr: 'S’applique contre les ennemis de race Demon et de propriété Undead. Ragnarok Zero indique aussi que la puissance augmente avec le niveau du personnage ; le coefficient public exact n’est pas vérifié ici.'
+      },
+      'holy-light': {
+        formula: 'Damage (MATK) = 125%',
+        en: 'Deals Holy magical damage to one target.',
+        fr: 'Inflige des dégâts magiques Holy à une cible.'
+      },
+
       // Thief
       'double-attack': {
         formula: 'Activation Chance = 7 × Skill Lv.%',
@@ -4383,7 +4561,9 @@ window.RO_DATA = {
     const catalystBySkill = {
       'stone-curse': '1 Red Gemstone',
       'safety-wall': '1 Blue Gemstone',
-      'stone-fling': '1 Stone'
+      'stone-fling': '1 Stone',
+      'aqua-benedicta': '1 Empty Bottle',
+      'warp-portal': '1 Blue Gemstone'
     };
     const catalyst = catalystBySkill[sk.id] || t('none');
     const prereq = sk.prerequisites.length
@@ -4455,7 +4635,7 @@ window.RO_DATA = {
 
           ${hasDetailedLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Ragnarok Zero Global Skill Simulator</a></li>
-            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://rz.fharr.com/db/skilltree':(sk.classId==='thief'?'https://roz.prontera.info/skills/planner?class=assassin':'https://roz.prontera.info/skills/planner?class=crusader')))}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
+            <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://rz.fharr.com/db/skilltree':(sk.classId==='thief'?'https://roz.prontera.info/skills/planner?class=assassin':(sk.classId==='acolyte'?'https://roz.prontera.info/skills/planner?class=high-priest':'https://roz.prontera.info/skills/planner?class=crusader'))))}" target="_blank" rel="noopener">Prontera.info — Ragnarok Zero Skill Planner</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — twRO Zero extracted skill tree reference</a></li>
             ${sk.classId==='mage' ? '<li><a href="https://ragnaplace.com/en/rozg-en/skill/16/stone-curse" target="_blank" rel="noopener">RagnaPlace — Ragnarok Zero Global fixed / variable / global delay tables</a></li>' : ''}
           </ul></div>` : ''}
@@ -4897,6 +5077,83 @@ window.RO_DATA = {
   }
 
 
+  function acolyteDetail() {
+    const c = getClass('acolyte');
+    const regularIds = ['ruwach','heal','aqua-benedicta','mace-mastery','divine-protection','teleport','cure','increase-agility','blessing','demon-bane','angelus','warp-portal','decrease-agility','signum-crucis','pneuma'];
+    const freeIds = ['holy-light'];
+    const regular = regularIds.map(getSkill).filter(Boolean);
+    const free = freeIds.map(getSkill).filter(Boolean);
+    const classGenders = classGenderList('acolyte');
+    const spriteBlock = `<div class="class-infobox-sprites">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot('acolyte',g,false)}</div>`).join('')}</div>`;
+    const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
+    const rows = regular.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+    </tr>`).join('');
+    const freeRows = free.map(sk=>`<tr>
+      <td>${skillNameCell(sk)}</td>
+      <td>${esc(txt(sk.description))}</td>
+      <td style="text-align:center">${sk.maxLevel}</td>
+      <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
+      <td>${navLabel('No normal Job skill point','Aucun point de Job normal')}</td>
+    </tr>`).join('');
+
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:'Acolyte'}])}
+      <article class="article-with-infobox">
+        <div class="article-heading"><h1>${icon('class')}Acolyte</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+        <aside class="infobox class-infobox">
+          <div class="infobox-title">Acolyte<span class="infobox-subtitle">${navLabel('First Class','Première classe')}</span></div>
+          ${spriteBlock}
+          <table><tbody>
+            ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
+            ${infoRow(t('status'),navLabel('Available','Disponible'))}
+            ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
+            ${infoRow(navLabel('Max Job Level','Job Level max'),'50')}
+            ${infoRow(navLabel('Skill points','Points de compétence'),'49')}
+            ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/priest">Priest</a> / <a href="#/classes/monk">Monk</a>')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(t('skills'),String(regular.length + free.length))}
+          </tbody></table>
+          <div class="infobox-footer">${badge(true)}</div>
+        </aside>
+        <div class="article-body">
+          <p class="article-lead">${esc(txt(c.description))}</p>
+          <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok Zero: Global data','Données Ragnarok Zero: Global')}</strong><br>${navLabel('Acolyte uses the Zero first-job tree with 16 skills. Mace Mastery is part of the Acolyte tree on Zero, Holy Light is a free / quest-default skill, Aqua Benedicta consumes 1 Empty Bottle, and Warp Portal consumes 1 Blue Gemstone.','Acolyte utilise l’arbre Zero de première classe avec 16 compétences. Mace Mastery fait partie de l’arbre Acolyte sur Zero, Holy Light est une Free Skill / quest-default, Aqua Benedicta consomme 1 Empty Bottle et Warp Portal consomme 1 Blue Gemstone.')}</div></div>
+
+          <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
+          <p>${navLabel('Acolyte has a maximum Job Level of 50 and 49 normal skill points. It advances to Priest or Monk from Job Level 40.','Acolyte possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Priest ou Monk à partir du Job Level 40.')}</p>
+          <div class="related-list"><a href="#/classes/priest">Priest</a> · <a href="#/classes/monk">Monk</a></div>
+
+          <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table></div>
+
+          <h3 id="free-skills" style="font-size:21px;margin-top:30px">${navLabel('Free / Quest-default Skills','Compétences gratuites / Quest-default')}</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:215px">${navLabel('Skill','Compétence')}</th><th>${navLabel('Description','Description')}</th><th style="width:70px;text-align:center">${navLabel('Levels','Niveaux')}</th><th style="width:110px">${navLabel('Type','Type')}</th><th style="width:220px">${navLabel('Skill points','Points de compétence')}</th></tr></thead>
+            <tbody>${freeRows}</tbody>
+          </table></div>
+
+          ${classSeeAlso(c)}
+          <h2 id="sources">${navLabel('Sources','Sources')}</h2>
+          <div class="source-box"><strong>${navLabel('Gameplay data','Données de gameplay')}</strong><ul>
+            <li><a href="https://roz.prontera.info/jobs/acolyte" target="_blank" rel="noopener">Prontera.info — Acolyte — Ragnarok Zero Global</a></li>
+            <li><a href="https://roz.prontera.info/skills/planner?class=high-priest" target="_blank" rel="noopener">Prontera.info — Acolyte / Priest Skill Planner</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/skill/28/heal" target="_blank" rel="noopener">RagnaPlace — Heal — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/31/aqua-benedicta" target="_blank" rel="noopener">RagnaPlace — Aqua Benedicta — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/skill/33/angelus" target="_blank" rel="noopener">RagnaPlace — Angelus — Ragnarok Zero Global</a></li>
+            <li><a href="https://ragnaplace.com/pt/rozg-en/skill/156/holy-light" target="_blank" rel="noopener">RagnaPlace — Holy Light — Ragnarok Zero Global</a></li>
+            <li><a href="https://rozerodb.com/player-skills/mace-mastery" target="_blank" rel="noopener">RO Zero Database — Mace Mastery</a></li>
+          </ul></div>
+        </div>
+      </article>`;
+  }
+
+
   function classSeeAlso(c) {
     const skills = DATA.skills.filter(sk=>sk.classId===c.id);
     const skillLinks = skills.length
@@ -5014,6 +5271,7 @@ window.RO_DATA = {
     if (id === 'archer') return archerDetail();
     if (id === 'merchant') return merchantDetail();
     if (id === 'thief') return thiefDetail();
+    if (id === 'acolyte') return acolyteDetail();
     const c = getClass(id);
     if (!c) return notFound();
     const skills = DATA.skills.filter(s=>s.classId===id);
