@@ -3130,10 +3130,10 @@ window.RO_DATA = {
   const SECTION_STATUS_BY_ROUTE = {
     '#/wiki/getting-started': {
       install:'complete', 'first-character':'complete', 'first-minutes':'complete',
-      'equipment-cards':'partial', social:'partial', 'fair-play':'complete'
+      'equipment-cards':'complete', social:'complete', 'fair-play':'complete'
     },
     '#/wiki/basic-controls': {
-      mouse:'complete', keys:'complete', legacy:'partial',
+      mouse:'complete', keys:'complete', legacy:'complete',
       'commands-global':'complete', 'commands-zero':'complete'
     },
     '#/wiki/levels': {
@@ -3176,6 +3176,11 @@ window.RO_DATA = {
     const route = (location.hash || '#/').split('?')[0];
     if (route === '#/' || route === '#/wiki/faq') return;
     const routeMap = SECTION_STATUS_BY_ROUTE[route] || {};
+    const fullyVerifiedRoutes = new Set([
+      '#/wiki/introduction',
+      '#/wiki/getting-started',
+      '#/wiki/basic-controls'
+    ]);
     const housekeepingIds = new Set(['sources','related','see-also','skill-see-also']);
     const housekeepingLabels = new Set([
       'sources','related pages','pages associées','see also','voir aussi',
@@ -3190,7 +3195,7 @@ window.RO_DATA = {
       const rawLabel = h.textContent.trim().toLowerCase();
       if (housekeepingIds.has(id) || housekeepingLabels.has(rawLabel)) return;
 
-      let status = routeMap[id] || 'partial';
+      let status = routeMap[id] || (fullyVerifiedRoutes.has(route) ? 'complete' : 'partial');
 
       if (
         rawLabel.includes('ragnarok data status') ||
