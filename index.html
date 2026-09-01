@@ -4832,14 +4832,14 @@ window.RO_DATA = {
     const races = [
       ['✨','Angel',navLabel('Angelic or celestial monsters.','Monstres angéliques ou célestes.')],
       ['🐾','Brute',navLabel('Animals and beast-like monsters. Also called Animal in some translations.','Animaux et monstres de type bestial. Aussi appelé Animal dans certaines traductions.')],
-      ['👤','Demi-Human',navLabel('Humanoid monsters such as Orcs, Goblins and similar creatures. This is separate from the Player race.','Monstres humanoïdes comme les Orcs, Goblins et créatures similaires. Cette race est distincte de la race Player.')],
+      ['👤','Demi-Human',navLabel('Humanoid monsters such as Orcs, Goblins and similar creatures. Some card effects that target Demi-Human also apply to Player (Human).','Monstres humanoïdes comme les Orcs, Goblins et créatures similaires. Certains effets de cartes visant Demi-Human s’appliquent aussi à Player (Human).')],
       ['👹','Demon',navLabel('Demonic or devil-like monsters.','Monstres démoniaques ou de type Devil.')],
       ['🐉','Dragon',navLabel('Dragons and draconic creatures.','Dragons et créatures draconiques.')],
       ['🐟','Fish',navLabel('Fish and aquatic creatures classified under this race.','Poissons et créatures aquatiques classées dans cette race.')],
       ['⚙️','Formless',navLabel('Constructs, objects and creatures without a conventional biological form.','Constructions, objets et créatures sans forme biologique conventionnelle.')],
       ['🪲','Insect',navLabel('Insects and insect-like creatures.','Insectes et créatures apparentées.')],
       ['🌿','Plant',navLabel('Plants and monsters classified under the Plant race.','Plantes et monstres classés dans la race Plant.')],
-      ['🧑','Player (Human)',navLabel('The race used for player characters. It is distinct from Demi-Human.','Race utilisée pour les personnages joueurs. Elle est distincte de Demi-Human.')],
+      ['🧑','Player (Human)',navLabel('The race used for player characters. It is internally distinct from Demi-Human, but some card effects treat both categories together.','Race utilisée pour les personnages joueurs. Elle est distincte de Demi-Human en interne, mais certains effets de cartes traitent les deux catégories ensemble.')],
       ['☠️','Undead',navLabel('Undead creatures. Undead race and Undead element are two separate attributes.','Créatures mortes-vivantes. La race Undead et l’élément Undead sont deux caractéristiques différentes.')]
     ];
 
@@ -4877,10 +4877,16 @@ window.RO_DATA = {
         'Les équipements et cartes peuvent interagir directement avec une race. Ces effets peuvent augmenter les dégâts physiques ou magiques contre une race, réduire les dégâts reçus, augmenter le CRIT contre cette race ou déclencher des effets particuliers en combattant ou en éliminant des monstres de cette race.'
       )}</p>
 
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
-        'Demi-Human and Player (Human) are different races. A bonus that explicitly targets Demi-Human monsters should not automatically be treated as a bonus against players.',
-        'Demi-Human et Player (Human) sont deux races différentes. Un bonus visant explicitement les monstres Demi-Human ne doit pas être considéré automatiquement comme un bonus contre les joueurs.'
-      )}</div></div>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('card')}${navLabel('Cards: Demi-Human and players','Cartes : Demi-Human et joueurs')}</strong><p>${navLabel(
+          'Some cards treat Demi-Human monsters and Player (Human) together. Hydra Card is the clearest example: its +20% physical damage against Demi-Human also applies against player characters.',
+          'Certaines cartes traitent les monstres Demi-Human et Player (Human) ensemble. Hydra Card est l’exemple le plus clair : son bonus de +20 % de dégâts physiques contre Demi-Human s’applique aussi contre les personnages joueurs.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}${navLabel('Affixes: current PvP behavior','Affixes : comportement PvP actuel')}</strong><p>${navLabel(
+          'Demi-Human affixes do not currently appear to affect Player (Human) targets in PvP. For now, treat a Demi-Human affix as a monster-race bonus rather than a player-damage bonus.',
+          'Les affixes Demi-Human ne semblent actuellement pas affecter les cibles Player (Human) en PvP. Pour le moment, considère donc un affixe Demi-Human comme un bonus contre les monstres de cette race, et non comme un bonus de dégâts contre les joueurs.'
+        )}</p></div>
+      </div>
 
       <div class="hero-actions">
         <a class="button primary" href="#/monsters">${miniIcon('monster')}${navLabel('Monster database','Base de monstres')}</a>
