@@ -4529,6 +4529,181 @@ window.RO_DATA = {
     return DATA[type] || [];
   }
 
+  function skillsOverviewPage() {
+    setTimeout(() => wireList('skills'), 0);
+
+    const phases = [
+      [
+        '1. ' + navLabel('Initiation','Initiation'),
+        navLabel(
+          'The player activates a learned skill and selects its target or ground position when required. The client checks whether the skill can be used with the current target, SP, weapon, catalyst and other skill-specific conditions.',
+          'Le joueur active un skill appris et choisit sa cible ou sa position au sol lorsque cela est nécessaire. Le client vérifie que le skill peut être utilisé avec la cible, les SP, l’arme, le catalyseur et les autres conditions propres au skill.'
+        )
+      ],
+      [
+        '2. ' + navLabel('Cast Time','Temps de cast'),
+        navLabel(
+          'If the skill has a Cast value, the cast must complete before the effect is executed. Skills with no Cast value execute without this waiting phase. Normal interruptible casts can be cancelled by incoming damage; Zero’s Phen Card explicitly prevents cast interruption at the cost of +25% Variable Casting Time.',
+          'Si le skill possède une valeur de Cast, l’incantation doit se terminer avant l’exécution de l’effet. Les skills sans valeur de Cast passent cette attente. Les casts normalement interruptibles peuvent être annulés par des dégâts reçus ; sur Zero, la Phen Card empêche explicitement l’interruption du cast en échange de +25 % de Variable Casting Time.'
+        )
+      ],
+      [
+        '3. ' + navLabel('Execution','Exécution'),
+        navLabel(
+          'When the cast completes, the skill effect is applied: damage, healing, movement, a buff, a status effect, a ground area or another skill-specific effect.',
+          'Lorsque le cast se termine, l’effet du skill est appliqué : dégâts, soin, déplacement, buff, effet de statut, zone au sol ou autre effet propre au skill.'
+        )
+      ],
+      [
+        '4. ' + navLabel('Global / After-Cast Delay','Global / After-Cast Delay'),
+        navLabel(
+          'This is a shared post-skill delay that can prevent the use of other skills. Zero client data contains modifiers named Global Delay. A numerical after-cast delay is only documented on this wiki when a Zero-specific source exposes it; it is never copied from iRO.',
+          'Il s’agit d’un délai partagé après l’utilisation d’un skill qui peut empêcher l’utilisation d’autres skills. Les données du client Zero contiennent des modificateurs nommés Global Delay. Une valeur numérique d’after-cast delay n’est documentée sur ce wiki que lorsqu’une source spécifique à Zero la fournit ; elle n’est jamais copiée depuis iRO.'
+        )
+      ],
+      [
+        '5. ' + navLabel('Cooldown','Cooldown'),
+        navLabel(
+          'Cooldown is tied to the skill that was just used. While that cooldown remains, the same skill cannot be used again, but other skills are not blocked by that cooldown itself. Individual Zero skill pages list cooldown per level when the data provides one.',
+          'Le cooldown est lié au skill qui vient d’être utilisé. Tant qu’il reste actif, ce même skill ne peut pas être relancé, mais ce cooldown ne bloque pas à lui seul les autres skills. Les pages de skills Zero affichent le cooldown par niveau lorsque la donnée est disponible.'
+        )
+      ]
+    ];
+
+    return `${breadcrumbs([{label:navLabel('Skills','Compétences')}])}
+      <div class="article-heading"><h1>${icon('skill')}${navLabel('Skills','Compétences')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+
+      <p class="article-lead">${navLabel(
+        'Skills in Ragnarok Zero: Global are special actions and passive effects learned through a character’s Job Class. The exact skill set, prerequisites and maximum levels depend on the class.',
+        'Les skills de Ragnarok Zero: Global sont des actions spéciales et des effets passifs appris via la Job Class du personnage. La liste exacte des skills, leurs prérequis et leurs niveaux maximum dépendent de la classe.'
+      )}</p>
+
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Zero-specific page','Page spécifique à Zero')}</strong><br>${navLabel(
+        'This article follows the useful organization of iRO Wiki’s Skills article, but its mechanics and numbers are not copied from iRO. Cast, cooldown and skill data on this wiki come from Ragnarok Zero / Zero Global sources.',
+        'Cet article reprend l’organisation utile de la page Skills d’iRO Wiki, mais ses mécaniques et ses chiffres ne sont pas copiés depuis iRO. Les valeurs de cast, cooldown et les données de skills de ce wiki proviennent de sources Ragnarok Zero / Zero Global.'
+      )}</div></div>
+
+      ${toc([
+        {id:'types',label:navLabel('Skill types','Types de skills')},
+        {id:'usage',label:navLabel('Skill usage phases','Phases d’utilisation')},
+        {id:'cast-time',label:'Cast Time'},
+        {id:'delay-cooldown',label:navLabel('Cast Delay vs Cooldown','Cast Delay vs Cooldown')},
+        {id:'examples',label:navLabel('Zero examples','Exemples Zero')},
+        {id:'database',label:navLabel('Skill database','Base de skills')}
+      ])}
+
+      <h2 id="types">${navLabel('Skill types','Types de skills')}</h2>
+      <p>${navLabel(
+        'At the broadest level, player skills are either Active or Passive. Zero skill pages may also carry more specific combat labels such as Weapon, Magic, Attack, Support or Self depending on what the skill does.',
+        'Au niveau le plus général, les skills de joueur sont soit Actifs, soit Passifs. Les pages Zero peuvent aussi afficher des catégories plus précises comme Weapon, Magic, Attack, Support ou Self selon le fonctionnement du skill.'
+      )}</p>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('skill')}${navLabel('Active skills','Skills actifs')}</strong><p>${navLabel(
+          'Must be activated by the player. They may target an enemy, an ally, the caster or a position on the ground, and can have SP costs, catalysts, cast time, cooldowns or equipment requirements.',
+          'Doivent être activés par le joueur. Ils peuvent cibler un ennemi, un allié, le lanceur ou une position au sol et peuvent avoir un coût en SP, un catalyseur, un temps de cast, un cooldown ou une condition d’équipement.'
+        )}</p></div>
+        <div><strong>${miniIcon('mechanics')}${navLabel('Passive skills','Skills passifs')}</strong><p>${navLabel(
+          'Apply automatically once learned and do not need to be manually cast. Their effect remains available as long as the skill’s own conditions are satisfied.',
+          'S’appliquent automatiquement une fois appris et n’ont pas besoin d’être lancés manuellement. Leur effet reste disponible tant que les conditions propres au skill sont remplies.'
+        )}</p></div>
+        <div><strong>${navLabel('Offensive active skills','Skills actifs offensifs')}</strong><p>${navLabel(
+          'Deal physical or magical damage to one or more targets. Element, range, number of hits and damage formula depend on the individual Zero skill.',
+          'Infligent des dégâts physiques ou magiques à une ou plusieurs cibles. L’élément, la portée, le nombre de coups et la formule de dégâts dépendent du skill Zero concerné.'
+        )}</p></div>
+        <div><strong>${navLabel('Support / utility active skills','Skills actifs de support / utilitaires')}</strong><p>${navLabel(
+          'Heal, buff, reveal, move, control, create an area or provide another non-damage effect. Some skills combine support and offensive effects.',
+          'Soignent, donnent un buff, révèlent, déplacent, contrôlent, créent une zone ou fournissent un autre effet non offensif. Certains skills combinent support et dégâts.'
+        )}</p></div>
+      </div>
+
+      <h2 id="usage">${navLabel('Skill usage phases','Phases d’utilisation d’un skill')}</h2>
+      <p>${navLabel(
+        'An active skill can pass through the following phases. A skill with no cast time or no cooldown simply skips the corresponding phase.',
+        'Un skill actif peut passer par les phases suivantes. Un skill sans temps de cast ou sans cooldown ignore simplement la phase correspondante.'
+      )}</p>
+      <div class="wiki-feature-list">
+        ${phases.map(([title,body])=>`<div><strong>${title}</strong><p>${body}</p></div>`).join('')}
+      </div>
+
+      <h2 id="cast-time">Cast Time</h2>
+      <p>${navLabel(
+        'Zero distinguishes Variable Casting Time and Fixed Casting Time as separate modifier categories. Equipment and effects in the Zero client explicitly use both names.',
+        'Zero distingue Variable Casting Time et Fixed Casting Time comme deux catégories de modificateurs séparées. Les équipements et effets du client Zero utilisent explicitement ces deux termes.'
+      )}</p>
+
+      <h3>Variable Casting Time (VCT)</h3>
+      <ul>
+        <li>${navLabel('This is the reducible part of casting affected by cast-speed mechanics such as DEX / INT and effects that explicitly modify Variable Casting Time.','Il s’agit de la partie réductible du cast affectée par les mécaniques de vitesse d’incantation comme DEX / INT et par les effets qui modifient explicitement la Variable Casting Time.')}</li>
+        <li>${navLabel('Phen Card is a confirmed Zero example: casting cannot be interrupted, but Variable Casting Time is increased by 25%.','Phen Card est un exemple confirmé sur Zero : le cast ne peut pas être interrompu, mais la Variable Casting Time augmente de 25 %.')}</li>
+        <li><strong>${navLabel('No universal formula is published here yet.','Aucune formule universelle n’est encore publiée ici.')}</strong> ${navLabel(
+          'The commonly quoted Renewal formula based on 2×DEX + INT is still marked unverified by the current Zero formula database, so it is not treated as established Zero Global data.',
+          'La formule Renewal souvent citée basée sur 2×DEX + INT est encore marquée comme non vérifiée par la base de formules Zero actuelle ; elle n’est donc pas présentée comme une donnée établie de Zero Global.'
+        )}</li>
+      </ul>
+
+      <h3>Fixed Casting Time (FCT)</h3>
+      <ul>
+        <li>${navLabel('Fixed Casting Time is handled separately from Variable Casting Time and is only affected by effects that explicitly reduce fixed casting.','Le Fixed Casting Time est traité séparément du Variable Casting Time et n’est affecté que par les effets qui réduisent explicitement le fixed casting.')}</li>
+        <li>${navLabel('Zero items can directly provide “Fixed Casting Time -X%”.','Des objets Zero peuvent directement fournir « Fixed Casting Time -X% ».')}</li>
+        <li>${navLabel('The current Zero cash-shop description for Challenge Drink explicitly states that percentage-based Fixed Casting Time reductions do not stack and only the largest percentage effect applies.','La description Zero actuelle de Challenge Drink précise explicitement que les réductions en pourcentage du Fixed Casting Time ne se cumulent pas et que seul le plus gros pourcentage s’applique.')}</li>
+      </ul>
+
+      <div class="wiki-callout">${navLabel(
+        'Do not assume that every Zero skill has the Renewal default split of 80% VCT / 20% FCT. Current community skill data often exposes a single Cast value and does not reliably expose a separate base VCT/FCT split. This wiki therefore records the verified Cast value per skill and only separates VCT/FCT when a Zero-specific source does so.',
+        'Ne pars pas du principe que chaque skill Zero utilise le découpage Renewal par défaut 80 % VCT / 20 % FCT. Les données communautaires actuelles affichent souvent une seule valeur Cast et ne donnent pas de manière fiable un découpage VCT/FCT de base. Ce wiki enregistre donc la valeur Cast vérifiée du skill et ne sépare VCT/FCT que lorsqu’une source spécifique à Zero le fait.'
+      )}</div>
+
+      <h2 id="delay-cooldown">${navLabel('Cast Delay and Cooldown','Cast Delay et Cooldown')}</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Mechanic','Mécanique')}</th><th>${navLabel('What it blocks','Ce que cela bloque')}</th><th>${navLabel('How this wiki handles it','Traitement sur le wiki')}</th></tr></thead>
+        <tbody>
+          <tr><th>Global / After-Cast Delay</th><td>${navLabel('A shared delay affecting access to other skills after execution.','Un délai partagé affectant l’accès aux autres skills après l’exécution.')}</td><td>${navLabel('Only shown numerically when a Zero-specific source exposes the value. Zero client equipment data confirms the existence of “Global Delay” modifiers.','Affiché numériquement uniquement lorsqu’une source spécifique à Zero donne la valeur. Les données d’équipement du client Zero confirment l’existence de modificateurs « Global Delay ».')}</td></tr>
+          <tr><th>Cooldown</th><td>${navLabel('The same skill cannot be reused until its own cooldown ends.','Le même skill ne peut pas être relancé avant la fin de son propre cooldown.')}</td><td>${navLabel('Stored per skill level in the database when available. It is not replaced by an iRO cooldown value.','Stocké par niveau de skill dans la base lorsque disponible. Il n’est jamais remplacé par une valeur de cooldown iRO.')}</td></tr>
+          <tr><th>${navLabel('Attack / animation timing','Timing d’attaque / animation')}</th><td>${navLabel('Can still limit how quickly actions can be chained even when cast and cooldown are very short.','Peut encore limiter la vitesse d’enchaînement des actions même lorsque le cast et le cooldown sont très courts.')}</td><td>${navLabel('Not merged into Cooldown unless the Zero source explicitly records it that way.','N’est pas fusionné avec le Cooldown sauf si la source Zero l’enregistre explicitement ainsi.')}</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 id="examples">${navLabel('Current Zero skill examples','Exemples de skills Zero actuels')}</h2>
+      <p>${navLabel(
+        'These examples illustrate why Cast and Cooldown must be stored separately. Values are taken from current Zero skill data rather than iRO.',
+        'Ces exemples montrent pourquoi Cast et Cooldown doivent être stockés séparément. Les valeurs proviennent des données Zero actuelles et non d’iRO.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Skill','Skill')}</th><th>${navLabel('Level','Niveau')}</th><th>Cast</th><th>Cooldown</th><th>${navLabel('Observation','Observation')}</th></tr></thead>
+        <tbody>
+          <tr><th><a href="#/skills/fire-bolt">Fire Bolt</a></th><td>Lv. 1</td><td>800 ms</td><td>700 ms</td><td>${navLabel('Both phases are present.','Les deux phases sont présentes.')}</td></tr>
+          <tr><th><a href="#/skills/fire-ball">Fire Ball</a></th><td>Lv. 1</td><td>800 ms</td><td>350 ms</td><td>${navLabel('Same base Cast as Fire Bolt Lv.1, but a different skill cooldown.','Même Cast de base que Fire Bolt Lv.1, mais cooldown propre au skill différent.')}</td></tr>
+          <tr><th><a href="#/skills/sight">Sight</a></th><td>Lv. 1</td><td>—</td><td>—</td><td>${navLabel('No Cast or Cooldown is listed in the current Zero skill data.','Aucun Cast ni Cooldown n’est indiqué dans les données Zero actuelles.')}</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 id="database">${navLabel('Skill database','Base de skills')}</h2>
+      <p>${navLabel(
+        'Use the database below to open a skill page and view its class, maximum level, prerequisites, SP cost, range, Cast and Cooldown values when verified.',
+        'Utilise la base ci-dessous pour ouvrir la page d’un skill et consulter sa classe, son niveau maximum, ses prérequis, son coût en SP, sa portée, son Cast et son Cooldown lorsque ces données sont vérifiées.'
+      )}</p>
+      <div class="filters">
+        <div class="form-field"><label>${t('searchInList')}</label><input id="list-search" class="input" type="search" placeholder="${t('searchInList')}…"></div>
+        <div class="form-field"><label>${t('class')}</label><select id="list-filter" class="select"><option value="">${t('all')}</option>${DATA.classes.filter(c=>DATA.skills.some(sk=>sk.classId===c.id)).map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('')}</select></div>
+      </div>
+      <div id="result-count" class="result-count"></div>
+      <div id="list-output"></div>
+
+      ${officialSources([
+        ['Prontera.info — Zero Data & Formulas','https://roz.prontera.info/mechanics'],
+        ['Prontera.info — Zero Skill Planner','https://roz.prontera.info/skills/planner?class=wizard'],
+        ['RO Zero Database — Phen Card','https://rozerodb.com/cards/phen-card'],
+        ['Prontera.info — Zero item casting / Global Delay modifiers','https://roz.prontera.info/guides/bonuses'],
+        ['RO Zero Database — Challenge Drink fixed-cast rule','https://rozerodb.com/cash-shop']
+      ])}
+      <div class="source-box"><strong>${navLabel('Layout reference only','Référence de structure uniquement')}</strong><ul>
+        <li><a href="https://irowiki.org/wiki/Skills" target="_blank" rel="noopener">iRO Wiki — Skills</a> — ${navLabel(
+          'used as a structural reference for the explanation of skill types and usage phases. iRO formulas, cards, class examples and Renewal timing values are not copied into this article.',
+          'utilisé comme référence de structure pour l’explication des types de skills et des phases d’utilisation. Les formules, cartes, exemples de classes et valeurs de timing Renewal d’iRO ne sont pas copiés dans cet article.'
+        )}</li>
+      </ul></div>`;
+  }
+
   function listView(type) {
     const cfg = listConfig[type];
     if (!cfg) return notFound();
@@ -4562,6 +4737,7 @@ window.RO_DATA = {
         if (type === 'items') rows = rows.filter(x => x.type === f);
         if (type === 'monsters') rows = rows.filter(x => x.race === f);
         if (type === 'quests') rows = rows.filter(x => x.type === f);
+        if (type === 'skills') rows = rows.filter(x => x.classId === f);
       }
       count.textContent = `${rows.length} ${t('results')}`;
       output.innerHTML = renderListTable(type, rows);
@@ -6064,7 +6240,8 @@ window.RO_DATA = {
     else if(hash[0]==='guides'&&hash[1]) html=guideDetail(hash[1]);
     else if(hash[0]==='classes'&&!hash[1]) html=classIndexView();
     else if(hash[0]==='wiki'&&hash[1]) html=topicDetail(hash[1]);
-    else if(['monsters','items','cards','maps','skills','quests','npcs'].includes(hash[0])) html=listView(hash[0]);
+    else if(hash[0]==='skills'&&!hash[1]) html=skillsOverviewPage();
+    else if(['monsters','items','cards','maps','quests','npcs'].includes(hash[0])) html=listView(hash[0]);
     else if(hash[0]==='leveling') html=levelingView();
     else if(hash[0]==='tools'&&hash[1]==='build-planner') html=buildView();
     else html=notFound();
