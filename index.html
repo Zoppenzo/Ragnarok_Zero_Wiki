@@ -6057,6 +6057,17 @@ window.RO_DATA = {
         'Auto-Hunt est le système de chasse automatique intégré au jeu. Il peut se déplacer sur une map, choisir ses monstres, utiliser des attaques et compétences, ramasser certains objets, utiliser des consommables et gérer la récupération des HP/SP selon les réglages du joueur.'
       )}</p>
 
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:14px 0 18px">
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--line-soft);background:var(--paper-soft);border-radius:6px">
+          <img src="https://midgardhub.com/images/guides/new-player/image75.png" alt="Auto-Hunt icon" width="48" height="48" loading="lazy" style="width:48px;height:48px;object-fit:contain;flex:0 0 48px">
+          <div><strong style="display:block;margin-bottom:3px">Auto-Hunt</strong><span style="color:var(--muted);font-size:12px">${navLabel('Twin-swords button used to start automatic hunting.','Bouton aux deux épées utilisé pour lancer la chasse automatique.')}</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--line-soft);background:var(--paper-soft);border-radius:6px">
+          <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWDd0gtVwnoWcLi4KEJgBmgJPgBg7h6pGGUtYf0xuSpJpICMqNmhasUeDeZphza3T7Prd7NBUjZvUKwanq-s6KB6IgA_GQvlnu9AqriZ6YenYTgIcTItYXbugRjAXQtoS2bU1hzkfKCUbhPzWAWoA15-yJJX3vexXnmqBv4TIao_UUqk9ZMqOpa3Yyvq80yqxIcbc04QRYSvlPOW0rC8GvQJz6y6qyOlENKVZ83Dng=w1280" alt="Auto Pot icon" width="48" height="48" loading="lazy" style="width:48px;height:48px;object-fit:contain;flex:0 0 48px">
+          <div><strong style="display:block;margin-bottom:3px">Auto Pot</strong><span style="color:var(--muted);font-size:12px">${navLabel('Button used to enable automatic HP/SP potion use during manual hunting.','Bouton permettant d’activer l’utilisation automatique des potions HP/SP pendant la chasse manuelle.')}</span></div>
+        </div>
+      </div>
+
       ${toc([
         {id:'overview',label:navLabel('Overview','Aperçu')},
         {id:'activation',label:navLabel('Activating Auto-Hunt','Activer Auto-Hunt')},
@@ -6093,7 +6104,7 @@ window.RO_DATA = {
         )}</p></div>
       </div>
 
-      <h2 id="activation">${navLabel('Activating Auto-Hunt','Activer Auto-Hunt')}</h2>
+      <h2 id="activation" style="display:flex;align-items:center;gap:9px"><img src="https://midgardhub.com/images/guides/new-player/image75.png" alt="" width="34" height="34" loading="lazy" style="width:34px;height:34px;object-fit:contain">${navLabel('Activating Auto-Hunt','Activer Auto-Hunt')}</h2>
       <p>${navLabel(
         'After configuring the panel, use the crossed-swords Auto-Hunt button. The swords turn blue while Auto-Hunt is active and the character begins hunting according to the saved settings. A keyboard shortcut can also be assigned in Game Settings to toggle Auto-Hunt on or off.',
         'Après avoir configuré la fenêtre, utilise le bouton Auto-Hunt représenté par deux épées croisées. Les épées deviennent bleues lorsque l’Auto-Hunt est actif et le personnage commence à chasser selon les réglages enregistrés. Un raccourci clavier peut aussi être attribué dans les Game Settings pour activer ou désactiver Auto-Hunt.'
@@ -6178,7 +6189,7 @@ window.RO_DATA = {
         )}</p></div>
       </div>
 
-      <h2 id="auto-pot">Auto Pot</h2>
+      <h2 id="auto-pot" style="display:flex;align-items:center;gap:9px"><img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWDd0gtVwnoWcLi4KEJgBmgJPgBg7h6pGGUtYf0xuSpJpICMqNmhasUeDeZphza3T7Prd7NBUjZvUKwanq-s6KB6IgA_GQvlnu9AqriZ6YenYTgIcTItYXbugRjAXQtoS2bU1hzkfKCUbhPzWAWoA15-yJJX3vexXnmqBv4TIao_UUqk9ZMqOpa3Yyvq80yqxIcbc04QRYSvlPOW0rC8GvQJz6y6qyOlENKVZ83Dng=w1280" alt="" width="34" height="34" loading="lazy" style="width:34px;height:34px;object-fit:contain">Auto Pot</h2>
       <p>${navLabel(
         'Auto Pot is a separate mode that can be used while hunting manually. It uses the same potion configuration defined for Auto-Hunt and automatically consumes the selected HP/SP recovery items when their thresholds are reached. Auto Pot can also be assigned to a keyboard shortcut; its icon turns blue while active.',
         'Auto Pot est un mode séparé utilisable pendant la chasse manuelle. Il reprend la même configuration de potions que celle définie dans Auto-Hunt et utilise automatiquement les objets de récupération HP/SP sélectionnés lorsque leurs seuils sont atteints. Auto Pot peut également être attribué à un raccourci clavier ; son icône devient bleue lorsqu’il est actif.'
