@@ -4724,93 +4724,40 @@ window.RO_DATA = {
 
   function sourcesLinksPage(topic) {
     const title = lang === 'fr' ? topic.fr : topic.en;
-    const groups = [
-      {
-        title: navLabel('Official Ragnarok Global','Ragnarok Global officiel'),
-        links: [
-          ['Ragnarok Global — Official site','https://roz.mygnjoy.com/en/main'],
-          ['Ragnarok Global — Game Guide','https://roz.mygnjoy.com/en/intro/guide'],
-          ['Ragnarok Global — Download','https://roz.mygnjoy.com/en/download'],
-          ['GNJOY — Game Guide 21 (EXP)','https://roz.mygnjoy.com/fr/intro/guide/21'],
-          ['GNJOY — Launch notice','https://roz.mygnjoy.com/en/news/notice/42'],
-          ['GNJOY — Party EXP notice','https://roz.mygnjoy.com/en/news/notice/69'],
-          ['GNJOY — Community feedback / Party EXP','https://roz.mygnjoy.com/en/news/notice/70']
-        ]
-      },
-      {
-        title: navLabel('Community guides','Guides communautaires'),
-        links: [
-          ['Lymd — Global Guide','https://sites.google.com/view/rozeroguide'],
-          ['MidgardHub — Complete New Player Guide','https://midgardhub.com/guides/new-player'],
-          ['MidgardHub — Hidden World / PvP Maps','https://midgardhub.com/guides/pvp-maps'],
-          ['MidgardHub — Activation Guide','https://midgardhub.com/guides/activation'],
-          ['ROZ Global — Progression Guide','https://roz-global.info/06-progression.html'],
-          ['Community Wiki — Leveling Guide','https://ragnarokzero.wiki/fr/guides/leveling/'],
-          ['Criatura Academy — Tipbox','https://old.criatura-academy.com/tipbox/ko']
-        ]
-      },
-      {
-        title: navLabel('Databases and tools','Bases de données et outils'),
-        links: [
-          ['Encyclop’Elvyl — Global database','https://docs.google.com/spreadsheets/d/1nK2jFgMEKa6IYGszbRtAcIp06VhM2sfsUf4kv46gKzI/edit?gid=1921304023#gid=1921304023'],
-          ['Prontera.info — Home','https://roz.prontera.info/'],
-          ['Prontera.info — Mechanics & formulas','https://roz.prontera.info/mechanics'],
-          ['Prontera.info — Skill Planner','https://roz.prontera.info/skills/planner?class=wizard'],
-          ['Prontera.info — Bonuses','https://roz.prontera.info/guides/bonuses'],
-          ['ROZ Database — Home','https://rozerodb.com/'],
-          ['ROZ Database — Roadmap','https://rozerodb.com/guides/roadmap-update'],
-          ['ROZ Database — Cash Shop','https://rozerodb.com/cash-shop'],
-          ['MidgardHub — Home','https://midgardhub.com/'],
-          ['MidgardHub — Skill tools','https://midgardhub.com/tools/skills'],
-          ['MidgardHub — Skills database','https://midgardhub.com/skills'],
-          ['MidgardHub — Map database','https://midgardhub.com/database/maps'],
-          ['RagnaPlace — Global database','https://ragnaplace.com/en/rozg-en/'],
-          ['RZ Skill Tree','https://rz.fharr.com/db/skilltree']
-        ]
-      },
-      {
-        title: navLabel('World map references','Références pour la carte du monde'),
-        links: [
-          ['RateMyServer — Map Database','https://ratemyserver.net/index.php?page=map_db'],
-          ['RateMyServer — World Map','https://ratemyserver.net/worldmap.php?re_mob=0'],
-          ['RateMyServer — Dungeon Map','https://ratemyserver.net/dungeonmap.php?re_mob=1'],
-          ['MidgardHub — World Map image','https://midgardhub.com/images/database/worldmap.jpg']
-        ]
-      },
-      {
-        title: navLabel('Structural and comparison references','Références de structure et de comparaison'),
-        links: [
-          ['iRO Wiki — Levels','https://irowiki.org/wiki/Levels'],
-          ['iRO Wiki — Experience','https://irowiki.org/wiki/Experience'],
-          ['iRO Wiki — Stats','https://irowiki.org/wiki/Stats'],
-          ['iRO Wiki — Element','https://irowiki.org/wiki/Element'],
-          ['iRO Wiki — Items','https://irowiki.org/wiki/Items'],
-          ['iRO Wiki — Card System','https://irowiki.org/wiki/Card_System'],
-          ['iRO Wiki — Monster','https://irowiki.org/wiki/Monster'],
-          ['iRO Wiki — World Map','https://irowiki.org/wiki/World_Map'],
-          ['iRO Wiki — Skills','https://irowiki.org/wiki/Skills'],
-          ['iRO Wiki — Novice','https://irowiki.org/wiki/Novice'],
-          ['iRO Wiki — Basic Skill','https://irowiki.org/wiki/Basic_Skill']
-        ]
-      }
+    const resources = [
+      [navLabel('Official site','Site officiel'), 'Ragnarok Global', 'https://roz.mygnjoy.com/en/main'],
+      [navLabel('Guide','Guide'), 'Lymd — Global Guide', 'https://sites.google.com/view/rozeroguide'],
+      [navLabel('Guide / Database','Guide / Base de données'), 'MidgardHub', 'https://midgardhub.com/'],
+      [navLabel('Guide','Guide'), 'ROZ Global', 'https://roz-global.info/'],
+      [navLabel('Guide / Wiki','Guide / Wiki'), 'Ragnarok Zero Community Wiki', 'https://ragnarokzero.wiki/'],
+      [navLabel('Guide','Guide'), 'Criatura Academy', 'https://old.criatura-academy.com/'],
+      [navLabel('Database','Base de données'), 'Encyclop’Elvyl', 'https://docs.google.com/spreadsheets/d/1nK2jFgMEKa6IYGszbRtAcIp06VhM2sfsUf4kv46gKzI/edit'],
+      [navLabel('Database / Formulas','Base de données / Formules'), 'Prontera.info', 'https://roz.prontera.info/'],
+      [navLabel('Database','Base de données'), 'ROZ Database', 'https://rozerodb.com/'],
+      [navLabel('Database','Base de données'), 'RagnaPlace', 'https://ragnaplace.com/en/rozg-en/'],
+      [navLabel('Skill tool','Outil de compétences'), 'RZ Skill Tree', 'https://rz.fharr.com/db/skilltree'],
+      [navLabel('Map reference','Référence de carte'), 'RateMyServer', 'https://ratemyserver.net/'],
+      [navLabel('Structural reference','Référence de structure'), 'iRO Wiki', 'https://irowiki.org/wiki/Main_Page']
     ];
 
     return `${breadcrumbs([{label:title}])}
       <div class="article-heading"><h1>${icon('info')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'All external references used while building the wiki are grouped here so gameplay pages can stay clean and easy to read.',
-        'Toutes les références externes utilisées pour construire le wiki sont regroupées ici afin de garder les pages de gameplay propres et faciles à lire.'
+        'Useful websites for guides, databases, tools and reference material.',
+        'Sites utiles pour les guides, bases de données, outils et références.'
       )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr>
+          <th>${navLabel('Type','Type')}</th>
+          <th>${navLabel('Website','Site')}</th>
+          <th>${navLabel('Link','Lien')}</th>
+        </tr></thead>
+        <tbody>${resources.map(([type,name,url]) => `<tr><td>${esc(type)}</td><th>${esc(name)}</th><td><a href="${url}" target="_blank" rel="noopener">${esc(url)}</a></td></tr>`).join('')}</tbody>
+      </table></div>
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
-        'Links from other Ragnarok versions can be useful for structure, visual comparison or specific tables, but their gameplay values are not automatically valid for the current Global server.',
-        'Les liens provenant d’autres versions de Ragnarok peuvent servir pour la structure, la comparaison visuelle ou certains tableaux précis, mais leurs valeurs de gameplay ne sont pas automatiquement valables pour le serveur Global actuel.'
-      )}</div></div>
-      ${groups.map(group => `
-        <h2>${group.title}</h2>
-        <div class="table-wrap"><table>
-          <tbody>${group.links.map(([label,url]) => `<tr><th style="width:42%">${esc(label)}</th><td><a href="${url}" target="_blank" rel="noopener">${esc(url)}</a></td></tr>`).join('')}</tbody>
-        </table></div>
-      `).join('')}`;
+        'Sites for other Ragnarok versions are used only as structural or visual references unless a page explicitly states otherwise.',
+        'Les sites d’autres versions de Ragnarok servent uniquement de références de structure ou visuelles, sauf indication contraire.'
+      )}</div></div>`;
   }
 
   function topicDetail(id) {
