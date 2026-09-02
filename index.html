@@ -3598,6 +3598,7 @@ window.RO_DATA = {
       ${toc([
         {id:'what-is-zero',label:navLabel('What is Ragnarok?','Qu’est-ce que Ragnarok ?')},
         {id:'zero-systems',label:navLabel('Notable systems','Systèmes notables')},
+        {id:'channels',label:navLabel('Channels','Canaux')},
         {id:'about-wiki',label:navLabel('About this wiki','À propos de ce wiki')}
       ])}
 
@@ -3649,6 +3650,38 @@ window.RO_DATA = {
           'A Global feature for creating and sharing custom cosmetic footprint effects and related creations.',
           'Une fonctionnalité Global permettant de créer et partager des effets cosmétiques de traces de pas et d’autres créations associées.'
         )}</p></div>
+      </div>
+
+      <h3 id="channels" style="font-size:21px;margin-top:30px">${navLabel('PvE Channels','Canaux PvE')}</h3>
+      <p>${navLabel(
+        'Most maps are split into several channels. The Channel Transfer Device lets you move between the available copies of the same area; the current interface shows Channel A, B, C and D.',
+        'La plupart des maps sont réparties sur plusieurs canaux. Le Channel Transfer Device permet de changer de copie d’une même zone ; l’interface actuelle affiche les Channel A, B, C et D.'
+      )}</p>
+      <figure style="margin:14px auto 26px;max-width:430px;text-align:center">
+        <img src="assets/introduction/channel-transfer.webp" alt="${navLabel('Channel Transfer Device showing Channel A to D','Channel Transfer Device affichant les Channel A à D')}" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+        <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel(
+          'Channel Transfer Device — choose the PvE channel you want to move to.',
+          'Channel Transfer Device — sélection du canal PvE vers lequel se déplacer.'
+        )}</figcaption>
+      </figure>
+
+      <h3 id="pvp-channels" style="font-size:21px;margin-top:28px">${navLabel('PvP Channels / Hidden World','Canaux PvP / Hidden World')}</h3>
+      <p>${navLabel(
+        'PvP channels use a separate access flow from the normal PvE channel list. The images below show the character used for this access and the location-selection window with X Location and Z Location.',
+        'Les canaux PvP utilisent un accès séparé de la liste normale des canaux PvE. Les images ci-dessous montrent le personnage utilisé pour cet accès ainsi que la fenêtre de sélection avec X Location et Z Location.'
+      )}</p>
+      <div style="display:grid;grid-template-columns:minmax(170px,230px) minmax(260px,1fr);gap:18px;align-items:center;margin:14px 0 28px">
+        <figure style="margin:0;text-align:center;padding:12px;border:1px solid var(--line-soft);border-radius:7px;background:#fff">
+          <img src="assets/introduction/pvp-channel-npc.webp" alt="${navLabel('Character shown for PvP channel access','Personnage affiché pour l’accès aux canaux PvP')}" loading="lazy" style="display:block;max-width:110px;height:auto;margin:0 auto;image-rendering:pixelated">
+          <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel('PvP channel access.','Accès aux canaux PvP.')}</figcaption>
+        </figure>
+        <figure style="margin:0;text-align:center">
+          <img src="assets/introduction/pvp-location-select.webp" alt="${navLabel('PvP location selection showing X Location and Z Location','Sélection de zone PvP affichant X Location et Z Location')}" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+          <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel(
+            'PvP location selection — X Location / Z Location.',
+            'Sélection de la zone PvP — X Location / Z Location.'
+          )}</figcaption>
+        </figure>
       </div>
 
       <h2 id="about-wiki">${navLabel('About this wiki','À propos de ce wiki')}</h2>
