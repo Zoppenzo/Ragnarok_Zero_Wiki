@@ -2953,24 +2953,8 @@ window.RO_DATA = {
 
   npcs: [],
 
-  guides: [
-    {
-      id: "getting-started", title: { en: "Getting Started", fr: "Bien débuter" }, icon: "guide",
-      intro: { en: "A future beginner hub for installation, controls, first classes, leveling and core systems.", fr: "Un futur hub débutant pour l'installation, les contrôles, les premières classes, le leveling et les systèmes principaux." },
-      sections: [
-        { title: { en: "New player checklist", fr: "Checklist nouveau joueur" }, body: { en: "Account, client, first character, basic controls and first objectives.", fr: "Compte, client, premier personnage, contrôles de base et premiers objectifs." } },
-        { title: { en: "First class", fr: "Première classe" }, body: { en: "Job-change paths and class pages.", fr: "Changements de classe et pages de classes." } }
-      ]
-    },
-    {
-      id: "mechanics", title: { en: "Game Mechanics", fr: "Mécaniques de jeu" }, icon: "mechanics",
-      intro: { en: "Reference hub for stats, elements, size, races, refine, EXP and combat rules.", fr: "Hub de référence pour les stats, éléments, tailles, races, refine, EXP et règles de combat." },
-      sections: [
-        { title: { en: "Stats", fr: "Stats" }, body: { en: "STR, AGI, VIT, INT, DEX and LUK formulas will be added to this section.", fr: "Les formules STR, AGI, VIT, INT, DEX et LUK seront ajoutées à cette section." } },
-        { title: { en: "Elements & races", fr: "Éléments & races" }, body: { en: "Future tables will centralize elemental modifiers, race interactions and size modifiers.", fr: "De futurs tableaux centraliseront les modificateurs élémentaires, interactions de race et modificateurs de taille." } }
-      ]
-    }
-  ]
+  guides: []
+
 };
 
 </script>
@@ -3191,7 +3175,7 @@ window.RO_DATA = {
       'experience-setup':'complete', 'adventurer-agency':'complete'
     },
     '#/wiki/guild-system': {
-      overview:'complete', creation:'complete', membership:'complete',
+      overview:'complete', creation:'partial', membership:'complete',
       leadership:'complete', emblem:'complete', 'guild-leveling':'complete',
       'daily-quests':'complete', 'guild-exp-table':'complete'
     },
@@ -5534,6 +5518,12 @@ window.RO_DATA = {
         'Après le départ d’un membre, vérifie immédiatement le réglage d’EXP et remets-le sur Shared s’il est repassé sur Individual.'
       )}</div>
 
+      ${officialSources([
+        ['Official GNJOY — Party EXP Returns notice','https://roz.mygnjoy.com/en/news/notice/69'],
+        ['Official GNJOY — Community Feedback & Party EXP update','https://roz.mygnjoy.com/en/news/notice/70'],
+        ['Ragnarok Zero Guide by Lymd — Adventurer Agency','https://sites.google.com/view/rozeroguide']
+      ])}
+
       <div class="hero-actions">
         <a class="button primary" href="#/wiki/experience">${miniIcon('level')}${navLabel('Experience','Expérience')}</a>
         <a class="button" href="#/wiki/basic-controls">${miniIcon('tools')}${navLabel('Basic Controls','Contrôles de base')}</a>
@@ -5612,8 +5602,8 @@ window.RO_DATA = {
 
       <h2 id="creation">${navLabel('Creating a Guild','Créer une guilde')}</h2>
       <p>${navLabel(
-        'Guild creation uses an Emperium. Once the Guild has been created, the Guild Leader can recruit members and manage the Guild through the Guild interface.',
-        'La création d’une guilde utilise un Emperium. Une fois la guilde créée, le chef peut recruter des membres et gérer la guilde depuis l’interface de guilde.'
+        'The current sources reviewed here confirm the live Guild system, membership rules and Guild progression, but do not document the exact Guild-creation requirement in enough detail. This point remains to be verified before a required item or cost is stated.',
+        'Les sources actuelles vérifiées ici confirment le système de guilde, les règles d’adhésion et la progression de guilde, mais ne documentent pas assez précisément la condition exacte de création d’une guilde. Ce point reste à vérifier avant d’indiquer un objet ou un coût obligatoire.'
       )}</p>
 
       <h2 id="membership">${navLabel('Members and Clans','Membres et Clans')}</h2>
@@ -5665,6 +5655,10 @@ window.RO_DATA = {
         ${guildExpTable(guildExpRows.slice(0,25))}
         ${guildExpTable(guildExpRows.slice(25))}
       </div>
+
+      ${officialSources([
+        ['Ragnarok Zero Guide by Lymd — Guild / Guild Leveling','https://sites.google.com/view/rozeroguide']
+      ])}
 
       <div class="hero-actions">
         <a class="button primary" href="#/wiki/party">${miniIcon('class')}${navLabel('Party','Party')}</a>
@@ -6046,6 +6040,11 @@ window.RO_DATA = {
         <img src="https://midgardhub.com/images/guides/new-player/image138.png" alt="Raid Manager Yakt" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px">
         <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">Raid Manager Yakt — Eden Group</figcaption>
       </figure>
+
+      ${officialSources([
+        ['Ragnarok Zero Guide by Lymd — MVP Raid','https://sites.google.com/view/rozeroguide'],
+        ['MidgardHub — New Player Guide / MVP Raid','https://midgardhub.com/guides/new-player']
+      ])}
 
       <div class="hero-actions">
         <a class="button primary" href="#/wiki/party">${miniIcon('class')}${navLabel('Party','Party')}</a>
