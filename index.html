@@ -3330,6 +3330,11 @@ window.RO_DATA = {
       overview:'complete', create:'complete', editor:'complete', register:'complete',
       market:'complete', 'in-game':'complete', faq:'complete'
     },
+    '#/wiki/pet-system': {
+      overview:'complete', taming:'complete', raising:'complete',
+      'pet-quest':'complete', 'taming-ring':'complete', 'ring-upgrade':'complete',
+      bonuses:'complete', 'get-poring-link':'complete'
+    },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
       materials:'complete', drops:'complete'
@@ -6676,6 +6681,186 @@ window.RO_DATA = {
     `;
   }
 
+
+  function petSystemPage(topic) {
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+    const petBonuses = [
+      ['Poring',9001,'LUK +2, CRI +1','LUK +3, CRI +1'],
+      ['Drops',9002,'HIT +3, ATK +3','HIT +5, ATK +5'],
+      ['Poporing',9003,'LUK +2, Poison Resistance +10%','LUK +3, Poison Resistance +15%'],
+      ['Lunatic',9004,'CRI +2, ATK +2','CRI +3, ATK +3'],
+      ['Picky',9005,'STR +1, ATK +5','STR +2, ATK +8'],
+      ['Chonchon',9006,'AGI +1, FLEE +2','AGI +2, FLEE +3'],
+      ['Steel Chonchon',9007,'FLEE +6','FLEE +9'],
+      ['Hunter Fly',9008,'Perfect Dodge +2','Perfect Dodge +2, HIT +1'],
+      ['Savage Babe',9009,'VIT +1, MaxHP +50','VIT +2, MaxHP +75'],
+      ['Baby Desert Wolf',9010,'INT +1, MaxSP +50','INT +2, MaxSP +75'],
+      ['Rocker',9011,'HP Recovery +5%, MaxHP +25','HP Recovery +8%, MaxHP +38'],
+      ['Spore',9012,'HIT +5','HIT +8'],
+      ['Poison Spore',9013,'STR +1, INT +1','STR +2, INT +2'],
+      ['Peco Peco',9014,'MaxHP +150','MaxHP +200'],
+      ['Smokie',9015,'AGI +1, Perfect Dodge +1','AGI +2, Perfect Dodge +1'],
+      ['Yoyo',9016,'CRI +3','CRI +5'],
+      ['Orc Warrior',9017,'ATK +10','ATK +15'],
+      ['Munak',9018,'INT +1, DEF +1','INT +2, DEF +2'],
+      ['Dokebi',9019,'MATK +1%','MATK +2%'],
+      ['Sohee',9020,'STR +1, DEX +1','STR +2, DEX +2'],
+      ['Isis',9021,'ATK +1%','ATK +2%'],
+      ['Petit',9022,'ASPD +1%','ASPD +1%, AGI +1'],
+      ['Deviruchi',9023,'ATK +1%, MATK +1%','ATK +1%, MATK +1%, MaxHP +1%, MaxSP +1%'],
+      ['Baphomet Jr.',9024,'DEF +1, MDEF +1, Stun Resistance +1%','DEF +2, MDEF +2, Stun Resistance +2%'],
+      ['Bongun',9025,'VIT +1, Stun Resistance +1%','VIT +2, Stun Resistance +2%'],
+      ['Zerlitha',9026,'ATK & MATK vs Demi-Human +2%','ATK & MATK vs Demi-Human +3%'],
+      ['Alice',9027,'MDEF +1, Damage from Demi-Human -1%','MDEF +2, Damage from Demi-Human -2%'],
+      ['Petit (Rice Cake)',9028,'Neutral Property Resistance +1%','Neutral Property Resistance +2%'],
+      ['Christmas Goblin',9029,'MaxHP +30, Water Property Resistance +1%','MaxHP +45, Water Property Resistance +2%'],
+      ['Chungie',9030,'Damage from Demi-Human -1%, DEF +1','Damage from Demi-Human -2%, DEF +2'],
+      ['Novice Poring',9062,'HP Recovery +50%','HP Recovery +75%']
+    ];
+
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('monster')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+
+      <p class="article-lead">${navLabel(
+        'The Cute Pet system lets you tame certain monsters and turn them into Qpets. A captured pet can be hatched from its egg, raised through intimacy and kept beside your character. As its relationship with you improves, it unlocks passive bonuses. Ragnarok Zero also adds the Taming Ring system, which lets you seal a pet egg\'s bonus into a right-side accessory.',
+        'Le système de Cute Pet permet de capturer certains monstres pour en faire des Qpets. Une fois obtenu sous forme d’œuf, le pet peut être invoqué, élevé grâce à son intimité et rester aux côtés de ton personnage. En améliorant sa relation avec toi, il débloque des bonus passifs. Ragnarok Zero ajoute aussi le système de Taming Ring, qui permet de sceller le bonus d’un œuf dans un accessoire droit.'
+      )}</p>
+
+      ${toc([
+        {id:'overview',label:navLabel('Pet System','Système de Pet')},
+        {id:'taming',label:navLabel('Taming a Pet','Capturer un Pet')},
+        {id:'raising',label:navLabel('Raising and Intimacy','Élevage et Intimité')},
+        {id:'pet-quest',label:navLabel('Pet Taming Quest','Quête de Pet Taming')},
+        {id:'taming-ring',label:'Taming Ring'},
+        {id:'ring-upgrade',label:navLabel('Taming Ring Lv.1 / Lv.2','Taming Ring Lv.1 / Lv.2')},
+        {id:'bonuses',label:navLabel('Pet Bonus Table','Table des bonus de Pet')},
+        {id:'get-poring-link',label:navLabel('Qpets vs Get Poring','Qpets et Get Poring')}
+      ])}
+
+      <h2 id="overview">${navLabel('Pet System','Système de Pet')}</h2>
+      <p>${navLabel(
+        'Qpets are monsters that have been captured and stored in Pet Eggs. They are more than cosmetic companions: regular pet eggs have stat bonuses tied to their intimacy level, and the same egg bonuses can also be used through a Taming Ring.',
+        'Les Qpets sont des monstres capturés puis stockés dans des Pet Eggs. Ce ne sont pas seulement des compagnons cosmétiques : les œufs de pet possèdent des bonus de statistiques liés à l’intimité, et ces mêmes bonus peuvent aussi être utilisés grâce à une Taming Ring.'
+      )}</p>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('monster')}${navLabel('Capture','Capture')}</strong><p>${navLabel(
+          'Use the taming item made for the monster you want to capture.',
+          'Utilise l’objet de domestication correspondant au monstre que tu veux capturer.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}${navLabel('Pet Egg','Pet Egg')}</strong><p>${navLabel(
+          'Captured pets are stored in eggs and can be awakened with a Portable Egg Incubator.',
+          'Les pets capturés sont stockés dans des œufs et peuvent être réveillés avec un Portable Egg Incubator.'
+        )}</p></div>
+        <div><strong>${miniIcon('class')}${navLabel('Intimacy','Intimité')}</strong><p>${navLabel(
+          'Cordial and Loyal intimacy levels unlock the pet’s passive bonuses.',
+          'Les niveaux d’intimité Cordial et Loyal débloquent les bonus passifs du pet.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}Taming Ring</strong><p>${navLabel(
+          'Seal a pet egg’s ability into an accessory to use its stat bonus as equipment.',
+          'Scelle la capacité d’un œuf dans un accessoire pour utiliser son bonus comme équipement.'
+        )}</p></div>
+      </div>
+
+      <h2 id="taming">${navLabel('Taming a Pet','Capturer un Pet')}</h2>
+      <p>${navLabel(
+        'Each tamable monster uses its own Taming Item. Use the item intended for that monster to attempt the capture. Taming Items are obtained from monster drops and from specific pet content such as the introductory taming quest.',
+        'Chaque monstre apprivoisable possède son propre Taming Item. Utilise l’objet prévu pour ce monstre afin de tenter la capture. Les Taming Items peuvent être obtenus sur des monstres ou via du contenu dédié aux pets, notamment la quête d’introduction.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Example Pet','Exemple de Pet')}</th><th>Taming Item</th><th>${navLabel('Example source','Exemple de source')}</th></tr></thead>
+        <tbody>
+          <tr><th>Rocker</th><td>Singing Flower</td><td>Flora — 0.1%</td></tr>
+          <tr><th>Baby Desert Wolf</th><td>Well-Dried Bone</td><td>Pirate Swordsman — 0.1%</td></tr>
+        </tbody>
+      </table></div>
+      <div class="wiki-callout warning-lite"><strong>${navLabel('Capture restriction','Restriction de capture')}</strong><br>${navLabel(
+        'Taming Items cannot be used to tame event monsters or slave monsters.',
+        'Les Taming Items ne permettent pas de capturer les monstres d’événement ni les slave monsters.'
+      )}</div>
+
+      <h2 id="raising">${navLabel('Raising and Intimacy','Élevage et Intimité')}</h2>
+      <p>${navLabel(
+        'A Pet Egg can be awakened with a Portable Egg Incubator. Once the pet is active, it must be cared for and fed so its intimacy can improve. Neglecting a pet can eventually make it disappear.',
+        'Un Pet Egg peut être réveillé avec un Portable Egg Incubator. Une fois le pet actif, il faut s’en occuper et le nourrir afin d’augmenter son intimité. Un pet négligé peut finir par disparaître.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Intimacy','Intimité')}</th><th>${navLabel('Effect','Effet')}</th></tr></thead>
+        <tbody>
+          <tr><th>Cordial</th><td>${navLabel('Unlocks the first passive pet bonus.','Débloque le premier niveau de bonus passif du pet.')}</td></tr>
+          <tr><th>Loyal</th><td>${navLabel('Upgrades the passive bonus to its stronger version.','Améliore le bonus passif vers sa version la plus forte.')}</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 id="pet-quest">${navLabel('Pet Taming Quest','Quête de Pet Taming')}</h2>
+      <p>${navLabel(
+        'A beginner Pet Taming quest is available inside the Izlude Academy. It introduces the capture system by letting you try to tame a Little Poring and provides taming items during the quest.',
+        'Une quête d’initiation au Pet Taming est disponible dans l’Académie d’Izlude. Elle présente le système de capture en te faisant essayer de capturer un Little Poring et fournit des objets de domestication pendant la quête.'
+      )}</p>
+      <div class="wiki-callout"><strong>Adept Adventurer</strong><br><code>/navi iz_ac01 45/78</code></div>
+
+      <h2 id="taming-ring">Taming Ring</h2>
+      <div style="display:grid;grid-template-columns:minmax(100px,150px) minmax(0,1fr);gap:18px;align-items:center;margin:12px 0 18px">
+        <div style="text-align:center">
+          <img src="https://midgardhub.com/images/items/24966.gif" alt="Taming Ring" loading="lazy" style="max-width:96px;image-rendering:auto">
+        </div>
+        <div>
+          <p>${navLabel(
+            'The Taming Ring is a special accessory designed to seal the abilities of Cute Pets. It equips in the right accessory slot, can be used by every class from Base Level 1, and the ring itself is tradable.',
+            'La Taming Ring est un accessoire spécial conçu pour sceller les capacités des Cute Pets. Elle s’équipe dans le slot d’accessoire droit, peut être portée par toutes les classes dès le Base Level 1 et la bague elle-même est échangeable.'
+          )}</p>
+          <p><strong>${navLabel('Price','Prix')}:</strong> 50,000 Zeny</p>
+        </div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Taming Merchant','Taming Merchant')}</th><th>${navLabel('Navigation','Navigation')}</th></tr></thead>
+        <tbody>
+          <tr><th>Payon</th><td><code>/navi payon 175/131</code></td></tr>
+          <tr><th>Izlude</th><td><code>/navi izlude_in 72/97</code></td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 id="ring-upgrade">${navLabel('Taming Ring Lv.1 / Lv.2','Taming Ring Lv.1 / Lv.2')}</h2>
+      <p>${navLabel(
+        'A Pet Egg can be sealed into the Taming Ring to give the ring that pet’s Lv.1 enchant effect. The Lv.2 upgrade requires another egg of the same pet and has a 50% success rate.',
+        'Un Pet Egg peut être scellé dans la Taming Ring afin de lui donner l’effet d’enchantement Lv.1 de ce pet. Le passage au Lv.2 demande un second œuf du même pet et possède 50% de chance de réussite.'
+      )}</p>
+      <div class="wiki-callout"><strong>${navLabel('Same bonus progression','Même progression de bonus')}</strong><br>${navLabel(
+        'For regular pet eggs, the Cordial pet bonus matches the egg’s Lv.1 Taming Ring effect, while the Loyal bonus matches Lv.2.',
+        'Pour les œufs de pets classiques, le bonus Cordial correspond à l’effet Lv.1 de la Taming Ring et le bonus Loyal correspond au Lv.2.'
+      )}</div>
+
+      <h2 id="bonuses">${navLabel('Pet Bonus Table','Table des bonus de Pet')}</h2>
+      <p>${navLabel(
+        'The table below lists the passive bonuses configured for regular Pet Eggs. Lv.1 corresponds to the first bonus tier and Lv.2 to the upgraded tier. An egg being present in the game data does not necessarily mean its capture method is active at the current content stage.',
+        'Le tableau ci-dessous regroupe les bonus passifs configurés pour les Pet Eggs classiques. Le Lv.1 correspond au premier niveau de bonus et le Lv.2 à sa version améliorée. La présence d’un œuf dans les données du jeu ne signifie pas forcément que sa méthode d’obtention est déjà active au stade actuel du contenu.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr>
+          <th>${navLabel('Pet / Egg','Pet / Œuf')}</th>
+          <th>ID</th>
+          <th>${navLabel('Cordial / Ring Lv.1','Cordial / Ring Lv.1')}</th>
+          <th>${navLabel('Loyal / Ring Lv.2','Loyal / Ring Lv.2')}</th>
+        </tr></thead>
+        <tbody>${petBonuses.map(([pet,id,lv1,lv2])=>`<tr>
+          <th>${esc(pet)}</th>
+          <td><code>${id}</code></td>
+          <td>${esc(lv1)}</td>
+          <td>${esc(lv2)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+
+      <h2 id="get-poring-link">${navLabel('Qpets vs Get Poring','Qpets et Get Poring')}</h2>
+      <p>${navLabel(
+        'Qpets and Get Poring are separate systems. Qpets are captured monsters with Pet Eggs, intimacy and stat bonuses. Get Poring is the browser companion game whose Porings are transferred to the main game as companions and are documented on their own page.',
+        'Les Qpets et Get Poring sont deux systèmes différents. Les Qpets sont des monstres capturés avec des Pet Eggs, de l’intimité et des bonus de statistiques. Get Poring est le mini-jeu navigateur dont les Porings sont transférés dans le jeu principal comme compagnons ; il possède sa propre page.'
+      )}</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#/wiki/get-poring">${miniIcon('monster')}Get Poring</a>
+        <a class="button" href="#/wiki/enchantment">${miniIcon('item')}${navLabel('Enchantment','Enchantement')}</a>
+        <a class="button" href="#/items">${miniIcon('item')}${navLabel('Items','Objets')}</a>
+      </div>`;
+  }
+
   function topicDetail(id) {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
     if (id === 'elements') return elementsPage(topic);
@@ -6690,6 +6875,7 @@ window.RO_DATA = {
     if (id === 'mvp-raid') return mvpRaidPage(topic);
     if (id === 'get-poring') return getPoringPage(topic);
     if (id === 'ro-factory') return roFactoryPage(topic);
+    if (id === 'pet-system') return petSystemPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
