@@ -6684,38 +6684,189 @@ window.RO_DATA = {
 
   function petSystemPage(topic) {
     const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
-    const petBonuses = [
-      ['Poring',9001,'LUK +2, CRI +1','LUK +3, CRI +1'],
-      ['Drops',9002,'HIT +3, ATK +3','HIT +5, ATK +5'],
-      ['Poporing',9003,'LUK +2, Poison Resistance +10%','LUK +3, Poison Resistance +15%'],
-      ['Lunatic',9004,'CRI +2, ATK +2','CRI +3, ATK +3'],
-      ['Picky',9005,'STR +1, ATK +5','STR +2, ATK +8'],
-      ['Chonchon',9006,'AGI +1, FLEE +2','AGI +2, FLEE +3'],
-      ['Steel Chonchon',9007,'FLEE +6','FLEE +9'],
-      ['Hunter Fly',9008,'Perfect Dodge +2','Perfect Dodge +2, HIT +1'],
-      ['Savage Babe',9009,'VIT +1, MaxHP +50','VIT +2, MaxHP +75'],
-      ['Baby Desert Wolf',9010,'INT +1, MaxSP +50','INT +2, MaxSP +75'],
-      ['Rocker',9011,'HP Recovery +5%, MaxHP +25','HP Recovery +8%, MaxHP +38'],
-      ['Spore',9012,'HIT +5','HIT +8'],
-      ['Poison Spore',9013,'STR +1, INT +1','STR +2, INT +2'],
-      ['Peco Peco',9014,'MaxHP +150','MaxHP +200'],
-      ['Smokie',9015,'AGI +1, Perfect Dodge +1','AGI +2, Perfect Dodge +1'],
-      ['Yoyo',9016,'CRI +3','CRI +5'],
-      ['Orc Warrior',9017,'ATK +10','ATK +15'],
-      ['Munak',9018,'INT +1, DEF +1','INT +2, DEF +2'],
-      ['Dokebi',9019,'MATK +1%','MATK +2%'],
-      ['Sohee',9020,'STR +1, DEX +1','STR +2, DEX +2'],
-      ['Isis',9021,'ATK +1%','ATK +2%'],
-      ['Petit',9022,'ASPD +1%','ASPD +1%, AGI +1'],
-      ['Deviruchi',9023,'ATK +1%, MATK +1%','ATK +1%, MATK +1%, MaxHP +1%, MaxSP +1%'],
-      ['Baphomet Jr.',9024,'DEF +1, MDEF +1, Stun Resistance +1%','DEF +2, MDEF +2, Stun Resistance +2%'],
-      ['Bongun',9025,'VIT +1, Stun Resistance +1%','VIT +2, Stun Resistance +2%'],
-      ['Zerlitha',9026,'ATK & MATK vs Demi-Human +2%','ATK & MATK vs Demi-Human +3%'],
-      ['Alice',9027,'MDEF +1, Damage from Demi-Human -1%','MDEF +2, Damage from Demi-Human -2%'],
-      ['Petit (Rice Cake)',9028,'Neutral Property Resistance +1%','Neutral Property Resistance +2%'],
-      ['Christmas Goblin',9029,'MaxHP +30, Water Property Resistance +1%','MaxHP +45, Water Property Resistance +2%'],
-      ['Chungie',9030,'Damage from Demi-Human -1%, DEF +1','Damage from Demi-Human -2%, DEF +2'],
-      ['Novice Poring',9062,'HP Recovery +50%','HP Recovery +75%']
+    const petList = [
+          [
+                "Poring",
+                "LUK +2, CRIT +1",
+                "LUK +3, CRIT +1",
+                "Unripe Apple",
+                "Poring — 0.2%|Mastering — 0.25%"
+          ],
+          [
+                "Drops",
+                "HIT +3, ATK +3",
+                "HIT +5, ATK +5",
+                "Orange Juice",
+                "Drops — 0.2%"
+          ],
+          [
+                "Poporing",
+                "LUK +2, Poison Resistance +10%",
+                "LUK +3, Poison Resistance +15%",
+                "Bitter Herb",
+                "Green Plant — 0.1%"
+          ],
+          [
+                "Lunatic",
+                "CRIT +2, ATK +2",
+                "CRIT +3, ATK +3",
+                "Rainbow Carrot",
+                "Lunatic — 0.2%|Eclipse — 0.25%"
+          ],
+          [
+                "Savage Bebe",
+                "VIT +1, MaxHP +50",
+                "VIT +2, MaxHP +75",
+                "Sweet Milk",
+                "Savage Bebe — 0.2%"
+          ],
+          [
+                "Rocker",
+                "HP Recovery +5%, MaxHP +25",
+                "HP Recovery +8%, MaxHP +38",
+                "Singing Flower",
+                "Flora — 0.1%"
+          ],
+          [
+                "Spore",
+                "HIT +5",
+                "HIT +8",
+                "Dew-Laden Moss",
+                "Plankton — 0.1%|Grey / Red Mushroom — 0.2%"
+          ],
+          [
+                "Poison Spore",
+                "STR +1, INT +1",
+                "STR +2, INT +2",
+                "Deadly Noxious Herb",
+                "Marina — 0.1%|White Plant — 0.1%"
+          ],
+          [
+                "Little Poring",
+                "HP Recovery +50%",
+                "HP Recovery +75%",
+                "Little Unripe Apple",
+                "Poring — 0.2%|Mastering — 0.25%"
+          ],
+          [
+                "Picky",
+                "STR +1, ATK +5",
+                "STR +2, ATK +8",
+                "Earthworm the Dude",
+                "Kukre — 0.1%"
+          ],
+          [
+                "Chonchon",
+                "AGI +1, FLEE +2",
+                "AGI +2, FLEE +3",
+                "Rotten Fish",
+                "Megalodon — 0.1%|Wild Rose — 0.18%"
+          ],
+          [
+                "Steel Chonchon",
+                "FLEE +6",
+                "FLEE +9",
+                "Rusty Iron",
+                "Scorpion — 0.1%|Dragon Fly — 0.25%"
+          ],
+          [
+                "Hunter Fly",
+                "Perfect Dodge +2",
+                "Perfect Dodge +2, HIT +1",
+                "Monster Juice",
+                "Vagabond Wolf — 0.25%"
+          ],
+          [
+                "Baby Desert Wolf",
+                "INT +1, MaxSP +50",
+                "INT +2, MaxSP +75",
+                "Well-Dried Bone",
+                "Pirate Swordsman — 0.1%"
+          ],
+          [
+                "Peco Peco",
+                "MaxHP +150",
+                "MaxHP +200",
+                "Fatty Chubby Earthworm",
+                "Hode — 0.1%"
+          ],
+          [
+                "Smokie",
+                "AGI +1, Perfect Dodge +1",
+                "AGI +2, Perfect Dodge +1",
+                "Baked Sweet Potato",
+                "Horong — 0.1%"
+          ],
+          [
+                "Yoyo",
+                "CRIT +3",
+                "CRIT +5",
+                "Tropical Banana",
+                "Choco — 0.1%|Lady Tanee — 20%"
+          ],
+          [
+                "Ground Petite",
+                "ASPD +1%",
+                "ASPD +1%, AGI +1",
+                "Shining Stone",
+                "Zenorc — 0.1%"
+          ],
+          [
+                "Isis",
+                "Physical Damage +1%",
+                "Physical Damage +2%",
+                "Armlet of Obedience",
+                "Verit — 0.1%|Maya — 2.5%"
+          ],
+          [
+                "Orc Warrior",
+                "ATK +10",
+                "ATK +15",
+                "Orc Trophy",
+                "Old Blue Box (OBB)"
+          ],
+          [
+                "Munak",
+                "INT +1, DEF +1",
+                "INT +2, DEF +2",
+                "No Recipient",
+                "Old Blue Box (OBB)"
+          ],
+          [
+                "Dokebi",
+                "MATK +1%",
+                "MATK +2%",
+                "Old Broom",
+                "Bathory — 0.1%|Alice — 0.2%"
+          ],
+          [
+                "Sohee",
+                "STR +1, DEX +1",
+                "STR +2, DEX +2",
+                "Silver Knife of Chastity",
+                "Moonlight Flower — 3.25%"
+          ],
+          [
+                "Deviruchi",
+                "Physical Damage +1%, MATK +1%",
+                "Physical Damage +1%, MATK +1%, MaxHP +1%, MaxSP +1%",
+                "Contract in Shadow",
+                "Joker — 0.1%"
+          ],
+          [
+                "Baphomet Jr.",
+                "DEF +1, MDEF +1, Stun Resistance +1%",
+                "DEF +2, MDEF +2, Stun Resistance +2%",
+                "Book of the Devil",
+                "Marduk — 0.1%"
+          ],
+          [
+                "Bongun",
+                "VIT +1, Stun Resistance +1%",
+                "VIT +2, Stun Resistance +2%",
+                "Her Heart",
+                "Old Blue Box (OBB)"
+          ]
     ];
 
     return `${breadcrumbs([{label:title}])}
@@ -6733,7 +6884,7 @@ window.RO_DATA = {
         {id:'pet-quest',label:navLabel('Pet Taming Quest','Quête de Pet Taming')},
         {id:'taming-ring',label:'Taming Ring'},
         {id:'ring-upgrade',label:navLabel('Taming Ring Lv.1 / Lv.2','Taming Ring Lv.1 / Lv.2')},
-        {id:'bonuses',label:navLabel('Pet Bonus Table','Table des bonus de Pet')},
+        {id:'bonuses',label:navLabel('Pet List','Liste des Pets')},
         {id:'get-poring-link',label:navLabel('Qpets vs Get Poring','Qpets et Get Poring')}
       ])}
 
@@ -6766,13 +6917,6 @@ window.RO_DATA = {
         'Each tamable monster uses its own Taming Item. Use the item intended for that monster to attempt the capture. Taming Items are obtained from monster drops and from specific pet content such as the introductory taming quest.',
         'Chaque monstre apprivoisable possède son propre Taming Item. Utilise l’objet prévu pour ce monstre afin de tenter la capture. Les Taming Items peuvent être obtenus sur des monstres ou via du contenu dédié aux pets, notamment la quête d’introduction.'
       )}</p>
-      <div class="table-wrap"><table>
-        <thead><tr><th>${navLabel('Example Pet','Exemple de Pet')}</th><th>Taming Item</th><th>${navLabel('Example source','Exemple de source')}</th></tr></thead>
-        <tbody>
-          <tr><th>Rocker</th><td>Singing Flower</td><td>Flora — 0.1%</td></tr>
-          <tr><th>Baby Desert Wolf</th><td>Well-Dried Bone</td><td>Pirate Swordsman — 0.1%</td></tr>
-        </tbody>
-      </table></div>
       <div class="wiki-callout warning-lite"><strong>${navLabel('Capture restriction','Restriction de capture')}</strong><br>${navLabel(
         'Taming Items cannot be used to tame event monsters or slave monsters.',
         'Les Taming Items ne permettent pas de capturer les monstres d’événement ni les slave monsters.'
@@ -6829,25 +6973,33 @@ window.RO_DATA = {
         'Pour les œufs de pets classiques, le bonus Cordial correspond à l’effet Lv.1 de la Taming Ring et le bonus Loyal correspond au Lv.2.'
       )}</div>
 
-      <h2 id="bonuses">${navLabel('Pet Bonus Table','Table des bonus de Pet')}</h2>
+      <h2 id="bonuses">${navLabel('Pet List','Liste des Pets')}</h2>
       <p>${navLabel(
-        'The table below lists the passive bonuses configured for regular Pet Eggs. Lv.1 corresponds to the first bonus tier and Lv.2 to the upgraded tier. An egg being present in the game data does not necessarily mean its capture method is active at the current content stage.',
-        'Le tableau ci-dessous regroupe les bonus passifs configurés pour les Pet Eggs classiques. Le Lv.1 correspond au premier niveau de bonus et le Lv.2 à sa version améliorée. La présence d’un œuf dans les données du jeu ne signifie pas forcément que sa méthode d’obtention est déjà active au stade actuel du contenu.'
+        'This table lists the current regular Qpets, their two passive bonus tiers, the Taming Item used to capture them and the source of that item. Lv.1 corresponds to Cordial / Taming Ring Lv.1 and Lv.2 to Loyal / Taming Ring Lv.2.',
+        'Ce tableau regroupe les Qpets classiques actuellement listés, leurs deux paliers de bonus passifs, le Taming Item utilisé pour les capturer et la source de cet objet. Le Lv.1 correspond à Cordial / Taming Ring Lv.1 et le Lv.2 à Loyal / Taming Ring Lv.2.'
       )}</p>
       <div class="table-wrap"><table>
         <thead><tr>
-          <th>${navLabel('Pet / Egg','Pet / Œuf')}</th>
-          <th>ID</th>
-          <th>${navLabel('Cordial / Ring Lv.1','Cordial / Ring Lv.1')}</th>
-          <th>${navLabel('Loyal / Ring Lv.2','Loyal / Ring Lv.2')}</th>
+          <th>Pet</th>
+          <th>${navLabel('Effect','Effet')}</th>
+          <th>Taming Item</th>
+          <th>${navLabel('Drop source','Source de drop')}</th>
         </tr></thead>
-        <tbody>${petBonuses.map(([pet,id,lv1,lv2])=>`<tr>
-          <th>${esc(pet)}</th>
-          <td><code>${id}</code></td>
-          <td>${esc(lv1)}</td>
-          <td>${esc(lv2)}</td>
-        </tr>`).join('')}</tbody>
+        <tbody>${petList.map(([pet,lv1,lv2,tamingItem,source]) =>
+          '<tr>' +
+            '<th>' + esc(pet) + '</th>' +
+            '<td><strong>Lv.1:</strong> ' + esc(lv1) + '<br><strong>Lv.2:</strong> ' + esc(lv2) + '</td>' +
+            '<td>' + esc(tamingItem) + '</td>' +
+            '<td>' + source.split('|').map(esc).join('<br>') + '</td>' +
+          '</tr>'
+        ).join('')}</tbody>
       </table></div>
+
+      ${officialSources([
+        ['Ragnarok Zero Guide by Lymd — Qpets & Enchantments','https://sites.google.com/view/rozeroguide/guide-by-lymd'],
+        ['MidgardHub — Ragnarok Zero Global Database','https://midgardhub.com/database/items'],
+        ['iRO Wiki — Cute Pet System (table structure reference)','https://irowiki.org/wiki/Cute_Pet_System']
+      ])}
 
       <h2 id="get-poring-link">${navLabel('Qpets vs Get Poring','Qpets et Get Poring')}</h2>
       <p>${navLabel(
