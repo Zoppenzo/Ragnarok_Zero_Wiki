@@ -6063,8 +6063,8 @@ window.RO_DATA = {
           <div><strong style="display:block;margin-bottom:3px">Auto-Hunt</strong><span style="color:var(--muted);font-size:12px">${navLabel('Twin-swords button used to start automatic hunting.','Bouton aux deux épées utilisé pour lancer la chasse automatique.')}</span></div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--line-soft);background:var(--paper-soft);border-radius:6px">
-          <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWDd0gtVwnoWcLi4KEJgBmgJPgBg7h6pGGUtYf0xuSpJpICMqNmhasUeDeZphza3T7Prd7NBUjZvUKwanq-s6KB6IgA_GQvlnu9AqriZ6YenYTgIcTItYXbugRjAXQtoS2bU1hzkfKCUbhPzWAWoA15-yJJX3vexXnmqBv4TIao_UUqk9ZMqOpa3Yyvq80yqxIcbc04QRYSvlPOW0rC8GvQJz6y6qyOlENKVZ83Dng=w1280" alt="Auto Pot icon" width="48" height="48" loading="lazy" style="width:48px;height:48px;object-fit:contain;flex:0 0 48px">
-          <div><strong style="display:block;margin-bottom:3px">Auto Pot</strong><span style="color:var(--muted);font-size:12px">${navLabel('Button used to enable automatic HP/SP potion use during manual hunting.','Bouton permettant d’activer l’utilisation automatique des potions HP/SP pendant la chasse manuelle.')}</span></div>
+          <img src="https://roz-global.info/img/progression/autohunt-4.webp" alt="${navLabel('Auto Pot potion settings','Réglages de potions Auto Pot')}" width="96" height="72" loading="lazy" style="width:96px;height:72px;object-fit:cover;object-position:center;flex:0 0 96px;border:1px solid var(--line-soft);border-radius:4px">
+          <div><strong style="display:block;margin-bottom:3px">Auto Pot</strong><span style="color:var(--muted);font-size:12px">${navLabel('Uses the HP/SP potion thresholds configured in Auto-Hunt.','Utilise les seuils de potions HP/SP configurés dans Auto-Hunt.')}</span></div>
         </div>
       </div>
 
@@ -6189,11 +6189,15 @@ window.RO_DATA = {
         )}</p></div>
       </div>
 
-      <h2 id="auto-pot" style="display:flex;align-items:center;gap:9px"><img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWDd0gtVwnoWcLi4KEJgBmgJPgBg7h6pGGUtYf0xuSpJpICMqNmhasUeDeZphza3T7Prd7NBUjZvUKwanq-s6KB6IgA_GQvlnu9AqriZ6YenYTgIcTItYXbugRjAXQtoS2bU1hzkfKCUbhPzWAWoA15-yJJX3vexXnmqBv4TIao_UUqk9ZMqOpa3Yyvq80yqxIcbc04QRYSvlPOW0rC8GvQJz6y6qyOlENKVZ83Dng=w1280" alt="" width="34" height="34" loading="lazy" style="width:34px;height:34px;object-fit:contain">Auto Pot</h2>
+      <h2 id="auto-pot" style="display:flex;align-items:center;gap:9px">${icon('item')}Auto Pot</h2>
       <p>${navLabel(
         'Auto Pot is a separate mode that can be used while hunting manually. It uses the same potion configuration defined for Auto-Hunt and automatically consumes the selected HP/SP recovery items when their thresholds are reached. Auto Pot can also be assigned to a keyboard shortcut; its icon turns blue while active.',
         'Auto Pot est un mode séparé utilisable pendant la chasse manuelle. Il reprend la même configuration de potions que celle définie dans Auto-Hunt et utilise automatiquement les objets de récupération HP/SP sélectionnés lorsque leurs seuils sont atteints. Auto Pot peut également être attribué à un raccourci clavier ; son icône devient bleue lorsqu’il est actif.'
       )}</p>
+      <figure style="margin:14px auto 20px;max-width:560px;text-align:center">
+        <img src="https://roz-global.info/img/progression/autohunt-4.webp" alt="${navLabel('Potion settings used by Auto Pot','Réglages de potions utilisés par Auto Pot')}" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+        <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">${navLabel('HP/SP recovery thresholds used by Auto-Hunt and Auto Pot.','Seuils de récupération HP/SP utilisés par Auto-Hunt et Auto Pot.')}</figcaption>
+      </figure>
 
       <h2 id="restrictions">${navLabel('Important behavior and restrictions','Comportements et restrictions')}</h2>
       <div class="table-wrap"><table>
