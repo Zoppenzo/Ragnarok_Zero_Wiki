@@ -4342,17 +4342,17 @@ window.RO_DATA = {
         'Chaque auberge possède un créneau de service. Utiliser Rest and go pendant l’horaire correspondant donne +10 % d’EXP pendant 30 minutes.'
       )}</p>
       <div class="table-wrap"><table>
-        <thead><tr><th>${navLabel('Service','Service')}</th><th>${navLabel('Inn locations','Auberges')}</th><th>${navLabel('Server time (UTC)','Heure serveur (UTC)')}</th><th>${navLabel('Effect','Effet')}</th></tr></thead>
+        <thead><tr><th>${navLabel('Service','Service')}</th><th>${navLabel('Inn locations','Auberges')}</th><th>${navLabel('Server time (UTC)','Heure serveur (UTC)')}</th><th>${navLabel('Central Europe','Heure Europe')}</th><th>${navLabel('Effect','Effet')}</th></tr></thead>
         <tbody>
-          <tr><th>Good Morning Service</th><td>Alberta — Fisherman<br>Prontera — Nencaras Branch 1 & 2</td><td>08:00–09:00</td><td>+10% EXP / 30 min</td></tr>
-          <tr><th>Afternoon Break</th><td>Geffen — Ifrit<br>Payon — Dalneomi Tavern</td><td>14:00–15:00</td><td>+10% EXP / 30 min</td></tr>
-          <tr><th>Dinner Banquet</th><td>Morroc — Mirage<br>Prontera — Nencaras Branch 1 & 2</td><td>20:00–21:00</td><td>+10% EXP / 30 min</td></tr>
-          <tr><th>Late-Night Snack</th><td>Aldebaran — Irion</td><td>02:00–03:00</td><td>+10% EXP / 30 min</td></tr>
+          <tr><th>Good Morning Service</th><td>Alberta — Fisherman<br>Prontera — Nencaras Branch 1 & 2</td><td>08:00–09:00</td><td><strong>10:00–11:00 CEST</strong><br>09:00–10:00 CET</td><td>+10% EXP / 30 min</td></tr>
+          <tr><th>Afternoon Break</th><td>Geffen — Ifrit<br>Payon — Dalneomi Tavern</td><td>14:00–15:00</td><td><strong>16:00–17:00 CEST</strong><br>15:00–16:00 CET</td><td>+10% EXP / 30 min</td></tr>
+          <tr><th>Dinner Banquet</th><td>Morroc — Mirage<br>Prontera — Nencaras Branch 1 & 2</td><td>20:00–21:00</td><td><strong>22:00–23:00 CEST</strong><br>21:00–22:00 CET</td><td>+10% EXP / 30 min</td></tr>
+          <tr><th>Late-Night Snack</th><td>Aldebaran — Irion</td><td>02:00–03:00</td><td><strong>04:00–05:00 CEST</strong><br>03:00–04:00 CET</td><td>+10% EXP / 30 min</td></tr>
         </tbody>
       </table></div>
       <div class="wiki-callout"><strong>${navLabel('Server time','Heure serveur')}</strong><br>${navLabel(
-        'The displayed service times use UTC. For France, add 2 hours during CEST (summer) and 1 hour during CET (winter). Example: 14:00 UTC = 16:00 CEST or 15:00 CET.',
-        'Les horaires de service utilisent l’UTC. Pour la France, ajoute 2 heures en CEST (été) et 1 heure en CET (hiver). Exemple : 14:00 UTC = 16:00 CEST ou 15:00 CET.'
+        'The server uses UTC. The Europe column uses Central European time: CEST (UTC+2) in summer and CET (UTC+1) in winter, which covers France and many neighboring countries.',
+        'Le serveur utilise l’UTC. La colonne Heure Europe utilise l’heure d’Europe centrale : CEST (UTC+2) en été et CET (UTC+1) en hiver, ce qui correspond notamment à la France et à de nombreux pays voisins.'
       )}</div>
       <p>${navLabel(
         'The Inn EXP buff is mutually exclusive with Growth Elixir: using a Growth-type elixir removes the Inn buff, and the Inn buff cannot be received while the elixir is active.',
@@ -4761,10 +4761,6 @@ window.RO_DATA = {
           'Achievement Orc Hero — objectif de 30 000 Orc Warrior.'
         )}</figcaption>
       </figure>
-      <figure style="margin:10px auto 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
-        <img src="https://rozerodb.com/assets/local/catalog/2b6aabf5649ff8701758a1d36c298a77.gif" alt="Orc Hero Headdress" loading="lazy" style="display:block;width:96px;height:96px;object-fit:contain;margin:0 auto">
-        <figcaption style="margin-top:6px;color:var(--muted);font-size:12px">Orc Hero Headdress</figcaption>
-      </figure>
 
       <h3 id="inn-exp-link">Inn EXP Boost</h3>
       <p>${navLabel(
@@ -4791,6 +4787,28 @@ window.RO_DATA = {
         'Un NPC présent dans plusieurs villes permet de rejoindre une zone dédiée regroupant différents NPCs de service. Deux accès actuels se trouvent à Payon et Prontera.'
       )}</p>
       <p><code>/navi payon 164/156</code><br><code>/navi prontera 138/125</code></p>
+      <p>${navLabel(
+        'The hub centralizes several services that would otherwise require visiting different NPCs. The main NPCs currently documented there are:',
+        'Le hub regroupe plusieurs services qui demanderaient autrement de chercher différents NPCs. Les principaux NPCs actuellement documentés sur cette map sont :'
+      )}</p>
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('mechanics')}${navLabel('Reset Skills / Stats','Reset Skills / Stats')}</strong><p>${navLabel(
+          'Resets skill points or stats. The current guide documents free resets up to and including Base Level 40; above that, the reset uses Zelstars according to the character’s level.',
+          'Permet de réinitialiser les skills ou les stats. Le guide actuel indique que le reset est gratuit jusqu’au Base Level 40 inclus ; au-delà, il utilise des Zelstars selon le niveau du personnage.'
+        )}</p></div>
+        <div><strong>${miniIcon('class')}Stylist</strong><p>${navLabel(
+          'Changes hairstyle, hair color and clothing color. Clothing color also affects the color of the character’s mount.',
+          'Permet de changer la coiffure, la couleur des cheveux et la couleur des vêtements. La couleur des vêtements modifie aussi celle de la monture du personnage.'
+        )}</p></div>
+        <div><strong>${miniIcon('tools')}${navLabel('Forge / Repair','Forge / Réparation')}</strong><p>${navLabel(
+          'Provides equipment-related services such as repair, smithing components and processing rough materials, in addition to refinement-related functions.',
+          'Regroupe plusieurs services liés à l’équipement : réparation, composants de forge, traitement de matériaux bruts ainsi que des fonctions liées au refinement.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}Gym Pass</strong><p>${navLabel(
+          'Lets a character activate Gym Passes to permanently increase carrying capacity. The current guide documents a maximum of 10 Gym Passes per character.',
+          'Permet d’activer les Gym Pass afin d’augmenter la capacité de poids du personnage. Le guide actuel indique un maximum de 10 Gym Pass par personnage.'
+        )}</p></div>
+      </div>
       ${lymdShot('https://midgardhub.com/images/guides/new-player/image248.png', 'NPC Hub access NPC', navLabel('NPC used to access the service hub','NPC utilisé pour accéder au hub de services'))}
       ${lymdShot('https://midgardhub.com/images/guides/new-player/image40.png', 'NPC Hub interior', navLabel('Inside the NPC service hub','Intérieur du hub de services NPC'))}
 
@@ -4819,6 +4837,16 @@ window.RO_DATA = {
         'Vending and Buying posts can be used there. A weekly character quest also grants the ability to buy or sell through the related system; the relevant quest NPC is in Alberta.',
         'Les posts Vending et Buying peuvent y être utilisés. Une quête hebdomadaire par personnage permet également d’obtenir l’accès au système de vente/achat associé ; le NPC concerné se trouve à Alberta.'
       )}</p>
+      <h3 id="market-catalogues">${navLabel('Shop Catalogues','Catalogues de shops')}</h3>
+      <p>${navLabel(
+        'When the Market Place is crowded, shop catalogues such as the Silver Catalogue make it much easier to find an item. The catalogue searches player Vending / Buying shops on the current market map and shows matching shops so you can locate the seller or buyer instead of checking every shop manually.',
+        'Quand le Market Place est rempli, les catalogues de shops comme le Silver Catalogue permettent de retrouver beaucoup plus facilement un objet. Le catalogue recherche dans les shops Vending / Buying des joueurs présents sur la map du marché et affiche les résultats correspondants afin de retrouver le vendeur ou l’acheteur sans ouvrir chaque shop un par un.'
+      )}</p>
+      <ul>
+        <li>${navLabel('Search by item name; partial-name search can help when you do not remember the exact name.','Recherche par nom d’objet ; la recherche partielle peut aider lorsque tu ne connais pas le nom exact.')}</li>
+        <li>${navLabel('Use the results to compare the available player shops and locate the relevant shop on the market map.','Utilise les résultats pour comparer les shops disponibles et retrouver le shop concerné sur la map du marché.')}</li>
+        <li>${navLabel('Other catalogue variants can offer additional convenience when they are available, but the Silver Catalogue is the basic shop-search tool to know first.','D’autres variantes de catalogue peuvent apporter davantage de confort lorsqu’elles sont disponibles, mais le Silver Catalogue est l’outil de recherche de shops de base à connaître.')}</li>
+      </ul>
       ${lymdShot('https://midgardhub.com/images/guides/new-player/image126.png', 'Market Place access', navLabel('Market Place access from Prontera Kafra','Accès au Market Place depuis la Kafra de Prontera'))}
       ${lymdShot('https://midgardhub.com/images/guides/new-player/image180.png', 'Market Place zone', navLabel('One of the Market Place zones','Une des zones du Market Place'))}
       <p><code>/navi alberta_in 19/19</code></p>
@@ -7411,6 +7439,7 @@ window.RO_DATA = {
       ${toc([
         {id:'types',label:navLabel('Skill types','Types de skills')},
         {id:'usage',label:navLabel('Skill usage phases','Phases d’utilisation')},
+        {id:'casting-information',label:'Casting Information'},
         {id:'cast-time',label:'Cast Time'},
         {id:'delay-cooldown',label:navLabel('Cast Delay vs Cooldown','Cast Delay vs Cooldown')},
         {id:'examples',label:navLabel('Examples','Exemples')}
@@ -7447,6 +7476,32 @@ window.RO_DATA = {
       )}</p>
       <div class="wiki-feature-list">
         ${phases.map(([title,body])=>`<div><strong>${title}</strong><p>${body}</p></div>`).join('')}
+      </div>
+
+      <h2 id="casting-information">Casting Information</h2>
+      <p>${navLabel(
+        'You can display detailed casting and cooldown information directly from a skill description. Open the skill description, then click the small yellow clock in the top-right corner.',
+        'Tu peux afficher les informations détaillées de cast et de cooldown directement depuis la description d’un skill. Ouvre la description du skill puis clique sur la petite horloge jaune située en haut à droite.'
+      )}</p>
+      <p>${navLabel(
+        'The Casting Information window shows the values for each skill level. Depending on the skill, it can list Fixed Casting Time, Variable Casting Time, Global / After-Cast Delay and the skill-specific Cooldown.',
+        'La fenêtre Casting Information affiche les valeurs pour chaque niveau du skill. Selon le skill, elle peut indiquer le Fixed Casting Time, le Variable Casting Time, le Global / After-Cast Delay et le Cooldown propre au skill.'
+      )}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;align-items:start;margin:16px auto 28px;max-width:900px">
+        <figure style="margin:0;text-align:center">
+          <img src="assets/skills/casting-information-button.webp" alt="${navLabel('Yellow Casting Information clock button in a skill description','Petite horloge jaune Casting Information dans la description d’un skill')}" loading="lazy" style="display:block;width:auto;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+          <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel(
+            'Click the small yellow clock in the top-right of the skill description.',
+            'Clique sur la petite horloge jaune en haut à droite de la description du skill.'
+          )}</figcaption>
+        </figure>
+        <figure style="margin:0;text-align:center">
+          <img src="assets/skills/casting-information.webp" alt="${navLabel('Casting Information table for Increase Agility','Tableau Casting Information de Increase Agility')}" loading="lazy" style="display:block;width:auto;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+          <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel(
+            'Example: Increase Agility — casting and cooldown values by skill level.',
+            'Exemple : Increase Agility — valeurs de cast et cooldown par niveau du skill.'
+          )}</figcaption>
+        </figure>
       </div>
 
       <h2 id="cast-time">Cast Time</h2>
