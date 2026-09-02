@@ -3228,7 +3228,7 @@ window.RO_DATA = {
     { id:'guild-system', group:'Systems & Data', en:'Guild System', fr:'Système de guilde' },
     { id:'auto-hunt', group:'Systems & Data', en:'Auto-Hunt', fr:'Chasse automatique' },
     { id:'mvp-raid', group:'Systems & Data', en:'MVP Raid', fr:'Raid MVP' },
-    { id:'get-poring', group:'Systems & Data', en:'Get Poring & Companions', fr:'Get Poring & compagnons' },
+    { id:'get-poring', group:'Systems & Data', en:'Get Poring', fr:'Get Poring' },
     { id:'ro-factory', group:'Systems & Data', en:'RO Factory', fr:'RO Factory' },
     { id:'leveling-spots', group:'Systems & Data', en:'Leveling Spots', fr:'Zones de leveling', href:'#/leveling' }
   ];
@@ -3320,6 +3320,15 @@ window.RO_DATA = {
       overview:'complete', 'available-raids':'complete', 'raid-rules':'complete',
       'gtb-raid':'complete', 'moonlight-raid':'complete', rewards:'complete',
       fragments:'complete', 'raid-manager':'complete'
+    },
+    '#/wiki/get-poring': {
+      overview:'complete', access:'complete', care:'complete', evolution:'complete',
+      marriage:'complete', interior:'complete', valhalla:'complete',
+      tickets:'complete', compendium:'complete'
+    },
+    '#/wiki/ro-factory': {
+      overview:'complete', create:'complete', editor:'complete', register:'complete',
+      market:'complete', 'in-game':'complete', faq:'complete'
     },
     '#/items': {
       equipment:'complete', cards:'complete', consumables:'complete',
@@ -3462,7 +3471,7 @@ window.RO_DATA = {
         ['#/wiki/mvp-raid','MVP Raid','Raid MVP','monster'],
         ['#/wiki/guild-system','Guild System','Système de guilde','class'],
         ['#/wiki/party','Party','Groupe / Party','class'],
-        ['#/wiki/get-poring','Get Poring & Companions','Get Poring & compagnons','monster'],
+        ['#/wiki/get-poring','Get Poring','Get Poring','monster'],
         ['#/wiki/ro-factory','RO Factory','RO Factory','tools'],
         ['#/wiki/kafra-services','Kafra Services','Services Kafra','npc']
       ]},
@@ -6365,6 +6374,241 @@ window.RO_DATA = {
       </div>`;
   }
 
+
+  function getPoringPage(topic) {
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('monster')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+
+      <p class="article-lead">${navLabel(
+        'Get Poring is a browser side-game linked to Ragnarok Zero. You raise your own Poring outside the main client, take care of it, let it evolve through different forms and eventually send it to Valhalla so it can accompany you in Ragnarok Zero.',
+        'Get Poring est un mini-jeu navigateur lié à Ragnarok Zero. Tu y élèves ton propre Poring en dehors du client principal, tu t’en occupes, tu le fais évoluer vers différentes formes puis tu peux l’envoyer à Valhalla pour qu’il t’accompagne dans Ragnarok Zero.'
+      )}</p>
+
+      ${toc([
+        {id:'overview',label:navLabel('What is Get Poring?','Qu’est-ce que Get Poring ?')},
+        {id:'access',label:navLabel('Access and account','Accès et compte')},
+        {id:'care',label:navLabel('Taking care of a Poring','S’occuper de son Poring')},
+        {id:'evolution',label:navLabel('Evolution and observation','Évolution et observation')},
+        {id:'marriage',label:navLabel('Marriage and Family Tree','Mariage et arbre généalogique')},
+        {id:'interior',label:navLabel('Room decoration','Décoration de la pièce')},
+        {id:'valhalla',label:navLabel('Send to Valhalla','Envoyer à Valhalla')},
+        {id:'tickets',label:'ROZG 1 Day Tickets'},
+        {id:'compendium',label:navLabel('Poring Compendium','Poring Compendium')}
+      ])}
+
+      <h2 id="overview">${navLabel('What is Get Poring?','Qu’est-ce que Get Poring ?')}</h2>
+      <p>${navLabel(
+        'Get Poring runs directly in a web browser and does not require a separate download. It uses the same GNJOY account ecosystem as Ragnarok Zero and is built around raising collectible Porings that can later become companions in the main game.',
+        'Get Poring fonctionne directement dans le navigateur et ne demande aucun téléchargement supplémentaire. Il utilise l’écosystème de compte GNJOY de Ragnarok Zero et repose sur l’élevage de Porings à collectionner, qui peuvent ensuite devenir des compagnons dans le jeu principal.'
+      )}</p>
+
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('item')}${navLabel('Care','Soins')}</strong><p>${navLabel(
+          'Feed, wash and look after your Poring.',
+          'Nourris, lave et occupe-toi de ton Poring.'
+        )}</p></div>
+        <div><strong>${miniIcon('monster')}${navLabel('Evolution','Évolution')}</strong><p>${navLabel(
+          'The Poring can grow into different forms depending on time spent together and the way it is raised.',
+          'Le Poring peut évoluer vers différentes formes selon le temps passé avec lui et la manière dont il est élevé.'
+        )}</p></div>
+        <div><strong>${miniIcon('class')}${navLabel('Marriage','Mariage')}</strong><p>${navLabel(
+          'Porings can marry and create a new generation recorded in the Family Tree.',
+          'Les Porings peuvent se marier et créer une nouvelle génération enregistrée dans l’arbre généalogique.'
+        )}</p></div>
+        <div><strong>${miniIcon('map')}${navLabel('Valhalla export','Transfert vers Valhalla')}</strong><p>${navLabel(
+          'A raised Poring can be sent into Ragnarok Zero to accompany your character.',
+          'Un Poring élevé peut être envoyé dans Ragnarok Zero pour accompagner ton personnage.'
+        )}</p></div>
+      </div>
+
+      <h2 id="access">${navLabel('Access and account','Accès et compte')}</h2>
+      <p>${navLabel(
+        'Get Poring can be launched from its official website. Linking the game to your GNJOY account keeps its data connected to your account and is also one of the current ways to receive an ROZG 1 Day Ticket.',
+        'Get Poring se lance depuis son site officiel. Lier le jeu à ton compte GNJOY permet de conserver les données associées à ton compte et fait aussi partie des moyens actuels d’obtenir un ROZG 1 Day Ticket.'
+      )}</p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://getporing.mygnjoy.com/en/main" target="_blank" rel="noopener">${miniIcon('monster')}${navLabel('Open Get Poring','Ouvrir Get Poring')}</a>
+      </div>
+
+      <h2 id="care">${navLabel('Taking care of a Poring','S’occuper de son Poring')}</h2>
+      <p>${navLabel(
+        'The basic loop is to feed, wash and care for your Poring. These interactions are not only cosmetic: how you spend time with the Poring and how you raise it influence the form it can grow into.',
+        'La base du jeu consiste à nourrir, laver et prendre soin de ton Poring. Ces interactions ne servent pas seulement à l’animation du mini-jeu : le temps passé avec lui et la façon dont tu l’élèves influencent la forme vers laquelle il peut évoluer.'
+      )}</p>
+
+      <h2 id="evolution">${navLabel('Evolution and observation','Évolution et observation')}</h2>
+      <p>${navLabel(
+        'Porings do not all end up in the same form. Get Poring includes Baby, Teen and Adult stages, and the official Compendium contains multiple forms to discover. You can also observe the Poring’s daily life and interactions as it grows.',
+        'Tous les Porings ne terminent pas sous la même forme. Get Poring utilise des stades Baby, Teen et Adult, et le Compendium officiel répertorie plusieurs formes à découvrir. Tu peux également observer la vie quotidienne et les interactions de ton Poring pendant sa croissance.'
+      )}</p>
+
+      <h2 id="marriage">${navLabel('Marriage and Family Tree','Mariage et arbre généalogique')}</h2>
+      <p>${navLabel(
+        'Get Poring includes a marriage system. Marriage can lead to a new generation, and the descendants are recorded in a Family Tree so the lineage of your Porings can be followed over time.',
+        'Get Poring possède un système de mariage. Le mariage peut donner naissance à une nouvelle génération, et les descendants sont enregistrés dans un arbre généalogique qui permet de suivre la lignée de tes Porings.'
+      )}</p>
+
+      <h2 id="interior">${navLabel('Room decoration','Décoration de la pièce')}</h2>
+      <p>${navLabel(
+        'The Poring’s room can be decorated with different themes and interior items. Shelter expansion is also part of the current Get Poring interface.',
+        'La pièce du Poring peut être décorée avec différents thèmes et objets d’intérieur. L’agrandissement du Shelter fait également partie de l’interface actuelle de Get Poring.'
+      )}</p>
+
+      <h2 id="valhalla">${navLabel('Send to Valhalla','Envoyer à Valhalla')}</h2>
+      <p>${navLabel(
+        'Valhalla is the bridge between Get Poring and Ragnarok Zero. Sending a Poring to Valhalla exports the Poring you raised so it can continue the adventure as a companion in Ragnarok Zero.',
+        'Valhalla sert de passerelle entre Get Poring et Ragnarok Zero. Envoyer un Poring à Valhalla permet de transférer celui que tu as élevé afin qu’il poursuive l’aventure comme compagnon dans Ragnarok Zero.'
+      )}</p>
+
+      <h2 id="tickets">ROZG 1 Day Tickets</h2>
+      <p>${navLabel(
+        'Get Poring currently offers up to three ROZG 1 Day Tickets through specific activities. The tickets are delivered to the Ragnarok Zero in-game mailbox.',
+        'Get Poring permet actuellement d’obtenir jusqu’à trois ROZG 1 Day Tickets grâce à certaines activités. Les tickets sont envoyés dans la boîte aux lettres en jeu de Ragnarok Zero.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>${navLabel('Requirement','Condition')}</th><th>${navLabel('Reward','Récompense')}</th></tr></thead>
+        <tbody>
+          <tr><th>1</th><td>${navLabel('Link the GNJOY account','Lier le compte GNJOY')}</td><td>ROZG 1 Day Ticket ×1</td></tr>
+          <tr><th>2</th><td>${navLabel('Send a Poring to Valhalla for the first time','Envoyer un Poring à Valhalla pour la première fois')}</td><td>ROZG 1 Day Ticket ×1</td></tr>
+          <tr><th>3</th><td>${navLabel('Complete 7 days of login rewards','Compléter 7 jours de récompenses de connexion')}</td><td>ROZG 1 Day Ticket ×1</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 id="compendium">Poring Compendium</h2>
+      <p>${navLabel(
+        'The official Poring Compendium is the collection index for Get Poring. It lists the Porings and items available in the side-game and separates Poring forms by Baby, Teen and Adult stages.',
+        'Le Poring Compendium officiel sert d’index de collection pour Get Poring. Il répertorie les Porings et les objets disponibles dans le mini-jeu et classe les formes de Poring selon les stades Baby, Teen et Adult.'
+      )}</p>
+    `;
+  }
+
+
+  function roFactoryPage(topic) {
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('tools')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+
+      <p class="article-lead">${navLabel(
+        'RO Factory is the official User-Generated Content platform for creating custom Footprint effects. A Footprint uses an image chosen by the creator and appears around the character and on the ground while the character moves. Finished creations can be registered on the Market and used directly in Ragnarok Zero.',
+        'RO Factory est la plateforme officielle de contenu créé par les joueurs pour fabriquer des effets Footprint personnalisés. Un Footprint utilise une image choisie par le créateur et apparaît autour du personnage ainsi que sur le sol lorsqu’il se déplace. Une création terminée peut être enregistrée sur le Market puis utilisée directement dans Ragnarok Zero.'
+      )}</p>
+
+      ${toc([
+        {id:'overview',label:navLabel('What is RO Factory?','Qu’est-ce que RO Factory ?')},
+        {id:'create',label:navLabel('Create a Footprint','Créer un Footprint')},
+        {id:'editor',label:navLabel('Editor settings','Réglages de l’éditeur')},
+        {id:'register',label:navLabel('Save and register','Sauvegarder et enregistrer')},
+        {id:'market',label:navLabel('RO Market','RO Market')},
+        {id:'in-game',label:navLabel('Using a Footprint in-game','Utiliser un Footprint en jeu')},
+        {id:'faq',label:'FAQ'}
+      ])}
+
+      <h2 id="overview">${navLabel('What is RO Factory?','Qu’est-ce que RO Factory ?')}</h2>
+      <p>${navLabel(
+        'RO Factory is a creation tool connected to Ragnarok Zero. Its current creation type is the Footprint: a visual effect that leaves your chosen image behind as the character moves. The same creation can be saved, registered and shown to other players through the Market.',
+        'RO Factory est un outil de création connecté à Ragnarok Zero. Le type de création actuel est le Footprint : un effet visuel qui laisse l’image choisie derrière le personnage pendant ses déplacements. Une même création peut être sauvegardée, enregistrée puis présentée aux autres joueurs sur le Market.'
+      )}</p>
+
+      <div class="wiki-feature-list">
+        <div><strong>${miniIcon('item')}${navLabel('Import','Importer')}</strong><p>${navLabel(
+          'Choose the image that will be used for the Footprint.',
+          'Choisis l’image qui servira de Footprint.'
+        )}</p></div>
+        <div><strong>${miniIcon('tools')}${navLabel('Edit','Modifier')}</strong><p>${navLabel(
+          'Adjust how the Footprint looks and moves.',
+          'Règle l’apparence et le comportement du Footprint.'
+        )}</p></div>
+        <div><strong>${miniIcon('map')}${navLabel('Preview','Prévisualiser')}</strong><p>${navLabel(
+          'Check the result directly on a game preview.',
+          'Vérifie directement le résultat dans une prévisualisation du jeu.'
+        )}</p></div>
+        <div><strong>${miniIcon('item')}${navLabel('Market','Market')}</strong><p>${navLabel(
+          'Register the creation so other players can find and use it.',
+          'Enregistre la création afin que les autres joueurs puissent la trouver et l’utiliser.'
+        )}</p></div>
+      </div>
+
+      <h2 id="create">${navLabel('Create a Footprint','Créer un Footprint')}</h2>
+      <p>${navLabel(
+        'Creation starts by choosing an image. RO Factory shows both the image around the character and the mark that will remain on the ground, which makes it possible to judge the result before registering anything.',
+        'La création commence par le choix d’une image. RO Factory montre à la fois l’image autour du personnage et la marque qui restera sur le sol, ce qui permet de juger le résultat avant d’enregistrer quoi que ce soit.'
+      )}</p>
+
+      <h2 id="editor">${navLabel('Editor settings','Réglages de l’éditeur')}</h2>
+      <p>${navLabel(
+        'The Footprint editor lets you change the size and position of the image, its appearance interval and the way the effect follows the character’s movement. Different settings can make the same source image look very different in-game.',
+        'L’éditeur de Footprint permet de modifier la taille et la position de l’image, son intervalle d’apparition ainsi que la manière dont l’effet suit le déplacement du personnage. Une même image peut donc donner un résultat très différent selon les réglages.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Setting','Réglage')}</th><th>${navLabel('Purpose','Utilité')}</th></tr></thead>
+        <tbody>
+          <tr><th>${navLabel('Size','Taille')}</th><td>${navLabel('Changes the displayed size of the Footprint image.','Modifie la taille d’affichage de l’image du Footprint.')}</td></tr>
+          <tr><th>${navLabel('Position','Position')}</th><td>${navLabel('Moves the effect relative to the character.','Déplace l’effet par rapport au personnage.')}</td></tr>
+          <tr><th>${navLabel('Appearance interval','Intervalle d’apparition')}</th><td>${navLabel('Controls how often a new Footprint appears while moving.','Contrôle la fréquence à laquelle un nouveau Footprint apparaît pendant le déplacement.')}</td></tr>
+          <tr><th>${navLabel('Movement feel','Mouvement')}</th><td>${navLabel('Changes the way the visual effect behaves during movement.','Modifie la façon dont l’effet visuel se comporte pendant les déplacements.')}</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 id="register">${navLabel('Save and register','Sauvegarder et enregistrer')}</h2>
+      <p>${navLabel(
+        'A Footprint can be saved before publication and loaded again later for editing. When it is ready, the creation goes through the registration process. A registered Footprint can be given a name and tags and then displayed on the Market.',
+        'Un Footprint peut être sauvegardé avant sa publication puis rechargé plus tard pour être modifié. Lorsqu’il est terminé, il passe par le processus d’enregistrement. Un Footprint enregistré peut recevoir un nom et des tags avant d’être affiché sur le Market.'
+      )}</p>
+      <div class="wiki-callout warning-lite"><strong>${navLabel('Saving is not publishing','Sauvegarder ne publie pas')}</strong><br>${navLabel(
+        'A saved Footprint cannot be used by other players immediately. It must first be registered and made public on the Market.',
+        'Un Footprint simplement sauvegardé n’est pas immédiatement utilisable par les autres joueurs. Il doit d’abord être enregistré puis rendu public sur le Market.'
+      )}</div>
+
+      <h2 id="market">RO Market</h2>
+      <p>${navLabel(
+        'The Market is where registered Footprints are presented to other players. Creators can publish their work there, while players can browse the available creations and obtain the Footprints they want.',
+        'Le Market est l’endroit où les Footprints enregistrés sont présentés aux autres joueurs. Les créateurs peuvent y publier leurs créations, tandis que les joueurs peuvent parcourir les Footprints disponibles et récupérer ceux qui les intéressent.'
+      )}</p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://roz.mygnjoy.com/en/rofactory/about" target="_blank" rel="noopener">${miniIcon('tools')}${navLabel('Official RO Factory guide','Guide officiel RO Factory')}</a>
+        <a class="button" href="https://roz.mygnjoy.com/en/rofactory/market" target="_blank" rel="noopener">${miniIcon('item')}${navLabel('Browse the Market','Voir le Market')}</a>
+      </div>
+
+      <h2 id="in-game">${navLabel('Using a Footprint in-game','Utiliser un Footprint en jeu')}</h2>
+      <p>${navLabel(
+        'A Footprint obtained from the Market is delivered as an in-game item and appears in the Consumables section of the Inventory. Double-click the item to activate the Footprint. While it is active, the effect appears each time the character moves.',
+        'Un Footprint obtenu sur le Market est livré sous forme d’objet en jeu et apparaît dans la catégorie Consumables de l’inventaire. Double-clique sur l’objet pour activer le Footprint. Tant qu’il est actif, l’effet apparaît à chaque déplacement du personnage.'
+      )}</p>
+      <p>${navLabel(
+        'The item is not consumed when activated. Double-clicking it again turns the Footprint effect off.',
+        'L’objet n’est pas consommé lorsqu’il est activé. Un nouveau double-clic désactive simplement l’effet Footprint.'
+      )}</p>
+
+      <h2 id="faq">FAQ</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>${navLabel('Can a newly created Footprint be used immediately?','Peut-on utiliser immédiatement un Footprint que l’on vient de créer ?')}</h3>
+          <p>${navLabel(
+            'No. Saving keeps the creation in the editor, but it still has to be registered and published through the Market process.',
+            'Non. La sauvegarde conserve la création dans l’éditeur, mais elle doit encore être enregistrée et publiée via le Market.'
+          )}</p>
+        </div>
+        <div class="faq-item">
+          <h3>${navLabel('Where does a Market Footprint arrive?','Où arrive un Footprint obtenu sur le Market ?')}</h3>
+          <p>${navLabel(
+            'It is received in Ragnarok Zero and can be found under Consumables in the Inventory.',
+            'Il est reçu dans Ragnarok Zero et se trouve dans la catégorie Consumables de l’inventaire.'
+          )}</p>
+        </div>
+        <div class="faq-item">
+          <h3>${navLabel('Is the Footprint item consumed when used?','L’objet Footprint disparaît-il lorsqu’on l’utilise ?')}</h3>
+          <p>${navLabel(
+            'No. The item remains in the Inventory and works as an on/off toggle for the effect.',
+            'Non. L’objet reste dans l’inventaire et sert simplement à activer ou désactiver l’effet.'
+          )}</p>
+        </div>
+      </div>
+    `;
+  }
+
   function topicDetail(id) {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
     if (id === 'elements') return elementsPage(topic);
@@ -6377,6 +6621,8 @@ window.RO_DATA = {
     if (id === 'guild-system') return guildSystemPage(topic);
     if (id === 'auto-hunt') return autoHuntPage(topic);
     if (id === 'mvp-raid') return mvpRaidPage(topic);
+    if (id === 'get-poring') return getPoringPage(topic);
+    if (id === 'ro-factory') return roFactoryPage(topic);
     if (id === 'introduction') return introductionPage(topic);
     if (id === 'getting-started') return gettingStartedPage(topic);
     if (id === 'basic-controls') return basicControlsPage(topic);
