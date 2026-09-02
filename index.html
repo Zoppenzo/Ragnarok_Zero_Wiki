@@ -2342,6 +2342,28 @@ tbody tr:hover { background: #fcf8f3; }
   .sprite-editor-panel { top: 132px; right: 10px; }
 }
 
+
+/* Click-to-copy /navi commands */
+.navi-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 2px 2px 0;
+  padding: 4px 8px;
+  border: 1px solid #a2a9b1;
+  border-radius: 4px;
+  background: #f8f9fa;
+  color: #202122;
+  cursor: pointer;
+  font: inherit;
+  vertical-align: middle;
+}
+.navi-copy:hover { background: #eef4ff; border-color: #36c; }
+.navi-copy:focus-visible { outline: 2px solid #36c; outline-offset: 2px; }
+.navi-copy code { padding: 0; border: 0; background: transparent; color: #202122; }
+.navi-copy-hint { color: #36c; font-size: 11px; font-weight: 700; }
+.navi-copy.copied { background: #eaf6e8; border-color: #5a8f55; }
+.navi-copy.copied .navi-copy-hint { color: #356b31; }
 </style>
 </head>
 <body>
@@ -3069,7 +3091,7 @@ window.RO_DATA = {
     { id:'introduction', group:'General Topics', en:'Introduction to Ragnarok', fr:'Introduction à Ragnarok', icon:'introduction' },
     { id:'getting-started', group:'General Topics', en:'Getting Started', fr:'Bien débuter', icon:'start' },
     { id:'basic-controls', group:'General Topics', en:'Basic Controls', fr:'Contrôles de base', icon:'controls' },
-    { id:'faq', group:'General Topics', en:'Frequently Asked Questions', fr:'Questions fréquentes', icon:'faq' },
+    { id:'useful-info', group:'General Topics', en:'Useful Information', fr:'Informations utiles', icon:'info' },
     { id:'glossary', group:'General Topics', en:'Glossary', fr:'Glossaire', icon:'glossary' },
     { id:'classes', group:'General Topics', en:'Classes', fr:'Classes', href:'#/classes' },
     { id:'levels', group:'General Topics', en:'Levels', fr:'Niveaux' },
@@ -3134,7 +3156,11 @@ window.RO_DATA = {
     },
     '#/wiki/basic-controls': {
       mouse:'complete', keys:'complete', legacy:'complete',
+      'navigation-system':'complete', 'key-bind-switch':'complete',
       'commands-global':'complete', 'commands-zero':'complete'
+    },
+    '#/wiki/useful-info': {
+      comfort:'complete', rewards:'complete', services:'complete', marketplace:'complete'
     },
     '#/wiki/levels': {
       overview:'complete', 'base-level':'complete', 'job-level':'complete',
@@ -3143,12 +3169,12 @@ window.RO_DATA = {
     '#/wiki/experience': {
       types:'complete', earning:'complete', 'monster-exp':'complete',
       'exp-requirements':'complete', 'party-exp':'partial',
-      'death-penalty':'complete', modifiers:'complete', 'current-cap':'complete'
+      'death-penalty':'complete', modifiers:'complete', 'inn-exp-boost':'complete', 'current-cap':'complete'
     },
     '#/wiki/stats': {
       primary:'complete', str:'complete', agi:'complete', vit:'complete',
       int:'complete', dex:'complete', luk:'complete', derived:'complete',
-      formulas:'complete', defense:'complete', unconfirmed:'partial'
+      'equipment-stats':'complete', formulas:'complete', defense:'complete', unconfirmed:'partial'
     },
     '#/wiki/elements': {
       'element-table':'complete', 'elements-list':'complete'
@@ -3224,12 +3250,13 @@ window.RO_DATA = {
 
   function decorateSectionStatusPills() {
     const route = (location.hash || '#/').split('?')[0];
-    if (route === '#/' || route === '#/wiki/faq' || route === '#/wiki/sources-links') return;
+    if (route === '#/' || route === '#/wiki/sources-links') return;
     const routeMap = SECTION_STATUS_BY_ROUTE[route] || {};
     const fullyVerifiedRoutes = new Set([
       '#/wiki/introduction',
       '#/wiki/getting-started',
       '#/wiki/basic-controls',
+      '#/wiki/useful-info',
       '#/wiki/glossary'
     ]);
     const housekeepingIds = new Set(['sources','related','see-also','skill-see-also']);
@@ -3310,7 +3337,7 @@ window.RO_DATA = {
         ['#/wiki/introduction','Introduction','Introduction','introduction'],
         ['#/wiki/getting-started','Getting Started','Bien débuter','start'],
         ['#/wiki/basic-controls','Basic Controls','Contrôles de base','controls'],
-        ['#/wiki/faq','FAQ','FAQ','faq'],
+        ['#/wiki/useful-info','Useful Information','Informations utiles','info'],
         ['#/wiki/glossary','Glossary','Glossaire','glossary'],
         ['#/wiki/sources-links','Sources & Useful Links','Sources et liens utiles','info']
       ]},
@@ -3387,6 +3414,53 @@ window.RO_DATA = {
 
   function demoAlert() {
     return `<div class="notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div><strong>${t('prototype')}.</strong> ${esc(lang === 'en' ? DATA.meta.noteEn : DATA.meta.noteFr)}</div></div>`;
+  }
+
+  function wireNaviCopy() {
+    app.querySelectorAll('code').forEach(code => {
+      const command = (code.textContent || '').trim();
+      if (!/^\/navi\s+/i.test(command) || code.closest('.navi-copy')) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'navi-copy';
+      button.setAttribute('aria-label', navLabel('Copy navigation command','Copier la commande de navigation'));
+      const commandCode = document.createElement('code');
+      commandCode.textContent = command;
+      const hint = document.createElement('span');
+      hint.className = 'navi-copy-hint';
+      hint.textContent = navLabel('Copy','Copier');
+      button.append(commandCode, hint);
+      code.replaceWith(button);
+    });
+
+    app.querySelectorAll('.navi-copy').forEach(button => {
+      button.addEventListener('click', async () => {
+        const command = button.querySelector('code')?.textContent?.trim() || '';
+        let copied = false;
+        try {
+          await navigator.clipboard.writeText(command);
+          copied = true;
+        } catch (_) {
+          const area = document.createElement('textarea');
+          area.value = command;
+          area.style.position = 'fixed';
+          area.style.opacity = '0';
+          document.body.appendChild(area);
+          area.select();
+          copied = document.execCommand('copy');
+          area.remove();
+        }
+        if (copied) {
+          button.classList.add('copied');
+          const hint = button.querySelector('.navi-copy-hint');
+          if (hint) hint.textContent = navLabel('Copied!','Copié !');
+          setTimeout(() => {
+            button.classList.remove('copied');
+            if (hint) hint.textContent = navLabel('Copy','Copier');
+          }, 1300);
+        }
+      });
+    });
   }
 
   function breadcrumbs(parts) {
@@ -3861,6 +3935,8 @@ window.RO_DATA = {
         {id:'mouse',label:navLabel('Mouse controls','Contrôles souris')},
         {id:'keys',label:navLabel('Keyboard shortcuts','Raccourcis clavier')},
         {id:'legacy',label:navLabel('Legacy combinations','Combinaisons classiques')},
+        {id:'navigation-system',label:'Navigation'},
+        {id:'key-bind-switch',label:'Key Bind Switch'},
         {id:'commands-global',label:navLabel('Current Global commands','Commandes Global actuelles')},
         {id:'commands-zero',label:navLabel('Other commands','Autres commandes')}
       ])}
@@ -3880,6 +3956,23 @@ window.RO_DATA = {
         'Ces combinaisons sont documentées par la Tip Box de Ragnarok. Sur Global, active le comportement classique / ALT dans Game Settings si tu veux utiliser ce mapping.'
       )}</p>
       ${listRows(legacyShortcuts)}
+
+      <h2 id="navigation-system">Navigation</h2>
+      <p>${navLabel(
+        'The Navigation interface can search for NPCs and monsters and then display the route with arrows on the ground. A /navi command opens navigation directly to a map and coordinate.',
+        'L’interface Navigation permet de rechercher des NPCs et monstres puis d’afficher le chemin avec des flèches au sol. Une commande /navi ouvre directement la navigation vers une map et des coordonnées.'
+      )}</p>
+      <p><code>/navi prontera 147/86</code></p>
+      <p class="muted-note">${navLabel(
+        'On this wiki, /navi commands are clickable: click one to copy the complete command to the clipboard.',
+        'Sur ce wiki, les commandes /navi sont cliquables : clique dessus pour copier la commande complète dans le presse-papiers.'
+      )}</p>
+
+      <h2 id="key-bind-switch">Key Bind Switch</h2>
+      <p>${navLabel(
+        'You can assign a key or key combination to switch between two equipment sets. This is useful when moving between different combat roles or situations such as normal farming, instances and PvP. The equipment-set switch can be used once every 10 seconds.',
+        'Tu peux assigner une touche ou une combinaison de touches pour basculer entre deux sets d’équipement. C’est pratique pour passer d’un rôle ou d’une situation à une autre, par exemple farm normal, instances ou PvP. Le changement de set peut être effectué une fois toutes les 10 secondes.'
+      )}</p>
 
       <h2 id="commands-global">${navLabel('Current Global commands','Commandes Global actuelles')}</h2>
       ${listRows(globalCommands)}
@@ -4115,6 +4208,7 @@ window.RO_DATA = {
         {id:'party-exp',label:navLabel('Party EXP','EXP en Party')},
         {id:'death-penalty',label:navLabel('Death penalty','Pénalité de mort')},
         {id:'modifiers',label:navLabel('EXP modifiers','Modificateurs d’EXP')},
+        {id:'inn-exp-boost',label:'Inn EXP Boost'},
         {id:'current-cap',label:navLabel('Current cap','Plafond actuel')}
       ])}
 
@@ -4223,6 +4317,33 @@ window.RO_DATA = {
         'Temporary event percentages change frequently and are intentionally not treated as permanent server rates.',
         'Les pourcentages des événements temporaires changent fréquemment et ne sont volontairement pas présentés comme des rates permanents du serveur.'
       )}</p>
+
+      <h2 id="inn-exp-boost">Inn EXP Boost</h2>
+      <p>${navLabel(
+        'Each inn has a service window. Using Rest and go during the relevant time grants +10% EXP for 30 minutes.',
+        'Chaque auberge possède un créneau de service. Utiliser Rest and go pendant l’horaire correspondant donne +10 % d’EXP pendant 30 minutes.'
+      )}</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Service','Service')}</th><th>${navLabel('Inn locations','Auberges')}</th><th>${navLabel('Server time (UTC)','Heure serveur (UTC)')}</th><th>${navLabel('Effect','Effet')}</th></tr></thead>
+        <tbody>
+          <tr><th>Good Morning Service</th><td>Alberta — Fisherman<br>Prontera — Nencaras Branch 1 & 2</td><td>08:00–09:00</td><td>+10% EXP / 30 min</td></tr>
+          <tr><th>Afternoon Break</th><td>Geffen — Ifrit<br>Payon — Dalneomi Tavern</td><td>14:00–15:00</td><td>+10% EXP / 30 min</td></tr>
+          <tr><th>Dinner Banquet</th><td>Morroc — Mirage<br>Prontera — Nencaras Branch 1 & 2</td><td>20:00–21:00</td><td>+10% EXP / 30 min</td></tr>
+          <tr><th>Late-Night Snack</th><td>Aldebaran — Irion</td><td>02:00–03:00</td><td>+10% EXP / 30 min</td></tr>
+        </tbody>
+      </table></div>
+      <div class="wiki-callout"><strong>${navLabel('Server time','Heure serveur')}</strong><br>${navLabel(
+        'The displayed service times use UTC. For France, add 2 hours during CEST (summer) and 1 hour during CET (winter). Example: 14:00 UTC = 16:00 CEST or 15:00 CET.',
+        'Les horaires de service utilisent l’UTC. Pour la France, ajoute 2 heures en CEST (été) et 1 heure en CET (hiver). Exemple : 14:00 UTC = 16:00 CEST ou 15:00 CET.'
+      )}</div>
+      <p>${navLabel(
+        'The Inn EXP buff is mutually exclusive with Growth Elixir: using a Growth-type elixir removes the Inn buff, and the Inn buff cannot be received while the elixir is active.',
+        'Le bonus EXP d’auberge est incompatible avec Growth Elixir : utiliser un élixir de type Growth retire le bonus d’auberge, et le bonus d’auberge ne peut pas être reçu tant que l’élixir est actif.'
+      )}</p>
+      <figure style="margin:16px auto 28px;max-width:1000px;text-align:center">
+        <img src="assets/useful-info/inn-exp-boost.webp" alt="Inn EXP Boost schedule" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+        <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel('Inn EXP Boost service windows.','Créneaux de service du Inn EXP Boost.')}</figcaption>
+      </figure>
 
       <h2 id="current-cap">${navLabel('Experience and the current cap','Expérience et plafond actuel')}</h2>
       <p>${navLabel(
@@ -4365,6 +4486,7 @@ window.RO_DATA = {
         {id:'dex',label:'DEX'},
         {id:'luk',label:'LUK'},
         {id:'derived',label:navLabel('Derived stats','Statistiques dérivées')},
+        {id:'equipment-stats',label:'Equipment Stats'},
         {id:'formulas',label:navLabel('Formulas','Formules')},
         {id:'defense',label:navLabel('Soft vs Hard defense','Soft vs Hard defense')},
         {id:'unconfirmed',label:navLabel('Incomplete mechanics','Mécaniques incomplètes')}
@@ -4455,6 +4577,16 @@ window.RO_DATA = {
         <tbody>${secondaryStats.map(([name,desc])=>`<tr><th>${name}</th><td>${desc}</td></tr>`).join('')}</tbody>
       </table></div>
 
+      <h2 id="equipment-stats">Equipment Stats</h2>
+      <p>${navLabel(
+        'The Equipment Stats view summarizes the bonuses currently supplied by your equipped items. It is useful for checking the combined result of your gear without reopening every item description individually.',
+        'La vue Equipment Stats résume les bonus actuellement fournis par les objets équipés. Elle permet de vérifier rapidement le résultat combiné de ton équipement sans rouvrir la description de chaque objet.'
+      )}</p>
+      <p class="muted-note">${navLabel(
+        'This is an equipment-summary interface; the primary and derived character-stat formulas remain documented in the sections above and below.',
+        'Il s’agit d’une interface de résumé de l’équipement ; les formules des statistiques principales et dérivées du personnage restent documentées dans les sections au-dessus et en dessous.'
+      )}</p>
+
       <h2 id="formulas">${navLabel('Formulas','Formules')}</h2>
       <p>${navLabel(
         'The following formulas come from current-server measurements. The latest in-game check is dated 18 August 2026 (4 August for ranged Status ATK). floor() means round down.',
@@ -4503,56 +4635,138 @@ window.RO_DATA = {
       `;
   }
 
-  function faqPage(topic) {
-    const faq = [
-      [
-        navLabel('Why are monster, item and skill names kept in English?','Pourquoi les noms de monstres, objets et skills restent-ils en anglais ?'),
-        navLabel('To match the international game terminology and make searches easier. Explanations and the interface can still be switched between English and French.','Pour correspondre à la terminologie internationale du jeu et faciliter les recherches. Les explications et l’interface peuvent tout de même être affichées en anglais ou en français.')
-      ],
-      [
-        navLabel('Which classes are currently included?','Quelles classes sont actuellement incluses ?'),
-        navLabel('The current live scope contains Novice plus Swordman, Mage, Archer, Merchant, Thief and Acolyte. Announced future jobs are added to the wiki only after they become playable.','Le périmètre actuellement en ligne contient Novice ainsi que Swordman, Mage, Archer, Merchant, Thief et Acolyte. Les futures classes annoncées ne sont ajoutées au wiki qu’une fois réellement jouables.')
-      ],
-      [
-        navLabel('Is Auto-Hunt allowed?','Auto-Hunt est-il autorisé ?'),
-        navLabel('Yes, when using the Auto-Hunt feature built into Ragnarok. Third-party bots, macros and external automated gameplay tools are prohibited.','Oui, lorsqu’il s’agit de la fonction Auto-Hunt intégrée à Ragnarok. Les bots, macros et outils externes automatisant le gameplay sont interdits.')
-      ],
-      [
-        navLabel('How do cards work?','Comment fonctionnent les cartes ?'),
-        navLabel('Nearly all monsters can drop a named card at a low rate. Cards take effect when compounded into compatible socketed equipment.','Presque tous les monstres peuvent laisser tomber à faible taux une carte portant leur nom. Les cartes prennent effet lorsqu’elles sont insérées dans un équipement compatible disposant d’un slot.')
-      ],
-      [
-        navLabel('Can a compounded card be removed easily?','Peut-on retirer facilement une carte insérée ?'),
-        navLabel('Do not assume so. The official guide explicitly warns players to be careful because removing a compounded card can be difficult.','Il ne faut pas partir du principe que oui. Le guide officiel avertit explicitement les joueurs d’être prudents car retirer une carte insérée peut être difficile.')
-      ],
-      [
-        navLabel('How does Party EXP work?','Comment fonctionne l’EXP en Party ?'),
-        navLabel('The Party EXP bonus is +10% per additional member, capped at +30%. Shared EXP must be enabled by the Party leader.','Le bonus d’EXP de Party est de +10 % par membre supplémentaire, plafonné à +30 %. Shared EXP doit être activé par le chef de Party.')
-      ],
-      [
-        navLabel('Where should I download the game?','Où télécharger le jeu ?'),
-        navLabel('Use the official Ragnarok GNJOY download page and launcher. Avoid unofficial clients or executables.','Utilise la page de téléchargement et le launcher officiels Ragnarok de GNJOY. Évite les clients ou exécutables non officiels.')
-      ],
-      [
-        navLabel('Why are some values missing?','Pourquoi certaines valeurs sont-elles absentes ?'),
-        navLabel('Some values are still unknown and are left empty until reliable current data is available.','Certaines valeurs sont encore inconnues et restent vides jusqu’à ce que des données actuelles fiables soient disponibles.')
-      ],
-      [
-        navLabel('Is this an official Gravity website?','Ce site est-il un site officiel de Gravity ?'),
-        navLabel('No. Ragnarok Wiki is a community reference project. Official GNJOY pages are linked as primary sources whenever possible.','Non. Ragnarok Wiki est un projet de référence communautaire. Les pages officielles GNJOY sont utilisées comme sources principales lorsque cela est possible.')
-      ]
-    ];
-    return `${generalPageHeader(topic)}
-      <p class="article-lead">${navLabel('Frequently asked questions about this wiki and the current Ragnarok service.','Questions fréquentes concernant ce wiki et le service actuel Ragnarok.')}</p>
-      <div class="faq-list">${faq.map(([q,a],i)=>`<section class="faq-item" id="faq-${i+1}"><h2>${q}</h2><p>${a}</p></section>`).join('')}</div>
+  function usefulInfoPage(topic) {
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('info')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+      <p class="article-lead">${navLabel(
+        'A practical collection of interface features, recurring rewards, useful services and everyday shortcuts that are easy to miss.',
+        'Un regroupement des fonctions d’interface, récompenses régulières, services et raccourcis pratiques qu’il est facile de manquer.'
+      )}</p>
+
+      ${toc([
+        {id:'comfort',label:navLabel('Quality of Life','Confort de jeu')},
+        {id:'rewards',label:navLabel('Rewards & Bonuses','Récompenses & bonus')},
+        {id:'services',label:navLabel('Navigation & Services','Navigation & services')},
+        {id:'marketplace',label:'Market Place'}
+      ])}
+
+      <h2 id="comfort">${navLabel('Quality of Life','Confort de jeu')}</h2>
+
+      <h3 id="tip-box">Tip Box</h3>
+      <p>${navLabel(
+        'The Tip Box contains useful client tips and references, including information that can help locate craftable headgear. Open it with /tip; the classic shortcut is Alt + D when legacy shortcuts are enabled.',
+        'La Tip Box regroupe des conseils et références utiles du client, notamment pour retrouver des informations sur certains headgears craftables. Ouvre-la avec /tip ; le raccourci classique est Alt + D lorsque les raccourcis legacy sont activés.'
+      )}</p>
+      <p><code>/tip</code></p>
+
+      <h3 id="item-sale-lock">${navLabel('Item Sale Lock','Verrouillage de vente des objets')}</h3>
+      <p>${navLabel(
+        'Important items can be protected from accidental NPC sales. Put the item in the Favorites category of the Inventory (the fourth category) so it no longer appears in the Tool Dealer sale list.',
+        'Les objets importants peuvent être protégés contre une vente accidentelle à un NPC. Place l’objet dans la catégorie Favorites de l’inventaire (la quatrième catégorie) afin qu’il n’apparaisse plus dans la liste de vente du Tool Dealer.'
+      )}</p>
+
+      <h3 id="equipment-stats-link">Equipment Stats</h3>
+      <p>${navLabel(
+        'The Equipment Stats view gives a summary of the bonuses supplied by the equipment currently worn. The Stats page explains this view in more detail.',
+        'La vue Equipment Stats affiche un résumé des bonus apportés par l’équipement actuellement porté. La page Statistiques explique cette vue plus en détail.'
+      )}</p>
+      <div class="hero-actions"><a class="button" href="#/wiki/stats/section/equipment-stats">${miniIcon('mechanics')}${navLabel('Open Equipment Stats','Voir Equipment Stats')}</a></div>
+
+      <h3 id="key-bind-link">Key Bind Switch</h3>
+      <p>${navLabel(
+        'A key or key combination can be assigned to swap between two equipment sets. The switch has a 10-second reuse delay. See Basic Controls for the dedicated explanation.',
+        'Une touche ou combinaison de touches peut être assignée pour basculer entre deux sets d’équipement. Le changement possède un délai de réutilisation de 10 secondes. Consulte Contrôles de base pour l’explication dédiée.'
+      )}</p>
+      <div class="hero-actions"><a class="button" href="#/wiki/basic-controls/section/key-bind-switch">${miniIcon('controls')}${navLabel('Open Key Bind Switch','Voir Key Bind Switch')}</a></div>
+
+      <h2 id="rewards">${navLabel('Rewards & Bonuses','Récompenses & bonus')}</h2>
+
+      <h3 id="daily-login">Daily Login</h3>
+      <p>${navLabel(
+        'When you log in, the Daily Login window lets you claim the day’s reward; the reward is then delivered through RODEX. If the character stays connected for more than 24 hours, remember to open the menu yourself because the pop-up does not automatically reappear.',
+        'À la connexion, la fenêtre Daily Login permet de récupérer la récompense du jour ; celle-ci est ensuite envoyée via RODEX. Si le personnage reste connecté plus de 24 heures, pense à ouvrir le menu manuellement car la fenêtre ne réapparaît pas automatiquement.'
+      )}</p>
+
+      <h3 id="attendance">Attendance NPC</h3>
+      <p>${navLabel(
+        'Talking to an Attendance NPC starts a one-hour countdown. Return after one hour to claim the reward. This can be done once per day per character, and the NPC is found in many towns, often close to the Kafra.',
+        'Parler à un Attendance NPC lance un compte à rebours d’une heure. Reviens après une heure pour récupérer la récompense. Cela peut être fait une fois par jour et par personnage ; le NPC se trouve dans de nombreuses villes, souvent près de la Kafra.'
+      )}</p>
+      <p><code>/navi prontera 147/86</code></p>
+
+      <h3 id="achievements">Achievements</h3>
+      <p>${navLabel(
+        'Achievements reward completed challenges with buffs, titles, items and other rewards. Complete the objective, open the Achievement window and use Claim Reward when the reward becomes available.',
+        'Les Achievements récompensent les défis accomplis avec des buffs, titres, objets et autres récompenses. Termine l’objectif, ouvre la fenêtre Achievement puis utilise Claim Reward lorsque la récompense devient disponible.'
+      )}</p>
+      <div class="wiki-callout"><strong>${navLabel('Example — Orc Hero','Exemple — Orc Hero')}</strong><br>${navLabel(
+        'Defeat 30,000 Orc Warrior. The shown reward is the Orc Hero Headdress: STR +2 and a chance to cast Weapon Perfection Lv.3 when performing attacks.',
+        'Vaincre 30 000 Orc Warrior. La récompense montrée est le Orc Hero Headdress : STR +2 et une chance de lancer Weapon Perfection Lv.3 lors des attaques.'
+      )}</div>
+      <figure style="margin:14px auto 24px;max-width:900px;text-align:center">
+        <img src="assets/useful-info/achievement-orc-warrior.webp" alt="${navLabel('Orc Hero achievement requiring 30,000 Orc Warrior kills','Achievement Orc Hero demandant 30 000 Orc Warrior vaincus')}" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+        <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel(
+          'Orc Hero achievement — 30,000 Orc Warrior objective and Orc Hero Headdress reward.',
+          'Achievement Orc Hero — objectif de 30 000 Orc Warrior et récompense Orc Hero Headdress.'
+        )}</figcaption>
+      </figure>
+
+      <h3 id="inn-exp-link">Inn EXP Boost</h3>
+      <p>${navLabel(
+        'Resting at an inn during its service time grants +10% EXP for 30 minutes. The Experience page contains the full schedule, time-zone note and the image reference.',
+        'Se reposer dans une auberge pendant son horaire de service donne +10 % d’EXP pendant 30 minutes. La page Expérience contient les horaires complets, la précision sur le fuseau horaire et l’image de référence.'
+      )}</p>
+      <div class="hero-actions"><a class="button" href="#/wiki/experience/section/inn-exp-boost">${miniIcon('level')}${navLabel('Open Inn EXP Boost','Voir Inn EXP Boost')}</a></div>
+
+      <h2 id="services">${navLabel('Navigation & Services','Navigation & services')}</h2>
+
+      <h3 id="navigation">Navigation</h3>
+      <p>${navLabel(
+        'The Navigation system can search for NPCs and monsters and display the route with arrows on the ground. /navi commands can jump directly to a map coordinate in the navigation system. On this wiki, click any /navi command to copy it and paste it straight into the in-game chat.',
+        'Le système Navigation permet de rechercher des NPCs et monstres puis d’afficher le chemin avec des flèches au sol. Les commandes /navi permettent d’ouvrir directement la navigation vers des coordonnées. Sur ce wiki, clique sur n’importe quelle commande /navi pour la copier puis la coller directement dans le chat du jeu.'
+      )}</p>
+      <p><code>/navi prontera 147/86</code></p>
+      <div class="hero-actions"><a class="button" href="#/wiki/basic-controls/section/navigation-system">${miniIcon('controls')}${navLabel('Navigation details','Détails de Navigation')}</a></div>
+
+      <h3 id="npc-hub">NPC Hub</h3>
+      <p>${navLabel(
+        'A recurring NPC found in several towns teleports you to a dedicated hub containing useful service NPCs. Two current access points are Payon and Prontera.',
+        'Un NPC présent dans plusieurs villes permet de rejoindre une zone dédiée regroupant différents NPCs de service. Deux accès actuels se trouvent à Payon et Prontera.'
+      )}</p>
+      <p><code>/navi payon 164/156</code><br><code>/navi prontera 138/125</code></p>
+
+      <h3 id="cheese-seller">Cheese Seller</h3>
+      <p>${navLabel(
+        'Cheese is a convenient SP consumable for classes that use skills heavily. A Cheese seller is available in Prontera.',
+        'Le Cheese est un consommable de SP pratique pour les classes utilisant beaucoup de compétences. Un vendeur de Cheese est disponible à Prontera.'
+      )}</p>
+      <p><code>/navi prontera 74/133</code></p>
+
+      <h3 id="bank">Bank</h3>
+      <p>${navLabel(
+        'The Bank is shared across the account. Open it through the interface or with Ctrl + B.',
+        'La Bank est partagée sur le compte. Ouvre-la depuis l’interface ou avec Ctrl + B.'
+      )}</p>
+      <p>${keycap('Ctrl + B')}</p>
+
+      <h2 id="marketplace">Market Place</h2>
+      <p>${navLabel(
+        'Player shops are concentrated in a dedicated Market Place instead of filling the main towns. It can be accessed through the Kafra in Prontera. The area is split into four zones and includes useful services such as a Kafra, Blacksmith forge and Tool Dealer near the center.',
+        'Les shops de joueurs sont regroupés dans un Market Place dédié au lieu de remplir les villes principales. Il est accessible via la Kafra de Prontera. La zone est divisée en quatre secteurs et regroupe notamment une Kafra, une forge Blacksmith et un Tool Dealer près du centre.'
+      )}</p>
+      <p>${navLabel(
+        'Vending and Buying posts can be used there. A weekly character quest also grants the ability to buy or sell through the related system; the relevant quest NPC is in Alberta.',
+        'Les posts Vending et Buying peuvent y être utilisés. Une quête hebdomadaire par personnage permet également d’obtenir l’accès au système de vente/achat associé ; le NPC concerné se trouve à Alberta.'
+      )}</p>
+      <p><code>/navi alberta_in 19/19</code></p>
+
       ${officialSources([
-        ['Official Game Guide','https://roz.mygnjoy.com/en/intro/guide'],
-        ['Official Download page','https://roz.mygnjoy.com/en/download'],
-        ['Official Cards guide','https://roz.mygnjoy.com/en/intro/guide/7'],
-        ['Official Party guide','https://roz.mygnjoy.com/en/intro/guide/17'],
-        ['Official fair-play enforcement notice','https://roz.mygnjoy.com/en/news/notice/80']
+        ['Lymd — Ragnarok Zero Global Guide','https://sites.google.com/view/rozeroguide'],
+        ['MidgardHub — Complete New Player Guide','https://midgardhub.com/guides/new-player']
       ])}`;
   }
+
 
   function glossaryPage(topic) {
     const rows = [
@@ -6672,7 +6886,8 @@ window.RO_DATA = {
     if (id === 'levels') return levelsPage(topic);
     if (id === 'experience') return experiencePage(topic);
     if (id === 'stats') return statsPage(topic);
-    if (id === 'faq') return faqPage(topic);
+    if (id === 'useful-info') return usefulInfoPage(topic);
+    if (id === 'faq') return usefulInfoPage({ ...topic, en:'Useful Information', fr:'Informations utiles' });
     if (id === 'glossary') return glossaryPage(topic);
     if (id === 'sources-links') return sourcesLinksPage(topic);
 
@@ -8787,9 +9002,15 @@ window.RO_DATA = {
     else html=notFound();
     app.innerHTML=html;
     decorateSectionStatusPills();
+    wireNaviCopy();
     updateActiveNav();
     app.focus({preventScroll:true});
-    window.scrollTo(0,0);
+    const sectionTarget = hash[2] === 'section' ? hash[3] : null;
+    if (sectionTarget) {
+      requestAnimationFrame(() => document.getElementById(sectionTarget)?.scrollIntoView({behavior:'smooth',block:'start'}));
+    } else {
+      window.scrollTo(0,0);
+    }
   }
 
   function searchableEntities() {
