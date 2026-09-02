@@ -3809,7 +3809,6 @@ window.RO_DATA = {
       ['/bm', navLabel('Toggle Battle Mode. It locks normal typing so more keyboard keys can be used for hotbar slots; Enter temporarily activates chat.','Active / désactive le Battle Mode. Il verrouille la saisie normale afin d’utiliser davantage de touches pour les barres de skills ; Entrée réactive temporairement le chat.')],
       ['/changedress', navLabel('Remove a clothing / costume transformation effect that can prevent combat.','Retire un effet de transformation vestimentaire / costume pouvant empêcher le combat.')],
       ['/nocosplay', navLabel('Alternative command to remove the same clothing transformation effect.','Commande alternative pour retirer le même effet de transformation vestimentaire.')],
-      ['/hoai', navLabel('Switch the Homunculus AI mode. This command only matters when the Homunculus system is available.','Bascule le mode d’IA de l’Homunculus. Cette commande n’a d’utilité que lorsque le système Homunculus est disponible.')]
     ];
 
     const listRows = rows => `<ul>${rows.map(([key,desc])=>`<li><strong>${key.startsWith('/') ? `<code>${esc(key)}</code>` : keycap(key)}</strong> — ${desc}</li>`).join('')}</ul>`;
