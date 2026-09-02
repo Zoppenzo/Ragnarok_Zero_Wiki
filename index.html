@@ -3318,8 +3318,8 @@ window.RO_DATA = {
     },
     '#/wiki/mvp-raid': {
       overview:'complete', 'available-raids':'complete', 'raid-rules':'complete',
-      'gtb-raid':'complete', 'moonlight-raid':'complete', rewards:'complete',
-      fragments:'complete', 'raid-manager':'complete'
+      'hunting-quest':'complete', 'gtb-raid':'complete', 'moonlight-raid':'complete',
+      rewards:'complete', fragments:'complete', 'raid-manager':'complete'
     },
     '#/wiki/get-poring': {
       overview:'complete', access:'complete', care:'complete', evolution:'complete',
@@ -6244,16 +6244,57 @@ window.RO_DATA = {
       {
         boss:'Golden Thief Bug',
         access:navLabel('Prontera Culvert — last floor','Prontera Culvert — dernier étage'),
-        pve:navLabel('Culvert MVP Raid — PvE zone (red warp)','Culvert MVP Raid — zone PvE (warp rouge)'),
-        pvp:navLabel('Culvert MVP Raid — PvP zone','Culvert MVP Raid — zone PvP'),
+        pve:navLabel('General Habitat / PvE — red warp','General Habitat / PvE — warp rouge'),
+        pvp:navLabel('PK Habitat / PvP — gold warp','PK Habitat / PvP — warp doré'),
         release:navLabel('August 18, 2026 — server launch','18 août 2026 — ouverture du serveur')
       },
       {
         boss:'Moonlight Flower',
         access:'Payon Cave 5',
-        pve:navLabel('Payon Cave 5 MVP Raid — PvE zone','Payon Cave 5 MVP Raid — zone PvE'),
-        pvp:navLabel('Payon Cave 5 MVP Raid — PvP zone','Payon Cave 5 MVP Raid — zone PvP'),
+        pve:navLabel('General Habitat / PvE','General Habitat / PvE'),
+        pvp:navLabel('PK Habitat / PvP','PK Habitat / PvP'),
         release:navLabel('August 18, 2026 — server launch','18 août 2026 — ouverture du serveur')
+      }
+    ];
+
+    const rewardRows = [
+      {
+        boss:'Golden Thief Bug',
+        standard:[
+          'Battle Golden Thief Bug Doll',
+          '[Costume] Golden Headgear (Bound)',
+          'Blacksmith\'s Blessing ×1',
+          'Blacksmith\'s Blessing Powder ×2 / ×3',
+          'Blessing of Yggdrasil ×1 / ×2 / ×3',
+          '[Golden ThiefBug] Energy Fragment ×1 / ×2 / ×3'
+        ],
+        deluxe:[
+          'Battle Golden Thief Bug Doll',
+          '[Costume] Golden Headgear (Bound)',
+          'Blacksmith\'s Blessing ×2',
+          'Blacksmith\'s Blessing Powder ×3 / ×4',
+          'Blessing of Yggdrasil ×2 / ×3',
+          '[Golden ThiefBug] Energy Fragment ×2 / ×3'
+        ]
+      },
+      {
+        boss:'Moonlight Flower',
+        standard:[
+          'Battle Moonlight Flower Doll',
+          '[Costume] Moonlight Flower Bell (Bound)',
+          'Blacksmith\'s Blessing ×1',
+          'Blacksmith\'s Blessing Powder ×2 / ×3',
+          'Blessing of Yggdrasil ×1 / ×2 / ×3',
+          '[Moonlight Flower] Energy Fragment ×1 / ×2 / ×3'
+        ],
+        deluxe:[
+          'Battle Moonlight Flower Doll',
+          '[Costume] Moonlight Flower Bell (Bound)',
+          'Blacksmith\'s Blessing ×2',
+          'Blacksmith\'s Blessing Powder ×3 / ×4',
+          'Blessing of Yggdrasil ×2 / ×3',
+          '[Moonlight Flower] Energy Fragment ×2 / ×3'
+        ]
       }
     ];
 
@@ -6261,29 +6302,30 @@ window.RO_DATA = {
       <div class="article-heading"><h1>${icon('monster')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
 
       <p class="article-lead">${navLabel(
-        'An MVP Raid is a dedicated area built around one specific MVP. Instead of hunting the boss as a normal map spawn, players enter the raid area attached to its dungeon and choose between a PvE zone and a PvP zone. The goal is simple: reach the raid rooms, find the MVP when it is alive, kill it and collect the raid rewards.',
-        'Un MVP Raid est une zone spéciale liée à un MVP précis. Au lieu de chercher le boss comme un MVP classique sur une map, les joueurs entrent dans la zone de raid rattachée à son donjon et choisissent entre une version PvE et une version PvP. Le but est simple : rejoindre les salles du raid, trouver le MVP lorsqu’il est présent, le tuer et récupérer les récompenses du raid.'
+        'An MVP Raid is a dedicated version of an MVP area. Each raid is tied to one specific boss and gives players a place to hunt that MVP without relying on its normal field spawn. Current raids have a General Habitat for PvE and a PK Habitat for PvP, plus their own hunting quest and reward boxes.',
+        'Un MVP Raid est une version dédiée de la zone d’un MVP. Chaque raid est lié à un boss précis et permet de le chasser sans dépendre de son spawn classique sur une map. Les raids actuels possèdent une General Habitat en PvE et une PK Habitat en PvP, ainsi qu’une quête de chasse et des boîtes de récompense propres au MVP.'
       )}</p>
 
       ${toc([
         {id:'overview',label:navLabel('How MVP Raids work','Fonctionnement des MVP Raids')},
         {id:'available-raids',label:navLabel('Available MVP Raids','MVP Raids disponibles')},
-        {id:'raid-rules',label:navLabel('PvE and PvP zones','Zones PvE et PvP')},
+        {id:'raid-rules',label:navLabel('General and PK Habitats','General et PK Habitats')},
+        {id:'hunting-quest',label:navLabel('Hunting Quest — Yakt','Quête de chasse — Yakt')},
         {id:'gtb-raid',label:'Golden Thief Bug'},
         {id:'moonlight-raid',label:'Moonlight Flower'},
-        {id:'rewards',label:navLabel('Golden Thief Bug rewards','Récompenses Golden Thief Bug')},
-        {id:'fragments',label:navLabel('Energy Fragments','Energy Fragments')},
+        {id:'rewards',label:navLabel('Reward boxes','Boîtes de récompense')},
+        {id:'fragments',label:'Energy Fragments'},
         {id:'raid-manager',label:'Raid Manager Yakt'}
       ])}
 
       <h2 id="overview">${navLabel('How MVP Raids work','Fonctionnement des MVP Raids')}</h2>
       <p>${navLabel(
-        'Each MVP Raid is tied to a dungeon and has its own raid area. Once inside, the boss is found in dedicated rooms rather than mixed into the normal dungeon population. This makes the raid a focused activity: players go there specifically to contest and kill that MVP.',
-        'Chaque MVP Raid est rattaché à un donjon et possède sa propre zone de raid. Une fois à l’intérieur, le boss se trouve dans des salles dédiées au lieu d’être mélangé aux monstres normaux du donjon. Le raid sert donc vraiment à une chose : venir chercher ce MVP et le tuer.'
+        'The raid is separate from the normal dungeon population. You enter the habitat dedicated to the MVP, wait for or find the boss there, kill it, then use the raid rewards and fragments obtained from the fight. The system is therefore both an MVP-hunting activity and a repeatable source of progression materials.',
+        'Le raid est séparé des monstres normaux du donjon. Tu entres dans l’habitat dédié au MVP, tu trouves le boss lorsqu’il est présent, tu le tues puis tu récupères les récompenses et fragments liés au raid. Le système sert donc à la fois à chasser les MVP et à récupérer régulièrement des matériaux de progression.'
       )}</p>
       <p>${navLabel(
-        'The two raids available at launch are Golden Thief Bug in Prontera Culvert and Moonlight Flower in Payon Cave 5.',
-        'Les deux raids disponibles depuis l’ouverture du serveur sont Golden Thief Bug à Prontera Culvert et Moonlight Flower à Payon Cave 5.'
+        'The two MVP Raids currently available are Golden Thief Bug in Prontera Culvert and Moonlight Flower in Payon Cave 5.',
+        'Les deux MVP Raids actuellement disponibles sont Golden Thief Bug à Prontera Culvert et Moonlight Flower à Payon Cave 5.'
       )}</p>
 
       <h2 id="available-raids">${navLabel('Available MVP Raids','MVP Raids disponibles')}</h2>
@@ -6304,77 +6346,101 @@ window.RO_DATA = {
         </tr>`).join('')}</tbody>
       </table></div>
 
-      <h2 id="raid-rules">${navLabel('PvE and PvP zones','Zones PvE et PvP')}</h2>
+      <h2 id="raid-rules">${navLabel('General and PK Habitats','General et PK Habitats')}</h2>
       <p>${navLabel(
-        'Both current MVP Raids are available in two versions. The PvE zone keeps the fight focused on the MVP: players cannot attack each other. The PvP zone keeps the same raid objective but enables combat between players, so different groups can fight each other while competing for the boss.',
-        'Les deux MVP Raids actuels existent en deux versions. Dans la zone PvE, les joueurs ne peuvent pas s’attaquer entre eux : tout le combat se concentre sur le MVP. Dans la zone PvP, l’objectif reste de tuer le même boss, mais les joueurs peuvent aussi s’affronter pendant la compétition pour le MVP.'
+        'Each current raid has two habitats. The General Habitat is the PvE version: players focus on the MVP and cannot attack one another. The PK Habitat enables PvP, so players and groups can fight each other while contesting the same MVP.',
+        'Chaque raid actuel possède deux habitats. La General Habitat correspond à la version PvE : les joueurs se concentrent sur le MVP et ne peuvent pas s’attaquer entre eux. La PK Habitat active le PvP : les joueurs et groupes peuvent donc s’affronter tout en se disputant le même MVP.'
       )}</p>
+      <div class="wiki-callout"><strong>${navLabel('Warp colors','Couleur des warps')}</strong><br>${navLabel(
+        'Red = General Habitat · Gold = PK Habitat · White = return to the original map.',
+        'Rouge = General Habitat · Doré = PK Habitat · Blanc = retour vers la map d’origine.'
+      )}</div>
+
+      <h2 id="hunting-quest">${navLabel('Hunting Quest — Yakt','Quête de chasse — Yakt')}</h2>
+      <p>${navLabel(
+        'Before going to the raid, take the MVP hunting quest from Raid Manager Yakt in Eden Group. Kill the MVP requested by the quest, then return to Yakt to complete it. The reward box matches the MVP you hunted.',
+        'Avant de partir en raid, prends la quête de chasse du MVP auprès de Raid Manager Yakt dans Eden Group. Tue le MVP demandé, puis retourne voir Yakt pour valider la quête. La boîte reçue correspond au MVP que tu as chassé.'
+      )}</p>
+      <div class="wiki-callout"><strong>Raid Manager Yakt</strong><br><code>/navi moc_para01 25/31</code></div>
 
       <h2 id="gtb-raid">Golden Thief Bug</h2>
       <p>${navLabel(
-        'The Golden Thief Bug raid is located in Prontera Culvert. From the last floor, the raid access leads to the dedicated GTB rooms. The red warp is the PvE entrance; a PvP version of the raid is also available.',
-        'Le raid Golden Thief Bug se trouve à Prontera Culvert. Depuis le dernier étage, l’accès au raid mène aux salles dédiées à GTB. Le warp rouge correspond à l’entrée PvE ; une version PvP du raid est également disponible.'
+        'The Golden Thief Bug raid is accessed from the last floor of Prontera Culvert. The red warp leads to the General Habitat and the gold warp leads to the PK Habitat.',
+        'Le raid Golden Thief Bug est accessible depuis le dernier étage de Prontera Culvert. Le warp rouge mène à la General Habitat et le warp doré mène à la PK Habitat.'
       )}</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:14px 0 20px">
         <figure style="margin:0;text-align:center">
-          <img src="https://midgardhub.com/images/guides/new-player/image151.png" alt="${navLabel('Golden Thief Bug PvE raid entrance','Entrée PvE du raid Golden Thief Bug')}" loading="lazy" style="display:block;width:100%;height:auto;border:1px solid var(--line-soft);border-radius:6px">
-          <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">${navLabel('Red warp: Golden Thief Bug PvE raid.','Warp rouge : raid PvE de Golden Thief Bug.')}</figcaption>
+          <img src="https://midgardhub.com/images/guides/new-player/image151.png" alt="${navLabel('Golden Thief Bug General Habitat entrance','Entrée General Habitat de Golden Thief Bug')}" loading="lazy" style="display:block;width:100%;height:auto;border:1px solid var(--line-soft);border-radius:6px">
+          <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">${navLabel('Red warp: General Habitat / PvE.','Warp rouge : General Habitat / PvE.')}</figcaption>
         </figure>
         <figure style="margin:0;text-align:center">
-          <img src="https://midgardhub.com/images/guides/new-player/image193.png" alt="${navLabel('Golden Thief Bug PvP raid area','Zone PvP du raid Golden Thief Bug')}" loading="lazy" style="display:block;width:100%;height:auto;border:1px solid var(--line-soft);border-radius:6px">
-          <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">${navLabel('Golden Thief Bug PvP raid area.','Zone PvP du raid Golden Thief Bug.')}</figcaption>
+          <img src="https://midgardhub.com/images/guides/new-player/image193.png" alt="${navLabel('Golden Thief Bug PK Habitat','PK Habitat de Golden Thief Bug')}" loading="lazy" style="display:block;width:100%;height:auto;border:1px solid var(--line-soft);border-radius:6px">
+          <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">${navLabel('PK Habitat / PvP.','PK Habitat / PvP.')}</figcaption>
         </figure>
       </div>
 
       <h2 id="moonlight-raid">Moonlight Flower</h2>
       <p>${navLabel(
-        'The Moonlight Flower raid is accessed from Payon Cave 5. Like GTB, it has a PvE raid zone and a PvP raid zone. Moonlight Flower has been part of the MVP Raid lineup since the server opened.',
-        'Le raid Moonlight Flower est accessible depuis Payon Cave 5. Comme GTB, il possède une zone de raid PvE et une zone de raid PvP. Moonlight Flower fait partie des MVP Raids disponibles depuis l’ouverture du serveur.'
+        'The Moonlight Flower raid is accessed from Payon Cave 5. It follows the same structure as GTB with a General Habitat and a PK Habitat, and its hunting quest gives Moonlight Flower-specific reward boxes.',
+        'Le raid Moonlight Flower est accessible depuis Payon Cave 5. Il reprend la même structure que GTB avec une General Habitat et une PK Habitat, et sa quête de chasse donne des boîtes de récompense propres à Moonlight Flower.'
       )}</p>
 
-      <h2 id="rewards">${navLabel('Golden Thief Bug rewards','Récompenses Golden Thief Bug')}</h2>
+      <h2 id="rewards">${navLabel('Reward boxes','Boîtes de récompense')}</h2>
       <p>${navLabel(
-        'Killing Golden Thief Bug can reward a [Golden ThiefBug] Subjugation Reward box. The box can contain Battle Golden Thief Bug Doll, the bound Golden Headgear costume, Blacksmith’s Blessing, Blacksmith’s Blessing Powder, Blessing of Yggdrasil and Golden Thief Bug Energy Fragments.',
-        'Tuer Golden Thief Bug peut donner une boîte [Golden ThiefBug] Subjugation Reward. Elle peut contenir Battle Golden Thief Bug Doll, le costume Golden Headgear lié, Blacksmith’s Blessing, Blacksmith’s Blessing Powder, Blessing of Yggdrasil et des Golden Thief Bug Energy Fragments.'
+        'Each MVP has its own Subjugation Reward Boxes. Standard and Deluxe versions use the same core reward pool, but the Deluxe box gives the higher quantities for several progression materials.',
+        'Chaque MVP possède ses propres Subjugation Reward Boxes. Les versions Standard et Deluxe utilisent le même type de récompenses, mais la boîte Deluxe donne des quantités plus élevées pour plusieurs matériaux de progression.'
       )}</p>
+
+      ${rewardRows.map(r=>`
+        <h3>${esc(r.boss)}</h3>
+        <div class="table-wrap"><table>
+          <thead><tr>
+            <th>${navLabel('Standard Box','Boîte Standard')}</th>
+            <th>${navLabel('Deluxe Box','Boîte Deluxe')}</th>
+          </tr></thead>
+          <tbody><tr>
+            <td><ul style="margin:0;padding-left:18px">${r.standard.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></td>
+            <td><ul style="margin:0;padding-left:18px">${r.deluxe.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></td>
+          </tr></tbody>
+        </table></div>
+      `).join('')}
+
       <figure style="margin:14px auto 20px;max-width:320px;text-align:center">
         <img src="https://midgardhub.com/images/guides/new-player/image111.png" alt="Golden Thief Bug Subjugation Reward" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px">
-        <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">[Golden ThiefBug] Subjugation Reward</figcaption>
+        <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">Golden Thief Bug Subjugation Reward</figcaption>
       </figure>
 
       <h2 id="fragments">Energy Fragments</h2>
       <p>${navLabel(
-        'Golden Thief Bug Energy Fragments drop throughout the GTB raid area. They can be exchanged with Raid Manager Yakt in Eden HQ. Fifty fragments are required for one Golden Thief Bug Subjugation Reward.',
-        'Des Golden Thief Bug Energy Fragments tombent dans la zone du raid GTB. Ils peuvent être échangés auprès de Raid Manager Yakt dans Eden HQ. Il faut 50 fragments pour obtenir une Golden Thief Bug Subjugation Reward.'
+        'Each MVP has its own Energy Fragment. These fragments can drop directly during the raid fight and can be picked up by players present in the habitat. They are also included in the MVP reward boxes.',
+        'Chaque MVP possède son propre Energy Fragment. Ces fragments peuvent tomber directement pendant le combat de raid et être ramassés par les joueurs présents dans l’habitat. Ils font également partie des récompenses possibles dans les boîtes du MVP.'
       )}</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0 20px">
-        <figure style="margin:0;text-align:center">
-          <img src="https://midgardhub.com/images/guides/new-player/image73.png" alt="Golden Thief Bug Energy Fragment" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px">
-          <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">Golden Thief Bug Energy Fragment</figcaption>
-        </figure>
-        <figure style="margin:0;text-align:center">
-          <img src="https://midgardhub.com/images/guides/new-player/image115.png" alt="${navLabel('Yakt fragment exchange','Échange de fragments chez Yakt')}" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px">
-          <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">${navLabel('50 fragments = 1 GTB Subjugation Reward.','50 fragments = 1 GTB Subjugation Reward.')}</figcaption>
-        </figure>
-      </div>
+      <p>${navLabel(
+        'Energy Fragments can be exchanged for Blacksmith’s Blessing, making MVP Raids one of the repeatable ways to obtain this refinement material.',
+        'Les Energy Fragments peuvent être échangés contre des Blacksmith’s Blessing, ce qui fait des MVP Raids une source répétable de ce matériau de raffinement.'
+      )}</p>
+      <figure style="margin:14px auto 20px;max-width:320px;text-align:center">
+        <img src="https://midgardhub.com/images/guides/new-player/image73.png" alt="Golden Thief Bug Energy Fragment" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px">
+        <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">Golden Thief Bug Energy Fragment</figcaption>
+      </figure>
 
       <h2 id="raid-manager">Raid Manager Yakt</h2>
       <p>${navLabel(
-        'Raid Manager Yakt is in Eden HQ. This is where Golden Thief Bug Energy Fragments can be exchanged for the GTB raid reward box.',
-        'Raid Manager Yakt se trouve dans Eden HQ. C’est auprès de lui que les Golden Thief Bug Energy Fragments peuvent être échangés contre la boîte de récompense du raid GTB.'
+        'Yakt is the main MVP Raid quest NPC in Eden Group. Take the hunting quest from him before the raid and return after the kill to claim the reward for that MVP.',
+        'Yakt est le NPC principal des quêtes de MVP Raid dans Eden Group. Prends la quête de chasse auprès de lui avant le raid puis retourne le voir après le kill pour récupérer la récompense correspondant au MVP.'
       )}</p>
+      <div class="wiki-callout"><code>/navi moc_para01 25/31</code></div>
       <figure style="margin:14px auto 20px;max-width:760px;text-align:center">
         <img src="https://midgardhub.com/images/guides/new-player/image138.png" alt="Raid Manager Yakt" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px">
-        <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">Raid Manager Yakt — Eden HQ</figcaption>
+        <figcaption style="margin-top:7px;color:var(--muted);font-size:12px">Raid Manager Yakt — Eden Group</figcaption>
       </figure>
 
       <div class="hero-actions">
         <a class="button primary" href="#/wiki/party">${miniIcon('class')}${navLabel('Party','Party')}</a>
-        <a class="button" href="#/wiki/guild-system">${miniIcon('class')}${navLabel('Guild System','Système de guilde')}</a>
+        <a class="button" href="#/wiki/refinement-system">${miniIcon('tools')}${navLabel('Refinement','Raffinement')}</a>
         <a class="button" href="#/monsters">${miniIcon('monster')}${navLabel('Monsters','Monstres')}</a>
       </div>`;
   }
-
 
   function getPoringPage(topic) {
     const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
