@@ -2462,98 +2462,16 @@ window.rzAsset=function(p){return (window.RZ_ASSETS&&window.RZ_ASSETS[p])||p;};
 window.RO_DATA = {
   meta: {
     title: "Ragnarok Zero Wiki",
-    demo: true,
-    noteEn: "Prototype data only. The navigation and class roster are filtered to content currently available in Ragnarok as of August 31, 2026. Some game values are still incomplete.",
-    noteFr: "Données de prototype uniquement. La navigation et les classes sont filtrées sur le contenu actuellement disponible dans Ragnarok au 31 août 2026. Certaines valeurs de jeu sont encore incomplètes."
+    demo: false,
+    noteEn: "Database sections are being populated progressively. Empty database categories contain no placeholder gameplay data.",
+    noteFr: "Les sections de base de données sont remplies progressivement. Les catégories encore vides ne contiennent aucune donnée de gameplay factice."
   },
 
-  monsters: [
-    {
-      id: "andre", name: "Andre", aliases: [], level: null, hp: null, sp: null,
-      baseExp: null, jobExp: null, race: "Insect", element: "Earth", elementLevel: null,
-      size: "Small", attackMin: null, attackMax: null, def: null, mdef: null, hit: null, flee: null,
-      aggressive: false, boss: false, mvp: false, image: null,
-      description: { en: "Demo monster entry used to test the wiki structure.", fr: "Entrée monstre de démonstration utilisée pour tester la structure du wiki." },
-      drops: [
-        { itemId: "andre-card", rate: null, amount: 1, verified: false },
-        { itemId: "iron-ore", rate: null, amount: 1, verified: false }
-      ],
-      maps: [{ mapId: "ant-hell-01", amount: null, respawn: null, verified: false }],
-      notes: { en: "Combat values are not available yet.", fr: "Les valeurs de combat ne sont pas encore disponibles." },
-      verified: false
-    },
-    {
-      id: "poring", name: "Poring", aliases: [], level: null, hp: null, sp: null,
-      baseExp: null, jobExp: null, race: "Plant", element: "Water", elementLevel: null,
-      size: "Medium", attackMin: null, attackMax: null, def: null, mdef: null, hit: null, flee: null,
-      aggressive: false, boss: false, mvp: false, image: null,
-      description: { en: "Demo entry with incomplete game values.", fr: "Entrée de démonstration avec des valeurs de jeu incomplètes." },
-      drops: [
-        { itemId: "jellopy", rate: null, amount: 1, verified: false },
-        { itemId: "poring-card", rate: null, amount: 1, verified: false }
-      ],
-      maps: [{ mapId: "prontera-field-demo", amount: null, respawn: null, verified: false }],
-      notes: { en: "Placeholder relation data only.", fr: "Relations de démonstration uniquement." },
-      verified: false
-    },
-    {
-      id: "flora", name: "Flora", aliases: [], level: null, hp: null, sp: null,
-      baseExp: null, jobExp: null, race: "Plant", element: "Earth", elementLevel: null,
-      size: "Large", attackMin: null, attackMax: null, def: null, mdef: null, hit: null, flee: null,
-      aggressive: false, boss: false, mvp: false, image: null,
-      description: { en: "Demo monster for testing cards and map relations.", fr: "Monstre de démonstration pour tester les relations cartes et maps." },
-      drops: [{ itemId: "flora-card", rate: null, amount: 1, verified: false }],
-      maps: [],
-      notes: { en: "Spawn information has not been imported yet.", fr: "Les informations de spawn n'ont pas encore été importées." },
-      verified: false
-    }
-  ],
+  monsters: [],
 
-  items: [
-    {
-      id: "andre-card", name: "Andre Card", type: "Card", subtype: "Weapon Card", requiredLevel: null,
-      weight: null, slots: null, attack: null, defense: null, equipmentSlot: "Weapon", image: null,
-      description: { en: "Effect currently unavailable.", fr: "Effet actuellement indisponible." },
-      effect: { en: "Unknown", fr: "Inconnu" }, verified: false
-    },
-    {
-      id: "flora-card", name: "Flora Card", type: "Card", subtype: "Weapon Card", requiredLevel: null,
-      weight: null, slots: null, attack: null, defense: null, equipmentSlot: "Weapon", image: null,
-      description: { en: "Effect currently unavailable.", fr: "Effet actuellement indisponible." },
-      effect: { en: "Unknown", fr: "Inconnu" }, verified: false
-    },
-    {
-      id: "poring-card", name: "Poring Card", type: "Card", subtype: "Armor Card", requiredLevel: null,
-      weight: null, slots: null, attack: null, defense: null, equipmentSlot: "Armor", image: null,
-      description: { en: "Effect currently unavailable.", fr: "Effet actuellement indisponible." },
-      effect: { en: "Unknown", fr: "Inconnu" }, verified: false
-    },
-    {
-      id: "iron-ore", name: "Iron Ore", type: "Etc", subtype: "Material", requiredLevel: null,
-      weight: null, slots: null, attack: null, defense: null, equipmentSlot: null, image: null,
-      description: { en: "Demo material entry.", fr: "Matériau de démonstration." }, verified: false
-    },
-    {
-      id: "jellopy", name: "Jellopy", type: "Etc", subtype: "Material", requiredLevel: null,
-      weight: null, slots: null, attack: null, defense: null, equipmentSlot: null, image: null,
-      description: { en: "Demo material entry.", fr: "Matériau de démonstration." }, verified: false
-    }
-  ],
+  items: [],
 
-  maps: [
-    {
-      id: "ant-hell-01", name: "Ant Hell 01", internalName: "anthell01", type: "Dungeon", image: null,
-      description: { en: "Demo map entry used to test monster/map relations.", fr: "Map de démonstration utilisée pour tester les relations monstre/map." },
-      notes: { en: "NPC and portal data are not loaded yet.", fr: "Les données de NPC et portails ne sont pas encore chargées." },
-      verified: false
-    },
-    {
-      id: "prontera-field-demo", name: "Prontera Field (Demo)", internalName: "demo_field", type: "Field", image: null,
-      description: { en: "Placeholder map with incomplete data.", fr: "Map factice avec des données incomplètes." },
-      notes: { en: "Development-only map entry.", fr: "Entrée de map réservée au développement." },
-      verified: false
-    }
-  ],
+  maps: [],
 
   skills: [
     {
@@ -3031,43 +2949,9 @@ window.RO_DATA = {
     { id: "monk", name: "Monk", tier: "Second Class", group: "second", parentId: "acolyte", releaseStatus: "coming-soon", image: "assets/classes/monk.png", description: { en: "Upcoming second class branching from Acolyte.", fr: "Seconde classe à venir issue de Acolyte." }, notes: { en: "Listed ahead of its planned Global release. gameplay data for this version remains pending verification.", fr: "Répertoriée avant sa sortie prévue sur Global. Les données de gameplay propres à cette version restent en attente de vérification." } }
   ],
 
-  quests: [
-    {
-      id: "first-steps-demo", name: "First Steps (Demo)", type: "Tutorial", minLevel: null, repeatable: false,
-      startNpcId: "guide-npc-demo", startMapId: "prontera-field-demo", image: null,
-      summary: { en: "A placeholder quest used to demonstrate the quest page layout.", fr: "Une quête factice utilisée pour démontrer la mise en page des quêtes." },
-      requirements: [
-        { en: "Requirements unavailable.", fr: "Prérequis indisponibles." }
-      ],
-      steps: [
-        { en: "Talk to the demo Guide NPC.", fr: "Parler au Guide NPC de démonstration." },
-        { en: "Complete the placeholder objective.", fr: "Terminer l'objectif de démonstration." },
-        { en: "Return to the NPC.", fr: "Retourner voir le NPC." }
-      ],
-      rewards: [{ en: "Reward data unavailable.", fr: "Récompenses indisponibles." }],
-      notes: { en: "This is not a real Ragnarok quest.", fr: "Ceci n'est pas une vraie quête de Ragnarok." },
-      verified: false
-    },
-    {
-      id: "job-change-template", name: "Job Change Quest (Template)", type: "Job Change", minLevel: null, repeatable: false,
-      startNpcId: null, startMapId: null, image: null,
-      summary: { en: "Template showing how future job-change quests will be documented.", fr: "Modèle montrant comment les futures quêtes de changement de classe seront documentées." },
-      requirements: [{ en: "Requirements pending verification.", fr: "Prérequis en attente de vérification." }],
-      steps: [{ en: "Quest steps unavailable.", fr: "Étapes de quête indisponibles." }],
-      rewards: [{ en: "Reward pending verification.", fr: "Récompense en attente de vérification." }],
-      notes: { en: "Template only.", fr: "Modèle uniquement." },
-      verified: false
-    }
-  ],
+  quests: [],
 
-  npcs: [
-    {
-      id: "guide-npc-demo", name: "Guide NPC (Demo)", type: "Quest", mapId: "prontera-field-demo", x: null, y: null, image: null,
-      description: { en: "Placeholder NPC used to demonstrate NPC and quest relations.", fr: "NPC factice utilisé pour démontrer les relations entre NPC et quêtes." },
-      services: [{ en: "Starts First Steps (Demo).", fr: "Démarre First Steps (Demo)." }],
-      verified: false
-    }
-  ],
+  npcs: [],
 
   guides: [
     {
@@ -3109,10 +2993,10 @@ window.RO_DATA = {
       home: 'Main Page', monsters: 'Monsters', items: 'Items', cards: 'Cards', maps: 'Maps', classes: 'Classes', skills: 'Skills', quests: 'Quests', npcs: 'NPCs', leveling: 'Leveling', tools: 'Tools',
       nav: 'Navigation', database: 'Database', guides: 'Guides', gettingStarted: 'Getting Started', mechanics: 'Game Mechanics', questIndex: 'Quest Index',
       article: 'Article', discussion: 'Discussion', search: 'Search', searchPlaceholder: 'Search Ragnarok Wiki',
-      subtitle: 'English / Français', footer: 'Demo data are incomplete and may not match live game values.', sidebarNote: 'Community reference project for Ragnarok.',
+      subtitle: 'English / Français', footer: 'Only verified or explicitly qualified data should be treated as gameplay reference.', sidebarNote: 'Community reference project for Ragnarok.',
       fromWiki: 'From Ragnarok Wiki', welcome: 'Welcome to Ragnarok Wiki',
       welcomeText: 'A bilingual community reference for Ragnarok Online. Game entities keep their English names; the interface and explanatory text can switch between English and French.',
-      prototype: 'Prototype data',
+      prototype: 'Database status',
       wikiStats: 'Wiki statistics',
       startHere: 'Getting Started', startDesc: 'New player information and essential references.',
       databaseHub: 'Database', databaseDesc: 'Search the connected monster, item, card, map and NPC databases.',
@@ -3139,7 +3023,7 @@ window.RO_DATA = {
       levelingTitle: 'Leveling Finder', levelingText: 'Compare monsters around your level.', yourLevel: 'Your level', expMultiplier: 'EXP multiplier', suggested: 'Suggested monsters',
       buildTitle: 'Build Planner', buildText: 'Allocate STR, AGI, VIT, INT, DEX and LUK. Official stat-cost formulas are not guessed.', pointsUsed: 'Points used', reset: 'Reset',
       noVerifiedLevels: 'No monster levels are loaded yet.',
-      back: 'Back to Main Page', notFound: 'Page not found', notFoundText: 'The requested page does not exist in this prototype.',
+      back: 'Back to Main Page', notFound: 'Page not found', notFoundText: 'The requested page does not exist in the current wiki.',
       imagePlaceholder: 'Image placeholder', sourceStatus: 'Data status', pageType: 'Page type',
       listIntroMonster: 'Browse monster statistics, elements, races, drops and spawn locations.',
       listIntroItem: 'Browse equipment, cards, consumables, materials and other items.',
@@ -3157,7 +3041,7 @@ window.RO_DATA = {
       subtitle: 'English / Français', footer: 'Les données de démo sont incomplètes et peuvent différer des valeurs en jeu.', sidebarNote: 'Projet de référence communautaire pour Ragnarok.',
       fromWiki: 'De Ragnarok Wiki', welcome: 'Bienvenue sur Ragnarok Wiki',
       welcomeText: "Une référence communautaire bilingue pour Ragnarok Online. Les noms des éléments du jeu restent en anglais ; l'interface et les explications peuvent passer entre anglais et français.",
-      prototype: 'Données de prototype',
+      prototype: 'État de la base de données',
       wikiStats: 'Statistiques du wiki',
       startHere: 'Bien débuter', startDesc: 'Informations pour nouveaux joueurs et références essentielles.',
       databaseHub: 'Base de données', databaseDesc: 'Recherche dans les bases reliées de monstres, objets, cartes, maps et NPCs.',
@@ -3184,7 +3068,7 @@ window.RO_DATA = {
       levelingTitle: 'Leveling Finder', levelingText: 'Compare les monstres autour de ton niveau.', yourLevel: 'Ton niveau', expMultiplier: 'Multiplicateur EXP', suggested: 'Monstres suggérés',
       buildTitle: 'Build Planner', buildText: "Répartis STR, AGI, VIT, INT, DEX et LUK. Les formules officielles ne sont pas inventées.", pointsUsed: 'Points utilisés', reset: 'Réinitialiser',
       noVerifiedLevels: "Aucun niveau de monstre n’est encore chargé.",
-      back: "Retour à l'accueil", notFound: 'Page introuvable', notFoundText: "La page demandée n'existe pas dans ce prototype.",
+      back: "Retour à l'accueil", notFound: 'Page introuvable', notFoundText: "La page demandée n'existe pas dans le wiki actuel.",
       imagePlaceholder: "Emplacement d'image", sourceStatus: 'Statut des données', pageType: 'Type de page',
       listIntroMonster: 'Consulte les statistiques, éléments, races, drops et maps des monstres.',
       listIntroItem: 'Consulte les équipements, cartes, consommables, matériaux et autres objets.',
@@ -3292,7 +3176,7 @@ window.RO_DATA = {
       'race-overview':'complete', 'race-list':'complete', 'race-effects':'complete'
     },
     '#/wiki/status-effects': {
-      'status-list':'partial', 'status-details':'partial', 'status-notes':'partial'
+      'status-list':'partial', 'status-details':'partial'
     },
     '#/wiki/affixes': {
       overview:'partial', sources:'partial', slots:'partial',
@@ -5461,325 +5345,48 @@ window.RO_DATA = {
   }
 
   function statusEffectsPage(topic) {
-    const statuses = [
-      {
-        id:'bleeding', name:'Bleeding', iconFile:'I_Bleeding.png',
-        effects:[
-          navLabel('Causes rapid HP loss over time. Unlike Poison, Bleeding can kill the affected target. The red status icon can disappear while the effect remains after relogging or changing map / zone.','Provoque une perte rapide de HP au fil du temps. Contrairement à Poison, Bleeding peut tuer la cible affectée. L’icône rouge du statut peut disparaître alors que l’effet reste actif après une reconnexion ou un changement de map / zone.'),
-          navLabel('Natural HP and SP regeneration is disabled.','La régénération naturelle des HP et des SP est désactivée.')
-        ],
-        caused:[
-          navLabel('Swordman class: Traumatic Blow, Vital Strike.','Classe Swordman : Traumatic Blow, Vital Strike.'),
-          navLabel('Assassin Cross: Meteor Assault.','Assassin Cross : Meteor Assault.'),
-          navLabel('Merchant class: Acid Terror.','Classe Merchant : Acid Terror.'),
-          navLabel('Gunslinger: Wounding Shot. Summoner: Scratch.','Gunslinger : Wounding Shot. Summoner : Scratch.'),
-          navLabel('Sightless Mind with Kraken Card; Eira: Xeno Slasher.','Sightless Mind avec Kraken Card ; Eira : Xeno Slasher.')
-        ],
-        prevention:[
-          navLabel('AGI reduces the chance of occurring by 1% per point and may reduce duration.','AGI réduit la chance d’apparition de 1 % par point et peut réduire la durée.'),
-          navLabel('Ungoliant Card grants immunity; Wootan Fighter Card gives 20% resistance.','Ungoliant Card confère l’immunité ; Wootan Fighter Card donne 20 % de résistance.'),
-          navLabel('Seraphim Coronet & Seraphim Feather Set grants immunity.','Le set Seraphim Coronet & Seraphim Feather confère l’immunité.')
-        ],
-        recovery:[
-          navLabel('Cure Free and Snow Flip remove the effect.','Cure Free et Snow Flip retirent l’effet.'),
-          navLabel('Dying cancels Bleeding.','Mourir annule Bleeding.'),
-          navLabel('Battle Chant, Dispell, Grooming / Purring and Compress can remove it.','Battle Chant, Dispell, Grooming / Purring et Compress peuvent le retirer.')
-        ]
-      },
-      {
-        id:'blind', name:'Blind', iconFile:'I_Blind.png',
-        alias:navLabel('Also known as Darkness','Aussi appelé Darkness'),
-        effects:[
-          navLabel('HIT and FLEE are reduced by 25%.','HIT et FLEE sont réduits de 25 %.'),
-          navLabel('Visible range is graphically reduced.','La portée de vision est graphiquement réduite.')
-        ],
-        caused:[
-          navLabel('Crusader class: Grand Cross, Holy Cross, Battle Chant.','Classe Crusader : Grand Cross, Holy Cross, Battle Chant.'),
-          navLabel('Thief class: Stone Fling, Sand Attack, Meteor Assault, Sightless Mind.','Classe Thief : Stone Fling, Sand Attack, Meteor Assault, Sightless Mind.'),
-          navLabel('Mage class: Lord of Vermilion, Blinding Mist. Hunter: Flasher.','Classe Mage : Lord of Vermilion, Blinding Mist. Hunter : Flasher.'),
-          navLabel('Priest: Status Recovery. Sera: Poison Mist.','Priest : Status Recovery. Sera : Poison Mist.'),
-          navLabel('Flame Skull Card and Mini Octopus Card.','Flame Skull Card et Mini Octopus Card.')
-        ],
-        prevention:[
-          navLabel('High VIT, LUK and INT reduce the chance and/or duration.','Une VIT, LUK et INT élevées réduisent la chance et/ou la durée.'),
-          navLabel('Deviruchi Card and Evil Snake Lord Card grant immunity.','Deviruchi Card et Evil Snake Lord Card confèrent l’immunité.'),
-          navLabel('Flame Skull Card gives 30% resistance; Martin Card gives 20%.','Flame Skull Card donne 30 % de résistance ; Martin Card 20 %.'),
-          navLabel('Dark Blinder, Blinker and Eyes of Illusion grant immunity.','Dark Blinder, Blinker et Eyes of Illusion confèrent l’immunité.')
-        ],
-        recovery:[
-          navLabel('Green Potion, Panacea, Royal Jelly, Yggdrasil Dust and Cure remove Blind.','Green Potion, Panacea, Royal Jelly, Yggdrasil Dust et Cure retirent Blind.'),
-          navLabel('Battle Chant, Dispell and Benediction can remove it.','Battle Chant, Dispell et Benediction peuvent le retirer.')
-        ]
-      },
-      {
-        id:'confusion', name:'Chaos / Confusion', iconFile:'I_Chaos.png',
-        effects:[
-          navLabel('Causes the character to move in unintended directions when trying to navigate.','Le personnage se déplace dans des directions non voulues lorsqu’il essaie de se déplacer.'),
-          navLabel('Displays the /? emote once.','Affiche une fois l’émote /?.')
-        ],
-        caused:[
-          navLabel('Bard: Pang Voice.','Bard : Pang Voice.'),
-          navLabel('Illusion Spectral Spear [1] and Leak Card.','Illusion Spectral Spear [1] et Leak Card.')
-        ],
-        prevention:[
-          navLabel('Giearth Card and Beer Hat (+7 or higher) grant immunity.','Giearth Card et Beer Hat (+7 ou plus) confèrent l’immunité.'),
-          navLabel('Wootan Shooter Card gives 20% resistance.','Wootan Shooter Card donne 20 % de résistance.'),
-          navLabel('Splash Cat Hat can grant immunity with Grooming Lv.5; Seraphim Coronet & Feather Set grants immunity.','Splash Cat Hat peut conférer l’immunité avec Grooming Lv.5 ; le set Seraphim Coronet & Feather confère l’immunité.')
-        ],
-        recovery:[
-          navLabel('Cure, Green Potion, Panacea, Royal Jelly and Slapping Herb remove the effect.','Cure, Green Potion, Panacea, Royal Jelly et Slapping Herb retirent l’effet.'),
-          navLabel('Battle Chant, Dispell and Mental Cure can remove it.','Battle Chant, Dispell et Mental Cure peuvent le retirer.')
-        ]
-      },
-      {
-        id:'curse', name:'Curse', iconFile:'I_Curse.png',
-        effects:[
-          navLabel('ATK is reduced by 25%.','ATK est réduit de 25 %.'),
-          navLabel('LUK becomes 0.','LUK passe à 0.'),
-          navLabel('Movement Speed is drastically reduced.','La vitesse de déplacement est fortement réduite.')
-        ],
-        caused:[
-          navLabel('Paladin: Battle Chant. High Wizard: Napalm Vulcan.','Paladin : Battle Chant. High Wizard : Napalm Vulcan.'),
-          navLabel('Minstrel / Gypsy: Tarot Card of Fate. Summoner: CN Meteor.','Minstrel / Gypsy : Tarot Card of Fate. Summoner : CN Meteor.'),
-          navLabel('Corruption Root, Flame Skull, Malicious Baby Ghost, Red Eruma and Timer Keeper Cards; Arc Elder + Time Keeper Card Set.','Cartes Corruption Root, Flame Skull, Malicious Baby Ghost, Red Eruma et Timer Keeper ; set Arc Elder + Time Keeper.')
-        ],
-        prevention:[
-          navLabel('LUK reduces the chance of Curse by 1% per point; VIT reduces duration.','LUK réduit la chance de Curse de 1 % par point ; VIT réduit la durée.'),
-          navLabel('Evil Snake Lord Card grants immunity; Flame Skull Card gives 30% resistance.','Evil Snake Lord Card confère l’immunité ; Flame Skull Card donne 30 % de résistance.'),
-          navLabel('Some iRO equipment sets also grant immunity.','Certains sets d’équipement iRO confèrent également l’immunité.')
-        ],
-        recovery:[
-          navLabel('Panacea, Royal Jelly, Holy Water, Yggdrasil Dust, Cure Free and Blessing remove Curse.','Panacea, Royal Jelly, Holy Water, Yggdrasil Dust, Cure Free et Blessing retirent Curse.'),
-          navLabel('Battle Chant, Dispell and Benediction can remove it.','Battle Chant, Dispell et Benediction peuvent le retirer.')
-        ]
-      },
-      {
-        id:'frozen', name:'Frozen', iconFile:'I_Frozen.png',
-        effects:[
-          navLabel('All DEF contributed by items is reduced by 50%.','Toute la DEF provenant des objets est réduite de 50 %.'),
-          navLabel('For monsters, Hard DEF and Soft DEF are reduced by 50% (rounded up).','Pour les monstres, la Hard DEF et la Soft DEF sont réduites de 50 % (arrondi au supérieur).'),
-          navLabel('FLEE is completely negated.','FLEE est complètement annulé.'),
-          navLabel('Hard MDEF is increased by 25%.','La Hard MDEF augmente de 25 %.'),
-          navLabel('Steal, Lex Aeterna, Storm Gust and Snow Flake Draft are ignored while the target is Frozen.','Steal, Lex Aeterna, Storm Gust et Snow Flake Draft sont ignorés tant que la cible est Frozen.'),
-          navLabel('The target cannot move, attack, pick up items, use skills, sit, force disconnect or use items.','La cible ne peut plus se déplacer, attaquer, ramasser des objets, utiliser des compétences, s’asseoir, forcer une déconnexion ni utiliser des objets.'),
-          navLabel('Armor element becomes Water Lv.1: Wind 175%, Water 25%, Fire 90%.','L’élément de l’armure devient Water Lv.1 : Wind 175 %, Water 25 %, Fire 90 %.')
-        ],
-        caused:[
-          navLabel('Mage: Frost Diver.','Mage : Frost Diver.'),
-          navLabel('Wizard class: Frost Nova, Storm Gust.','Classe Wizard : Frost Nova, Storm Gust.'),
-          navLabel('Hunter: Freezing Trap. Bard: Unbarring Octave.','Hunter : Freezing Trap. Bard : Unbarring Octave.'),
-          navLabel('Minstrel / Gypsy: Tarot Card of Fate. Kagerou / Oboro: Cast Ninja Spell. Summoner: Power of Flock.','Minstrel / Gypsy : Tarot Card of Fate. Kagerou / Oboro : Cast Ninja Spell. Summoner : Power of Flock.')
-        ],
-        prevention:[
-          navLabel('Hard MDEF reduces the chance by 1% per point; LUK reduces duration.','La Hard MDEF réduit la chance de 1 % par point ; LUK réduit la durée.'),
-          navLabel('Marc, Detardeurus and Bijou Cards grant immunity; Megalodon Card gives 20% resistance.','Marc, Detardeurus et Bijou Cards confèrent l’immunité ; Megalodon Card donne 20 % de résistance.'),
-          navLabel('Evil Druid Card grants elemental immunity.','Evil Druid Card confère une immunité élémentaire.')
-        ],
-        recovery:[
-          navLabel('Taking damage automatically cancels Frozen.','Recevoir des dégâts annule automatiquement Frozen.'),
-          navLabel('Status Recovery, Provoke and Mind Breaker can remove it.','Status Recovery, Provoke et Mind Breaker peuvent le retirer.'),
-          navLabel('Battle Chant, Dispell, Tender, Grooming / Purring and Peony Mommy can also remove it.','Battle Chant, Dispell, Tender, Grooming / Purring et Peony Mommy peuvent aussi le retirer.')
-        ]
-      },
-      {
-        id:'poison', name:'Poison', iconFile:'I_Poison.png',
-        effects:[
-          navLabel('Status-oriented DEF is reduced by 25%.','La DEF liée au statut est réduite de 25 %.'),
-          navLabel('While HP is above 25%, the target loses 1.5% of Max HP + 2 HP every second.','Tant que les HP sont au-dessus de 25 %, la cible perd 1,5 % de ses HP max + 2 HP chaque seconde.'),
-          navLabel('SP regeneration is disabled.','La régénération des SP est désactivée.')
-        ],
-        caused:[
-          navLabel('Thief class: Envenom, Enchant Poison, Venom Dust, Venom Splasher, Venom Knife.','Classe Thief : Envenom, Enchant Poison, Venom Dust, Venom Splasher, Venom Knife.'),
-          navLabel('Minstrel / Gypsy: Tarot Card of Fate.','Minstrel / Gypsy : Tarot Card of Fate.'),
-          navLabel('Kagerou / Oboro: Cast Ninja Spell.','Kagerou / Oboro : Cast Ninja Spell.')
-        ],
-        prevention:[
-          navLabel('VIT reduces the chance by 1% per point; high VIT and LUK reduce duration.','VIT réduit la chance de 1 % par point ; une VIT et une LUK élevées réduisent la durée.'),
-          navLabel('Ghoul Card gives 20% resistance.','Ghoul Card donne 20 % de résistance.'),
-          navLabel('Argiope Card gives Poison element but does not grant immunity to the Poison status itself.','Argiope Card donne l’élément Poison mais ne confère pas l’immunité au statut Poison lui-même.')
-        ],
-        recovery:[
-          navLabel('Green Herb, Green Potion, Panacea, Royal Jelly, Yggdrasil Dust, Cure Free and Detoxify remove Poison.','Green Herb, Green Potion, Panacea, Royal Jelly, Yggdrasil Dust, Cure Free et Detoxify retirent Poison.'),
-          navLabel('Grooming / Purring, Battle Chant, Dispell and Recuperate can remove it.','Grooming / Purring, Battle Chant, Dispell et Recuperate peuvent le retirer.'),
-          navLabel('Slow Poison stops the HP damage but does not remove the reduced DEF.','Slow Poison stoppe les dégâts de HP mais ne retire pas la réduction de DEF.')
-        ]
-      },
-      {
-        id:'silence', name:'Silence', iconFile:'I_Silence.png',
-        effects:[
-          navLabel('Active skills cannot be used.','Les compétences actives ne peuvent pas être utilisées.'),
-          navLabel('Displays the /... emote.','Affiche l’émote /....')
-        ],
-        caused:[
-          navLabel('Acolyte class: Lex Divina.','Classe Acolyte : Lex Divina.'),
-          navLabel('Kagerou / Oboro: Cast Ninja Spell. Eira: Silent Breeze.','Kagerou / Oboro : Cast Ninja Spell. Eira : Silent Breeze.'),
-          navLabel('Little Fatum Card.','Little Fatum Card.')
-        ],
-        prevention:[
-          navLabel('High INT reduces chance and duration; iRO lists 1% less chance per INT point.','Une INT élevée réduit la chance et la durée ; iRO indique 1 % de chance en moins par point d’INT.'),
-          navLabel('Marduk Card grants immunity; Stainer Card gives 20% resistance.','Marduk Card confère l’immunité ; Stainer Card donne 20 % de résistance.'),
-          navLabel('Gemini-S58 Card gives 30% resistance with 90+ base AGI.','Gemini-S58 Card donne 30 % de résistance avec 90+ AGI de base.')
-        ],
-        recovery:[
-          navLabel('Green Potion, Panacea, Royal Jelly and Cure Free remove Silence.','Green Potion, Panacea, Royal Jelly et Cure Free retirent Silence.'),
-          navLabel('Cure and Lex Divina can remove it.','Cure et Lex Divina peuvent le retirer.'),
-          navLabel('Grooming / Purring, Battle Chant, Dispell and Recuperate can also remove it.','Grooming / Purring, Battle Chant, Dispell et Recuperate peuvent aussi le retirer.')
-        ]
-      },
-      {
-        id:'sleep', name:'Sleep', iconFile:'I_Sleep.png',
-        effects:[
-          navLabel('The target cannot move, attack, pick up items, sit, force disconnect, use skills or use items.','La cible ne peut plus se déplacer, attaquer, ramasser des objets, s’asseoir, forcer une déconnexion, utiliser des compétences ni utiliser des objets.'),
-          navLabel('Any enemy attack against the sleeping target will always hit.','Toute attaque ennemie contre la cible endormie touchera toujours.'),
-          navLabel('Enemies have twice their normal CRIT chance when attacking the sleeping target.','Les ennemis ont deux fois leur chance normale de CRIT lorsqu’ils attaquent la cible endormie.')
-        ],
-        caused:[
-          navLabel('Hunter: Sandman.','Hunter : Sandman.'),
-          navLabel('Bard / Dancer: Lullaby. Kagerou / Oboro: Cast Ninja Spell.','Bard / Dancer : Lullaby. Kagerou / Oboro : Cast Ninja Spell.'),
-          navLabel('Bangungot Card and Nightmare Mummy Card.','Bangungot Card et Nightmare Mummy Card.')
-        ],
-        prevention:[
-          navLabel('High INT and LUK reduce duration; AGI reduces the chance by 1% per point.','Une INT et une LUK élevées réduisent la durée ; AGI réduit la chance de 1 % par point.'),
-          navLabel('Nightmare Card grants immunity; Coco Card gives 20% resistance.','Nightmare Card confère l’immunité ; Coco Card donne 20 % de résistance.'),
-          navLabel('Gemini-S58 Card gives 50% resistance with 80+ base VIT.','Gemini-S58 Card donne 50 % de résistance avec 80+ VIT de base.')
-        ],
-        recovery:[
-          navLabel('Taking damage automatically cancels Sleep.','Recevoir des dégâts annule automatiquement Sleep.'),
-          navLabel('Battle Chant, Dispell, Grooming / Purring, Regain and Snow Flip can remove it.','Battle Chant, Dispell, Grooming / Purring, Regain et Snow Flip peuvent le retirer.')
-        ]
-      },
-      {
-        id:'stone', name:'Stone / Petrification', iconFile:'I_Stone.png',
-        effects:[
-          navLabel('All DEF contributed by items is reduced by 50%.','Toute la DEF provenant des objets est réduite de 50 %.'),
-          navLabel('For monsters, Hard DEF and Soft DEF are reduced by 50% (rounded up).','Pour les monstres, la Hard DEF et la Soft DEF sont réduites de 50 % (arrondi au supérieur).'),
-          navLabel('While HP is above 25%, the target loses 1% HP every 5 seconds.','Tant que les HP sont au-dessus de 25 %, la cible perd 1 % de HP toutes les 5 secondes.'),
-          navLabel('MDEF is increased by 25%.','La MDEF augmente de 25 %.'),
-          navLabel('Element becomes Earth Lv.1: Fire 150%, Poison 125%, Earth 25%, Wind 90%.','L’élément devient Earth Lv.1 : Fire 150 %, Poison 125 %, Earth 25 %, Wind 90 %.'),
-          navLabel('Steal and Lex Aeterna are ignored.','Steal et Lex Aeterna sont ignorés.'),
-          navLabel('Once petrified, the target cannot move, attack, pick up items, use skills, sit, force disconnect or use items.','Une fois pétrifiée, la cible ne peut plus se déplacer, attaquer, ramasser des objets, utiliser des compétences, s’asseoir, forcer une déconnexion ni utiliser des objets.')
-        ],
-        caused:[
-          navLabel('Mage: Stone Curse.','Mage : Stone Curse.'),
-          navLabel('Minstrel / Gypsy: Tarot Card of Fate.','Minstrel / Gypsy : Tarot Card of Fate.'),
-          navLabel('Kagerou / Oboro: Cast Ninja Spell.','Kagerou / Oboro : Cast Ninja Spell.'),
-          navLabel('Buwaya Card, Flame Skull Card and Pest Card.','Buwaya Card, Flame Skull Card et Pest Card.')
-        ],
-        prevention:[
-          navLabel('Hard MDEF reduces the chance by 1% per point; LUK reduces duration.','La Hard MDEF réduit la chance de 1 % par point ; LUK réduit la durée.'),
-          navLabel('Medusa Card grants immunity; Evil Druid Card grants elemental immunity.','Medusa Card confère l’immunité ; Evil Druid Card confère une immunité élémentaire.'),
-          navLabel('Munak Card gives 15%, Argos 20%, Seeker 30% and Flame Skull 30% resistance.','Munak Card donne 15 %, Argos 20 %, Seeker 30 % et Flame Skull 30 % de résistance.'),
-          navLabel('Gemini-S58 Card gives 50% resistance with 80+ base VIT.','Gemini-S58 Card donne 50 % de résistance avec 80+ VIT de base.')
-        ],
-        recovery:[
-          navLabel('Taking any damaging hit automatically cancels the hardened Stone effect.','Recevoir n’importe quel coup infligeant des dégâts annule automatiquement Stone une fois durci.'),
-          navLabel('Status Recovery and Blessing can remove it.','Status Recovery et Blessing peuvent le retirer.'),
-          navLabel('Battle Chant, Dispell, Tender and Yggdrasil Dust can also remove it.','Battle Chant, Dispell, Tender et Yggdrasil Dust peuvent aussi le retirer.')
-        ],
-        note:navLabel(
-          'Stone has two stages on iRO: at first the character can still move and use items, but cannot attack or use skills, and taking damage does not cancel the effect. Once Stone hardens, the character is immobilized and taking damage breaks the petrification.',
-          'Sur iRO, Stone possède deux phases : au début, le personnage peut encore se déplacer et utiliser des objets, mais ne peut plus attaquer ni utiliser de compétences, et recevoir des dégâts ne retire pas l’effet. Une fois Stone durci, le personnage est immobilisé et recevoir des dégâts brise la pétrification.'
-        )
-      },
-      {
-        id:'stun', name:'Stun', iconFile:'I_Stun.png',
-        effects:[
-          navLabel('FLEE is completely negated.','FLEE est complètement annulé.'),
-          navLabel('The target cannot move, attack, pick up items, use skills, sit, force disconnect or use items.','La cible ne peut plus se déplacer, attaquer, ramasser des objets, utiliser des compétences, s’asseoir, forcer une déconnexion ni utiliser des objets.')
-        ],
-        caused:[
-          navLabel('Swordman class: Fatal Blow, Smite.','Classe Swordman : Fatal Blow, Smite.'),
-          navLabel('Thief class: Stone Fling, Sonic Blow, Meteor Assault, Sightless Mind.','Classe Thief : Stone Fling, Sonic Blow, Meteor Assault, Sightless Mind.'),
-          navLabel('Merchant class: Hammer Fall, High Speed Cart Ram.','Classe Merchant : Hammer Fall, High Speed Cart Ram.'),
-          navLabel('Mage class: Meteor Storm.','Classe Mage : Meteor Storm.'),
-          navLabel('Archer class: Land Mine, Dazzler, Tarot Card of Fate.','Classe Archer : Land Mine, Dazzler, Tarot Card of Fate.'),
-          navLabel('Expanded class skills (Heel Drop, Roundhouse, Estun, Cracker), Homunculus skills and Flame Skull Card are also listed by iRO.','iRO liste aussi les compétences Expanded (Heel Drop, Roundhouse, Estun, Cracker), des compétences d’Homunculus et Flame Skull Card.')
-        ],
-        prevention:[
-          navLabel('LUK slightly reduces chance and duration; VIT reduces chance by 1% per point and also reduces duration.','LUK réduit légèrement la chance et la durée ; VIT réduit la chance de 1 % par point et réduit aussi la durée.'),
-          navLabel('Orc Hero Card grants immunity; Stalactic Golem Card gives 20% resistance.','Orc Hero Card confère l’immunité ; Stalactic Golem Card donne 20 % de résistance.'),
-          navLabel('Gemini-S58 Card gives 30% resistance with 90+ base AGI; Flame Skull Card gives 30%.','Gemini-S58 Card donne 30 % de résistance avec 90+ AGI de base ; Flame Skull Card donne 30 %.')
-        ],
-        recovery:[
-          navLabel('Status Recovery removes Stun.','Status Recovery retire Stun.'),
-          navLabel('Battle Chant, Dispell, Grooming / Purring, Regain and Slapping Herb can remove it.','Battle Chant, Dispell, Grooming / Purring, Regain et Slapping Herb peuvent le retirer.')
-        ]
-      }
+    const title = lang==='fr' ? (topic.fr||topic.en) : topic.en;
+    const rows = [
+      ['Blind', navLabel('Sand Attack can inflict Blind. Stone Fling also has a low chance to inflict Blind. Cure removes Blind.','Sand Attack peut infliger Blind. Stone Fling possède aussi une faible chance d’infliger Blind. Cure retire Blind.')],
+      ['Stun', navLabel('Fatal Blow can add Stun to Bash from Bash Lv.6 onward. Stone Fling also has a low chance to inflict Stun.','Fatal Blow peut ajouter Stun à Bash à partir de Bash Lv.6. Stone Fling possède aussi une faible chance d’infliger Stun.')],
+      ['Poison', navLabel('Envenom can inflict Poison. Detoxify removes Poison from one target.','Envenom peut infliger Poison. Detoxify retire Poison sur une cible.')],
+      ['Frozen', navLabel('Frost Diver can inflict Frozen. The chance increases with skill level.','Frost Diver peut infliger Frozen. La chance augmente avec le niveau de la compétence.')],
+      ['Stone', navLabel('Stone Curse attempts to inflict Stone. Its success chance increases with skill level.','Stone Curse tente d’infliger Stone. Sa chance de réussite augmente avec le niveau de la compétence.')],
+      ['Silence', navLabel('Cure explicitly removes Silence. No current first-job source is documented here until one is verified.','Cure retire explicitement Silence. Aucune source de première classe actuelle n’est indiquée ici tant qu’elle n’est pas vérifiée.')],
+      ['Confusion', navLabel('Cure explicitly removes Confusion. No current first-job source is documented here until one is verified.','Cure retire explicitement Confusion. Aucune source de première classe actuelle n’est indiquée ici tant qu’elle n’est pas vérifiée.')]
     ];
 
-    const verifyBadge = () => `<span class="badge unverified">${navLabel('To verify','À vérifier')}</span>`;
-    const IRO_STATUS_ICON_URLS = {
-      'I_Bleeding.png':'https://irowiki.org/w/images/e/ef/I_Bleeding.png',
-      'I_Blind.png':'https://irowiki.org/w/images/4/48/I_Blind.png',
-      'I_Chaos.png':'https://irowiki.org/w/images/0/08/I_Chaos.png',
-      'I_Curse.png':'https://irowiki.org/w/images/e/e6/I_Curse.png',
-      'I_Frozen.png':'https://irowiki.org/w/images/a/a5/I_Frozen.png',
-      'I_Poison.png':'https://irowiki.org/w/images/6/60/I_Poison.png',
-      'I_Silence.png':'https://irowiki.org/w/images/5/53/I_Silence.png',
-      'I_Sleep.png':'https://irowiki.org/w/images/9/90/I_Sleep.png',
-      'I_Stone.png':'https://irowiki.org/w/images/0/05/I_Stone.png',
-      'I_Stun.png':'https://irowiki.org/w/images/f/fd/I_Stun.png'
-    };
-    const iroStatusIcon = file => {
-      const src = IRO_STATUS_ICON_URLS[file] || '';
-      return src ? `<img src="${src}" alt="" width="32" height="32" loading="lazy" style="width:32px;height:32px;image-rendering:pixelated;object-fit:contain;flex:0 0 32px">` : '';
-    };
-    const detailList = items => `<ul style="margin:.35rem 0 0 1.2rem;padding:0">${items.map(item=>`<li style="margin:.34rem 0">${item}</li>`).join('')}</ul>`;
-
-    const renderStatus = st => `<section id="status-${st.id}" style="scroll-margin-top:90px;padding:22px 0;border-bottom:1px solid var(--line-soft)">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
-        ${iroStatusIcon(st.iconFile)}
-        <h3 style="margin:0">${esc(st.name)}</h3>
-        ${verifyBadge()}
-      </div>
-      ${st.alias ? `<p style="margin:.1rem 0 .65rem;color:var(--text-soft)">${st.alias}</p>` : ''}
-      ${detailList(st.effects)}
-      <div style="display:grid;gap:10px;margin-top:16px">
-        <div><strong>${navLabel('Caused by:','Provoqué par :')}</strong>${detailList(st.caused)}</div>
-        <div><strong>${navLabel('Prevention:','Prévention :')}</strong>${detailList(st.prevention)}</div>
-        <div><strong>${navLabel('Recovering:','Récupération :')}</strong>${detailList(st.recovery)}</div>
-      </div>
-      ${st.note ? `<div class="notice info-notice" style="margin-top:14px"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('iRO note','Note iRO')}</strong><br>${st.note}</div></div>` : ''}
-    </section>`;
-
-    return `${generalPageHeader(topic)}
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('mechanics')}${esc(title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'Status Effects are temporary conditions that can alter movement, combat statistics, actions or elemental defense.',
-        'Les effets de statut sont des états temporaires pouvant modifier les déplacements, les statistiques de combat, les actions ou l’élément défensif.'
+        'Status effects are conditions that can be inflicted or removed by skills, monsters, items and other game systems. This page only records interactions that are confirmed in the current skill data.',
+        'Les effets de statut sont des états pouvant être infligés ou retirés par des compétences, monstres, objets et autres systèmes du jeu. Cette page ne conserve que les interactions confirmées dans les données de compétences actuelles.'
       )}</p>
 
-      <div class="notice warning-notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div>${navLabel(
-        'The effects, causes, prevention methods and recovery methods below are based on the iRO Wiki reference. Every value and mechanic on this page remains marked To verify.',
-        'Les effets, causes, moyens de prévention et moyens de récupération ci-dessous reprennent la référence iRO Wiki. Toutes les valeurs et mécaniques de cette page restent marquées À vérifier.'
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Verification rule','Règle de vérification')}</strong><br>${navLabel(
+        'Detailed resistance formulas, durations, equipment immunities and interactions from other Ragnarok versions are not imported here. They will be added only when they can be verified for the current version.',
+        'Les formules détaillées de résistance, durées, immunités d’équipement et interactions provenant d’autres versions de Ragnarok ne sont pas importées ici. Elles seront ajoutées uniquement lorsqu’elles pourront être vérifiées pour la version actuelle.'
       )}</div></div>
 
-      ${toc([
-        {id:'status-list',label:navLabel('Status effects','Effets de statut')},
-        {id:'status-notes',label:navLabel('Terminology','Terminologie')}
-      ])}
+      <h2 id="status-list">${navLabel('Currently verified interactions','Interactions actuellement vérifiées')}</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>${navLabel('Status','Statut')}</th><th>${navLabel('Current verified information','Informations actuelles vérifiées')}</th></tr></thead>
+        <tbody>${rows.map(([name,info])=>`<tr><th>${esc(name)}</th><td>${info}</td></tr>`).join('')}</tbody>
+      </table></div>
 
-      <h2 id="status-list">${navLabel('Status effects','Effets de statut')}</h2>
-      <div style="display:block">
-        ${statuses.map(renderStatus).join('')}
-      </div>
+      <h2 id="status-details">${navLabel('What is still missing','Informations encore manquantes')}</h2>
+      <ul>
+        <li>${navLabel('Exact base duration and duration-reduction formulas for each status.','Durée de base exacte et formules de réduction de durée pour chaque statut.')}</li>
+        <li>${navLabel('Exact stat-based resistance formulas.','Formules exactes de résistance liées aux statistiques.')}</li>
+        <li>${navLabel('Current equipment and card immunities / resistances.','Immunités et résistances actuelles provenant des équipements et cartes.')}</li>
+        <li>${navLabel('Monster-specific status sources and probabilities.','Sources et probabilités de statuts propres aux monstres.')}</li>
+      </ul>
 
-      <h2 id="status-notes">${navLabel('Terminology','Terminologie')}</h2>
-      <div class="wiki-feature-list">
-        <div><strong>Frozen ≠ Freezing</strong><p>${navLabel(
-          'These are two different status effects on iRO. Only Frozen is listed above.',
-          'Ce sont deux effets de statut différents sur iRO. Seul Frozen est listé ci-dessus.'
-        )}</p></div>
-        <div><strong>Chaos = Confusion</strong><p>${navLabel(
-          'iRO Wiki names the status Chaos and notes that it is also known as Confusion.',
-          'iRO Wiki nomme ce statut Chaos et précise qu’il est aussi appelé Confusion.'
-        )}</p></div>
-      </div>
-
-      <h2 id="sources">${navLabel('Sources','Sources')}</h2>
-      <div class="source-box"><ul>
-        <li><a href="https://irowiki.org/wiki/Status_Effects" target="_blank" rel="noopener">iRO Wiki — Status Effects</a> — ${navLabel('effects, causes, prevention and recovery reference','référence des effets, causes, préventions et récupérations')}</li>
-        <li><a href="https://irowiki.org/wiki/Status_Icons" target="_blank" rel="noopener">iRO Wiki — Status Icons</a> — ${navLabel('status icon reference','référence des icônes de statut')}</li>
-      </ul></div>`;
+      ${officialSources([
+        ['RagnaPlace — Ragnarok Zero Global skills','https://ragnaplace.com/en/rozg-en/'],
+        ['ROZ Database — player skills','https://rozerodb.com/player-skills'],
+        ['RagZero / fharr — extracted skill-tree reference','https://rz.fharr.com/db/skilltree']
+      ])}`;
   }
 
   function sourcesLinksPage(topic) {
@@ -7776,8 +7383,8 @@ window.RO_DATA = {
           <h2 id="sources">${navLabel('Sources','Sources')}</h2>
           <div class="source-box"><ul>
             <li><a href="https://roz.prontera.info/skills/planner?class=knight" target="_blank" rel="noopener">Prontera.info — Skill Planner</a></li>
-            <li><a href="https://irowiki.org/wiki/Novice" target="_blank" rel="noopener">iRO Wiki — Novice (skill description wording only)</a></li>
-            <li><a href="https://irowiki.org/wiki/Basic_Skill" target="_blank" rel="noopener">iRO Wiki — Basic Skill (description wording only)</a></li>
+            <li><a href="https://ragnaplace.com/en/rozg-en/" target="_blank" rel="noopener">RagnaPlace — Ragnarok Zero Global skill data</a></li>
+            <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — extracted skill-tree reference</a></li>
           </ul></div>
         </div>
       </article>`;
