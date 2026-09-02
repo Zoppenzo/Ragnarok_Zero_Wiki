@@ -3249,7 +3249,7 @@ window.RO_DATA = {
   };
 
   function decorateSectionStatusPills() {
-    const route = (location.hash || '#/').split('?')[0];
+    const route = (location.hash || '#/').split('?')[0].replace(/\/section\/[^/]+$/, '');
     if (route === '#/' || route === '#/wiki/sources-links') return;
     const routeMap = SECTION_STATUS_BY_ROUTE[route] || {};
     const fullyVerifiedRoutes = new Set([
