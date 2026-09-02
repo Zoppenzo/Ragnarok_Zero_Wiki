@@ -4358,10 +4358,24 @@ window.RO_DATA = {
         'The Inn EXP buff is mutually exclusive with Growth Elixir: using a Growth-type elixir removes the Inn buff, and the Inn buff cannot be received while the elixir is active.',
         'Le bonus EXP d’auberge est incompatible avec Growth Elixir : utiliser un élixir de type Growth retire le bonus d’auberge, et le bonus d’auberge ne peut pas être reçu tant que l’élixir est actif.'
       )}</p>
-      <figure style="margin:16px auto 28px;max-width:1000px;text-align:center">
-        <img src="${asset('assets/useful-info/inn-exp-boost.webp')}" alt="Inn EXP Boost schedule" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
-        <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel('Inn EXP Boost schedule reference.','Référence des horaires du Inn EXP Boost.')}</figcaption>
-      </figure>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;align-items:start;margin:16px auto 28px;max-width:900px">
+        <figure style="margin:0;text-align:center">
+          <img src="https://midgardhub.com/images/guides/new-player/image168.png" alt="Good Morning Service Inn EXP Boost" loading="lazy" style="display:block;width:auto;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+          <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">Good Morning Service — 08:00–09:00 UTC</figcaption>
+        </figure>
+        <figure style="margin:0;text-align:center">
+          <img src="https://midgardhub.com/images/guides/new-player/image158.png" alt="Afternoon Break Inn EXP Boost" loading="lazy" style="display:block;width:auto;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+          <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">Afternoon Break — 14:00–15:00 UTC</figcaption>
+        </figure>
+        <figure style="margin:0;text-align:center">
+          <img src="https://midgardhub.com/images/guides/new-player/image74.png" alt="Dinner Banquet Inn EXP Boost" loading="lazy" style="display:block;width:auto;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+          <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">Dinner Banquet — 20:00–21:00 UTC</figcaption>
+        </figure>
+        <figure style="margin:0;text-align:center">
+          <img src="https://midgardhub.com/images/guides/new-player/image214.png" alt="Late-Night Snack Inn EXP Boost" loading="lazy" style="display:block;width:auto;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+          <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">Late-Night Snack — 02:00–03:00 UTC</figcaption>
+        </figure>
+      </div>
 
       <h2 id="current-cap">${navLabel('Experience and the current cap','Expérience et plafond actuel')}</h2>
       <p>${navLabel(
@@ -4720,7 +4734,7 @@ window.RO_DATA = {
         'À la connexion, la fenêtre Daily Login permet de récupérer la récompense du jour ; celle-ci est ensuite envoyée via RODEX. Si le personnage reste connecté plus de 24 heures, pense à ouvrir le menu manuellement car la fenêtre ne réapparaît pas automatiquement.'
       )}</p>
 
-      ${lymdShot('assets/useful-info/daily-login.webp', 'Daily Login', navLabel('Daily Login reward calendar','Calendrier de récompenses Daily Login'))}
+      ${lymdShot('https://lh3.googleusercontent.com/sitesv/AG8ngQXCXoFETxnZGxRaz16PQ2f__L1N9J8cqKaWaxo0mdVgkVrrW7PpamwLSE6Can1iEtbd5xYx35_SBXqQOYaQrdQoe2COaYGtmnbz_xdvQuXjD2WrhluZgBct4OayWfIxhtbfG4TdZF4PCaJNibAkZHoejXiYiMotNAowuasPwdUxvs6dBB-Yut_3agZ-WUwJ5l8YSz1F_lj1nIK-KFhDXDPmQHbhNZ9afs6eO8ba2kw=w1280', 'Daily Login', navLabel('Daily Login reward window','Fenêtre de récompense Daily Login'))}
 
       <h3 id="attendance">Attendance NPC</h3>
       <p>${navLabel(
@@ -4736,16 +4750,20 @@ window.RO_DATA = {
         'Les Achievements récompensent les défis accomplis avec des buffs, titres, objets et autres récompenses. Termine l’objectif, ouvre la fenêtre Achievement puis utilise Claim Reward lorsque la récompense devient disponible.'
       )}</p>
       ${lymdShot('https://midgardhub.com/images/guides/new-player/image95.png', 'Achievements', navLabel('Achievement interface from the Lymd guide','Interface Achievement du guide de Lymd'))}
-      <div class="wiki-callout"><strong>${navLabel('Example — Orc Hero','Exemple — Orc Hero')}</strong><br>${navLabel(
+      <div class="wiki-callout" style="max-width:760px;margin:14px auto;text-align:center"><strong>${navLabel('Example — Orc Hero','Exemple — Orc Hero')}</strong><br>${navLabel(
         'Defeat 30,000 Orc Warrior. The shown reward is the Orc Hero Headdress: STR +2 and a chance to cast Weapon Perfection Lv.3 when performing attacks.',
         'Vaincre 30 000 Orc Warrior. La récompense montrée est le Orc Hero Headdress : STR +2 et une chance de lancer Weapon Perfection Lv.3 lors des attaques.'
       )}</div>
-      <figure style="margin:14px auto 24px;max-width:900px;text-align:center">
-        <img src="${asset('assets/useful-info/achievement-orc-warrior.webp')}" alt="${navLabel('Orc Hero achievement requiring 30,000 Orc Warrior kills','Achievement Orc Hero demandant 30 000 Orc Warrior vaincus')}" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+      <figure style="margin:14px auto 18px;max-width:760px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+        <img src="${asset('assets/useful-info/achievement-orc-warrior.webp')}" alt="${navLabel('Orc Hero achievement requiring 30,000 Orc Warrior kills','Achievement Orc Hero demandant 30 000 Orc Warrior vaincus')}" loading="lazy" style="display:block;width:auto;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
         <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel(
-          'Orc Hero achievement — 30,000 Orc Warrior objective and Orc Hero Headdress reward.',
-          'Achievement Orc Hero — objectif de 30 000 Orc Warrior et récompense Orc Hero Headdress.'
+          'Orc Hero achievement — 30,000 Orc Warrior objective.',
+          'Achievement Orc Hero — objectif de 30 000 Orc Warrior.'
         )}</figcaption>
+      </figure>
+      <figure style="margin:10px auto 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+        <img src="https://rozerodb.com/assets/local/catalog/2b6aabf5649ff8701758a1d36c298a77.gif" alt="Orc Hero Headdress" loading="lazy" style="display:block;width:96px;height:96px;object-fit:contain;margin:0 auto">
+        <figcaption style="margin-top:6px;color:var(--muted);font-size:12px">Orc Hero Headdress</figcaption>
       </figure>
 
       <h3 id="inn-exp-link">Inn EXP Boost</h3>
