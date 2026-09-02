@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Ragnarok Wiki — bilingual English/French community database prototype." />
+  <meta name="description" content="Ragnarok Zero Wiki — bilingual English/French community reference for Ragnarok Zero Global." />
   <title>Ragnarok Zero Wiki</title>
   <style>
 :root {
@@ -2412,7 +2412,7 @@ tbody tr:hover { background: #fcf8f3; }
       <div class="sidebar-block sidebar-extra">
         <div class="sidebar-title" id="guides-title">Guides</div>
         <a href="#/wiki/getting-started"><svg class="mini-icon"><use href="#i-start"/></svg><span id="side-getting-started">Getting Started</span></a>
-        <a href="#/guides/mechanics"><svg class="mini-icon"><use href="#i-mechanics"/></svg><span id="side-mechanics">Game Mechanics</span></a>
+        <a href="#/wiki/mechanics"><svg class="mini-icon"><use href="#i-mechanics"/></svg><span id="side-mechanics">Game Mechanics</span></a>
         <a href="#/quests"><svg class="mini-icon"><use href="#i-quest"/></svg><span id="side-quests">Quest Index</span></a>
       </div>
 
@@ -2465,7 +2465,7 @@ tbody tr:hover { background: #fcf8f3; }
       <main id="app" class="main-content" tabindex="-1"></main>
 
       <footer class="site-footer">
-        <span>Ragnarok Zero Wiki — V8 Ergonomic Wiki</span>
+        <span>Ragnarok Zero Wiki</span>
         <span id="footer-note">Demo data are incomplete and may not match live game values.</span>
       </footer>
     </div>
@@ -3097,6 +3097,7 @@ window.RO_DATA = {
     { id:'levels', group:'General Topics', en:'Levels', fr:'Niveaux' },
     { id:'experience', group:'General Topics', en:'Experience', fr:'Expérience' },
     { id:'stats', group:'General Topics', en:'Stats', fr:'Statistiques' },
+    { id:'mechanics', group:'General Topics', en:'Game Mechanics', fr:'Mécaniques de jeu', icon:'mechanics' },
     { id:'skill-usage', group:'General Topics', en:'Skills', fr:'Compétences', href:'#/skills' },
     { id:'quests', group:'General Topics', en:'Quests', fr:'Quêtes', href:'#/quests' },
     { id:'items', group:'General Topics', en:'Items', fr:'Objets', href:'#/items' },
@@ -5570,11 +5571,15 @@ window.RO_DATA = {
   function affixDatabasePage() {
     setTimeout(wireAffixDatabase,0);
     return `${breadcrumbs([{label:navLabel('Affix Database','Base des affixes')}])}
-      <div class="article-heading"><h1>${icon('item')}${navLabel('Affix Database','Base des affixes')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+      <div class="article-heading"><h1>${icon('item')}${navLabel('Affix Database','Base des affixes')} <span class="badge unverified">${navLabel('To verify','À vérifier')}</span></h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'Complete random-option pools organized by source, equipment category and option slot. Every row shows the minimum and maximum roll for that affix.',
-        'Pools complets d’options aléatoires organisés par source, catégorie d’équipement et slot d’option. Chaque ligne indique le minimum et le maximum pouvant être obtenus pour l’affixe.'
+        'Compiled random-option pools organized by source, equipment category and option slot. Every row shows the minimum and maximum roll currently recorded for that affix.',
+        'Pools d’options aléatoires compilés par source, catégorie d’équipement et slot d’option. Chaque ligne indique le minimum et le maximum actuellement enregistrés pour l’affixe.'
       )}</p>
+      <div class="notice warning-notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div><strong>${navLabel('Database verification in progress','Vérification de la base en cours')}</strong><br>${navLabel(
+        'The Affixes system page is verified, but this detailed database is still being checked row by row. Values in this database must not be treated as fully verified until their verification is complete.',
+        'La page explicative du système d’Affixes est vérifiée, mais cette base détaillée est encore contrôlée ligne par ligne. Les valeurs de cette base ne doivent pas être considérées comme entièrement vérifiées tant que ce contrôle n’est pas terminé.'
+      )}</div></div>
 
       <div class="filters" style="grid-template-columns:minmax(180px,1fr) minmax(180px,1fr) minmax(220px,2fr)">
         <div class="form-field">
@@ -6510,7 +6515,7 @@ window.RO_DATA = {
       )}</div></div>
 
       <div class="hero-actions">
-        <a class="button primary" href="#/wiki/leveling-spots">${miniIcon('level')}${navLabel('Leveling Spots','Zones de leveling')}</a>
+        <a class="button primary" href="#/leveling">${miniIcon('level')}${navLabel('Leveling Finder','Leveling Finder')}</a>
         <a class="button" href="#/wiki/party">${miniIcon('class')}${navLabel('Party','Party')}</a>
         <a class="button" href="#/wiki/mvp-raid">${miniIcon('monster')}${navLabel('MVP Raid','MVP Raid')}</a>
       </div>`;
@@ -7292,6 +7297,30 @@ window.RO_DATA = {
       </div>`;
   }
 
+
+  function mechanicsPage(topic) {
+    const title = navLabel('Game Mechanics','Mécaniques de jeu');
+    const links = [
+      ['#/wiki/stats','mechanics',navLabel('Stats','Statistiques'),navLabel('Primary stats, derived stats, defense and currently documented formulas.','Statistiques principales, statistiques dérivées, défense et formules actuellement documentées.')],
+      ['#/wiki/elements','mechanics',navLabel('Elements','Éléments'),navLabel('Element interactions and damage modifiers.','Interactions élémentaires et modificateurs de dégâts.')],
+      ['#/wiki/monster-sizes','monster',navLabel('Monster Sizes','Tailles des monstres'),navLabel('Small, Medium and Large size interactions.','Interactions avec les tailles Small, Medium et Large.')],
+      ['#/wiki/monster-races','monster',navLabel('Monster Races','Races des monstres'),navLabel('Race categories and race-based effects.','Catégories de races et effets liés aux races.')],
+      ['#/wiki/status-effects','mechanics',navLabel('Status Effects','Effets de statut'),navLabel('Status effects, prevention and recovery references.','Effets de statut, prévention et récupération.')],
+      ['#/skills','skill',navLabel('Skills','Compétences'),navLabel('Skill usage, casting, delay, cooldown and class skills.','Utilisation des compétences, cast, delay, cooldown et skills de classes.')],
+      ['#/wiki/refinement-system','tools',navLabel('Refinement','Raffinement'),navLabel('Equipment refinement rules and materials.','Règles et matériaux de raffinement de l’équipement.')],
+      ['#/wiki/affixes','item',navLabel('Affixes / Random Options','Affixes / Options aléatoires'),navLabel('Random-option system and equipment option slots.','Système d’options aléatoires et slots d’options d’équipement.')]
+    ];
+    return `${breadcrumbs([{label:title}])}
+      <div class="article-heading"><h1>${icon('mechanics')}${title}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
+      <p class="article-lead">${navLabel(
+        'Central index for the gameplay mechanics already documented in the wiki.',
+        'Index central des mécaniques de jeu déjà documentées dans le wiki.'
+      )}</p>
+      <div class="wiki-feature-list">
+        ${links.map(([href,ico,name,desc])=>`<div><strong><a href="${href}">${miniIcon(ico)}${name}</a></strong><p>${desc}</p></div>`).join('')}
+      </div>`;
+  }
+
   function topicDetail(id) {
     const topic = topicById(id) || { id, en:id.split('-').map(x=>x[0]?.toUpperCase()+x.slice(1)).join(' '), fr:id.split('-').join(' '), icon:'guide' };
     if (id === 'elements') return elementsPage(topic);
@@ -7313,6 +7342,7 @@ window.RO_DATA = {
     if (id === 'levels') return levelsPage(topic);
     if (id === 'experience') return experiencePage(topic);
     if (id === 'stats') return statsPage(topic);
+    if (id === 'mechanics') return mechanicsPage(topic);
     if (id === 'useful-info') return usefulInfoPage(topic);
     if (id === 'faq') return usefulInfoPage({ ...topic, en:'Useful Information', fr:'Informations utiles' });
     if (id === 'glossary') return glossaryPage(topic);
@@ -9288,7 +9318,7 @@ window.RO_DATA = {
         <thead><tr><th colspan="2" style="text-align:center"><em>${esc(c.name)}</em></th></tr></thead>
         <tbody>
           <tr><th style="width:170px">${navLabel('Skills','Compétences')}</th><td>${skillLinks}</td></tr>
-          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — Formula unavailable','Détails des quêtes de compétences Novice — vérification the current server en attente') : navLabel('No class quest page added yet','Aucune page de quête de classe pour le moment')}</td></tr>
+          <tr><th>${navLabel('Quests','Quêtes')}</th><td>${c.id==='novice' ? navLabel('Novice skill quest details — not documented yet','Détails des quêtes de compétences Novice — à vérifier sur le serveur actuel') : navLabel('No class quest page added yet','Aucune page de quête de classe pour le moment')}</td></tr>
           <tr><th>${navLabel('Weapons','Armes')}</th><td>${esc(weapons)}</td></tr>
         </tbody>
       </table></div>
@@ -9337,8 +9367,8 @@ window.RO_DATA = {
       : navLabel('No skills listed','Aucune compétence listée');
     const weapons = (weaponsByClass[c.id] || []).join(' • ') || navLabel('Not listed yet','Pas encore renseigné');
     const questText = c.id==='novice'
-      ? navLabel('Novice skill quest details — Formula unavailable','Détails des quêtes de compétences Novice — vérification the current server en attente')
-      : navLabel('Class quest details — Formula unavailable','Détails des quêtes de classe — vérification the current server en attente');
+      ? navLabel('Novice skill quest details — not documented yet','Détails des quêtes de compétences Novice — à vérifier sur le serveur actuel')
+      : navLabel('Class quest details — not documented yet','Détails des quêtes de classe — à vérifier sur le serveur actuel');
 
     return `
       <h2 id="skill-see-also">${navLabel('See Also','Voir aussi')}</h2>
