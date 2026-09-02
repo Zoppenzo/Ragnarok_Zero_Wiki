@@ -3463,6 +3463,13 @@ window.RO_DATA = {
     });
   }
 
+  function guideScreenshot(src, alt, caption) {
+    return `<figure style="margin:14px auto 24px;max-width:760px;text-align:center">
+      <img src="${src}" alt="${esc(alt)}" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
+      <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${esc(caption)}</figcaption>
+    </figure>`;
+  }
+
   function breadcrumbs(parts) {
     const links = [`<a href="#/">${t('home')}</a>`];
     parts.forEach((part, i) => {
@@ -3959,20 +3966,31 @@ window.RO_DATA = {
 
       <h2 id="navigation-system">Navigation</h2>
       <p>${navLabel(
-        'The Navigation interface can search for NPCs and monsters and then display the route with arrows on the ground. A /navi command opens navigation directly to a map and coordinate.',
-        'L’interface Navigation permet de rechercher des NPCs et monstres puis d’afficher le chemin avec des flèches au sol. Une commande /navi ouvre directement la navigation vers une map et des coordonnées.'
+        'The Navigation interface is the client’s built-in route finder. Search for an NPC or monster, select a result and the game can guide you with arrows on the ground. You can also use a /navi command to open a specific map coordinate directly.',
+        'L’interface Navigation est le système de trajet intégré au client. Recherche un NPC ou un monstre, sélectionne un résultat et le jeu peut te guider avec des flèches au sol. Tu peux aussi utiliser une commande /navi pour ouvrir directement des coordonnées précises.'
       )}</p>
+      <ul>
+        <li>${navLabel('Search NPCs or monsters by name from the Navigation window.','Recherche des NPCs ou monstres par leur nom depuis la fenêtre Navigation.')}</li>
+        <li>${navLabel('The route is displayed directly in-game with ground arrows.','Le trajet est affiché directement en jeu avec des flèches au sol.')}</li>
+        <li>${navLabel('When a service offers a paid/direct move option, read the confirmation before using the required item or cost.','Lorsqu’un service propose un déplacement direct payant, lis la confirmation avant d’utiliser l’objet ou le coût demandé.')}</li>
+        <li>${navLabel('On this wiki, every /navi command is clickable and copies the complete command to the clipboard.','Sur ce wiki, chaque commande /navi est cliquable et copie la commande complète dans le presse-papiers.')}</li>
+      </ul>
       <p><code>/navi prontera 147/86</code></p>
-      <p class="muted-note">${navLabel(
-        'On this wiki, /navi commands are clickable: click one to copy the complete command to the clipboard.',
-        'Sur ce wiki, les commandes /navi sont cliquables : clique dessus pour copier la commande complète dans le presse-papiers.'
-      )}</p>
+      ${guideScreenshot('https://midgardhub.com/images/guides/new-player/image94.png','Navigation search interface',navLabel('Navigation search interface — Lymd guide','Interface de recherche Navigation — guide de Lymd'))}
+      ${guideScreenshot('https://midgardhub.com/images/guides/new-player/image241.png','Navigation monster search result',navLabel('Navigation search result for a monster — Lymd guide','Résultat de recherche Navigation pour un monstre — guide de Lymd'))}
 
       <h2 id="key-bind-switch">Key Bind Switch</h2>
       <p>${navLabel(
-        'You can assign a key or key combination to switch between two equipment sets. This is useful when moving between different combat roles or situations such as normal farming, instances and PvP. The equipment-set switch can be used once every 10 seconds.',
-        'Tu peux assigner une touche ou une combinaison de touches pour basculer entre deux sets d’équipement. C’est pratique pour passer d’un rôle ou d’une situation à une autre, par exemple farm normal, instances ou PvP. Le changement de set peut être effectué une fois toutes les 10 secondes.'
+        'Key Bind Switch lets you assign a key or key combination to swap between two equipment sets. This avoids reopening the Equipment window and changing every item manually.',
+        'Key Bind Switch permet d’assigner une touche ou une combinaison de touches pour basculer entre deux sets d’équipement. Cela évite de rouvrir la fenêtre Equipment et de changer chaque objet manuellement.'
       )}</p>
+      <ul>
+        <li>${navLabel('Prepare two equipment sets, then assign the Switch Equipment Set action in the key settings.','Prépare deux sets d’équipement puis assigne l’action Switch Equipment Set dans les réglages de touches.')}</li>
+        <li>${navLabel('Useful for switching between farming, instance, PvP or other situational equipment.','Pratique pour passer entre un équipement de farm, d’instance, de PvP ou d’autres situations.')}</li>
+        <li>${navLabel('The equipment-set switch has a 10-second reuse delay.','Le changement de set possède un délai de réutilisation de 10 secondes.')}</li>
+      </ul>
+      ${guideScreenshot('https://midgardhub.com/images/guides/new-player/image225.png','Equipment set switch window',navLabel('Equipment-set switch window — Lymd guide','Fenêtre de changement de set — guide de Lymd'))}
+      ${guideScreenshot('https://midgardhub.com/images/guides/new-player/image101.png','Switch Equipment Set key binding',navLabel('Shortcut assigned to Switch Equipment Set — Lymd guide','Raccourci assigné à Switch Equipment Set — guide de Lymd'))}
 
       <h2 id="commands-global">${navLabel('Current Global commands','Commandes Global actuelles')}</h2>
       ${listRows(globalCommands)}
@@ -4342,7 +4360,7 @@ window.RO_DATA = {
       )}</p>
       <figure style="margin:16px auto 28px;max-width:1000px;text-align:center">
         <img src="assets/useful-info/inn-exp-boost.webp" alt="Inn EXP Boost schedule" loading="lazy" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid var(--line-soft);border-radius:6px;box-shadow:var(--shadow)">
-        <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel('Inn EXP Boost service windows.','Créneaux de service du Inn EXP Boost.')}</figcaption>
+        <figcaption style="margin-top:8px;color:var(--muted);font-size:12px">${navLabel('Inn EXP Boost schedule reference.','Référence des horaires du Inn EXP Boost.')}</figcaption>
       </figure>
 
       <h2 id="current-cap">${navLabel('Experience and the current cap','Expérience et plafond actuel')}</h2>
@@ -4579,13 +4597,15 @@ window.RO_DATA = {
 
       <h2 id="equipment-stats">Equipment Stats</h2>
       <p>${navLabel(
-        'The Equipment Stats view summarizes the bonuses currently supplied by your equipped items. It is useful for checking the combined result of your gear without reopening every item description individually.',
-        'La vue Equipment Stats résume les bonus actuellement fournis par les objets équipés. Elle permet de vérifier rapidement le résultat combiné de ton équipement sans rouvrir la description de chaque objet.'
+        'The Equipment Stats window gives a combined summary of the bonuses currently supplied by your equipped items. Instead of opening every item description one by one, use it to quickly verify what your current set is actually adding.',
+        'La fenêtre Equipment Stats affiche un résumé combiné des bonus actuellement fournis par les objets équipés. Au lieu d’ouvrir chaque description d’objet une par une, utilise-la pour vérifier rapidement ce que ton set actuel ajoute réellement.'
       )}</p>
-      <p class="muted-note">${navLabel(
-        'This is an equipment-summary interface; the primary and derived character-stat formulas remain documented in the sections above and below.',
-        'Il s’agit d’une interface de résumé de l’équipement ; les formules des statistiques principales et dérivées du personnage restent documentées dans les sections au-dessus et en dessous.'
-      )}</p>
+      <ul>
+        <li>${navLabel('It summarizes bonuses coming from the equipment you are currently wearing.','Elle résume les bonus provenant de l’équipement actuellement porté.')}</li>
+        <li>${navLabel('It is especially useful after changing several pieces or switching equipment sets.','Elle est particulièrement pratique après avoir changé plusieurs pièces ou basculé de set.')}</li>
+        <li>${navLabel('It is an equipment summary, not a replacement for the primary/derived stat formulas documented on this page.','C’est un résumé de l’équipement, pas un remplacement des formules de statistiques principales et dérivées documentées sur cette page.')}</li>
+      </ul>
+      ${guideScreenshot('https://midgardhub.com/images/guides/new-player/image242.png','Equipment Stats window',navLabel('Equipment Stats summary window — Lymd guide','Fenêtre de résumé Equipment Stats — guide de Lymd'))}
 
       <h2 id="formulas">${navLabel('Formulas','Formules')}</h2>
       <p>${navLabel(
@@ -4665,6 +4685,7 @@ window.RO_DATA = {
         'La Tip Box regroupe des conseils et références utiles du client, notamment pour retrouver des informations sur certains headgears craftables. Ouvre-la avec /tip ; le raccourci classique est Alt + D lorsque les raccourcis legacy sont activés.'
       )}</p>
       <p><code>/tip</code></p>
+      ${lymdShot('assets/useful-info/tip-box.webp', navLabel('Tip Box interface','Interface Tip Box'), navLabel('Tip Box — search headgear and other client tips','Tip Box — recherche de headgear et autres conseils du client'))}
 
       <h3 id="item-sale-lock">${navLabel('Item Sale Lock','Verrouillage de vente des objets')}</h3>
       <p>${navLabel(
@@ -4699,6 +4720,8 @@ window.RO_DATA = {
         'À la connexion, la fenêtre Daily Login permet de récupérer la récompense du jour ; celle-ci est ensuite envoyée via RODEX. Si le personnage reste connecté plus de 24 heures, pense à ouvrir le menu manuellement car la fenêtre ne réapparaît pas automatiquement.'
       )}</p>
 
+      ${lymdShot('assets/useful-info/daily-login.webp', 'Daily Login', navLabel('Daily Login reward calendar','Calendrier de récompenses Daily Login'))}
+
       <h3 id="attendance">Attendance NPC</h3>
       <p>${navLabel(
         'Talking to an Attendance NPC starts a one-hour countdown. Return after one hour to claim the reward. This can be done once per day per character, and the NPC is found in many towns, often close to the Kafra.',
@@ -4730,7 +4753,6 @@ window.RO_DATA = {
         'Resting at an inn during its service time grants +10% EXP for 30 minutes. The Experience page contains the full schedule, time-zone note and the image reference.',
         'Se reposer dans une auberge pendant son horaire de service donne +10 % d’EXP pendant 30 minutes. La page Expérience contient les horaires complets, la précision sur le fuseau horaire et l’image de référence.'
       )}</p>
-      ${lymdShot('https://midgardhub.com/images/guides/new-player/image168.png', 'Inn EXP Boost', navLabel('Example Inn EXP service window','Exemple de créneau Inn EXP'))}
       <div class="hero-actions"><a class="button" href="#/wiki/experience/section/inn-exp-boost">${miniIcon('level')}${navLabel('Open Inn EXP Boost','Voir Inn EXP Boost')}</a></div>
 
       <h2 id="services">${navLabel('Navigation & Services','Navigation & services')}</h2>
@@ -4756,10 +4778,10 @@ window.RO_DATA = {
 
       <h3 id="cheese-seller">Cheese Seller</h3>
       <p>${navLabel(
-        'Cheese is a convenient SP consumable for classes that use skills heavily. A Cheese seller is available in Prontera.',
-        'Le Cheese est un consommable de SP pratique pour les classes utilisant beaucoup de compétences. Un vendeur de Cheese est disponible à Prontera.'
+        'Cheese is a convenient SP consumable for classes that use skills heavily. Cheese Sellers are present in most towns; Prontera is one easy example.',
+        'Le Cheese est un consommable de SP pratique pour les classes utilisant beaucoup de compétences. Des Cheese Sellers sont présents dans la plupart des villes ; Prontera est simplement un exemple facile.'
       )}</p>
-      <p><code>/navi prontera 74/133</code></p>
+      <p class="muted-note">${navLabel('Example — Prontera:','Exemple — Prontera :')} <code>/navi prontera 74/133</code></p>
       ${lymdShot('https://midgardhub.com/images/guides/new-player/image17.png', 'Cheese Seller', navLabel('Cheese Seller in Prontera','Vendeur de Cheese à Prontera'))}
 
       <h3 id="bank">Bank</h3>
