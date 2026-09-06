@@ -1,0 +1,38 @@
+name: Reorder mechanics topics
+
+on:
+  push:
+    paths:
+      - '.github/workflows/reorder-mechanics-topics.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Update mechanics navigation
+        run: python tools/reorder_mechanics_topics.py
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          assert "fr:'Compétence et Cast Time'" in s
+          assert "fr:'Mémorial Donjon', href:'#/memorial-dungeons'" in s
+          assert "navLabel('Systems & Mechanics','Système et mécanique')" in s
+          block = s[s.index("{ id:'elements', group:'Systems & Mechanics'"):s.index('  ];', s.index("{ id:'elements', group:'Systems & Mechanics'"))]
+          assert block.index("id:'memorial-dungeons'") < block.index("id:'mvp-raid'") < block.index("id:'crafting'") < block.index("id:'refinement-system'") < block.index("id:'enchantment'")
+          PY
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Reorder mechanics topics and add Memorial Dungeon"
+          git push origin HEAD:main
