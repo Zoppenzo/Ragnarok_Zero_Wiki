@@ -1,0 +1,42 @@
+name: Enrich Memorials and Crafting
+
+on:
+  push:
+    paths:
+      - '.github/workflows/enrich-memorials-and-crafting.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply wiki patch
+        run: python tools/enrich_memorials_and_crafting.py
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          assert 'Systèmes et mécaniques' in s
+          assert 'Compétences et Cast Time' in s
+          assert 'Potion Creation</h2>' in s
+          assert 'Prepare Potion' in s
+          assert 'function memorialDungeonDetail(id)' in s
+          assert "hash[0]==='memorial-dungeons'&&hash[1]" in s
+          assert '#/memorial-dungeons/${id}' in s
+          for md in ['poring-village','orcs-memory','prontera-culvert']:
+              assert f"'{md}':" in s
+          PY
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Add Potion Creation and Memorial Dungeon pages"
+          git push origin HEAD:main
