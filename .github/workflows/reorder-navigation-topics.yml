@@ -1,0 +1,40 @@
+name: Reorder navigation topics
+
+on:
+  push:
+    paths:
+      - '.github/workflows/reorder-navigation-topics.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reorder navigation
+        run: python tools/reorder_navigation_topics.py
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          assert "homeTopicList('Systems & Mechanics')" in s
+          assert "navLabel('Systems & Mechanics','Système et Mechanics')" in s
+          general = s[s.index('  const TOPICS = ['):s.index("{ id:'elements', group:'Systems & Mechanics'")]
+          assert general.index("id:'experience'") < general.index("id:'party'") < general.index("id:'guild-system'") < general.index("id:'auto-hunt'")
+          assert general.index("id:'cards'") < general.index("id:'affixes'")
+          assert general.rfind("id:'get-poring'") < general.rfind("id:'ro-factory'")
+          assert "en:'Guild', fr:'Guilde'" in general
+          PY
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Reorganize general topics and mechanics navigation"
+          git push origin HEAD:main
