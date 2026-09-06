@@ -1,0 +1,36 @@
+name: Fix second-class 60/60 cap
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-second-class-cap-60.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Clarify second-class cap
+        run: python tools/fix_second_class_cap_60.py
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          assert "c.group==='second'?infoRow(navLabel('Max Job Level','Job Level max'),'60')" in s
+          assert 'Base Level 60 / Job Level 50' not in s
+          assert 'Le plafond actuel d’un personnage de seconde classe est Base Level 60 / Job Level 60.' in s
+          PY
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Clarify second-class cap as Base 60 Job 60"
+          git push origin HEAD:main
