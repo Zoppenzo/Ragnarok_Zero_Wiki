@@ -1,0 +1,31 @@
+name: Fix class 2 availability UI
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-class2-availability.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch class availability UI
+        run: python tools/fix_class2_availability.py
+      - name: Validate
+        run: |
+          git diff --check
+          grep -n "Second classes" index.html | head
+          if grep -Fq "<h2>${navLabel('Coming soon','Bientôt disponibles')}</h2>" index.html; then exit 1; fi
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Fix second classes still shown as coming soon"
+          git push origin HEAD:main
