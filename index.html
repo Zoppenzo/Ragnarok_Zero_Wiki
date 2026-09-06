@@ -2994,9 +2994,9 @@ window.RO_DATA = {
       home: 'Main Page', monsters: 'Monsters', items: 'Items', cards: 'Cards', maps: 'Maps', classes: 'Classes', skills: 'Skills', quests: 'Quests', npcs: 'NPCs', leveling: 'Leveling', tools: 'Tools',
       nav: 'Navigation', database: 'Database', guides: 'Guides', gettingStarted: 'Getting Started', mechanics: 'Game Mechanics', questIndex: 'Quest Index',
       article: 'Article', discussion: 'Discussion', search: 'Search', searchPlaceholder: 'Search Ragnarok Wiki',
-      subtitle: 'English / Français', footer: 'Only verified or explicitly qualified data should be treated as gameplay reference.', sidebarNote: 'Community reference project for Ragnarok Zero: Global. Content audit: 6 Sep 2026.',
+      subtitle: 'English / Français', footer: 'Some database sections are still being documented. Verification status is shown on each section.', sidebarNote: 'Community reference project for Ragnarok Zero: Global. Content audit: 6 Sep 2026.',
       fromWiki: 'From Ragnarok Wiki', welcome: 'Welcome to Ragnarok Wiki',
-      welcomeText: 'A bilingual community reference for Ragnarok Online. Game entities keep their English names; the interface and explanatory text can switch between English and French.',
+      welcomeText: 'A bilingual community reference for Ragnarok Zero: Global. Game entities keep their English names; the interface and explanatory text can switch between English and French.',
       prototype: 'Database status',
       wikiStats: 'Wiki statistics',
       startHere: 'Getting Started', startDesc: 'New player information and essential references.',
@@ -3041,7 +3041,7 @@ window.RO_DATA = {
       article: 'Article', discussion: 'Discussion', search: 'Rechercher', searchPlaceholder: 'Rechercher dans Ragnarok Wiki',
       subtitle: 'English / Français', footer: 'Certaines bases de données sont encore en cours de documentation. Le statut de vérification est indiqué par section.', sidebarNote: 'Projet de référence communautaire pour Ragnarok Zero: Global. Audit du contenu : 6 sept. 2026.',
       fromWiki: 'De Ragnarok Wiki', welcome: 'Bienvenue sur Ragnarok Wiki',
-      welcomeText: "Une référence communautaire bilingue pour Ragnarok Online. Les noms des éléments du jeu restent en anglais ; l'interface et les explications peuvent passer entre anglais et français.",
+      welcomeText: "Une référence communautaire bilingue pour Ragnarok Zero: Global. Les noms des éléments du jeu restent en anglais ; l'interface et les explications peuvent passer entre anglais et français.",
       prototype: 'État de la base de données',
       wikiStats: 'Statistiques du wiki',
       startHere: 'Bien débuter', startDesc: 'Informations pour nouveaux joueurs et références essentielles.',
@@ -4014,7 +4014,7 @@ window.RO_DATA = {
       [
         navLabel('Base Level','Base Level'),
         '1',
-        '50',
+        '60',
         navLabel('Base EXP','Base EXP'),
         navLabel('Overall character progression, stat points and level-gated content.','Progression générale du personnage, points de caractéristiques et contenu soumis à un niveau minimum.')
       ],
@@ -4030,7 +4030,14 @@ window.RO_DATA = {
         '1',
         '50',
         navLabel('Job EXP','Job EXP'),
-        navLabel('Grants skill points for the current first-class skill tree.','Accorde les points de compétence de l’arbre actuel de la première classe.')
+        navLabel('Grants first-class skill points; second-job change becomes available from Job Level 40.','Accorde les points de skills de première classe ; le changement vers la seconde classe devient disponible à partir du Job Level 40.')
+      ],
+      [
+        navLabel('2nd Class Job Level','Job Level — 2e classe'),
+        '1',
+        '60',
+        navLabel('Job EXP','Job EXP'),
+        navLabel('Current second-class progression cap after the September 3 update.','Plafond actuel de progression des secondes classes depuis la mise à jour du 3 septembre.')
       ]
     ];
 
@@ -4088,6 +4095,7 @@ window.RO_DATA = {
         <li>${navLabel('At Job Level 10 or higher, the Novice can change to one of the six first classes currently available on Global.','À partir du Job Level 10, le Novice peut évoluer vers l’une des six premières classes actuellement disponibles sur Global.')}</li>
         <li>${navLabel('After the job change, the new first class starts again at Job Level 1 while Base Level is kept.','Après le changement de classe, la nouvelle première classe recommence au Job Level 1 tandis que le Base Level est conservé.')}</li>
         <li>${navLabel('Each Job Level gained after Job Level 1 provides one skill point. Reaching Job Level 50 therefore provides 49 points for the current first-class tree.','Chaque Job Level gagné après le Job Level 1 fournit un point de compétence. Atteindre le Job Level 50 donne donc 49 points pour l’arbre actuel de la première classe.')}</li>
+        <li>${navLabel('After changing to a second class, that class has its own Job Level progression; the current Global second-class Job Level cap is 60.','Après le passage en seconde classe, cette classe possède sa propre progression de Job Level ; le plafond Global actuel des secondes classes est Job Level 60.')}</li>
       </ul>
 
       <h2 id="current-caps">${navLabel('Current Global level caps','Plafonds de niveau actuels sur Global')}</h2>
@@ -4113,6 +4121,7 @@ window.RO_DATA = {
       </div>
 
       ${officialSources([
+        ['Official GNJOY — September 3 update: 2nd Jobs / increased level cap','https://roz.mygnjoy.com/en/news/update/92'],
         ['ROZ Database — Global release roadmap','https://rozerodb.com/guides/roadmap-update'],
         ['Lymd — Global Guide','https://sites.google.com/view/rozeroguide'],
         ['MidgardHub — Complete New Player Guide','https://midgardhub.com/guides/new-player']
