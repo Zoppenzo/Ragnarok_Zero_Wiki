@@ -20,8 +20,16 @@ jobs:
       - name: Validate
         run: |
           git diff --check
-          grep -n "Second classes" index.html | head
-          if grep -Fq "<h2>${navLabel('Coming soon','Bientôt disponibles')}</h2>" index.html; then exit 1; fi
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          assert "const upcoming=['knight'" not in s
+          assert "Bientôt disponibles</h2>" not in s
+          assert "Second classes are already shown as upcoming" not in s
+          assert "Les secondes classes sont déjà affichées comme contenu à venir" not in s
+          assert "const second=['knight','crusader','wizard','sage','hunter','bard','dancer','blacksmith','alchemist','assassin','rogue','priest','monk']" in s
+          print('validation ok')
+          PY
       - name: Commit
         run: |
           git config user.name "Ragnarok Zero Wiki Bot"
