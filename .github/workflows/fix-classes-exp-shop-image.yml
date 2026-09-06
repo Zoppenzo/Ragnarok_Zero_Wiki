@@ -1,0 +1,42 @@
+name: Fix classes EXP and shop image
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-classes-exp-shop-image.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch wiki text and EXP tables
+        run: python tools/fix_classes_exp_shop_image.py
+      - name: Restore clean Shop Search Sell screenshot
+        run: git checkout b268929ad8f94f8f9dfafc1902628e206b1fb5aa -- assets/useful-info/silver-catalogue-sell.webp
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          assert "2nd Class — coming soon" not in s
+          assert "2e classe — bientôt disponible" not in s
+          assert "Job Level 40" not in s
+          assert "Job Lv 40+" not in s
+          assert s.index("Novice Job EXP — Job Lv. 1 to 10") < s.index("Base Level EXP — Lv. 1 to 50") < s.index("First Class Job EXP — Job Lv. 1 to 50")
+          img = Path('assets/useful-info/silver-catalogue-sell.webp')
+          assert img.stat().st_size == 7742, img.stat().st_size
+          PY
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html assets/useful-info/silver-catalogue-sell.webp
+          git commit -m "Fix class labels Job 50 EXP order and shop screenshot"
+          git push origin HEAD:main
