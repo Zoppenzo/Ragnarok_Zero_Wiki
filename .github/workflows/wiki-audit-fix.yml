@@ -1,0 +1,75 @@
+name: Apply Ragnarok Zero wiki audit fixes
+
+on:
+  push:
+    paths:
+      - '.github/workflows/wiki-audit-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply audited content fixes
+        run: python tools/wiki_audit_fix.py
+
+      - name: Apply final translation and markup safeguards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Remove a literal template-expression artifact if the one-shot fixer matched the static footer.
+          s = s.replace("<span>Ragnarok Zero Wiki · ${navLabel ? '' : ''}</span>", "<span>Ragnarok Zero Wiki</span>")
+
+          # The original EN and FR translation blocks both used the English label 'Build Planner'.
+          # The broad first pass renames both; restore the French labels only inside the FR translation block.
+          fr_start = s.find("    fr: {\n      home:")
+          fr_end = s.find("\n    }\n  };", fr_start) if fr_start >= 0 else -1
+          if fr_start >= 0 and fr_end > fr_start:
+              block = s[fr_start:fr_end]
+              block = block.replace("buildTitle: 'Stat Allocator'", "buildTitle: 'Répartiteur de stats'")
+              block = block.replace("buildPlanner: 'Stat Allocator'", "buildPlanner: 'Répartiteur de stats'")
+              s = s[:fr_start] + block + s[fr_end:]
+
+          # Final integrity checks.
+          assert "Current Global scope — 1 September 2026" not in s
+          assert "Périmètre Global actuel — 1er septembre 2026" not in s
+          assert "${navLabel ? '' : ''}" not in s
+          for cid in ['knight','crusader','wizard','sage','hunter','bard','dancer','blacksmith','alchemist','assassin','rogue','priest','monk']:
+              marker = f'id: "{cid}"'
+              pos = s.find(marker)
+              assert pos >= 0, cid
+              line = s[pos:s.find('\n', pos)]
+              assert 'releaseStatus: "available"' in line, (cid, line)
+          for required in ['function craftingPage(topic)', 'function enchantmentPage(topic)', 'function monsterSkillsPage(topic)', "if (id === 'crafting') return craftingPage(topic);", "if (id === 'enchantment') return enchantmentPage(topic);", "if (id === 'monster-exclusive-skills') return monsterSkillsPage(topic);"]:
+              assert required in s, required
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Show summary diff
+        run: |
+          git diff --stat
+          git diff --check
+          grep -n "Current Global scope" index.html | head
+          grep -n "releaseStatus: \"available\"" index.html | tail -n 20
+
+      - name: Commit fixes
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No index changes to commit"
+            exit 0
+          fi
+          git commit -m "Update wiki for September 3 live content and audit fixes"
+          git push origin HEAD:main
