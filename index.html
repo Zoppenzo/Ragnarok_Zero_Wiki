@@ -3095,7 +3095,7 @@ window.RO_DATA = {
     { id:'guild-system', group:'General Topics', en:'Guild', fr:'Guilde' },
     { id:'auto-hunt', group:'General Topics', en:'Auto-Hunt', fr:'Chasse automatique' },
     { id:'stats', group:'General Topics', en:'Stats', fr:'Statistiques' },
-    { id:'skill-usage', group:'General Topics', en:'Skills', fr:'Compétences', href:'#/skills' },
+    { id:'skill-usage', group:'General Topics', en:'Skills & Cast Time', fr:'Compétence et Cast Time', href:'#/skills' },
     { id:'quests', group:'General Topics', en:'Quests', fr:'Quêtes', href:'#/quests' },
     { id:'items', group:'General Topics', en:'Items', fr:'Objets', href:'#/items' },
     { id:'cards', group:'General Topics', en:'Cards', fr:'Cartes', href:'#/cards' },
@@ -3111,11 +3111,12 @@ window.RO_DATA = {
     { id:'monster-races', group:'Systems & Mechanics', en:'Monster Races', fr:'Races des monstres', icon:'monster' },
     { id:'monster-exclusive-skills', group:'Systems & Mechanics', en:'Monster Skills', fr:'Compétences des monstres' },
     { id:'status-effects', group:'Systems & Mechanics', en:'Status Effects', fr:'Effets de statut' },
-    { id:'refinement-system', group:'Systems & Mechanics', en:'Refinement', fr:'Raffinement' },
+    { id:'memorial-dungeons', group:'Systems & Mechanics', en:'Memorial Dungeon', fr:'Mémorial Donjon', href:'#/memorial-dungeons', icon:'memorial' },
+    { id:'mvp-raid', group:'Systems & Mechanics', en:'MVP Raid', fr:'Raid MVP' },
     { id:'crafting', group:'Systems & Mechanics', en:'Crafting', fr:'Craft' },
+    { id:'refinement-system', group:'Systems & Mechanics', en:'Refinement', fr:'Raffinement' },
     { id:'enchantment', group:'Systems & Mechanics', en:'Enchantment', fr:'Enchantement' },
     { id:'pet-system', group:'Systems & Mechanics', en:'Pet System', fr:'Système de Pet' },
-    { id:'mvp-raid', group:'Systems & Mechanics', en:'MVP Raid', fr:'Raid MVP' },
   ];
 
   const navLabel = (en, fr) => lang === 'fr' ? fr : en;
@@ -3623,7 +3624,7 @@ window.RO_DATA = {
           ${homeTopicList('General Topics')}
         </section>
         <section class="classic-topic-box">
-          <h2>${navLabel('Systems & Mechanics','Système et Mechanics')}</h2>
+          <h2>${navLabel('Systems & Mechanics','Système et mécanique')}</h2>
           ${homeTopicList('Systems & Mechanics')}
         </section>
       </div>
