@@ -3641,17 +3641,17 @@ window.RO_DATA = {
   }
 
   function classIndexView() {
-    const live=['novice','swordman','mage','archer','merchant','thief','acolyte'];
-    const upcoming=['knight','crusader','wizard','sage','hunter','bard','dancer','blacksmith','alchemist','assassin','rogue','priest','monk'];
+    const first=['novice','swordman','mage','archer','merchant','thief','acolyte'];
+    const second=['knight','crusader','wizard','sage','hunter','bard','dancer','blacksmith','alchemist','assassin','rogue','priest','monk'];
     return `${breadcrumbs([{label:t('classes')}])}
       <div class="article-heading"><div><span class="eyebrow">${navLabel('Character','Personnage')}</span><h1>${icon('class')}${t('classes')}</h1><div class="page-subtitle">${t('fromWiki')}</div></div></div>
-      <p class="article-lead">${navLabel('Click anywhere on a class card — the sprite, background or name — to open its dedicated page. Second classes are already shown as upcoming so the tree is ready for the next update.','Clique n’importe où sur la case d’une classe — sprite, fond ou nom — pour ouvrir sa page dédiée. Les secondes classes sont déjà affichées comme contenu à venir afin que l’arbre soit prêt pour la prochaine mise à jour.')}</p>
-      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global content.','Contenu Global actuel.')}</strong> ${navLabel('Upcoming class pages contain only their announced structure until their Global release.','Les pages des classes à venir contiennent uniquement leur structure annoncée jusqu’à leur sortie sur Global.')}</div></div>
+      <p class="article-lead">${navLabel('Click anywhere on a class card — the sprite, background or name — to open its dedicated page. First and second classes shown below are currently playable on Ragnarok Zero: Global.','Clique n’importe où sur la case d’une classe — sprite, fond ou nom — pour ouvrir sa page dédiée. Les premières et secondes classes affichées ci-dessous sont actuellement jouables sur Ragnarok Zero: Global.')}</p>
+      <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global content.','Contenu Global actuel.')}</strong> ${navLabel('The thirteen second classes have been available since the September 3, 2026 update. Detailed skill data remains marked unverified until checked against the current Global version.','Les treize secondes classes sont disponibles depuis la mise à jour du 3 septembre 2026. Les données détaillées des skills restent non vérifiées tant qu’elles ne sont pas contrôlées sur la version Global actuelle.')}</div></div>
       ${classProgressionTree(false)}
-      <h2>${navLabel('Available now','Disponibles actuellement')}</h2>
-      <div class="class-directory">${live.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}">${icon('class')}<span><strong>${esc(c.name)}</strong><small>${esc(c.tier)}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
-      <h2>${navLabel('Coming soon','Bientôt disponibles')}</h2>
-      <div class="class-directory upcoming">${upcoming.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}"><img class="class-directory-sprite" src="${esc(asset(c.image))}" alt=""><span><strong>${esc(c.name)}</strong><small>${esc(c.tier)} · ${navLabel('Coming soon','Bientôt')}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
+      <h2>${navLabel('First classes','Premières classes')}</h2>
+      <div class="class-directory">${first.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}">${icon('class')}<span><strong>${esc(c.name)}</strong><small>${esc(c.tier)} · ${navLabel('Available','Disponible')}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
+      <h2>${navLabel('Second classes','Secondes classes')}</h2>
+      <div class="class-directory upcoming">${second.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}"><img class="class-directory-sprite" src="${esc(asset(c.image))}" alt=""><span><strong>${esc(c.name)}</strong><small>${esc(c.tier)} · ${navLabel('Available','Disponible')}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
     `;
   }
 
@@ -8956,7 +8956,7 @@ window.RO_DATA = {
           <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Spear Mastery is a 1st-class Swordsman skill in this version.','Spear Mastery est une compétence de première classe Swordsman dans cette version.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
-          <p>${navLabel('Swordman develops into Knight or Crusader. These second classes are kept in the wiki as upcoming Global content.','Swordman évolue vers Knight ou Crusader. Ces secondes classes sont conservées dans le wiki comme contenu Global à venir.')}</p>
+          <p>${navLabel('Swordman develops into Knight or Crusader. Both second classes are currently available on Ragnarok Zero: Global.','Swordman évolue vers Knight ou Crusader. Ces deux secondes classes sont actuellement disponibles sur Ragnarok Zero: Global.')}</p>
           <div class="related-list"><a href="#/classes/knight">Knight</a> · <a href="#/classes/crusader">Crusader</a></div>
 
           <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
@@ -9027,7 +9027,7 @@ window.RO_DATA = {
           <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Mage has 15 skills, including Energy Coat as a quest skill.','Mage possède 15 compétences, dont Energy Coat en compétence de quête.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
-          <p>${navLabel('Mage advances to Wizard or Sage from Job Level 40. Both are kept in the wiki as upcoming Global second classes.','Mage évolue vers Wizard ou Sage à partir du Job Level 40. Les deux sont conservées dans le wiki comme secondes classes Global à venir.')}</p>
+          <p>${navLabel('Mage advances to Wizard or Sage from Job Level 40. Both second classes are currently available on Ragnarok Zero: Global.','Mage évolue vers Wizard ou Sage à partir du Job Level 40. Ces deux secondes classes sont actuellement disponibles sur Ragnarok Zero: Global.')}</p>
           <div class="related-list"><a href="#/classes/wizard">Wizard</a> · <a href="#/classes/sage">Sage</a></div>
 
           <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
