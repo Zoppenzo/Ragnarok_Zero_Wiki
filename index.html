@@ -4045,8 +4045,8 @@ window.RO_DATA = {
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global scope — 6 September 2026','Périmètre Global actuel — 6 septembre 2026')}</strong><br>${navLabel(
-        'Since the September 3 update, the live cap is Base Level 60 / Job Level 60. Novice still changes to a first class from Job Level 10, and first classes change to their second-job path at Job Level 50. Future cap increases are not mixed into this live table.',
-        'Depuis la mise à jour du 3 septembre, le plafond live est Base Level 60 / Job Level 60. Le Novice change toujours vers une première classe à partir du Job Level 10, puis les premières classes passent vers leur seconde classe au Job Level 50. Les futures hausses de niveau ne sont pas mélangées à ce tableau du contenu live.'
+        'Since the September 3 update, second-class characters can reach Base Level 60 / Job Level 60. Job Level 50 is only the first-class requirement to change into a second class; after the job change, Job Level restarts at 1 and can reach 60. Future cap increases are not mixed into this live table.',
+        'Depuis la mise à jour du 3 septembre, les personnages de seconde classe peuvent atteindre Base Level 60 / Job Level 60. Le Job Level 50 est uniquement le prérequis de la première classe pour passer en seconde classe ; après le changement, le Job Level repart à 1 et peut monter jusqu’à 60. Les futures hausses de niveau ne sont pas mélangées à ce tableau du contenu live.'
       )}</div></div>
 
       ${toc([
@@ -4105,8 +4105,9 @@ window.RO_DATA = {
       <div class="wiki-feature-list">
         <div><strong>1. Novice</strong><p>${navLabel('Base Level progresses normally; raise Job Level from 1 to 10.','Le Base Level progresse normalement ; monte le Job Level de 1 à 10.')}</p></div>
         <div><strong>2. Job Level 10</strong><p>${navLabel('Complete the chosen first-job change and become Swordman, Mage, Archer, Merchant, Thief or Acolyte.','Effectue le changement vers la première classe choisie : Swordman, Mage, Archer, Merchant, Thief ou Acolyte.')}</p></div>
-        <div><strong>3. 1st Class</strong><p>${navLabel('Job Level restarts at 1. Earn Job EXP and spend the resulting skill points in the class tree.','Le Job Level repart à 1. Gagne de la Job EXP et dépense les points obtenus dans l’arbre de la classe.')}</p></div>
-        <div><strong>4. ${navLabel('Current cap','Plafond actuel')}</strong><p>${navLabel('Base Level 60 / Job Level 60 are the current live limits documented by this page; second classes are now playable.','Base Level 60 / Job Level 60 sont les limites live actuellement documentées par cette page ; les secondes classes sont désormais jouables.')}</p></div>
+        <div><strong>3. 1st Class</strong><p>${navLabel('Job Level restarts at 1 and can reach Job Level 50.','Le Job Level repart à 1 et peut monter jusqu’au Job Level 50.')}</p></div>
+        <div><strong>4. Job Level 50</strong><p>${navLabel('Change into the chosen second class. Base Level does not reset; Job Level restarts at 1.','Passe dans la seconde classe choisie. Le Base Level ne repart pas à zéro ; le Job Level repart à 1.')}</p></div>
+        <div><strong>5. 2nd Class</strong><p>${navLabel('The current cap for a second-class character is Base Level 60 / Job Level 60.','Le plafond actuel d’un personnage de seconde classe est Base Level 60 / Job Level 60.')}</p></div>
       </div>
 
       <h2 id="related">${navLabel('Related pages','Pages associées')}</h2>
@@ -4384,8 +4385,8 @@ window.RO_DATA = {
 
       <h2 id="current-cap">${navLabel('Experience and the current cap','Expérience et plafond actuel')}</h2>
       <p>${navLabel(
-        'The current live cap documented by this wiki is Base Level 60 / Job Level 60 following the September 3 update, with second classes now available. See the Levels page for the progression flow and current cap.',
-        'Le plafond live documenté par ce wiki est désormais Base Level 60 / Job Level 60 depuis la mise à jour du 3 septembre, avec les secondes classes disponibles. Consulte la page Niveaux pour le chemin de progression et le plafond actuel.'
+        'For a second-class character, the current live cap documented by this wiki is Base Level 60 / Job Level 60 following the September 3 update. See the Levels page for the full progression flow.',
+        'Pour un personnage de seconde classe, le plafond live documenté par ce wiki est Base Level 60 / Job Level 60 depuis la mise à jour du 3 septembre. Consulte la page Niveaux pour le chemin de progression complet.'
       )}</p>
       <div class="hero-actions"><a class="button primary" href="#/wiki/levels">${miniIcon('level')}${navLabel('Open Levels','Ouvrir Niveaux')}</a><a class="button" href="#/quests">${miniIcon('quest')}${navLabel('Quest database','Base des quêtes')}</a></div>
 
@@ -9469,7 +9470,7 @@ window.RO_DATA = {
     const classGenders = classGenderList(c.id);
     const spriteBlock = `<div class="class-infobox-sprites ${classGenders.length===1?'single':''}">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot(c.id,g,false)}</div>`).join('')}</div>`;
     const status = c.releaseStatus === 'coming-soon' ? navLabel('Coming soon','Bientôt disponible') : navLabel('Available','Disponible');
-    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:c.name}])}${demoAlert()}<article class="article-with-infobox"><div class="article-heading"><h1>${icon('class')}${esc(c.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox class-infobox"><div class="infobox-title">${esc(c.name)}<span class="infobox-subtitle">Class</span></div>${spriteBlock}<table><tbody>${infoRow(t('tier'),String(c.tier))}${infoRow(t('parentClass'),c.parentId?`<a href="#/classes/${c.parentId}">${esc(getClass(c.parentId)?.name||c.parentId)}</a>`:t('none'))}${infoRow(t('skills'),String(skills.length))}</tbody></table></aside><div class="article-body"><p class="article-lead">${esc(txt(c.description))}</p>${c.releaseStatus==='coming-soon'?`<div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Upcoming class','Classe à venir')}</strong><br>${navLabel('This page is prepared in advance and will be completed when the class becomes playable on Global.','Cette page est préparée à l’avance et sera complétée lorsque la classe deviendra jouable sur Global.')}</div></div>`:''}${toc([{id:'skills',label:t('skillTree')},{id:'notes',label:t('notes')}])}<h2 id="skills">${t('skillTree')}</h2><div class="skill-tree">${nodes}</div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(c.notes))}</div>${classSeeAlso(c)}</div></article>`;
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:c.name}])}${demoAlert()}<article class="article-with-infobox"><div class="article-heading"><h1>${icon('class')}${esc(c.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox class-infobox"><div class="infobox-title">${esc(c.name)}<span class="infobox-subtitle">Class</span></div>${spriteBlock}<table><tbody>${infoRow(t('tier'),String(c.tier))}${c.group==='second'?infoRow(navLabel('Max Base Level','Base Level max'),'60'):''}${c.group==='second'?infoRow(navLabel('Max Job Level','Job Level max'),'60'):''}${infoRow(t('parentClass'),c.parentId?`<a href="#/classes/${c.parentId}">${esc(getClass(c.parentId)?.name||c.parentId)}</a>`:t('none'))}${infoRow(t('skills'),String(skills.length))}</tbody></table></aside><div class="article-body"><p class="article-lead">${esc(txt(c.description))}</p>${c.releaseStatus==='coming-soon'?`<div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Upcoming class','Classe à venir')}</strong><br>${navLabel('This page is prepared in advance and will be completed when the class becomes playable on Global.','Cette page est préparée à l’avance et sera complétée lorsque la classe deviendra jouable sur Global.')}</div></div>`:''}${toc([{id:'skills',label:t('skillTree')},{id:'notes',label:t('notes')}])}<h2 id="skills">${t('skillTree')}</h2><div class="skill-tree">${nodes}</div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(c.notes))}</div>${classSeeAlso(c)}</div></article>`;
   }
 
   function questDetail(id) {
