@@ -3541,9 +3541,7 @@ window.RO_DATA = {
   }
 
   function classStatusBadge(c) {
-    return c?.releaseStatus === 'coming-soon'
-      ? `<span class="class-status-badge coming">${navLabel('Coming soon','Bientôt')}</span>`
-      : `<span class="class-status-badge live">${navLabel('Available','Disponible')}</span>`;
+    return '';
   }
 
   function classTreeNode(id, compact=false) {
@@ -3576,7 +3574,7 @@ window.RO_DATA = {
       <div class="class-tree-connector" aria-hidden="true"></div>
       <div class="class-tree-tier-title">${navLabel('1st Class','1re classe')}</div>
       <div class="class-tree-first-row">${firstClasses.map(id=>classTreeNode(id,compact)).join('')}</div>
-      <div class="class-tree-tier-title second-tier">${navLabel('2nd Class — coming soon','2e classe — bientôt disponible')}</div>
+      <div class="class-tree-tier-title second-tier">${navLabel('2nd Class','2e classe')}</div>
       <div class="class-tree-second-grid">${branches.map(([parent,children])=>`<div class="class-tree-branch" data-parent="${parent}"><div class="class-tree-branch-line" aria-hidden="true"></div><div class="class-tree-branch-children">${children.map(id=>classTreeNode(id,true)).join('')}</div></div>`).join('')}</div>
       <div class="class-tree-caption">${navLabel('Male and female sprites are shown for second classes when both variants exist; Bard and Dancer keep their original gender-specific sprites. The entire class card is clickable.','Les variantes Homme et Femme sont affichées pour les secondes classes lorsqu’elles existent ; Bard et Dancer conservent leur sprite propre à leur genre. Toute la case de la classe est cliquable.')}</div>
     </section>`;
@@ -3648,9 +3646,9 @@ window.RO_DATA = {
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global content.','Contenu Global actuel.')}</strong> ${navLabel('The thirteen second classes have been available since the September 3, 2026 update. Detailed skill data remains marked unverified until checked against the current Global version.','Les treize secondes classes sont disponibles depuis la mise à jour du 3 septembre 2026. Les données détaillées des skills restent non vérifiées tant qu’elles ne sont pas contrôlées sur la version Global actuelle.')}</div></div>
       ${classProgressionTree(false)}
       <h2>${navLabel('First classes','Premières classes')}</h2>
-      <div class="class-directory">${first.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}">${icon('class')}<span><strong>${esc(c.name)}</strong><small>${esc(c.tier)} · ${navLabel('Available','Disponible')}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
+      <div class="class-directory">${first.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}">${icon('class')}<span><strong>${esc(c.name)}</strong><small>${esc(c.tier)}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
       <h2>${navLabel('Second classes','Secondes classes')}</h2>
-      <div class="class-directory upcoming">${second.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}"><img class="class-directory-sprite" src="${esc(asset(c.image))}" alt=""><span><strong>${esc(c.name)}</strong><small>${esc(c.tier)} · ${navLabel('Available','Disponible')}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
+      <div class="class-directory upcoming">${second.map(id=>{const c=getClass(id);return `<a class="class-directory-card" href="#/classes/${id}"><img class="class-directory-sprite" src="${esc(asset(c.image))}" alt=""><span><strong>${esc(c.name)}</strong><small>${esc(c.tier)}</small></span><span class="class-directory-arrow">→</span></a>`}).join('')}</div>
     `;
   }
 
@@ -4029,7 +4027,7 @@ window.RO_DATA = {
         '1',
         '50',
         navLabel('Job EXP','Job EXP'),
-        navLabel('Grants first-class skill points; second-job change becomes available from Job Level 40.','Accorde les points de skills de première classe ; le changement vers la seconde classe devient disponible à partir du Job Level 40.')
+        navLabel('Grants first-class skill points; second-job change becomes available from Job Level 50.','Accorde les points de skills de première classe ; le changement vers la seconde classe devient disponible à partir du Job Level 50.')
       ],
       [
         navLabel('2nd Class Job Level','Job Level — 2e classe'),
@@ -4047,8 +4045,8 @@ window.RO_DATA = {
       )}</p>
 
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current Global scope — 6 September 2026','Périmètre Global actuel — 6 septembre 2026')}</strong><br>${navLabel(
-        'Since the September 3 update, the live cap is Base Level 60 / Job Level 60 and the thirteen second classes are available. Novice still changes to a first class from Job Level 10, and first classes can change to their second-job path from Job Level 40. Future cap increases are not mixed into this live table.',
-        'Depuis la mise à jour du 3 septembre, le plafond live est Base Level 60 / Job Level 60 et les treize secondes classes sont disponibles. Le Novice change toujours vers une première classe à partir du Job Level 10, puis les premières classes peuvent passer vers leur seconde classe à partir du Job Level 40. Les futures hausses de niveau ne sont pas mélangées à ce tableau du contenu live.'
+        'Since the September 3 update, the live cap is Base Level 60 / Job Level 60 and the thirteen second classes are available. Novice still changes to a first class from Job Level 10, and first classes can change to their second-job path from Job Level 50. Future cap increases are not mixed into this live table.',
+        'Depuis la mise à jour du 3 septembre, le plafond live est Base Level 60 / Job Level 60 et les treize secondes classes sont disponibles. Le Novice change toujours vers une première classe à partir du Job Level 10, puis les premières classes peuvent passer vers leur seconde classe à partir du Job Level 50. Les futures hausses de niveau ne sont pas mélangées à ce tableau du contenu live.'
       )}</div></div>
 
       ${toc([
@@ -4276,6 +4274,12 @@ window.RO_DATA = {
         'Les tableaux ci-dessous contiennent les valeurs LV / EXP actuelles de Global.'
       )}</p>
 
+      <h3>${navLabel('Novice Job EXP — Job Lv. 1 to 10','Job EXP Novice — Job Nv. 1 à 10')}</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Job LV</th><th>EXP</th></tr></thead>
+        <tbody>${noviceJobExpRows.map(([lv,exp])=>`<tr><th>${lv}</th><td>${expNumber(exp)}</td></tr>`).join('')}</tbody>
+      </table></div>
+
       <h3>${navLabel('Base Level EXP — Lv. 1 to 50','Base Level EXP — Nv. 1 à 50')}</h3>
       <div class="table-wrap"><table>
         <thead><tr><th>LV</th><th>EXP</th><th>LV</th><th>EXP</th></tr></thead>
@@ -4283,12 +4287,6 @@ window.RO_DATA = {
           <th>${left[0]}</th><td>${expNumber(left[1])}</td>
           <th>${right ? right[0] : ''}</th><td>${right ? expNumber(right[1]) : ''}</td>
         </tr>`).join('')}</tbody>
-      </table></div>
-
-      <h3>${navLabel('Novice Job EXP — Job Lv. 1 to 10','Job EXP Novice — Job Nv. 1 à 10')}</h3>
-      <div class="table-wrap"><table>
-        <thead><tr><th>Job LV</th><th>EXP</th></tr></thead>
-        <tbody>${noviceJobExpRows.map(([lv,exp])=>`<tr><th>${lv}</th><td>${expNumber(exp)}</td></tr>`).join('')}</tbody>
       </table></div>
 
       <h3>${navLabel('First Class Job EXP — Job Lv. 1 to 50','Job EXP des premières classes — Job Nv. 1 à 50')}</h3>
@@ -8861,7 +8859,6 @@ window.RO_DATA = {
           ${spriteBlock}
           <table><tbody>
             ${infoRow(t('tier'),navLabel('Base Class','Classe de base'))}
-            ${infoRow(t('status'),navLabel('Available','Disponible'))}
             ${infoRow(navLabel('Job change','Changement de classe'),'Job Lv 10+')}
           </tbody></table>
           <div class="infobox-footer">${badge(true)}</div>
@@ -8942,7 +8939,6 @@ window.RO_DATA = {
           ${spriteBlock}
           <table><tbody>
             ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
-            ${infoRow(t('status'),navLabel('Available','Disponible'))}
             ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
             ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/knight">Knight</a> / <a href="#/classes/crusader">Crusader</a>')}
             ${infoRow(t('skills'),String(regular.length + free.length))}
@@ -9013,10 +9009,9 @@ window.RO_DATA = {
           ${spriteBlock}
           <table><tbody>
             ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
-            ${infoRow(t('status'),navLabel('Available','Disponible'))}
             ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
             ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/wizard">Wizard</a> / <a href="#/classes/sage">Sage</a>')}
-            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 50+')}
             ${infoRow(t('skills'),String(regular.length + quest.length))}
           </tbody></table>
           <div class="infobox-footer">${badge(true)}</div>
@@ -9026,7 +9021,7 @@ window.RO_DATA = {
           <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Mage has 15 skills, including Energy Coat as a quest skill.','Mage possède 15 compétences, dont Energy Coat en compétence de quête.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
-          <p>${navLabel('Mage advances to Wizard or Sage from Job Level 40. Both second classes are currently available on Ragnarok Zero: Global.','Mage évolue vers Wizard ou Sage à partir du Job Level 40. Ces deux secondes classes sont actuellement disponibles sur Ragnarok Zero: Global.')}</p>
+          <p>${navLabel('Mage advances to Wizard or Sage from Job Level 50. Both second classes are currently available on Ragnarok Zero: Global.','Mage évolue vers Wizard ou Sage à partir du Job Level 50. Ces deux secondes classes sont actuellement disponibles sur Ragnarok Zero: Global.')}</p>
           <div class="related-list"><a href="#/classes/wizard">Wizard</a> · <a href="#/classes/sage">Sage</a></div>
 
           <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
@@ -9084,12 +9079,11 @@ window.RO_DATA = {
           ${spriteBlock}
           <table><tbody>
             ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
-            ${infoRow(t('status'),navLabel('Available','Disponible'))}
             ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
             ${infoRow(navLabel('Max Job Level','Job Level max'),'50')}
             ${infoRow(navLabel('Skill points','Points de compétence'),'49')}
             ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/hunter">Hunter</a> / <a href="#/classes/bard">Bard</a> / <a href="#/classes/dancer">Dancer</a>')}
-            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 50+')}
             ${infoRow(t('skills'),String(regular.length + quest.length))}
           </tbody></table>
           <div class="infobox-footer">${badge(true)}</div>
@@ -9099,7 +9093,7 @@ window.RO_DATA = {
           <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Archer has 7 skills, including Arrow Crafting and Arrow Repel as quest skills.','Archer possède 7 compétences, dont Arrow Crafting et Arrow Repel comme compétences de quête.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
-          <p>${navLabel('Archer has a maximum Job Level of 50 and 49 normal skill points. It advances to Hunter, Bard or Dancer from Job Level 40.','Archer possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Hunter, Bard ou Dancer à partir du Job Level 40.')}</p>
+          <p>${navLabel('Archer has a maximum Job Level of 50 and 49 normal skill points. It advances to Hunter, Bard or Dancer from Job Level 50.','Archer possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Hunter, Bard ou Dancer à partir du Job Level 50.')}</p>
           <div class="related-list"><a href="#/classes/hunter">Hunter</a> · <a href="#/classes/bard">Bard</a> · <a href="#/classes/dancer">Dancer</a></div>
 
           <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
@@ -9157,12 +9151,11 @@ window.RO_DATA = {
           ${spriteBlock}
           <table><tbody>
             ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
-            ${infoRow(t('status'),navLabel('Available','Disponible'))}
             ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
             ${infoRow(navLabel('Max Job Level','Job Level max'),'50')}
             ${infoRow(navLabel('Skill points','Points de compétence'),'49')}
             ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/blacksmith">Blacksmith</a> / <a href="#/classes/alchemist">Alchemist</a>')}
-            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 50+')}
             ${infoRow(t('skills'),String(regular.length + free.length))}
           </tbody></table>
           <div class="infobox-footer">${badge(true)}</div>
@@ -9172,7 +9165,7 @@ window.RO_DATA = {
           <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Merchant uses the current skill tree: 12 skills total. Axe Mastery and Cart Boost are part of the Merchant tree, and Cart Revolution, Change Cart, Crazy Uproar and Cart Boost are displayed here as Free Skills rather than normal Job-point skills.','Merchant utilise l’arbre de compétences actuel : 12 compétences au total. Axe Mastery et Cart Boost font partie de l’arbre Merchant, et Cart Revolution, Change Cart, Crazy Uproar et Cart Boost sont affichées ici comme Free Skills plutôt que comme compétences consommant des points de Job normaux.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
-          <p>${navLabel('Merchant has a maximum Job Level of 50 and 49 normal skill points. It advances to Blacksmith or Alchemist from Job Level 40.','Merchant possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Blacksmith ou Alchemist à partir du Job Level 40.')}</p>
+          <p>${navLabel('Merchant has a maximum Job Level of 50 and 49 normal skill points. It advances to Blacksmith or Alchemist from Job Level 50.','Merchant possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Blacksmith ou Alchemist à partir du Job Level 50.')}</p>
           <div class="related-list"><a href="#/classes/blacksmith">Blacksmith</a> · <a href="#/classes/alchemist">Alchemist</a></div>
 
           <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
@@ -9233,12 +9226,11 @@ window.RO_DATA = {
           ${spriteBlock}
           <table><tbody>
             ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
-            ${infoRow(t('status'),navLabel('Available','Disponible'))}
             ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
             ${infoRow(navLabel('Max Job Level','Job Level max'),'50')}
             ${infoRow(navLabel('Skill points','Points de compétence'),'49')}
             ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/assassin">Assassin</a> / <a href="#/classes/rogue">Rogue</a>')}
-            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 50+')}
             ${infoRow(t('skills'),String(regular.length + free.length))}
           </tbody></table>
           <div class="infobox-footer">${badge(true)}</div>
@@ -9248,7 +9240,7 @@ window.RO_DATA = {
           <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Thief uses the current skill tree with 11 first-job skills. Sword Mastery is part of the current Thief tree, and Find Stone uses the Global 70% weight threshold rather than the 50% value found on older RO pages.','Thief utilise l’arbre actuel avec 11 compétences de première classe. Sword Mastery fait partie de l’arbre Thief actuel, et Find Stone utilise le seuil de poids Global de 70 % au lieu de la valeur de 50 % présente sur d’anciennes pages RO.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
-          <p>${navLabel('Thief has a maximum Job Level of 50 and 49 normal skill points. It advances to Assassin or Rogue from Job Level 40.','Thief possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Assassin ou Rogue à partir du Job Level 40.')}</p>
+          <p>${navLabel('Thief has a maximum Job Level of 50 and 49 normal skill points. It advances to Assassin or Rogue from Job Level 50.','Thief possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Assassin ou Rogue à partir du Job Level 50.')}</p>
           <div class="related-list"><a href="#/classes/assassin">Assassin</a> · <a href="#/classes/rogue">Rogue</a></div>
 
           <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
@@ -9307,12 +9299,11 @@ window.RO_DATA = {
           ${spriteBlock}
           <table><tbody>
             ${infoRow(t('tier'),navLabel('First Class','Première classe'))}
-            ${infoRow(t('status'),navLabel('Available','Disponible'))}
             ${infoRow(t('parentClass'),'<a href="#/classes/novice">Novice</a>')}
             ${infoRow(navLabel('Max Job Level','Job Level max'),'50')}
             ${infoRow(navLabel('Skill points','Points de compétence'),'49')}
             ${infoRow(navLabel('Next classes','Classes suivantes'),'<a href="#/classes/priest">Priest</a> / <a href="#/classes/monk">Monk</a>')}
-            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 40+')}
+            ${infoRow(navLabel('Second job requirement','Prérequis seconde classe'),'Job Lv 50+')}
             ${infoRow(t('skills'),String(regular.length + free.length))}
           </tbody></table>
           <div class="infobox-footer">${badge(true)}</div>
@@ -9322,7 +9313,7 @@ window.RO_DATA = {
           <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Ragnarok data','Données Ragnarok')}</strong><br>${navLabel('Acolyte uses the current first-job tree with 16 skills. Mace Mastery is part of the Acolyte tree on the current server, Holy Light is a free / quest-default skill, Aqua Benedicta consumes 1 Empty Bottle, and Warp Portal consumes 1 Blue Gemstone.','Acolyte utilise l’arbre actuel de première classe avec 16 compétences. Mace Mastery fait partie de l’arbre Acolyte sur le serveur actuel, Holy Light est une Free Skill / quest-default, Aqua Benedicta consomme 1 Empty Bottle et Warp Portal consomme 1 Blue Gemstone.')}</div></div>
 
           <h2 id="class-data">${navLabel('Class Data','Données de classe')}</h2>
-          <p>${navLabel('Acolyte has a maximum Job Level of 50 and 49 normal skill points. It advances to Priest or Monk from Job Level 40.','Acolyte possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Priest ou Monk à partir du Job Level 40.')}</p>
+          <p>${navLabel('Acolyte has a maximum Job Level of 50 and 49 normal skill points. It advances to Priest or Monk from Job Level 50.','Acolyte possède un Job Level maximum de 50 et 49 points de compétence normaux. Il évolue en Priest ou Monk à partir du Job Level 50.')}</p>
           <div class="related-list"><a href="#/classes/priest">Priest</a> · <a href="#/classes/monk">Monk</a></div>
 
           <h3 id="skills" style="font-size:21px;margin-top:28px">${t('skills')}</h3>
@@ -9478,7 +9469,7 @@ window.RO_DATA = {
     const classGenders = classGenderList(c.id);
     const spriteBlock = `<div class="class-infobox-sprites ${classGenders.length===1?'single':''}">${classGenders.map(g=>`<div><small>${g==='male'?navLabel('Male','Homme'):navLabel('Female','Femme')}</small>${classSpriteSlot(c.id,g,false)}</div>`).join('')}</div>`;
     const status = c.releaseStatus === 'coming-soon' ? navLabel('Coming soon','Bientôt disponible') : navLabel('Available','Disponible');
-    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:c.name}])}${demoAlert()}<article class="article-with-infobox"><div class="article-heading"><h1>${icon('class')}${esc(c.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox class-infobox"><div class="infobox-title">${esc(c.name)}<span class="infobox-subtitle">Class</span></div>${spriteBlock}<table><tbody>${infoRow(t('tier'),String(c.tier))}${infoRow(t('status'),status)}${infoRow(t('parentClass'),c.parentId?`<a href="#/classes/${c.parentId}">${esc(getClass(c.parentId)?.name||c.parentId)}</a>`:t('none'))}${infoRow(t('skills'),String(skills.length))}</tbody></table></aside><div class="article-body"><p class="article-lead">${esc(txt(c.description))}</p>${c.releaseStatus==='coming-soon'?`<div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Upcoming class','Classe à venir')}</strong><br>${navLabel('This page is prepared in advance and will be completed when the class becomes playable on Global.','Cette page est préparée à l’avance et sera complétée lorsque la classe deviendra jouable sur Global.')}</div></div>`:''}${toc([{id:'skills',label:t('skillTree')},{id:'notes',label:t('notes')}])}<h2 id="skills">${t('skillTree')}</h2><div class="skill-tree">${nodes}</div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(c.notes))}</div>${classSeeAlso(c)}</div></article>`;
+    return `${breadcrumbs([{label:t('classes'),href:'#/classes'},{label:c.name}])}${demoAlert()}<article class="article-with-infobox"><div class="article-heading"><h1>${icon('class')}${esc(c.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div><aside class="infobox class-infobox"><div class="infobox-title">${esc(c.name)}<span class="infobox-subtitle">Class</span></div>${spriteBlock}<table><tbody>${infoRow(t('tier'),String(c.tier))}${infoRow(t('parentClass'),c.parentId?`<a href="#/classes/${c.parentId}">${esc(getClass(c.parentId)?.name||c.parentId)}</a>`:t('none'))}${infoRow(t('skills'),String(skills.length))}</tbody></table></aside><div class="article-body"><p class="article-lead">${esc(txt(c.description))}</p>${c.releaseStatus==='coming-soon'?`<div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Upcoming class','Classe à venir')}</strong><br>${navLabel('This page is prepared in advance and will be completed when the class becomes playable on Global.','Cette page est préparée à l’avance et sera complétée lorsque la classe deviendra jouable sur Global.')}</div></div>`:''}${toc([{id:'skills',label:t('skillTree')},{id:'notes',label:t('notes')}])}<h2 id="skills">${t('skillTree')}</h2><div class="skill-tree">${nodes}</div><h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(c.notes))}</div>${classSeeAlso(c)}</div></article>`;
   }
 
   function questDetail(id) {
