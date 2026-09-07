@@ -1,0 +1,54 @@
+name: Clarify Memorial Dungeon Enchant
+
+on:
+  push:
+    paths:
+      - '.github/workflows/clarify-memorial-enchant.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python tools/clarify_memorial_enchant.py
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s = Path('index.html').read_text(encoding='utf-8')
+          a = s.index('  function enchantmentPage(topic) {')
+          b = s.index('\n  function ', a + 10)
+          f = s[a:b]
+          for x in [
+              'Déséquipe le Leek ou la Carrot',
+              'Memorial Dungeon Enchant',
+              '2nd Job Enchant Employee',
+              "Knight's Essence Lv.1",
+              "Knight's Essence II Lv.2",
+              'Aucun taux exact par Essence',
+              'Expedition — Grade III',
+              'Dispatching — Grade II',
+              'Conqueror — Grade I'
+          ]:
+              assert x in f, x
+          assert 'Équipe le Leek ou la Carrot que tu veux enchanter.' not in f
+          for site in ['Criatura','MidgardHub','iRO Wiki','roz-global','TWRo','KRO']:
+              assert site not in f.split('${officialSources([',1)[0], site
+          scripts = re.findall(r'<script>(.*?)</script>', s, re.S)
+          assert scripts
+          Path('/tmp/wiki.js').write_text(max(scripts,key=len),encoding='utf-8')
+          PY
+          node --check /tmp/wiki.js
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Clarify Memorial Dungeon enchant requirements and pools"
+          git push origin HEAD:main
