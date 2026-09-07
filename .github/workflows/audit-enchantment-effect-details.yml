@@ -1,0 +1,57 @@
+name: Audit Enchantment Effect Details
+
+on:
+  push:
+    paths:
+      - '.github/workflows/audit-enchantment-effect-details.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply full enchantment audit
+        run: python tools/audit_enchantment_effect_details.py
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          a=s.index('  function enchantmentPage(topic) {')
+          b=s.index('\n  function ', a+10)
+          f=s[a:b]
+          required=[
+            'Brandish Spear damage by 40% for 60 seconds',
+            'Two-Hand Quicken grants Critical Damage +7% for 60 seconds',
+            'Weapon Perfection grants CRIT +10 for 60 seconds',
+            'Sonic Blow grants After Attack Delay -7% for 60 seconds',
+            'Quagmire grants FLEE +30 for 60 seconds',
+            'Gloria grants MATK +7% and Heal Amount +15% for 60 seconds',
+            'Improve Concentration grants an additional Blitz Beat damage +40% for 60 seconds',
+            'Auto Guard grants DEF +80 for 60 seconds',
+            'Hide reduces Sightless Mind SP cost by 15% for 60 seconds',
+            'Cloaking grants an additional Venom Splasher damage +20% for 60 seconds',
+            'Frost Nova grants an additional Jupitel Thunder damage +20% for 60 seconds',
+            'Status Recovery', 'Detect', 'Endure', 'Potion Pitcher', 'Envenom', 'Earth Spike', 'Blessing', 'Encore',
+            'Neutral resistance +7%', 'effectHtml(e.ii2)'
+          ]
+          for x in required: assert x in f, x
+          for x in ['all stats +7','Earth magic damage +15%','10.52%','7.58%']:
+              assert x not in f, x
+          scripts=re.findall(r'<script>(.*?)</script>', s, re.S)
+          assert scripts
+          Path('/tmp/wiki.js').write_text(max(scripts,key=len),encoding='utf-8')
+          PY
+          node --check /tmp/wiki.js
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Audit and complete Memorial enchant effect details"
+          git push origin HEAD:main
