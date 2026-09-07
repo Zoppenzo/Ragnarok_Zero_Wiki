@@ -5743,45 +5743,35 @@ window.RO_DATA = {
       'poring-village': {
         name: 'Poring Village',
         subtitle: navLabel('Early Memorial Dungeon','Mémorial Donjon de début de progression'),
-        level: 'Base Lv. 30–60',
+        level: 'Base Lv. 30+',
         access: navLabel('/navi prt_fild05 146/235. One map west of Prontera. Speak with Emily on the west side of the field.','/navi prt_fild05 146/235. Une map à l’ouest de Prontera. Parle à Emily sur la partie ouest du field.'),
         requirements: [
-          navLabel('Base Level 30 to 60.','Base Level 30 à 60.'),
+          navLabel('Base Level 30 or higher.','Base Level 30 ou plus.'),
           navLabel('Enter through the Memorial Dungeon NPC.','Entrée via le NPC du Mémorial Donjon.'),
-          navLabel('One completion per day; the restriction resets at 04:00.','Une complétion par jour ; la restriction se réinitialise à 04:00.')
+          navLabel('CD: once per day.','CD : 1 fois par jour.')
         ],
-        objective: navLabel('Clear three waves of Porings. Each wave ends with a boss, and the final clear opens the treasure reward.','Élimine trois vagues de Porings. Chaque vague se termine par un boss et la fin de l’instance ouvre la récompense du coffre.'),
+        objective: navLabel('Clear the three waves of Porings and defeat the bosses.','Élimine les trois vagues de Porings et bats les boss.'),
         steps: [
-          navLabel('Enter the village and clear the first group of fortified Porings.','Entre dans le village et élimine le premier groupe de Porings renforcés.'),
-          navLabel('Use the blue pillars when useful: they transform the character and temporarily increase ATK.','Utilise les piliers bleus quand c’est utile : ils transforment le personnage et augmentent temporairement l’ATK.'),
-          navLabel('Defeat the boss of each wave and continue until the third boss is defeated.','Bats le boss de chaque vague et continue jusqu’à la défaite du troisième boss.'),
-          navLabel('Claim the treasure chest and the daily Jello Fragment reward.','Récupère le coffre et la récompense quotidienne en Jello Fragment.')
-        ],
-        mechanics: [
-          navLabel('Blue pillars provide a temporary transformation with increased ATK.','Les piliers bleus donnent une transformation temporaire avec une augmentation d’ATK.'),
-          navLabel('Treasure rewards improve with more party members.','Les récompenses du coffre augmentent avec davantage de membres dans le groupe.'),
-          navLabel('The daily fragment depends on the day of the week.','Le fragment quotidien dépend du jour de la semaine.')
+          navLabel('Enter the instance and clear the first wave.','Entre dans l’instance et élimine la première vague.'),
+          navLabel('Continue through the following waves.','Continue avec les vagues suivantes.'),
+          navLabel('Defeat the boss at the end of the final wave.','Bats le boss à la fin de la dernière vague.'),
+          navLabel('Leave the instance, then destroy the dungeon to receive the rewards.','Sors de l’instance, puis détruis le donjon pour recevoir les récompenses.')
         ],
         images: [
           ['https://d33wubrfki0l68.cloudfront.net/66417fa7576de4232df6a19e65681ca14ca7eec6/ae066/images/maps/poring-village-location.bmp', navLabel('Poring Village entrance location','Emplacement de l’entrée de Poring Village')],
           ['https://d33wubrfki0l68.cloudfront.net/11384f1547675a629da8c425bd831b82f85d701a/9a775/images/monsters/3810-md-king-poring.gif', 'King Poring']
         ],
         monsters: [
-          {name:'Fortified Poring',level:'34',hp:'1,023',def:'10',mdef:'12',class:'Normal',race:'Formless',element:'Earth Lv.1',size:'Small',baseExp:'369',jobExp:'291'},
-          {name:'Fortified Marin',level:'33',hp:'960',def:'10',mdef:'10',class:'Normal',race:'Formless',element:'Water Lv.1',size:'Small',baseExp:'358',jobExp:'279'},
-          {name:'Fortified Poporing',level:'36',hp:'1,167',def:'10',mdef:'12',class:'Normal',race:'Formless',element:'Wind Lv.1',size:'Small',baseExp:'384',jobExp:'309'},
-          {name:'Fortified Drops',level:'35',hp:'1,095',def:'10',mdef:'10',class:'Normal',race:'Formless',element:'Fire Lv.1',size:'Small',baseExp:'377',jobExp:'300'},
-          {name:'Amering',level:'35',hp:'72,810',def:'10',mdef:'10',class:'Boss',race:'Formless',element:'Poison Lv.1',size:'Large',baseExp:'6,375',jobExp:'5,524'},
-          {name:'Goldring',level:'35',hp:'72,118',def:'10',mdef:'10',class:'Boss',race:'Formless',element:'Holy Lv.1',size:'Large',baseExp:'6,327',jobExp:'5,565'},
-          {name:'King Poring',level:'35',hp:'140,000',def:'20',mdef:'20',class:'Boss',race:'Formless',element:'Neutral',size:'Large',baseExp:'9,580',jobExp:'8,288'}
+          {name:'Fortified Poring',level:'34',hp:'1,023',def:'10',mdef:'12',class:'Normal',race:'Formless',element:'Earth Lv.1',size:'Small'},
+          {name:'Fortified Marin',level:'33',hp:'960',def:'10',mdef:'10',class:'Normal',race:'Formless',element:'Water Lv.1',size:'Small'},
+          {name:'Fortified Poporing',level:'36',hp:'1,167',def:'10',mdef:'12',class:'Normal',race:'Formless',element:'Wind Lv.1',size:'Small'},
+          {name:'Fortified Drops',level:'35',hp:'1,095',def:'10',mdef:'10',class:'Normal',race:'Formless',element:'Fire Lv.1',size:'Small'},
+          {name:'Amering',level:'35',hp:'72,810',def:'10',mdef:'10',class:'Boss',race:'Formless',element:'Poison Lv.1',size:'Large'},
+          {name:'Goldring',level:'35',hp:'72,118',def:'10',mdef:'10',class:'Boss',race:'Formless',element:'Holy Lv.1',size:'Large'},
+          {name:'King Poring',level:'35',hp:'140,000',def:'20',mdef:'20',class:'Boss',race:'Formless',element:'Neutral',size:'Large'}
         ],
-        rewardIntro: navLabel('The completion chest can contain consumables, lower headgear and materials used by the Memorial Dungeon crafting chain.','Le coffre de fin peut contenir des consommables, des lower headgear et des matériaux utilisés dans la chaîne de craft des Mémorial Donjons.'),
+        rewardIntro: navLabel('Rewards include lower headgear, Jello Fragments and Memorial Dungeon crafting materials.','Les récompenses comprennent des lower headgear, des Jello Fragments et des matériaux de craft des Mémorial Donjons.'),
         rewardGroups: [
-          {title:navLabel('Consumables','Consommables'), rows:[
-            {item:'[Not For Sale] Red Potion',qty:'—'}, {item:'[Not For Sale] Blue Potion',qty:'—'},
-            {item:'[Not For Sale] Orange Potion',qty:'—'}, {item:'[Not For Sale] Yellow Potion',qty:'—'},
-            {item:'[Not For Sale] White Potion',qty:'—'}, {item:'[Not For Sale] Green Potion',qty:'—'}
-          ]},
           {title:navLabel('Daily Jello Fragment','Jello Fragment quotidien'), rows:[
             {item:'Poring Jello Fragment',qty:navLabel('Monday','Lundi')},
             {item:'Poporing Jello Fragment',qty:navLabel('Tuesday','Mardi')},
@@ -5822,23 +5812,19 @@ window.RO_DATA = {
           navLabel('Create the instance and enter Orc’s Memory.','Crée l’instance et entre dans Orc’s Memory.'),
           navLabel('Clear the Orc Skeleton, Orc Zombie and Anapholes encounters while progressing through the dungeon.','Élimine les Orc Skeleton, Orc Zombie et Anapholes en progressant dans le donjon.'),
           navLabel("At the final encounter, destroy or control the Shaman's Flowers so they do not keep strengthening Fallen Orc Hero.","Lors du combat final, détruis ou contrôle les Shaman's Flowers afin qu’elles ne continuent pas à renforcer Fallen Orc Hero."),
-          navLabel('Defeat Fallen Orc Hero and claim the completion chest.','Bats Fallen Orc Hero puis récupère le coffre de fin.')
-        ],
-        mechanics: [
-          navLabel("Shaman's Flowers are boss-class objects with very low HP but high DEF/MDEF and act as part of the final-boss mechanic.","Les Shaman's Flowers sont des entités de classe Boss avec très peu de HP mais une DEF/MDEF élevée et font partie de la mécanique du boss final."),
-          navLabel('Equipment rewards increase when the party has 7 or more members.','Les récompenses d’équipement augmentent lorsque le groupe compte 7 membres ou plus.'),
-          navLabel('Normal and Hard modes use different reward pools and quantities.','Les modes Normal et Hard utilisent des pools et quantités de récompenses différents.')
+          navLabel('Defeat Fallen Orc Hero.','Bats Fallen Orc Hero.'),
+          navLabel('Leave the instance, then destroy the dungeon to receive the rewards.','Sors de l’instance, puis détruis le donjon pour recevoir les récompenses.')
         ],
         images: [
           ['https://d33wubrfki0l68.cloudfront.net/acb128fac29195d6b809889b3887ff327599c32d/f8dc8/images/maps/orcs-memory-location.bmp', navLabel("Orc's Memory entrance location","Emplacement de l’entrée de Orc's Memory")],
           ['https://d33wubrfki0l68.cloudfront.net/67f65a7c902bc00f0429108eac358dcc1a85e77a/ad4a4/images/monsters/3901-md-fallen-orc-hero.png', 'Fallen Orc Hero']
         ],
         monsters: [
-          {name:'Orc Skeleton',level:'60',hp:'4,458',def:'82',mdef:'10',class:'Normal',race:'Undead',element:'Undead Lv.1',size:'Medium',baseExp:'627',jobExp:'562'},
-          {name:'Orc Zombie',level:'60',hp:'4,475',def:'71',mdef:'5',class:'Normal',race:'Brute',element:'Undead Lv.1',size:'Medium',baseExp:'649',jobExp:'600'},
-          {name:'Anapholes',level:'95',hp:'6,617',def:'7',mdef:'10',class:'Normal',race:'Insect',element:'Wind Lv.3',size:'Small',baseExp:'?',jobExp:'?'},
-          {name:"Shaman's Flower",level:'98',hp:'5',def:'160',mdef:'99',class:'Boss',race:'Plant',element:'Earth Lv.1',size:'Medium',baseExp:'0',jobExp:'0'},
-          {name:'Fallen Orc Hero',level:'70',hp:'2,110,562',def:'197',mdef:'70',class:'Boss',race:'Demi-human',element:'Earth Lv.2',size:'Large',baseExp:'166,639',jobExp:'118,717'}
+          {name:'Orc Skeleton',level:'60',hp:'4,458',def:'82',mdef:'10',class:'Normal',race:'Undead',element:'Undead Lv.1',size:'Medium'},
+          {name:'Orc Zombie',level:'60',hp:'4,475',def:'71',mdef:'5',class:'Normal',race:'Brute',element:'Undead Lv.1',size:'Medium'},
+          {name:'Anapholes',level:'95',hp:'6,617',def:'7',mdef:'10',class:'Normal',race:'Insect',element:'Wind Lv.3',size:'Small'},
+          {name:"Shaman's Flower",level:'98',hp:'5',def:'160',mdef:'99',class:'Boss',race:'Plant',element:'Earth Lv.1',size:'Medium'},
+          {name:'Fallen Orc Hero',level:'70',hp:'2,110,562',def:'197',mdef:'70',class:'Boss',race:'Demi-human',element:'Earth Lv.2',size:'Large'}
         ],
         rewardIntro: navLabel('The completion chest contains dungeon crafting materials and Subjugation equipment. Equipment quantities improve with a party of 7 or more members.','Le coffre de fin contient des matériaux de craft de donjon et de l’équipement Subjugation. Les quantités d’équipement augmentent avec un groupe de 7 membres ou plus.'),
         rewardGroups: [
@@ -5869,29 +5855,22 @@ window.RO_DATA = {
           navLabel('Base Level 59 or higher.','Base Level 59 ou plus.'),
           navLabel('Create the instance from the Culvert Manager.','Crée l’instance auprès du Culvert Manager.')
         ],
-        objective: navLabel('Destroy the Ancient Thief Bug Eggs to make Ancient Golden Thief Bug appear. Before killing the boss, clear the eggs around it to enable the bonus chest.','Détruis les Ancient Thief Bug Eggs pour faire apparaître Ancient Golden Thief Bug. Avant de tuer le boss, élimine les œufs autour de lui afin d’activer le coffre bonus.'),
+        objective: navLabel('Destroy the Ancient Thief Bug Eggs to make Ancient Golden Thief Bug appear, then defeat the boss.','Détruis les Ancient Thief Bug Eggs pour faire apparaître Ancient Golden Thief Bug, puis bats le boss.'),
         steps: [
-          navLabel('Enter the culvert and clear the Sewer Thief Bugs and Sewer Giant Thief Bugs.','Entre dans les égouts et élimine les Sewer Thief Bugs et Sewer Giant Thief Bugs.'),
-          navLabel('Destroy all Ancient Thief Bug Eggs in the first phase.','Détruis tous les Ancient Thief Bug Eggs pendant la première phase.'),
-          navLabel('Ancient Golden Thief Bug appears after the egg-clearing condition is completed.','Ancient Golden Thief Bug apparaît une fois la condition de destruction des œufs remplie.'),
-          navLabel('Before finishing the boss, destroy the eggs around it to satisfy the bonus-chest condition.','Avant d’achever le boss, détruis les œufs autour de lui pour remplir la condition du coffre bonus.'),
-          navLabel('Defeat Ancient Golden Thief Bug and collect the normal chest plus the bonus chest when its condition was completed.','Bats Ancient Golden Thief Bug puis récupère le coffre normal ainsi que le coffre bonus si sa condition a été remplie.')
-        ],
-        mechanics: [
-          navLabel('The egg-clearing sequence controls the boss spawn.','La séquence de destruction des œufs contrôle l’apparition du boss.'),
-          navLabel('A second egg-clearing condition around the boss determines access to the bonus chest.','Une seconde condition de destruction des œufs autour du boss détermine l’accès au coffre bonus.'),
-          navLabel('Equipment rewards increase when the party has 7 or more members.','Les récompenses d’équipement augmentent lorsque le groupe compte 7 membres ou plus.'),
-          navLabel('Normal and Hard modes use different reward pools and quantities.','Les modes Normal et Hard utilisent des pools et quantités de récompenses différents.')
+          navLabel('Enter the culvert and progress through the instance.','Entre dans les égouts et progresse dans l’instance.'),
+          navLabel('Destroy the Ancient Thief Bug Eggs until Ancient Golden Thief Bug appears.','Détruis les Ancient Thief Bug Eggs jusqu’à l’apparition de Ancient Golden Thief Bug.'),
+          navLabel('Defeat Ancient Golden Thief Bug.','Bats Ancient Golden Thief Bug.'),
+          navLabel('Leave the instance, then destroy the dungeon to receive the rewards.','Sors de l’instance, puis détruis le donjon pour recevoir les récompenses.')
         ],
         images: [
           ['https://d33wubrfki0l68.cloudfront.net/9ff892c03fa929822f41914bdbf47af262606300/215d8/images/maps/prontera-culvert-location.bmp', navLabel('Prontera Culvert entrance location','Emplacement de l’entrée de Prontera Culvert')],
           ['https://d33wubrfki0l68.cloudfront.net/44db4f8728a5ffbb886ecd69ac4022383f3ac3c2/c6717/images/monsters/3975-md-ancient-golden-thief-bug.png', 'Ancient Golden Thief Bug']
         ],
         monsters: [
-          {name:'Sewer Giant Thief Bug',level:'60',hp:'3,330',def:'40',mdef:'20',class:'Normal',race:'Formless',element:'Shadow Lv.1',size:'Medium',baseExp:'0',jobExp:'0'},
-          {name:'Sewer Thief Bug',level:'60',hp:'200',def:'24',mdef:'3',class:'Normal',race:'Insect',element:'Neutral Lv.3',size:'Small',baseExp:'0',jobExp:'0'},
-          {name:'Ancient Thief Bug Egg',level:'60',hp:'10',def:'64',mdef:'10',class:'Normal',race:'Insect',element:'Shadow Lv.1',size:'Small',baseExp:'0',jobExp:'0'},
-          {name:'Ancient Golden Thief Bug',level:'60',hp:'1,200,000',def:'159',mdef:'81',class:'Boss',race:'Insect',element:'Fire Lv.1',size:'Large',baseExp:'75,000',jobExp:'63,000'}
+          {name:'Sewer Giant Thief Bug',level:'60',hp:'3,330',def:'40',mdef:'20',class:'Normal',race:'Formless',element:'Shadow Lv.1',size:'Medium'},
+          {name:'Sewer Thief Bug',level:'60',hp:'200',def:'24',mdef:'3',class:'Normal',race:'Insect',element:'Neutral Lv.3',size:'Small'},
+          {name:'Ancient Thief Bug Egg',level:'60',hp:'10',def:'64',mdef:'10',class:'Normal',race:'Insect',element:'Shadow Lv.1',size:'Small'},
+          {name:'Ancient Golden Thief Bug',level:'60',hp:'1,200,000',def:'159',mdef:'81',class:'Boss',race:'Insect',element:'Fire Lv.1',size:'Large'}
         ],
         rewardIntro: navLabel('The completion chest contains dungeon crafting materials and Subjugation equipment. Equipment quantities improve with a party of 7 or more members.','Le coffre de fin contient des matériaux de craft de donjon et de l’équipement Subjugation. Les quantités d’équipement augmentent avec un groupe de 7 membres ou plus.'),
         rewardGroups: [
@@ -5957,6 +5936,15 @@ window.RO_DATA = {
       <p><a class="button" href="${back}">${navLabel('Open database','Ouvrir la database')}</a></p>`;
   }
 
+  function memorialAccessHtml(access) {
+    const text = String(access || '');
+    const match = text.match(/\/navi\s+[A-Za-z0-9_]+\s+\d+\/\d+/i);
+    if (!match) return esc(text);
+    const command = match[0];
+    const at = text.indexOf(command);
+    return esc(text.slice(0, at)) + `<code>${esc(command)}</code>` + esc(text.slice(at + command.length));
+  }
+
   function memorialDungeonDetail(id) {
     const d = memorialDungeonData()[id];
     if (!d) return notFound();
@@ -5965,7 +5953,7 @@ window.RO_DATA = {
 
     const monsterRows = (d.monsters || []).map(m=>`<tr>
       <th>${memorialDbLink('monsters',m.name)}</th><td>${esc(m.level)}</td><td>${esc(m.hp)}</td><td>${esc(m.def)}</td><td>${esc(m.mdef)}</td>
-      <td>${esc(m.class)}</td><td>${esc(m.race)}</td><td>${esc(m.element)}</td><td>${esc(m.size)}</td><td>${esc(m.baseExp)}</td><td>${esc(m.jobExp)}</td>
+      <td>${esc(m.class)}</td><td>${esc(m.race)}</td><td>${esc(m.element)}</td><td>${esc(m.size)}</td>
     </tr>`).join('');
 
     const rewards = (d.rewardGroups || []).map(g=>`<h3>${esc(g.title)}</h3><div class="table-wrap"><table><thead><tr><th>${navLabel('Item','Objet')}</th><th>${navLabel('Quantity / Condition','Quantité / Condition')}</th></tr></thead><tbody>${(g.rows||[]).map(r=>`<tr><th>${memorialDbLink('items',r.item)}</th><td>${esc(r.qty || '—')}</td></tr>`).join('')}</tbody></table></div>`).join('');
@@ -5983,7 +5971,7 @@ window.RO_DATA = {
 
       <div class="wiki-feature-list">
         <div><strong>${navLabel('Level','Niveau')}</strong><p>${esc(d.level)}</p></div>
-        <div><strong>${navLabel('Access','Accès')}</strong><p>${esc(d.access)}</p></div>
+        <div><strong>${navLabel('Access','Accès')}</strong><p>${memorialAccessHtml(d.access)}</p></div>
         <div><strong>${navLabel('Objective','Objectif')}</strong><p>${esc(d.objective)}</p></div>
       </div>
 
@@ -5995,12 +5983,9 @@ window.RO_DATA = {
       <h2 id="walkthrough">${navLabel('Walkthrough','Déroulement')}</h2>
       <ol>${(d.steps || []).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>
 
-      <h2 id="mechanics">${navLabel('Dungeon mechanics','Mécaniques du donjon')}</h2>
-      <ul>${(d.mechanics || []).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
 
       <h2 id="monsters">${navLabel('Monsters & Bosses','Monstres et Boss')}</h2>
-      <p class="page-subtitle">${navLabel('Monster names are internal database links and will open their full sheets when the Monster Database is populated.','Les noms des monstres sont déjà des liens internes vers la database et ouvriront leur fiche complète lorsque la Database Monstre sera remplie.')}</p>
-      <div class="table-wrap"><table><thead><tr><th>${navLabel('Monster','Monstre')}</th><th>Lv.</th><th>HP</th><th>DEF</th><th>MDEF</th><th>${navLabel('Class','Classe')}</th><th>${navLabel('Race','Race')}</th><th>${navLabel('Element','Élément')}</th><th>${navLabel('Size','Taille')}</th><th>Base EXP</th><th>Job EXP</th></tr></thead><tbody>${monsterRows}</tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>${navLabel('Monster','Monstre')}</th><th>Lv.</th><th>HP</th><th>DEF</th><th>MDEF</th><th>${navLabel('Class','Classe')}</th><th>${navLabel('Race','Race')}</th><th>${navLabel('Element','Élément')}</th><th>${navLabel('Size','Taille')}</th></tr></thead><tbody>${monsterRows}</tbody></table></div>
 
       <h2 id="rewards">${navLabel('Treasure Chest Rewards','Récompenses du coffre')}</h2>
       <p>${esc(d.rewardIntro || '')}</p>
