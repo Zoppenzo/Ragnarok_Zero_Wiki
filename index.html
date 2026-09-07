@@ -5810,7 +5810,7 @@ window.RO_DATA = {
         objective: navLabel("Progress through the Orc encounters and defeat Fallen Orc Hero. Shaman's Flowers strengthen the final boss and should be handled during the fight.","Progresse à travers les combats contre les Orcs et bats Fallen Orc Hero. Les Shaman's Flowers renforcent le boss final et doivent être gérées pendant le combat."),
         steps: [
           navLabel('Create the instance and enter Orc’s Memory.','Crée l’instance et entre dans Orc’s Memory.'),
-          navLabel('Clear the Orc Skeleton, Orc Zombie and Anapholes encounters while progressing through the dungeon.','Élimine les Orc Skeleton, Orc Zombie et Anapholes en progressant dans le donjon.'),
+          navLabel('Progress through the instance toward the final encounter.','Progresse dans l’instance jusqu’au combat final.'),
           navLabel("At the final encounter, destroy or control the Shaman's Flowers so they do not keep strengthening Fallen Orc Hero.","Lors du combat final, détruis ou contrôle les Shaman's Flowers afin qu’elles ne continuent pas à renforcer Fallen Orc Hero."),
           navLabel('Defeat Fallen Orc Hero.','Bats Fallen Orc Hero.'),
           navLabel('Leave the instance, then destroy the dungeon to receive the rewards.','Sors de l’instance, puis détruis le donjon pour recevoir les récompenses.')
@@ -5826,7 +5826,7 @@ window.RO_DATA = {
           {name:"Shaman's Flower",level:'98',hp:'5',def:'160',mdef:'99',class:'Boss',race:'Plant',element:'Earth Lv.1',size:'Medium'},
           {name:'Fallen Orc Hero',level:'70',hp:'2,110,562',def:'197',mdef:'70',class:'Boss',race:'Demi-human',element:'Earth Lv.2',size:'Large'}
         ],
-        rewardIntro: navLabel('The completion chest contains dungeon crafting materials and Subjugation equipment. Equipment quantities improve with a party of 7 or more members.','Le coffre de fin contient des matériaux de craft de donjon et de l’équipement Subjugation. Les quantités d’équipement augmentent avec un groupe de 7 membres ou plus.'),
+        rewardIntro: navLabel('Rewards include dungeon crafting materials and Subjugation equipment. Equipment quantities improve with a party of 7 or more members.','Les récompenses comprennent des matériaux de craft de donjon et de l’équipement Subjugation. Les quantités d’équipement augmentent avec un groupe de 7 membres ou plus.'),
         rewardGroups: [
           {title:navLabel('Normal Mode','Mode Normal'),rows:[
             {item:'Shimmering Crystal',qty:'1–3'},
@@ -5872,7 +5872,7 @@ window.RO_DATA = {
           {name:'Ancient Thief Bug Egg',level:'60',hp:'10',def:'64',mdef:'10',class:'Normal',race:'Insect',element:'Shadow Lv.1',size:'Small'},
           {name:'Ancient Golden Thief Bug',level:'60',hp:'1,200,000',def:'159',mdef:'81',class:'Boss',race:'Insect',element:'Fire Lv.1',size:'Large'}
         ],
-        rewardIntro: navLabel('The completion chest contains dungeon crafting materials and Subjugation equipment. Equipment quantities improve with a party of 7 or more members.','Le coffre de fin contient des matériaux de craft de donjon et de l’équipement Subjugation. Les quantités d’équipement augmentent avec un groupe de 7 membres ou plus.'),
+        rewardIntro: navLabel('Rewards include dungeon crafting materials and Subjugation equipment. Equipment quantities improve with a party of 7 or more members.','Les récompenses comprennent des matériaux de craft de donjon et de l’équipement Subjugation. Les quantités d’équipement augmentent avec un groupe de 7 membres ou plus.'),
         rewardGroups: [
           {title:navLabel('Normal Mode','Mode Normal'),rows:[
             {item:'Shimmering Crystal',qty:'1–3'},
@@ -5987,7 +5987,7 @@ window.RO_DATA = {
       <h2 id="monsters">${navLabel('Monsters & Bosses','Monstres et Boss')}</h2>
       <div class="table-wrap"><table><thead><tr><th>${navLabel('Monster','Monstre')}</th><th>Lv.</th><th>HP</th><th>DEF</th><th>MDEF</th><th>${navLabel('Class','Classe')}</th><th>${navLabel('Race','Race')}</th><th>${navLabel('Element','Élément')}</th><th>${navLabel('Size','Taille')}</th></tr></thead><tbody>${monsterRows}</tbody></table></div>
 
-      <h2 id="rewards">${navLabel('Treasure Chest Rewards','Récompenses du coffre')}</h2>
+      <h2 id="rewards">${navLabel('Rewards','Récompenses')}</h2>
       <p>${esc(d.rewardIntro || '')}</p>
       ${rewards}
       ${headgear}
