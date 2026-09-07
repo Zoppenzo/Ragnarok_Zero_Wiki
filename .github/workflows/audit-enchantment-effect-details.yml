@@ -13,9 +13,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Align audit patch with current section ids
+      - name: Align audit patch with current guide
         run: |
           sed -i 's/essence-first/md-base-essence/g; s/md-rates/md-options/g' tools/audit_enchantment_effect_details.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('tools/audit_enchantment_effect_details.py')
+          s=p.read_text(encoding='utf-8')
+          needle="# Rebuild page function in full file.\ns = s[:fn_start] + f + s[fn_end:]\n"
+          assert needle in s
+          extra="""
+# Remove the old, disputed per-option rate arrays as well; they are no longer rendered
+# and should not remain as stale data in the page source.
+arr_start = s.index('    const baseRates = [', fn_start)
+arr_end = s.index('    const firstEssences = [', arr_start)
+s = s[:arr_start] + s[arr_end:]
+"""
+          s=s.replace(needle, needle+extra, 1)
+          p.write_text(s,encoding='utf-8')
+          PY
       - name: Apply full enchantment audit
         run: python tools/audit_enchantment_effect_details.py
       - name: Validate
@@ -44,7 +60,7 @@ jobs:
             'Neutral resistance +7%', 'effectHtml(e.ii2)'
           ]
           for x in required: assert x in f, x
-          for x in ['all stats +7','Earth magic damage +15%','10.52%','7.58%']:
+          for x in ['all stats +7','Earth magic damage +15%','10.52%','7.58%','const baseRates','const plus9Rates']:
               assert x not in f, x
           scripts=re.findall(r'<script>(.*?)</script>', s, re.S)
           assert scripts
