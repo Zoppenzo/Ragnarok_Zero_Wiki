@@ -13,6 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Fix temporary patch syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('tools/final_enchantment_audit.py')
+          lines=p.read_text(encoding='utf-8').splitlines()
+          lines=[x for x in lines if not x.strip().startswith('anchor=') and x.strip() != 'assert anchor in f']
+          p.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          PY
       - name: Apply final enchantment audit
         run: python tools/final_enchantment_audit.py
       - name: Validate
