@@ -5939,6 +5939,7 @@ window.RO_DATA = {
       (d.monsters || []).forEach(m=> out.monsters[memorialDbSlug(m.name)] = m.name);
       (d.rewardGroups || []).forEach(g=>(g.rows || []).forEach(r=> out.items[memorialDbSlug(r.item)] = r.item));
       (d.headgear || []).forEach(h=> out.items[memorialDbSlug(h.name)] = h.name);
+      if (d.enchant) out.items[memorialDbSlug('Jellopy')] = 'Jellopy';
     });
     return out;
   }
@@ -5972,8 +5973,9 @@ window.RO_DATA = {
     const headgear = (d.headgear || []).length ? `<h2 id="headgear">${navLabel('Headgear rewards','Récompenses Headgear')}</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">${d.headgear.map(h=>`<div class="panel"><div class="panel-heading">${memorialDbLink('items',h.name)}</div><div class="panel-body"><div class="table-wrap"><table><tbody><tr><th>${navLabel('Slot','Slot')}</th><td>${esc(h.slot)}</td></tr><tr><th>${navLabel('Required level','Niveau requis')}</th><td>${esc(h.level)}</td></tr><tr><th>${navLabel('Weight','Poids')}</th><td>${esc(h.weight)}</td></tr></tbody></table></div><p>${esc(h.effect)}</p></div></div>`).join('')}</div>` : '';
 
+    const enchantCost = d.enchant ? esc(d.enchant.cost).replace('Jellopy', memorialDbLink('items','Jellopy')) : '';
     const enchant = d.enchant ? `<h2 id="enchant">${navLabel('Headgear enchant','Enchantement du Headgear')}</h2>
-      <ul><li>${esc(d.enchant.cost)}</li><li>${esc(d.enchant.reset)}</li>${(d.enchant.rules||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      <ul><li>${enchantCost}</li><li>${esc(d.enchant.reset)}</li>${(d.enchant.rules||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
       <div class="table-wrap"><table><thead><tr><th>${navLabel('Possible enchants','Enchantements possibles')}</th></tr></thead><tbody>${d.enchant.options.map(x=>`<tr><td>${esc(x)}</td></tr>`).join('')}</tbody></table></div>` : '';
 
     return `${breadcrumbs([{label:navLabel('Memorial Dungeons','Mémorial Donjons'),href:'#/memorial-dungeons'},{label:d.name}])}
