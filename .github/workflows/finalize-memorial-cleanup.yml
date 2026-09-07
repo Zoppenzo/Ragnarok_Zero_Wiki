@@ -1,0 +1,37 @@
+name: Finalize Memorial Cleanup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/finalize-memorial-cleanup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply cleanup
+        run: python tools/finalize_memorial_cleanup.py
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          a = s.index('  function memorialDungeonData() {')
+          b = s.index('\n  function statusEffectsPage', a)
+          m = s[a:b]
+          for x in ['completion chest','coffre de fin','Treasure Chest Rewards','Récompenses du coffre','Clear the Orc Skeleton, Orc Zombie and Anapholes encounters']:
+              assert x not in m, x
+          assert "${navLabel('Rewards','Récompenses')}" in m
+          PY
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Finalize Memorial Dungeon reward wording"
+          git push origin HEAD:main
