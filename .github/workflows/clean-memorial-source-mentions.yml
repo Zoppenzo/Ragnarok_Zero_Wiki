@@ -15,6 +15,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Harden cleanup replacements
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('tools/clean_memorial_source_mentions.py')
+          s = p.read_text(encoding='utf-8')
+          marker = "# Remove source-comparison arrays entirely."
+          inject = """# Generic cleanup for any remaining provenance wording in the Memorial guide data.\nblock = block.replace('KRO/Criatura: ', '').replace('KRO/Criatura : ', '')\nblock = block.replace('KRO reference: ', '').replace('Référence KRO : ', '')\nblock = block.replace(' — KRO reference.', '.').replace(' — référence KRO.', '.')\nblock = block.replace('KRO Normal: ', 'Normal: ').replace('KRO Normal : ', 'Normal : ')\nblock = block.replace('KRO Hard reference pool: ', 'Hard: ').replace('Pool KRO Hard : ', 'Hard : ')\nblock = block.replace(' — Criatura Academy', '')\n\n"""
+          if inject not in s:
+              s = s.replace(marker, inject + marker, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
       - name: Apply cleanup
         run: python tools/clean_memorial_source_mentions.py
       - name: Validate
