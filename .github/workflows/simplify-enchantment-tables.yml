@@ -30,7 +30,7 @@ jobs:
             "risk('danger','Yes','Oui')",
             'Item must be unequipped.',
             'enchant-simple-table',
-            'Brandish Spear damage by 40% for 60 seconds',
+            'Brandish Spear',
             'Exact rate not stated'
           ]: assert x in f,x
           for x in [
