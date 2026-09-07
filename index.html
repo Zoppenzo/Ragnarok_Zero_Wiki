@@ -3111,8 +3111,8 @@ window.RO_DATA = {
     { id:'monster-races', group:'Systems & Mechanics', en:'Monster Races', fr:'Races des monstres', icon:'monster' },
     { id:'monster-exclusive-skills', group:'Systems & Mechanics', en:'Monster Skills', fr:'Compétences des monstres' },
     { id:'status-effects', group:'Systems & Mechanics', en:'Status Effects', fr:'Effets de statut' },
-    { id:'memorial-dungeons', group:'Systems & Mechanics', en:'Memorial Dungeon', fr:'Mémorial Donjon', href:'#/memorial-dungeons', icon:'memorial' },
     { id:'mvp-raid', group:'Systems & Mechanics', en:'MVP Raid', fr:'Raid MVP' },
+    { id:'memorial-dungeons', group:'Systems & Mechanics', en:'Memorial Dungeon', fr:'Mémorial Donjon', href:'#/memorial-dungeons', icon:'memorial' },
     { id:'crafting', group:'Systems & Mechanics', en:'Crafting', fr:'Craft' },
     { id:'refinement-system', group:'Systems & Mechanics', en:'Refinement', fr:'Raffinement' },
     { id:'enchantment', group:'Systems & Mechanics', en:'Enchantment', fr:'Enchantement' },
@@ -5787,7 +5787,7 @@ window.RO_DATA = {
         ],
         enchant: {
           cost: navLabel('50 Jellopy + 20,000 zeny per enchant attempt.','50 Jellopy + 20 000 zeny par tentative d’enchantement.'),
-          reset: navLabel('Reset costs 200,000 zeny. Enchanting and resetting each have a 30% failure chance; on failure the item is destroyed.','Le reset coûte 200 000 zeny. L’enchantement et le reset ont chacun 30 % de risque d’échec ; en cas d’échec l’objet est détruit.'),
+          reset: navLabel('Reset costs 50 Jellopy + 20,000 zeny. Enchanting and resetting each have a 30% failure chance; failure does not destroy the item.','Le reset coûte 50 Jellopy + 20 000 zeny. L’enchantement et le reset ont chacun 30 % de risque d’échec ; un échec ne détruit pas l’objet.'),
           rules:[navLabel('Only one enchant can be added to the headgear.','Un seul enchantement peut être ajouté au headgear.')],
           options:['STR +1','VIT +1','INT +1','DEX +1','AGI +1','LUK +1','SP +10','SP +25','SP +50','HP +100','HP +200']
         },
@@ -5811,9 +5811,9 @@ window.RO_DATA = {
         steps: [
           navLabel('Create the instance and enter Orc’s Memory.','Crée l’instance et entre dans Orc’s Memory.'),
           navLabel('Progress through the instance toward the final encounter.','Progresse dans l’instance jusqu’au combat final.'),
-          navLabel("At the final encounter, destroy or control the Shaman's Flowers so they do not keep strengthening Fallen Orc Hero.","Lors du combat final, détruis ou contrôle les Shaman's Flowers afin qu’elles ne continuent pas à renforcer Fallen Orc Hero."),
+          navLabel("At the final encounter, destroy the Shaman's Flowers so they do not keep strengthening Fallen Orc Hero.","Lors du combat final, détruis les Shaman's Flowers afin qu’elles ne continuent pas à renforcer Fallen Orc Hero."),
           navLabel('Defeat Fallen Orc Hero.','Bats Fallen Orc Hero.'),
-          navLabel('Leave the instance, then destroy the dungeon to receive the rewards.','Sors de l’instance, puis détruis le donjon pour recevoir les récompenses.')
+          navLabel('Collect the rewards from the chest before leaving the instance.','Récupère les récompenses dans le coffre avant de sortir de l’instance.')
         ],
         images: [
           ['https://d33wubrfki0l68.cloudfront.net/acb128fac29195d6b809889b3887ff327599c32d/f8dc8/images/maps/orcs-memory-location.bmp', navLabel("Orc's Memory entrance location","Emplacement de l’entrée de Orc's Memory")],
@@ -5860,7 +5860,7 @@ window.RO_DATA = {
           navLabel('Enter the culvert and progress through the instance.','Entre dans les égouts et progresse dans l’instance.'),
           navLabel('Destroy the Ancient Thief Bug Eggs until Ancient Golden Thief Bug appears.','Détruis les Ancient Thief Bug Eggs jusqu’à l’apparition de Ancient Golden Thief Bug.'),
           navLabel('Defeat Ancient Golden Thief Bug.','Bats Ancient Golden Thief Bug.'),
-          navLabel('Leave the instance, then destroy the dungeon to receive the rewards.','Sors de l’instance, puis détruis le donjon pour recevoir les récompenses.')
+          navLabel('Collect the rewards from the chest before leaving the instance.','Récupère les récompenses dans le coffre avant de sortir de l’instance.')
         ],
         images: [
           ['https://d33wubrfki0l68.cloudfront.net/9ff892c03fa929822f41914bdbf47af262606300/215d8/images/maps/prontera-culvert-location.bmp', navLabel('Prontera Culvert entrance location','Emplacement de l’entrée de Prontera Culvert')],
