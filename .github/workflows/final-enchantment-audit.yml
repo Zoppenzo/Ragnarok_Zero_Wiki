@@ -13,16 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fix temporary patch syntax
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('tools/final_enchantment_audit.py')
-          lines=p.read_text(encoding='utf-8').splitlines()
-          lines=[x for x in lines if not x.strip().startswith('anchor=') and x.strip() != 'assert anchor in f']
-          p.write_text('\n'.join(lines)+'\n',encoding='utf-8')
-          PY
-      - name: Apply final enchantment audit
+      - name: Apply simplified Essence presentation
         run: python tools/final_enchantment_audit.py
       - name: Validate
         run: |
@@ -35,12 +26,19 @@ jobs:
           b=s.index('\n  function ',a+10)
           f=s[a:b]
           for x in [
-            'Brandish Spear damage by 40% for 60 seconds',
-            'Amp cooldown -60 seconds',
-            'Max HP +300 · +400',
-            'Trigger → Effect → Duration',
-            'Le coût exact et le taux de réussite/destruction du reset en zeny ne sont pas affichés'
+            'Pierce: Brandish Spear damage +40% for 60 seconds.',
+            'Pierce : dégâts de Brandish Spear +40 % pendant 60 secondes.',
+            'Swordsman Class — Two-Hand Quicken: Critical Damage +7% for 60 seconds.',
+            'Thief Class — Sonic Blow: After Attack Delay -7% for 60 seconds.',
+            'Improve Concentration: Blitz Beat damage +40% for 60 seconds (80% total).'
           ]: assert x in f,x
+          for x in [
+            'How to read the effects',
+            'Comment lire les effets',
+            'Trigger → Effect → Duration',
+            'Déclencheur → Effet → Durée',
+            'Afficher seulement +40 % sans le déclencheur et la durée serait incomplet'
+          ]: assert x not in f,x
           scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
           Path('/tmp/wiki.js').write_text(max(scripts,key=len),encoding='utf-8')
           PY
@@ -50,5 +48,5 @@ jobs:
           git config user.name "Ragnarok Zero Wiki Bot"
           git config user.email "actions@users.noreply.github.com"
           git add index.html
-          git commit -m "Finish enchantment completeness audit"
+          git commit -m "Simplify Essence effect display"
           git push origin HEAD:main
