@@ -5962,7 +5962,7 @@ window.RO_DATA = {
         prevention:[
           navLabel('LUK reduces the chance of Curse by 1% per point; VIT reduces duration.','LUK réduit la chance de Curse de 1 % par point ; VIT réduit la durée.'),
           navLabel('Evil Snake Lord Card grants immunity; Flame Skull Card gives 30% resistance.','Evil Snake Lord Card confère l’immunité ; Flame Skull Card donne 30 % de résistance.'),
-          navLabel('Some iRO equipment sets also grant immunity.','Certains sets d’équipement iRO confèrent également l’immunité.')
+          navLabel('Some equipment sets also grant immunity.','Certains sets d’équipement confèrent également l’immunité.')
         ],
         recovery:[
           navLabel('Panacea, Royal Jelly, Holy Water, Yggdrasil Dust, Cure Free and Blessing remove Curse.','Panacea, Royal Jelly, Holy Water, Yggdrasil Dust, Cure Free et Blessing retirent Curse.'),
@@ -6032,7 +6032,7 @@ window.RO_DATA = {
           navLabel('Little Fatum Card.','Little Fatum Card.')
         ],
         prevention:[
-          navLabel('High INT reduces chance and duration; iRO lists 1% less chance per INT point.','Une INT élevée réduit la chance et la durée ; iRO indique 1 % de chance en moins par point d’INT.'),
+          navLabel('High INT reduces chance and duration; each INT point reduces the chance by 1%.','Une INT élevée réduit la chance et la durée ; chaque point d’INT réduit la chance de 1 %.'),
           navLabel('Marduk Card grants immunity; Stainer Card gives 20% resistance.','Marduk Card confère l’immunité ; Stainer Card donne 20 % de résistance.'),
           navLabel('Gemini-S58 Card gives 30% resistance with 90+ base AGI.','Gemini-S58 Card donne 30 % de résistance avec 90+ AGI de base.')
         ],
@@ -6093,8 +6093,8 @@ window.RO_DATA = {
           navLabel('Battle Chant, Dispell, Tender and Yggdrasil Dust can also remove it.','Battle Chant, Dispell, Tender et Yggdrasil Dust peuvent aussi le retirer.')
         ],
         note:navLabel(
-          'Stone has two stages on iRO: at first the character can still move and use items, but cannot attack or use skills, and taking damage does not cancel the effect. Once Stone hardens, the character is immobilized and taking damage breaks the petrification.',
-          'Sur iRO, Stone possède deux phases : au début, le personnage peut encore se déplacer et utiliser des objets, mais ne peut plus attaquer ni utiliser de compétences, et recevoir des dégâts ne retire pas l’effet. Une fois Stone durci, le personnage est immobilisé et recevoir des dégâts brise la pétrification.'
+          'Stone has two stages: at first the character can still move and use items, but cannot attack or use skills, and taking damage does not cancel the effect. Once Stone hardens, the character is immobilized and taking damage breaks the petrification.',
+          'Stone possède deux phases : au début, le personnage peut encore se déplacer et utiliser des objets, mais ne peut plus attaquer ni utiliser de compétences, et recevoir des dégâts ne retire pas l’effet. Une fois Stone durci, le personnage est immobilisé et recevoir des dégâts brise la pétrification.'
         )
       },
       {
@@ -6109,7 +6109,7 @@ window.RO_DATA = {
           navLabel('Merchant class: Hammer Fall, High Speed Cart Ram.','Classe Merchant : Hammer Fall, High Speed Cart Ram.'),
           navLabel('Mage class: Meteor Storm.','Classe Mage : Meteor Storm.'),
           navLabel('Archer class: Land Mine, Dazzler, Tarot Card of Fate.','Classe Archer : Land Mine, Dazzler, Tarot Card of Fate.'),
-          navLabel('Expanded class skills (Heel Drop, Roundhouse, Estun, Cracker), Homunculus skills and Flame Skull Card are also listed by iRO.','iRO liste aussi les compétences Expanded (Heel Drop, Roundhouse, Estun, Cracker), des compétences d’Homunculus et Flame Skull Card.')
+          navLabel('Expanded class skills (Heel Drop, Roundhouse, Estun, Cracker), Homunculus skills and Flame Skull Card can also cause Stun.','Les compétences Expanded (Heel Drop, Roundhouse, Estun, Cracker), certaines compétences d’Homunculus et Flame Skull Card peuvent aussi provoquer Stun.')
         ],
         prevention:[
           navLabel('LUK slightly reduces chance and duration; VIT reduces chance by 1% per point and also reduces duration.','LUK réduit légèrement la chance et la durée ; VIT réduit la chance de 1 % par point et réduit aussi la durée.'),
@@ -6155,7 +6155,7 @@ window.RO_DATA = {
         <div><strong>${navLabel('Prevention:','Prévention :')}</strong>${detailList(st.prevention)}</div>
         <div><strong>${navLabel('Recovering:','Récupération :')}</strong>${detailList(st.recovery)}</div>
       </div>
-      ${st.note ? `<div class="notice info-notice" style="margin-top:14px"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('iRO note','Note iRO')}</strong><br>${st.note}</div></div>` : ''}
+      ${st.note ? `<div class="notice info-notice" style="margin-top:14px"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Note','Note')}</strong><br>${st.note}</div></div>` : ''}
     </section>`;
 
     return `${generalPageHeader(topic)}
@@ -6165,8 +6165,8 @@ window.RO_DATA = {
       )}</p>
 
       <div class="notice warning-notice"><svg class="notice-icon"><use href="#i-warning"></use></svg><div>${navLabel(
-        'The effects, causes, prevention methods and recovery methods below are based on the iRO Wiki reference. Every value and mechanic on this page remains marked To verify.',
-        'Les effets, causes, moyens de prévention et moyens de récupération ci-dessous reprennent la référence iRO Wiki. Toutes les valeurs et mécaniques de cette page restent marquées À vérifier.'
+        'The effects, causes, prevention methods and recovery methods below remain marked To verify until their current-game behavior is checked.',
+        'Les effets, causes, moyens de prévention et moyens de récupération ci-dessous restent marqués À vérifier tant que leur fonctionnement actuel n’a pas été contrôlé.'
       )}</div></div>
 
       ${toc([
@@ -6182,12 +6182,12 @@ window.RO_DATA = {
       <h2 id="status-notes">${navLabel('Terminology','Terminologie')}</h2>
       <div class="wiki-feature-list">
         <div><strong>Frozen ≠ Freezing</strong><p>${navLabel(
-          'These are two different status effects on iRO. Only Frozen is listed above.',
-          'Ce sont deux effets de statut différents sur iRO. Seul Frozen est listé ci-dessus.'
+          'These are two different status effects. Only Frozen is listed above.',
+          'Ce sont deux effets de statut différents. Seul Frozen est listé ci-dessus.'
         )}</p></div>
         <div><strong>Chaos = Confusion</strong><p>${navLabel(
-          'iRO Wiki names the status Chaos and notes that it is also known as Confusion.',
-          'iRO Wiki nomme ce statut Chaos et précise qu’il est aussi appelé Confusion.'
+          'Chaos is also known as Confusion.',
+          'Chaos est aussi appelé Confusion.'
         )}</p></div>
       </div>
 
@@ -7561,7 +7561,7 @@ window.RO_DATA = {
       <h2 id="database-status">${navLabel('Database status','État de la base')}</h2>
       <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel('The searchable monster-skill table has not been imported yet. Monster overview pages remain usable, but missing skills must be shown as undocumented rather than assumed absent.','La table recherchable des skills de monstres n’est pas encore importée. Les pages générales Monstres restent utilisables, mais un skill manquant doit être affiché comme non documenté et non comme inexistant.')}</div></div>
       <h2 id="verification">${navLabel('Verification rules','Règles de vérification')}</h2>
-      <ul><li>${navLabel('Current Global client/database evidence takes priority.','Les preuves provenant du client/de la base Global actuelle sont prioritaires.')}</li><li>${navLabel('iRO or another region may be used for layout/reference only, not to fill missing live values.','iRO ou une autre région peut servir de référence de présentation, pas à remplir des valeurs live manquantes.')}</li><li>${navLabel('Balance-patch-sensitive values remain Partial until rechecked.','Les valeurs sensibles aux patches d’équilibrage restent Partielles jusqu’à nouvelle vérification.')}</li></ul>
+      <ul><li>${navLabel('Current Global client/database evidence takes priority.','Les preuves provenant du client/de la base Global actuelle sont prioritaires.')}</li><li>${navLabel('Missing live values are not filled from unrelated datasets.','Les valeurs live manquantes ne sont pas complétées à partir de données non vérifiées pour la version actuelle.')}</li><li>${navLabel('Balance-patch-sensitive values remain Partial until rechecked.','Les valeurs sensibles aux patches d’équilibrage restent Partielles jusqu’à nouvelle vérification.')}</li></ul>
       <div class="hero-actions"><a class="button" href="#/monsters">${miniIcon('monster')}${navLabel('Open Monsters','Ouvrir Monstres')}</a></div>`;
   }
 
@@ -7839,7 +7839,7 @@ window.RO_DATA = {
         <div><strong>${navLabel('Passive / non-aggressive','Passif / non agressif')}</strong><p>${navLabel('Does not automatically engage a player solely because they entered normal sight range.','N’engage pas automatiquement un joueur uniquement parce qu’il entre dans sa portée de vision normale.')}</p></div>
         <div><strong>${navLabel('Aggressive','Agressif')}</strong><p>${navLabel('Can initiate combat when a player enters its detection conditions.','Peut initier le combat lorsqu’un joueur remplit ses conditions de détection.')}</p></div>
         <div><strong>Boss</strong><p>${navLabel('Bosses can have special immunities, resistances or combat rules.','Les Boss peuvent posséder des immunités, résistances ou règles de combat particulières.')}</p></div>
-        <div><strong>MVP</strong><p>${navLabel('High-value boss category used by Ragnarok’s MVP systems. The current release also has its own MVP Raid / Ruler systems, which should not be replaced with iRO MVP behavior.','Catégorie de boss majeure utilisée par les systèmes MVP de Ragnarok. La version actuelle possède aussi ses propres systèmes MVP Raid / Ruler, qui ne doivent pas être remplacés par le comportement MVP d’iRO.')}</p></div>
+        <div><strong>MVP</strong><p>${navLabel('High-value boss category used by Ragnarok’s MVP systems. The current release also has its own MVP Raid / Ruler systems with their own rules.','Catégorie de boss majeure utilisée par les systèmes MVP de Ragnarok. La version actuelle possède aussi ses propres systèmes MVP Raid / Ruler avec leurs propres règles.')}</p></div>
       </div>
 
       <h2 id="boss">${navLabel('Bosses and MVPs','Bosses et MVP')}</h2>
@@ -7851,8 +7851,8 @@ window.RO_DATA = {
 
       <h2 id="exp-drops">${navLabel('Experience and drops','Expérience et drops')}</h2>
       <p>${navLabel(
-        'Monster Base EXP, Job EXP and drop tables are among the values that differ frequently between Ragnarok versions. This wiki therefore uses current-server values instead of filling missing information with iRO data.',
-        'La Base EXP, la Job EXP et les tables de drops sont parmi les valeurs qui diffèrent fréquemment entre les versions de Ragnarok. Ce wiki utilise donc les valeurs du serveur actuel au lieu de compléter les informations manquantes avec des données iRO.'
+        'Monster Base EXP, Job EXP and drop tables can vary between game versions. This wiki uses current-server values and leaves missing information undocumented until it is checked.',
+        'La Base EXP, la Job EXP et les tables de drops peuvent varier selon la version du jeu. Le wiki utilise les valeurs du serveur actuel et laisse les informations manquantes non documentées tant qu’elles ne sont pas contrôlées.'
       )}</p>
 
       ${officialSources([
@@ -8181,8 +8181,8 @@ window.RO_DATA = {
 
       <h2 id="examples">${navLabel('Current skill examples','Exemples de skills actuels')}</h2>
       <p>${navLabel(
-        'These examples illustrate why Cast and Cooldown must be stored separately. Values are taken from current skill data rather than iRO.',
-        'Ces exemples montrent pourquoi Cast et Cooldown doivent être stockés séparément. Les valeurs proviennent des données actuelles et non d’iRO.'
+        'These examples illustrate why Cast and Cooldown must be stored separately. The values use the current skill data.',
+        'Ces exemples montrent pourquoi Cast et Cooldown doivent être stockés séparément. Les valeurs utilisent les données de skills actuelles.'
       )}</p>
       <div class="table-wrap"><table>
         <thead><tr><th>${navLabel('Skill','Skill')}</th><th>${navLabel('Level','Niveau')}</th><th>Cast</th><th>Cooldown</th><th>${navLabel('Observation','Observation')}</th></tr></thead>
