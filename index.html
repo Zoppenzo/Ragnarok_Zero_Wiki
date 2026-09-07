@@ -8166,8 +8166,8 @@ window.RO_DATA = {
         ii2:fx('Every Demon Bane level: Occult Impaction Variable Cast Time -5%.||Occult Impaction damage +20%.||After using Blessing, for 60 seconds using Occult Impaction has a high chance to trigger Summon Spirit Sphere.||Every 2 armor refines: Occult Impaction damage +5%.','Par niveau de Demon Bane : Variable Cast Time d’Occult Impaction -5 %.||Dégâts d’Occult Impaction +20 %.||Après avoir utilisé Blessing, pendant 60 secondes Occult Impaction a une forte chance de déclencher Summon Spirit Sphere.||Tous les 2 raffinages de l’armure : dégâts d’Occult Impaction +5 %.')},
 
       {job:'Bard & Dancer', names:["Bard & Dancer's Essence Lv.1","Bard & Dancer's Essence Lv.2","Bard & Dancer's Essence II Lv.1","Bard & Dancer's Essence II Lv.2"],
-        i1:fx('Amp cooldown is reduced by the Music Lessons / Dance Lessons level, up to 60 seconds.||Every 2 armor refines: Max SP +30.','Le cooldown d’Amp est réduit selon le niveau de Music Lessons / Dance Lessons, jusqu’à 60 secondes.||Tous les 2 raffinages de l’armure : Max SP +30.'),
-        i2:fx('Amp cooldown reduction is 3× the Music Lessons / Dance Lessons level, up to 60 seconds.||When equipped by Archer Class, using Service For You or A Poem of Bragi grants Natural SP Recovery +50% for 60 seconds.||Every 2 armor refines: Max SP +30.','La réduction du cooldown d’Amp vaut 3× le niveau de Music Lessons / Dance Lessons, jusqu’à 60 secondes.||Équipé par Archer Class, utiliser Service For You ou A Poem of Bragi donne Natural SP Recovery +50 % pendant 60 secondes.||Tous les 2 raffinages de l’armure : Max SP +30.'),
+        i1:fx('Amp cooldown is reduced by 1 second per Music Lessons / Dance Lessons level.||Amp cooldown -60 seconds.||Every 2 armor refines: Max SP +30.','Cooldown d’Amp -1 seconde par niveau de Music Lessons / Dance Lessons.||Cooldown d’Amp -60 secondes.||Tous les 2 raffinages de l’armure : Max SP +30.'),
+        i2:fx('Amp cooldown is reduced by 3 seconds per Music Lessons / Dance Lessons level.||Amp cooldown -60 seconds.||When equipped by Archer Class, using Service For You or A Poem of Bragi grants Natural SP Recovery +50% for 60 seconds.||Every 2 armor refines: Max SP +30.','Cooldown d’Amp -3 secondes par niveau de Music Lessons / Dance Lessons.||Cooldown d’Amp -60 secondes.||Équipé par Archer Class, utiliser Service For You ou A Poem of Bragi donne Natural SP Recovery +50 % pendant 60 secondes.||Tous les 2 raffinages de l’armure : Max SP +30.'),
         ii1:fx('ATK +3 per Music Lessons / Dance Lessons level.||Melody Strike and Slinging Arrow damage +20%.||Every 2 armor refines: Ranged Weapon Physical Damage +1%.','ATK +3 par niveau de Music Lessons / Dance Lessons.||Dégâts de Melody Strike et Slinging Arrow +20 %.||Tous les 2 raffinages de l’armure : Ranged Weapon Physical Damage +1 %.'),
         ii2:fx('ATK +5 per Music Lessons / Dance Lessons level.||Melody Strike and Slinging Arrow damage +20%.||After using Encore, Melody Strike and Slinging Arrow gain an additional damage +20% for 60 seconds (40% total during the effect).||Every 2 armor refines: Ranged Weapon Physical Damage +1%.','ATK +5 par niveau de Music Lessons / Dance Lessons.||Dégâts de Melody Strike et Slinging Arrow +20 %.||Après avoir utilisé Encore, Melody Strike et Slinging Arrow gagnent +20 % de dégâts supplémentaires pendant 60 secondes (40 % au total pendant l’effet).||Tous les 2 raffinages de l’armure : Ranged Weapon Physical Damage +1 %.')}
     ];
@@ -8378,10 +8378,14 @@ window.RO_DATA = {
               <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Cost','Coût')}</th><th>${navLabel('Result','Résultat')}</th><th>${navLabel('Item destruction','Destruction de l’objet')}</th></tr></thead>
               <tbody>
                 <tr><td>${navLabel('Normal enchant','Enchantement normal')}</td><td>100 000 zeny</td><td>${navLabel('Random result from the selected pool','Résultat aléatoire dans le pool sélectionné')}</td><td>${risk('safe','0%','0 %')}</td></tr>
-                <tr><td>${navLabel('Zeny reset','Reset en zeny')}</td><td>100 000 zeny</td><td>${risk('warn','70% without destruction','70 % sans destruction')}</td><td>${risk('danger','30% destruction','30 % de destruction')}</td></tr>
-                <tr><td>${navLabel('Safe reset','Reset sécurisé')}</td><td>${itemLink('Zelstar')} ×1</td><td>${risk('safe','100% reset','100 % de reset')}</td><td>${risk('safe','0%','0 %')}</td></tr>
+                <tr><td>${navLabel('Zeny reset','Reset en zeny')}</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr><td>${navLabel('Safe reset','Reset sécurisé')}</td><td>${itemLink('Zelstar')} ×1</td><td>${navLabel('Removes the current enchant','Retire l’enchantement actuel')}</td><td>${risk('safe','No item destruction','Pas de destruction de l’objet')}</td></tr>
               </tbody>
             </table></div>
+            <div class="enchant-detail-note">${navLabel(
+              'The exact zeny-reset cost and success/destruction rate are not displayed until they are confirmed on the current Global server. This avoids mixing a regional or older value into the Global guide.',
+              'Le coût exact et le taux de réussite/destruction du reset en zeny ne sont pas affichés tant qu’ils ne sont pas confirmés sur le serveur Global actuel. Cela évite d’intégrer une ancienne valeur ou une valeur d’une autre région dans le guide.'
+            )}</div>
 
             <h3 id="md-slots">${navLabel('Job Essence slot by equipment rank','Slot Job Essence selon le rang de l’équipement')}</h3>
             <div class="table-wrap"><table>
@@ -8401,6 +8405,10 @@ window.RO_DATA = {
             <div class="essence-reading-key"><strong>${navLabel('How to read the effects','Comment lire les effets')}:</strong> ${navLabel(
               'Each bullet is one separate effect. When a bonus requires a skill to be used, the trigger and its duration are written explicitly. If no duration is shown, the effect is passive or scales while the Essence is equipped. “High chance” is kept as-is when no reliable numeric proc rate is available.',
               'Chaque puce correspond à un effet séparé. Lorsqu’un bonus demande d’utiliser un skill, le déclencheur et sa durée sont indiqués explicitement. Si aucune durée n’est affichée, l’effet est passif ou évolue tant que l’Essence est équipée. « Forte chance » est conservé tel quel lorsqu’aucun taux numérique fiable n’est disponible.'
+            )}</div>
+            <div class="enchant-detail-note">${navLabel(
+              'Temporary Essence effects are written as Trigger → Effect → Duration. For example: Pierce → Brandish Spear damage +40% → 60 seconds. A displayed +40% without its trigger/duration would be incomplete.',
+              'Les effets temporaires des Essences sont écrits sous la forme Déclencheur → Effet → Durée. Exemple : Pierce → dégâts de Brandish Spear +40 % → 60 secondes. Afficher seulement +40 % sans le déclencheur et la durée serait incomplet.'
             )}</div>
 
             <h3 id="md-base-essence">1st Job Essence</h3>
@@ -8448,7 +8456,8 @@ window.RO_DATA = {
             <div class="table-wrap"><table><thead><tr><th>${navLabel('Family','Famille')}</th><th>${navLabel('Possible options','Options possibles')}</th></tr></thead><tbody>
               <tr><th>${navLabel('Stats','Stats')}</th><td>STR +1/+2 · AGI +1/+2 · VIT +1/+2 · INT +1/+2 · DEX +1/+2 · LUK +1/+2</td></tr>
               <tr><th>${navLabel('Utility','Utilitaire')}</th><td>FLEE +3 · CRI +1 · DEF +15 · MDEF +2</td></tr>
-              <tr><th>HP</th><td>Max HP +50 · +100 · +200</td></tr>
+              <tr><th>${navLabel('Standard HP pool','Pool HP standard')}</th><td>Max HP +50 · +100 · +200</td></tr>
+              <tr><th>${navLabel('+9 armor HP additions','Ajouts HP sur armure +9')}</th><td>Max HP +300 · +400</td></tr>
             </tbody></table></div>
             <div class="hero-actions"><a class="button" href="#/memorial-dungeons">${miniIcon('map')}${navLabel('Open Memorial Dungeons','Ouvrir Memorial Dungeons')}</a></div>
           </section>
