@@ -13,6 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Prepare audit patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('tools/audit_enchantment_names_merge.py')
+          s = p.read_text(encoding='utf-8')
+          marker = "# 7) Status map: Job Essence is no longer a separate tab/section status."
+          assert marker in s
+          s = s.replace(marker, "f = f.replace('Essences de classe', 'Job Essence')\nf = f.replace('Essences classe 1', '1st Job Essence')\nf = f.replace('Essences classe 2', '2nd Job Essence')\nf = f.replace('Enchantements Essences de classe', 'Job Essence')\n\n" + marker, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
       - name: Apply enchantment audit patch
         run: python tools/audit_enchantment_names_merge.py
       - name: Validate
