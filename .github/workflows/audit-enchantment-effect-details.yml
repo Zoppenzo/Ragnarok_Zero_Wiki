@@ -15,14 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Align audit patch with current section ids
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('tools/audit_enchantment_effect_details.py')
-          s=p.read_text(encoding='utf-8')
-          s=s.replace('id=\\"essence-first\\"','id=\\"md-base-essence\\"')
-          s=s.replace('id=\\"md-rates\\"','id=\\"md-options\\"')
-          p.write_text(s,encoding='utf-8')
-          PY
+          sed -i 's/essence-first/md-base-essence/g; s/md-rates/md-options/g' tools/audit_enchantment_effect_details.py
       - name: Apply full enchantment audit
         run: python tools/audit_enchantment_effect_details.py
       - name: Validate
