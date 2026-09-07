@@ -1,0 +1,42 @@
+name: Clean Memorial Source Mentions
+
+on:
+  push:
+    paths:
+      - '.github/workflows/clean-memorial-source-mentions.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply cleanup
+        run: python tools/clean_memorial_source_mentions.py
+      - name: Validate
+        run: |
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          a = s.index('  function memorialDungeonData() {')
+          b = s.index('\n  function sourcesLinksPage', a)
+          ms = s[a:b]
+          for banned in ['crosscheck:', 'Source cross-check', 'Croisement des sources', 'KRO/Criatura', 'référence KRO', 'KRO reference', '— Criatura Academy']:
+              assert banned not in ms, banned
+          assert "Neutral Lv.1 (KRO) / Lv.2 (TWRo)" not in ms
+          assert 'Poring Village entrance location' in ms
+          assert "Orc's Memory entrance location" in ms
+          assert 'Prontera Culvert entrance location' in ms
+          PY
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Remove source provenance from Memorial Dungeon guides"
+          git push origin HEAD:main
