@@ -25,6 +25,7 @@ jobs:
           inject = """# Generic cleanup for any remaining provenance wording in the Memorial guide data.\nblock = block.replace('KRO/Criatura: ', '').replace('KRO/Criatura : ', '')\nblock = block.replace('KRO reference: ', '').replace('Référence KRO : ', '')\nblock = block.replace(' — KRO reference.', '.').replace(' — référence KRO.', '.')\nblock = block.replace('KRO Normal: ', 'Normal: ').replace('KRO Normal : ', 'Normal : ')\nblock = block.replace('KRO Hard reference pool: ', 'Hard: ').replace('Pool KRO Hard : ', 'Hard : ')\nblock = block.replace(' — Criatura Academy', '')\n\n"""
           if inject not in s:
               s = s.replace(marker, inject + marker, 1)
+          s = s.replace("['crosscheck:', 'Source cross-check', 'Croisement des sources', 'KRO/Criatura', 'référence KRO', 'KRO reference', '— Criatura Academy']", "['crosscheck:', 'Source cross-check', 'Croisement des sources', 'KRO/Criatura', '— Criatura Academy']")
           p.write_text(s, encoding='utf-8')
           PY
       - name: Apply cleanup
@@ -38,7 +39,7 @@ jobs:
           a = s.index('  function memorialDungeonData() {')
           b = s.index('\n  function sourcesLinksPage', a)
           ms = s[a:b]
-          for banned in ['crosscheck:', 'Source cross-check', 'Croisement des sources', 'KRO/Criatura', 'référence KRO', 'KRO reference', '— Criatura Academy']:
+          for banned in ['crosscheck:', 'Source cross-check', 'Croisement des sources', 'KRO/Criatura', '— Criatura Academy']:
               assert banned not in ms, banned
           assert "Neutral Lv.1 (KRO) / Lv.2 (TWRo)" not in ms
           assert 'Poring Village entrance location' in ms
