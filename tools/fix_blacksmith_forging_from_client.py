@@ -47,6 +47,7 @@ new_groups = r'''      const groups = [
       ];'''
 
 s = s[:groups_start] + new_groups + s[groups_end:]
+forge = s[groups_start:s.index("      const matHtml", groups_start)]
 
 # Client-verified validation from the supplied screenshots.
 checks = [
@@ -59,7 +60,7 @@ checks = [
     "[3,'Claymore',['16 Oridecon','20 Steel','1 Damaged Diamond']]",
 ]
 for x in checks:
-    assert x in s, x
+    assert x in forge, x
 for banned in [
     "[2,'Slayer',['24 Steel'",
     "[3,'Two-Handed Axe',['8 Oridecon','20 Steel'",
@@ -74,6 +75,6 @@ for banned in [
     "Scimiter",
     "[3,'Flamberge'",
 ]:
-    assert banned not in s[start:s.index("\n    if (id === 'npc-recipes')", start)], banned
+    assert banned not in forge, banned
 
 p.write_text(s, encoding='utf-8')
