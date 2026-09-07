@@ -2424,6 +2424,14 @@ tbody tr:hover { background: #fcf8f3; }
 }
 .essence-reading-key strong { color: var(--text); }
 
+/* Simple enchantment guide tables */
+.enchant-simple-table th,
+.enchant-simple-table td { vertical-align: top; }
+.enchant-simple-table th { white-space: nowrap; }
+.enchant-simple-table td { line-height: 1.45; }
+.enchant-simple-table .essence-effect-list { margin-top: 0; }
+.enchant-simple-note { margin: 8px 0 14px; color: var(--muted); font-size: 12px; }
+
 /* Detailed enchantment guide blocks */
 .enchant-guide-facts {
   margin: 12px 0 18px;
@@ -8175,8 +8183,8 @@ window.RO_DATA = {
     return `${breadcrumbs([{label:title}])}
       <div class="article-heading"><h1>${icon('item')}${title}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p class="article-lead">${navLabel(
-        'This page is a full guide to the different enchantment systems: requirements, NPCs, costs, success and failure rules, item destruction, reset methods, slots and possible results. Random drop Affixes remain a separate mechanic.',
-        'Cette page est un guide complet des différents systèmes d’enchantement : prérequis, NPC, coûts, réussite et échec, destruction des objets, méthodes de reset, slots et résultats possibles. Les Affixes aléatoires des drops restent une mécanique séparée.'
+        'Enchant requirements, costs, rates, break rules and effects.',
+        'Prérequis, coûts, taux, risque de casse et effets des enchantements.'
       )}</p>
 
       <div class="enchant-tabs">
@@ -8194,48 +8202,19 @@ window.RO_DATA = {
 
         <div class="enchant-tab-panels">
           <section class="enchant-tab-panel" id="enchant-panel-costume">
-            <h2 id="costume">${navLabel('Costume enchantments','Enchantements de costumes')}</h2>
-            ${subnav([
-              ['costume-requirements',navLabel('Requirements','Prérequis')],['costume-process',navLabel('Procedure','Procédure')],['costume-risk',navLabel('Success / failure','Réussite / échec')],['costume-pool',navLabel('Stone pools','Pools de pierres')]
-            ])}
-            ${facts([
-              [navLabel('NPC / location','NPC / emplacement'),'<code>/navi prontera 263/270</code>'],
-              [navLabel('Box price','Prix de la boîte'),'10 000 zeny'],
-              [navLabel('Materials','Matériaux'),navLabel('5 unbound Costume (C) items','5 objets Costume (C) non liés')],
-              [navLabel('Result','Résultat'),navLabel('1 random costume enchant-stone box, then a random stone from that box','1 boîte aléatoire de pierres de costume, puis une pierre aléatoire dans cette boîte')],
-              [navLabel('Stone application rate','Taux d’application'),'—'],
-              [navLabel('Stone application break rule','Casse à l’application'),'—']
-            ])}
-
-            <h3 id="costume-requirements">${navLabel('Requirements and compatibility','Prérequis et compatibilité')}</h3>
-            <ul>
-              <li>${navLabel('Use costumes marked as Costume (C) material. The current craft box accepts unbound costumes as material.','Utilise des costumes marqués Costume (C). La boîte de fabrication actuelle accepte les costumes non liés comme matériaux.')}</li>
-              <li>${navLabel('A stone can only be applied to the costume slot written on the stone: Upper, Middle, Lower or Garment.','Une pierre ne peut être appliquée qu’au slot de costume indiqué sur son nom : Upper, Middle, Lower ou Garment.')}</li>
-            </ul>
-
-            <h3 id="costume-process">${navLabel('Step-by-step procedure','Procédure étape par étape')}</h3>
-            ${steps([
-              navLabel('Go to the Costume Enchanter in Prontera.','Va auprès du Costume Enchanter à Prontera.'),
-              navLabel('Buy the enchant-stone craft box for 10,000 zeny.','Achète la boîte de fabrication de pierres pour 10 000 zeny.'),
-              navLabel('Place 5 compatible, unbound Costume (C) items into the box and confirm the conversion.','Place 5 objets Costume (C) compatibles et non liés dans la boîte puis confirme la conversion.'),
-              navLabel('The box gives one random slot box. Open it to obtain one random enchantment stone from that slot pool.','La conversion donne une boîte de slot aléatoire. Ouvre-la pour obtenir une pierre d’enchantement aléatoire du pool correspondant.'),
-              navLabel('Use the stone and select a costume matching its slot. The stone is then attached to that costume.','Utilise la pierre puis sélectionne un costume correspondant à son slot. La pierre est alors appliquée sur ce costume.')
-            ])}
-
-            <h3 id="costume-risk">${navLabel('Success, failure and item safety','Réussite, échec et sécurité de l’objet')}</h3>
-            <div class="table-wrap"><table>
-              <thead><tr><th>${navLabel('Step','Étape')}</th><th>${navLabel('Random?','Aléatoire ?')}</th><th>${navLabel('Failure / break','Échec / casse')}</th></tr></thead>
+            <h2 id="costume">Costume Enchant</h2>
+            <div class="table-wrap"><table class="enchant-simple-table">
+              <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Cost','Coût')}</th><th>%</th><th>${navLabel('Break?','Casse ?')}</th><th>${navLabel('Result','Résultat')}</th></tr></thead>
               <tbody>
-                <tr><td>${navLabel('Convert 5 costumes','Convertir 5 costumes')}</td><td>${navLabel('Yes — the resulting slot box is random','Oui — la boîte de slot obtenue est aléatoire')}</td><td>${navLabel('No separate failure roll is indicated; the 5 costumes are the conversion cost.','Aucun jet d’échec séparé n’est indiqué ; les 5 costumes constituent le coût de la conversion.')}</td></tr>
-                <tr><td>${navLabel('Open the slot box','Ouvrir la boîte de slot')}</td><td>${navLabel('Yes — one stone is selected from its pool','Oui — une pierre est tirée dans son pool')}</td><td>${navLabel('The box is consumed and gives its random result.','La boîte est consommée et donne son résultat aléatoire.')}</td></tr>
-                <tr><td>${navLabel('Apply the stone','Appliquer la pierre')}</td><td>${navLabel('The selected stone defines the effect','La pierre sélectionnée définit l’effet')}</td><td>—</td></tr>
+                <tr><td>Craft Box B</td><td>${navLabel('5 unbound Costume (C) items','5 Costume (C) non liés')}</td><td>10 000 zeny</td><td>${navLabel('Random result','Aléatoire')}</td><td>—</td><td>${navLabel('Gives one random slot box.','Donne une boîte de slot aléatoire.')}</td></tr>
+                <tr><td>${navLabel('Open slot box','Ouvrir la boîte')}</td><td>${navLabel('1 Costume Enchant Stone box','1 boîte Costume Enchant Stone')}</td><td>—</td><td>${navLabel('Random result','Aléatoire')}</td><td>—</td><td>${navLabel('Gives one random stone from that box.','Donne une pierre aléatoire du pool de la boîte.')}</td></tr>
+                <tr><td>${navLabel('Apply stone','Appliquer la pierre')}</td><td>${navLabel('Stone and costume must use the same slot: Upper, Middle, Lower or Garment.','La pierre et le costume doivent correspondre au même slot : Upper, Middle, Lower ou Garment.')}</td><td>${navLabel('1 enchant stone','1 enchant stone')}</td><td>—</td><td>—</td><td>${navLabel('Applies the stone effect to the costume.','Applique l’effet de la pierre au costume.')}</td></tr>
               </tbody>
             </table></div>
-            <div class="enchant-detail-note">${navLabel('No separate application percentage is displayed here because it is not confirmed in the current data used for this guide.','Aucun pourcentage d’application séparé n’est affiché ici car il n’est pas confirmé dans les données actuelles utilisées pour ce guide.')}</div>
 
-            <h3 id="costume-pool">${navLabel('Current Craft Box B pools','Pools actuels de Craft Box B')}</h3>
-            <div class="table-wrap"><table>
-              <thead><tr><th>${navLabel('Result box','Boîte obtenue')}</th><th>${navLabel('Possible enchant stones','Enchant stones possibles')}</th></tr></thead>
+            <h3>${navLabel('Current stone pools','Pools actuels')}</h3>
+            <div class="table-wrap"><table class="enchant-simple-table">
+              <thead><tr><th>${navLabel('Box','Boîte')}</th><th>${navLabel('Possible enchant stones','Enchant stones possibles')}</th></tr></thead>
               <tbody>
                 <tr><th>${itemLink('Costume Enchant Stone (Upper) Box A')}</th><td>${stoneList(['Recovery Stone (Upper)', 'Heal effect Stone (Upper)', 'Large Stone (Upper)', 'Medium Stone (Upper)', 'Small Stone (Upper)', 'Critical Stone (Upper)', 'Variable Casting Stone (Upper)'])}</td></tr>
                 <tr><th>${itemLink('Costume Enchant Stone (Middle) Box A')}</th><td>${stoneList(['Recovery Stone (Middle)', 'HP Stone (Middle)', 'SP Stone (Middle)', 'ATK Stone (Middle)', 'MATK Stone (Middle)', 'MHP Stone (Middle)', 'DEF Stone (Middle)', 'Critical Stone (Middle)', 'Variable Casting Stone (Middle)'])}</td></tr>
@@ -8246,260 +8225,103 @@ window.RO_DATA = {
           </section>
 
           <section class="enchant-tab-panel" id="enchant-panel-poring">
-            <h2 id="poring-village">Poring Village</h2>
-            ${subnav([
-              ['poring-requirements',navLabel('Requirements','Prérequis')],['poring-process',navLabel('Procedure','Procédure')],['poring-risk',navLabel('Success / reset','Réussite / reset')],['poring-options',navLabel('Enchant pool','Pool d’enchantements')]
-            ])}
-            ${facts([
-              [navLabel('NPC / location','NPC / emplacement'),'<code>/navi prt_fild05 174/238</code>'],
-              [navLabel('Compatible items','Objets compatibles'),`${itemLink('Poring Village Leek')} · ${itemLink('Poring Village Carrot')}`],
-              [navLabel('Enchant cost','Coût enchantement'),`${itemLink('Jellopy')} ×50 + 20 000 zeny`],
-              [navLabel('Enchant success','Réussite enchantement'),risk('warn','70% success','70 % de réussite')],
-              [navLabel('Enchant failure','Échec enchantement'),risk('warn','30% failure','30 % d’échec')],
-              [navLabel('Break on failure','Casse en cas d’échec'),risk('safe','No — item remains intact','Non — l’objet reste intact')],
-              [navLabel('Maximum enchants','Nombre maximum'),'1'],
-              [navLabel('Reset','Reset'),`${itemLink('Jellopy')} ×50 + 20 000 zeny · ${risk('warn','70% success','70 % de réussite')} · ${risk('safe','No break','Pas de casse')}`]
-            ])}
-
-            <h3 id="poring-requirements">${navLabel('Requirements','Prérequis')}</h3>
-            <ul>
-              <li>${navLabel('You need a Poring Village Leek or Poring Village Carrot.','Il faut posséder un Poring Village Leek ou un Poring Village Carrot.')}</li>
-              <li>${navLabel('The Leek or Carrot must be unequipped before talking to the enchanter.','Le Leek ou la Carrot doit être déséquipé avant de parler à l’enchanter.')}</li>
-              <li>${navLabel('You need 50 Jellopy and 20,000 zeny for every enchant attempt.','Chaque tentative d’enchantement demande 50 Jellopy et 20 000 zeny.')}</li>
-              <li>${navLabel('Only one enchant can be present on the item at a time.','Un seul enchantement peut être présent sur l’objet à la fois.')}</li>
-            </ul>
-
-            <h3 id="poring-process">${navLabel('Enchant procedure','Procédure d’enchantement')}</h3>
-            ${steps([
-              navLabel('Unequip the Leek or Carrot you want to enchant.','Déséquipe le Leek ou la Carrot que tu veux enchanter.'),
-              navLabel('Talk to the Veggie Enchanter at prt_fild05 174/238.','Parle au Veggie Enchanter à prt_fild05 174/238.'),
-              navLabel('Choose the enchant option and pay 50 Jellopy + 20,000 zeny.','Choisis l’option d’enchantement et paie 50 Jellopy + 20 000 zeny.'),
-              navLabel('The attempt has a 70% success rate. On success, one random effect from the pool is added.','La tentative possède 70 % de réussite. En cas de succès, un effet aléatoire du pool est ajouté.'),
-              navLabel('If the attempt fails, the headgear is not destroyed. You can pay the cost again for another attempt.','Si la tentative échoue, le headgear n’est pas détruit. Tu peux repayer le coût pour retenter.')
-            ])}
-
-            <h3 id="poring-risk">${navLabel('Reset and failure rules','Règles de reset et d’échec')}</h3>
-            <div class="table-wrap"><table>
-              <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Cost','Coût')}</th><th>${navLabel('Success','Réussite')}</th><th>${navLabel('Failure','Échec')}</th><th>${navLabel('Item destroyed?','Objet détruit ?')}</th></tr></thead>
+            <h2 id="poring-village">Poring Village Enchant</h2>
+            <div class="table-wrap"><table class="enchant-simple-table">
+              <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Cost','Coût')}</th><th>%</th><th>${navLabel('Break?','Casse ?')}</th><th>${navLabel('Result','Résultat')}</th></tr></thead>
               <tbody>
-                <tr><td>${navLabel('Enchant','Enchantement')}</td><td>50 Jellopy + 20 000 zeny</td><td>70%</td><td>30%</td><td>${risk('safe','No','Non')}</td></tr>
-                <tr><td>${navLabel('Reset enchant','Reset enchantement')}</td><td>50 Jellopy + 20 000 zeny</td><td>70%</td><td>30%</td><td>${risk('safe','No','Non')}</td></tr>
+                <tr><td>Enchant</td><td>${itemLink('Poring Village Leek')} / ${itemLink('Poring Village Carrot')}<br><strong>${navLabel('Item must be unequipped.','L’objet doit être déséquipé.')}</strong></td><td>${itemLink('Jellopy')} ×50 + 20 000 zeny</td><td>70%</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Adds 1 random enchant.','Ajoute 1 enchant aléatoire.')}</td></tr>
+                <tr><td>Reset</td><td>${navLabel('Enchanted Leek or Carrot, unequipped.','Leek ou Carrot enchanté, déséquipé.')}</td><td>${itemLink('Jellopy')} ×50 + 20 000 zeny</td><td>70%</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Removes the current enchant on success.','Retire l’enchant actuel en cas de réussite.')}</td></tr>
               </tbody>
             </table></div>
+            <p class="enchant-simple-note"><code>/navi prt_fild05 174/238</code></p>
 
-            <h3 id="poring-options">${navLabel('Possible enchantments','Enchantements possibles')}</h3>
-            <p>${navLabel('A successful attempt gives one random option from the following pool.','Une tentative réussie donne une option aléatoire parmi le pool suivant.')}</p>
-            <div class="table-wrap"><table><thead><tr><th>${navLabel('Type','Type')}</th><th>${navLabel('Possible results','Résultats possibles')}</th></tr></thead><tbody>
-              <tr><th>${navLabel('Primary stats','Stats principales')}</th><td>STR +1 · AGI +1 · VIT +1 · INT +1 · DEX +1 · LUK +1</td></tr>
+            <h3>${navLabel('Possible enchants','Enchants possibles')}</h3>
+            <div class="table-wrap"><table class="enchant-simple-table"><thead><tr><th>${navLabel('Type','Type')}</th><th>${navLabel('Possible results','Résultats possibles')}</th></tr></thead><tbody>
+              <tr><th>${navLabel('Stats','Stats')}</th><td>STR +1 · AGI +1 · VIT +1 · INT +1 · DEX +1 · LUK +1</td></tr>
               <tr><th>SP</th><td>SP +10 · SP +25 · SP +50</td></tr>
               <tr><th>HP</th><td>HP +100 · HP +200</td></tr>
             </tbody></table></div>
-            <div class="hero-actions"><a class="button" href="#/memorial-dungeons/poring-village">${miniIcon('map')}${navLabel('Open Poring Village guide','Ouvrir le guide Poring Village')}</a></div>
           </section>
 
           <section class="enchant-tab-panel" id="enchant-panel-memorial">
             <h2 id="memorial-gear">Memorial Dungeon Enchant</h2>
-            ${subnav([
-              ['md-quick',navLabel('Which enchant can I get?','Quel enchant puis-je obtenir ?')],
-              ['md-npcs',navLabel('NPCs / equipment','NPC / équipement')],
-              ['md-process',navLabel('How enchanting works','Fonctionnement')],
-              ['md-reset',navLabel('Reset / destruction','Reset / destruction')],
-              ['md-slots',navLabel('Slots by rank','Slots selon le rang')],
-              ['md-base-essence','1st Job Essence'],
-              ['md-second-essence','2nd Job Essence'],
-              ['md-knight',"Knight's Essence"],
-              ['md-options',navLabel('Common options','Options communes')]
-            ])}
 
-            ${facts([
-              [navLabel('Enchant cost','Coût enchantement'),'100 000 zeny'],
-              [navLabel('Normal enchant can destroy the item?','L’enchantement normal peut casser l’objet ?'),risk('safe','No','Non')],
-              [navLabel('Job Essence minimum refine','Raffinage minimum pour Job Essence'),'+9'],
-              [navLabel('Can you choose the exact Job Essence?','Peut-on choisir la Job Essence exacte ?'),navLabel('No — the result is random inside the selected Job Essence pool.','Non — le résultat est aléatoire dans le pool de Job Essence sélectionné.')],
-              [navLabel('Exact rate for one specific Job Essence','Taux exact d’une Job Essence précise'),navLabel('Not stated. Do not assume equal odds between all entries.','Non indiqué. Il ne faut pas supposer que toutes les entrées ont la même probabilité.')]
-            ])}
-
-            <h3 id="md-quick">${navLabel('Which enchant can I get?','Quel enchant puis-je obtenir ?')}</h3>
-            <p>${navLabel(
-              'The important point is that Memorial Dungeon enchanting has different pools. Your equipment, its refine level and the NPC/pool you use determine what can appear.',
-              'Le point important est que Memorial Dungeon Enchant possède plusieurs pools. Ton équipement, son niveau de raffinage et le NPC/pool utilisé déterminent ce qui peut apparaître.'
-            )}</p>
-            <div class="table-wrap"><table>
-              <thead><tr><th>${navLabel('What you want','Ce que tu veux')}</th><th>${navLabel('Equipment condition','Condition sur l’équipement')}</th><th>${navLabel('Pool / NPC','Pool / NPC')}</th><th>${navLabel('Possible result','Résultat possible')}</th></tr></thead>
+            <h3>${navLabel('Main rules','Règles principales')}</h3>
+            <div class="table-wrap"><table class="enchant-simple-table">
+              <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Cost','Coût')}</th><th>%</th><th>${navLabel('Break?','Casse ?')}</th><th>${navLabel('Description','Description')}</th></tr></thead>
               <tbody>
-                <tr>
-                  <th>${navLabel('Normal stat enchant','Enchantement de stats normal')}</th>
-                  <td>${navLabel('Compatible Memorial Dungeon equipment. Job Essence is not required.','Équipement Memorial Dungeon compatible. Aucun prérequis Job Essence.')}</td>
-                  <td>${navLabel('Normal enchant pool','Pool normal')}</td>
-                  <td>FLEE / CRIT / DEF / MDEF / Max HP / STR / AGI / VIT / INT / DEX / LUK</td>
-                </tr>
-                <tr>
-                  <th>1st Job Essence</th>
-                  <td>${navLabel('Compatible armor-type Memorial Dungeon equipment at +9.','Équipement Memorial Dungeon compatible de type armure à +9.')}</td>
-                  <td>1st Job Enchant Employee</td>
-                  <td>${navLabel('A random Mage / Thief / Archer / Swordsman / Merchant / Acolyte Essence from the available pool.','Une Essence Mage / Thief / Archer / Swordsman / Merchant / Acolyte aléatoire parmi le pool disponible.')}</td>
-                </tr>
-                <tr>
-                  <th>2nd Job Essence</th>
-                  <td>${navLabel('Compatible +9 Expedition / Dispatching / Conqueror armor-type equipment. Expedition begins with the Base 70 progression.','Équipement compatible Expedition / Dispatching / Conqueror de type armure à +9. Expedition commence avec la progression Base 70.')}</td>
-                  <td>2nd Job Enchant Employee</td>
-                  <td>${navLabel('A random second-job Essence I or Essence II, Lv.1 or Lv.2, from the available pool.','Une Job Essence de seconde classe aléatoire : Essence I ou Essence II, Lv.1 ou Lv.2, parmi le pool disponible.')}</td>
-                </tr>
-              </tbody>
-            </table></div>
-            <div class="enchant-detail-note">${navLabel(
-              'Subjugation uses the base-archetype Job Essence pool. Knight, Blacksmith, Assassin, Wizard, Priest, Hunter, Crusader, Alchemist, Rogue, Sage, Monk and Bard & Dancer belong to the 2nd Job pool.',
-              'Subjugation utilise le pool de Job Essence des classes de base. Knight, Blacksmith, Assassin, Wizard, Priest, Hunter, Crusader, Alchemist, Rogue, Sage, Monk et Bard & Dancer appartiennent au pool 2nd Job.'
-            )}</div>
-            <div class="notice info"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Current 60/60 progression','Progression actuelle 60/60')}:</strong> ${navLabel('Subjugation is the current Memorial Dungeon equipment tier. The documented 2nd Job Essence route starts with +9 Expedition armor or a higher rank, so Knight / Blacksmith / Assassin / Wizard / Priest / Hunter / Crusader / Alchemist / Rogue / Sage / Monk / Bard & Dancer Essences are not part of the current Subjugation-only enchant route.','Subjugation est le rang Memorial Dungeon de la progression actuelle. La route documentée des 2nd Job Essence commence avec une armure Expedition +9 ou un rang supérieur : les Essences Knight / Blacksmith / Assassin / Wizard / Priest / Hunter / Crusader / Alchemist / Rogue / Sage / Monk / Bard & Dancer ne font donc pas partie de la route d’enchantement Subjugation actuelle.')}</div></div>
-
-            <h3 id="md-npcs">${navLabel('NPCs and equipment access','NPC et accès selon l’équipement')}</h3>
-            <div class="table-wrap"><table>
-              <thead><tr><th>${navLabel('System','Système')}</th><th>${navLabel('NPC / navigation','NPC / navigation')}</th><th>${navLabel('What it is used for','À quoi il sert')}</th></tr></thead>
-              <tbody>
-                <tr><th>Subjugation Team Enchant</th><td><code>/navi prt_fild05 251/193</code></td><td>${navLabel('Grade IV Subjugation equipment. This is the Memorial Dungeon gear tier used by the current Base/Job 60 progression.','Équipement Subjugation Grade IV. C’est le rang Memorial Dungeon utilisé dans la progression Base/Job 60 actuelle.')}</td></tr>
-                <tr><th>1st Job Enchant Employee</th><td><code>/navi prt_in 135/35</code></td><td>${navLabel('Higher-rank workshop employee for the 1st Job Essence pool.','Employé de l’atelier des rangs supérieurs pour le pool 1st Job Essence.')}</td></tr>
-                <tr><th>2nd Job Enchant Employee</th><td><code>/navi prt_in 135/28</code></td><td>${navLabel('Higher-rank workshop employee for the 2nd Job Essence pool.','Employé de l’atelier des rangs supérieurs pour le pool 2nd Job Essence.')}</td></tr>
+                <tr><td>${navLabel('Normal enchant','Enchant normal')}</td><td>${navLabel('Compatible Memorial Dungeon equipment.','Équipement Memorial Dungeon compatible.')}</td><td>100 000 zeny</td><td>—</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Adds a random enchant from the available pool.','Ajoute un enchant aléatoire du pool disponible.')}</td></tr>
+                <tr><td>${navLabel('Zeny reset','Reset zeny')}</td><td>${navLabel('Enchanted Memorial Dungeon equipment.','Équipement Memorial Dungeon enchanté.')}</td><td><strong>100 000 zeny</strong></td><td>—</td><td>${risk('danger','Yes','Oui')}</td><td>${navLabel('Resets the enchant. The equipment can be destroyed.','Reset l’enchantement. L’équipement peut être détruit.')}</td></tr>
+                <tr><td>${navLabel('Safe reset','Reset sécurisé')}</td><td>${navLabel('Enchanted Memorial Dungeon equipment.','Équipement Memorial Dungeon enchanté.')}</td><td>${itemLink('Zelstar')} ×1</td><td>—</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Removes the enchant without destroying the equipment.','Retire l’enchantement sans détruire l’équipement.')}</td></tr>
+                <tr><td>1st Job Essence</td><td>${navLabel('Compatible Memorial armor +9. Use the 1st Job pool.','Armure Memorial compatible +9. Utiliser le pool 1st Job.')}</td><td>100 000 zeny</td><td>${navLabel('Exact rate not stated','Taux exact non indiqué')}</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Random 1st Job Essence.','1st Job Essence aléatoire.')}</td></tr>
+                <tr><td>2nd Job Essence</td><td>${navLabel('Compatible Expedition, Dispatching or Conqueror armor +9. Use the 2nd Job pool.','Armure Expedition, Dispatching ou Conqueror compatible +9. Utiliser le pool 2nd Job.')}</td><td>100 000 zeny</td><td>${navLabel('Exact rate not stated','Taux exact non indiqué')}</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Random 2nd Job Essence. Not available from Subjugation armor.','2nd Job Essence aléatoire. Non disponible sur l’armure Subjugation.')}</td></tr>
               </tbody>
             </table></div>
 
-            <h3 id="md-process">${navLabel('How Memorial Dungeon enchanting works','Fonctionnement de Memorial Dungeon Enchant')}</h3>
-            ${steps([
-              navLabel('Choose the equipment piece you want to enchant.','Choisis la pièce d’équipement que tu veux enchanter.'),
-              navLabel('Check its rank and refine level. This determines how many enchant slots it can use and which slot can become a Job Essence slot.','Vérifie son rang et son raffinage. Cela détermine le nombre de slots d’enchantement disponibles et quel slot peut devenir un slot Job Essence.'),
-              navLabel('Choose the correct enchant NPC/pool. Use the normal pool for stat enchants, the 1st Job pool for base-class Essences, or the 2nd Job pool for second-class Essences.','Choisis le bon NPC/pool. Utilise le pool normal pour les stats, le pool 1st Job pour les Essences de classes de base, ou le pool 2nd Job pour les Essences de secondes classes.'),
-              navLabel('Pay 100,000 zeny for the enchant attempt. The normal enchant action itself does not destroy the equipment.','Paie 100 000 zeny pour la tentative. L’enchantement normal lui-même ne détruit pas l’équipement.'),
-              navLabel('The result is rolled from the pool you selected. For Job Essence, you choose the Job group pool, not the exact Essence name.','Le résultat est tiré dans le pool sélectionné. Pour Job Essence, tu choisis le groupe de Job, pas le nom exact de l’Essence.'),
-              navLabel('If you want another result, reset/remove the enchant before rolling again.','Si tu veux un autre résultat, reset/retire l’enchantement avant de refaire un tirage.')
-            ])}
-
-            <h3 id="md-reset">${navLabel('Reset and item destruction','Reset et destruction de l’objet')}</h3>
-            <div class="table-wrap"><table>
-              <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Cost','Coût')}</th><th>${navLabel('Result','Résultat')}</th><th>${navLabel('Item destruction','Destruction de l’objet')}</th></tr></thead>
+            <h3>${navLabel('Equipment, slot and Job Essence access','Équipement, slot et accès Job Essence')}</h3>
+            <div class="table-wrap"><table class="enchant-simple-table">
+              <thead><tr><th>${navLabel('Equipment','Équipement')}</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Job Essence slot','Slot Job Essence')}</th><th>${navLabel('Available pool','Pool disponible')}</th></tr></thead>
               <tbody>
-                <tr><td>${navLabel('Normal enchant','Enchantement normal')}</td><td>100 000 zeny</td><td>${navLabel('Random result from the selected pool','Résultat aléatoire dans le pool sélectionné')}</td><td>${risk('safe','0%','0 %')}</td></tr>
-                <tr><td>${navLabel('Zeny reset','Reset en zeny')}</td><td>—</td><td>—</td><td>—</td></tr>
-                <tr><td>${navLabel('Safe reset','Reset sécurisé')}</td><td>${itemLink('Zelstar')} ×1</td><td>${navLabel('Removes the current enchant','Retire l’enchantement actuel')}</td><td>${risk('safe','No item destruction','Pas de destruction de l’objet')}</td></tr>
+                <tr><th>Subjugation — Grade IV</th><td>${itemLink("Subjugation Team's Armor")} +9</td><td>4th slot</td><td>1st Job Essence</td></tr>
+                <tr><th>Expedition — Grade III</th><td>${itemLink("Expedition's Armor")} / ${itemLink("Expedition's Robe")} +9</td><td>4th slot</td><td>1st Job Essence · 2nd Job Essence</td></tr>
+                <tr><th>Dispatching — Grade II</th><td>${itemLink('Dispatching Chain Mail')} / ${itemLink('Dispatching Robe')} / ${itemLink('Dispatching Garment')} / ${itemLink('Dispatching Cloth')} +9</td><td>3rd slot</td><td>1st Job Essence · 2nd Job Essence</td></tr>
+                <tr><th>Conqueror — Grade I</th><td>${itemLink('Conqueror Chain Mail')} / ${itemLink('Conqueror Robe')} / ${itemLink('Conqueror Garment')} / ${itemLink('Conqueror Cloth')} +9</td><td>2nd slot</td><td>1st Job Essence · 2nd Job Essence</td></tr>
               </tbody>
             </table></div>
-            <div class="enchant-detail-note">${navLabel(
-              'The exact zeny-reset cost and success/destruction rate are not displayed until they are confirmed on the current Global server. This avoids mixing a regional or older value into the Global guide.',
-              'Le coût exact et le taux de réussite/destruction du reset en zeny ne sont pas affichés tant qu’ils ne sont pas confirmés sur le serveur Global actuel. Cela évite d’intégrer une ancienne valeur ou une valeur d’une autre région dans le guide.'
-            )}</div>
 
-            <h3 id="md-slots">${navLabel('Job Essence slot by equipment rank','Slot Job Essence selon le rang de l’équipement')}</h3>
-            <div class="table-wrap"><table>
-              <thead><tr><th>${navLabel('Equipment family','Famille d’équipement')}</th><th>${navLabel('Compatible +9 armor-type pieces','Pièces de type armure compatibles à +9')}</th><th>${navLabel('Job Essence slot','Slot Job Essence')}</th><th>${navLabel('Job Essence access','Accès Job Essence')}</th></tr></thead>
-              <tbody>
-                <tr><th>Subjugation — Grade IV</th><td>${itemLink("Subjugation Team's Armor")}</td><td>4th slot</td><td>1st Job Essence</td></tr>
-                <tr><th>Expedition — Grade III</th><td>${itemLink("Expedition's Armor")} / ${itemLink("Expedition's Robe")}</td><td>4th slot</td><td>1st Job Essence / 2nd Job Essence</td></tr>
-                <tr><th>Dispatching — Grade II</th><td>${itemLink('Dispatching Chain Mail')} / ${itemLink('Dispatching Robe')} / ${itemLink('Dispatching Garment')} / ${itemLink('Dispatching Cloth')}</td><td>3rd slot</td><td>1st Job Essence / 2nd Job Essence</td></tr>
-                <tr><th>Conqueror — Grade I</th><td>${itemLink('Conqueror Chain Mail')} / ${itemLink('Conqueror Robe')} / ${itemLink('Conqueror Garment')} / ${itemLink('Conqueror Cloth')}</td><td>2nd slot</td><td>1st Job Essence / 2nd Job Essence</td></tr>
-              </tbody>
-            </table></div>
-            <p>${navLabel(
-              'The +9 requirement applies to the armor-type piece receiving Job Essence. Shoes, rings and the other Memorial Dungeon pieces can still use their normal enchant slots, but they do not become Job Essence armor simply because they are +9.',
-              'Le prérequis +9 concerne la pièce de type armure qui reçoit Job Essence. Les shoes, rings et autres pièces Memorial Dungeon peuvent utiliser leurs slots d’enchantement normaux, mais elles ne deviennent pas des armures Job Essence simplement parce qu’elles sont +9.'
-            )}</p>
-
-            <h3 id="md-base-essence">1st Job Essence</h3>
-            <p>${navLabel(
-              'Use the 1st Job Enchant Employee when you want the base-class Essence pool. The exact Essence and its level are random inside that pool.',
-              'Utilise le 1st Job Enchant Employee lorsque tu veux le pool des Essences de classes de base. L’Essence exacte et son niveau sont aléatoires dans ce pool.'
-            )}</p>
-            <div class="table-wrap"><table><thead><tr><th>${navLabel('Job','Job')}</th><th>Lv.1</th><th>Lv.2</th></tr></thead><tbody>
-              ${firstEssences.map(e=>`<tr><th>${esc(e.job)}</th><td class="essence-effect"><strong>${itemLink(e.names[0])}</strong>${effectHtml(e.lv1)}</td><td class="essence-effect"><strong>${itemLink(e.names[1])}</strong>${effectHtml(e.lv2)}</td></tr>`).join('')}
+            <h3>${navLabel('NPCs','NPC')}</h3>
+            <div class="table-wrap"><table class="enchant-simple-table"><thead><tr><th>${navLabel('Use','Utilisation')}</th><th>${navLabel('Location','Emplacement')}</th></tr></thead><tbody>
+              <tr><td>Subjugation / 1st Job</td><td><code>/navi prt_fild05 251/193</code></td></tr>
+              <tr><td>${navLabel('Higher-rank enchant employees','Employés d’enchantement des rangs supérieurs')}</td><td><code>/navi prt_in 135/35</code> · <code>/navi prt_in 135/28</code></td></tr>
             </tbody></table></div>
 
-            <h3 id="md-second-essence">2nd Job Essence</h3>
-            <p>${navLabel(
-              'Use the 2nd Job Enchant Employee when you want second-class Essences. Each second job has two different lines, Essence I and Essence II, and each line can appear as Lv.1 or Lv.2. The exact result is random.',
-              'Utilise le 2nd Job Enchant Employee lorsque tu veux les Essences de secondes classes. Chaque seconde classe possède deux lignes différentes, Essence I et Essence II, et chaque ligne peut apparaître en Lv.1 ou Lv.2. Le résultat exact est aléatoire.'
-            )}</p>
-            <div class="table-wrap"><table><thead><tr><th>${navLabel('Job','Job')}</th><th>Essence I Lv.1</th><th>Essence I Lv.2</th><th>Essence II Lv.1</th><th>Essence II Lv.2</th></tr></thead><tbody>
-              ${secondEssences.map(e=>`<tr><th>${esc(e.job)}</th><td class="essence-effect"><strong>${itemLink(e.names[0])}</strong>${effectHtml(e.i1)}</td><td class="essence-effect"><strong>${itemLink(e.names[1])}</strong>${effectHtml(e.i2)}</td><td class="essence-effect"><strong>${itemLink(e.names[2])}</strong>${effectHtml(e.ii1)}</td><td class="essence-effect"><strong>${itemLink(e.names[3])}</strong>${effectHtml(e.ii2)}</td></tr>`).join('')}
+            <h3>1st Job Essence</h3>
+            <div class="table-wrap"><table class="enchant-simple-table"><thead><tr><th>Enchant</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Cost','Coût')}</th><th>%</th><th>${navLabel('Break?','Casse ?')}</th><th>${navLabel('Description','Description')}</th></tr></thead><tbody>
+              ${firstEssences.flatMap(e=>[
+                `<tr><th>${itemLink(e.names[0])}</th><td>${navLabel('Compatible Memorial armor +9 · 1st Job pool','Armure Memorial compatible +9 · pool 1st Job')}</td><td>100 000 zeny</td><td>—</td><td>${risk('safe','No','Non')}</td><td class="essence-effect">${effectHtml(e.lv1)}</td></tr>`,
+                `<tr><th>${itemLink(e.names[1])}</th><td>${navLabel('Compatible Memorial armor +9 · 1st Job pool','Armure Memorial compatible +9 · pool 1st Job')}</td><td>100 000 zeny</td><td>—</td><td>${risk('safe','No','Non')}</td><td class="essence-effect">${effectHtml(e.lv2)}</td></tr>`
+              ]).join('')}
             </tbody></table></div>
 
-            <h3 id="md-knight">${navLabel("Example: how to roll Knight's Essence","Exemple : comment obtenir Knight's Essence")}</h3>
-            <div class="panel"><div class="panel-body">
-              <p><strong>${navLabel('Current status:','Statut actuel :')}</strong> ${navLabel("Knight's Essence belongs to the 2nd Job Essence route. That route requires Expedition-or-higher +9 armor; it is not available through the current Subjugation-only 60/60 progression.","Knight's Essence appartient à la route 2nd Job Essence. Cette route demande une armure Expedition ou supérieure à +9 ; elle n’est pas disponible via la progression actuelle 60/60 limitée à Subjugation.")}</p>
-              <p>${navLabel('When the Expedition tier is available, the documented conditions are:','Lorsque le rang Expedition est disponible, les conditions documentées sont :')}</p>
-              <ol class="enchant-steps">
-                <li>${navLabel('Use compatible Expedition, Dispatching or Conqueror armor-type Memorial Dungeon equipment refined to +9.','Utilise un équipement Memorial Dungeon compatible de type armure Expedition, Dispatching ou Conqueror raffiné à +9.')}</li>
-                <li>${navLabel('Use the 2nd Job Enchant Employee / 2nd Job pool. Do not use the Subjugation base Job Essence pool if your goal is Knight.','Utilise le 2nd Job Enchant Employee / pool 2nd Job. N’utilise pas le pool Job Essence de base Subjugation si ton objectif est Knight.')}</li>
-                <li>${navLabel('Enchant the Job Essence slot corresponding to the equipment rank: 4th slot on Expedition, 3rd on Dispatching, 2nd on Conqueror.','Enchante le slot Job Essence correspondant au rang : 4th slot sur Expedition, 3rd sur Dispatching, 2nd sur Conqueror.')}</li>
-                <li>${navLabel('The result is random inside the 2nd Job pool. Knight is not selected directly.','Le résultat est aléatoire dans le pool 2nd Job. Knight n’est pas sélectionné directement.')}</li>
-              </ol>
-              <p><strong>${navLabel('Knight results in this pool:','Résultats Knight présents dans ce pool :')}</strong><br>
-                ${itemLink("Knight's Essence Lv.1")} · ${itemLink("Knight's Essence Lv.2")} · ${itemLink("Knight's Essence II Lv.1")} · ${itemLink("Knight's Essence II Lv.2")}
-              </p>
-              <p>${navLabel(
-                'No exact per-Essence probability is shown because the documented system only states that the Job Essence result is random. The guide does not divide 100% by the number of entries.',
-                'Aucun taux exact par Essence n’est affiché car le système documenté indique seulement que le résultat Job Essence est aléatoire. Le guide ne divise donc pas 100 % par le nombre d’entrées.'
-              )}</p>
-            </div></div>
+            <h3>2nd Job Essence</h3>
+            <div class="table-wrap"><table class="enchant-simple-table"><thead><tr><th>Enchant</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Cost','Coût')}</th><th>%</th><th>${navLabel('Break?','Casse ?')}</th><th>${navLabel('Description','Description')}</th></tr></thead><tbody>
+              ${secondEssences.flatMap(e=>[
+                `<tr><th>${itemLink(e.names[0])}</th><td>${navLabel('Expedition+ compatible armor +9 · 2nd Job pool','Armure Expedition+ compatible +9 · pool 2nd Job')}</td><td>100 000 zeny</td><td>—</td><td>${risk('safe','No','Non')}</td><td class="essence-effect">${effectHtml(e.i1)}</td></tr>`,
+                `<tr><th>${itemLink(e.names[1])}</th><td>${navLabel('Expedition+ compatible armor +9 · 2nd Job pool','Armure Expedition+ compatible +9 · pool 2nd Job')}</td><td>100 000 zeny</td><td>—</td><td>${risk('safe','No','Non')}</td><td class="essence-effect">${effectHtml(e.i2)}</td></tr>`,
+                `<tr><th>${itemLink(e.names[2])}</th><td>${navLabel('Expedition+ compatible armor +9 · 2nd Job pool','Armure Expedition+ compatible +9 · pool 2nd Job')}</td><td>100 000 zeny</td><td>—</td><td>${risk('safe','No','Non')}</td><td class="essence-effect">${effectHtml(e.ii1)}</td></tr>`,
+                `<tr><th>${itemLink(e.names[3])}</th><td>${navLabel('Expedition+ compatible armor +9 · 2nd Job pool','Armure Expedition+ compatible +9 · pool 2nd Job')}</td><td>100 000 zeny</td><td>—</td><td>${risk('safe','No','Non')}</td><td class="essence-effect">${effectHtml(e.ii2)}</td></tr>`
+              ]).join('')}
+            </tbody></table></div>
 
-            <h3 id="md-options">${navLabel('Random option pool','Pool des options aléatoires')}</h3>
-            <div class="notice info"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel(
-              'The exact individual roll percentages are intentionally not displayed for now because they are not confirmed in the current Global client data. The possible option families remain listed below without inventing a probability.',
-              'Les pourcentages exacts de tirage ne sont volontairement pas affichés pour le moment car ils ne sont pas confirmés dans les données du client Global actuel. Les familles d’options possibles restent indiquées ci-dessous sans inventer de probabilité.'
-            )}</div></div>
-            <div class="table-wrap"><table><thead><tr><th>${navLabel('Family','Famille')}</th><th>${navLabel('Possible options','Options possibles')}</th></tr></thead><tbody>
+            <h3>${navLabel('Normal random options','Options aléatoires normales')}</h3>
+            <div class="table-wrap"><table class="enchant-simple-table"><thead><tr><th>${navLabel('Type','Type')}</th><th>${navLabel('Possible options','Options possibles')}</th></tr></thead><tbody>
               <tr><th>${navLabel('Stats','Stats')}</th><td>STR +1/+2 · AGI +1/+2 · VIT +1/+2 · INT +1/+2 · DEX +1/+2 · LUK +1/+2</td></tr>
               <tr><th>${navLabel('Utility','Utilitaire')}</th><td>FLEE +3 · CRI +1 · DEF +15 · MDEF +2</td></tr>
-              <tr><th>${navLabel('Standard HP pool','Pool HP standard')}</th><td>Max HP +50 · +100 · +200</td></tr>
-              <tr><th>${navLabel('+9 armor HP additions','Ajouts HP sur armure +9')}</th><td>Max HP +300 · +400</td></tr>
+              <tr><th>HP</th><td>Max HP +50 · +100 · +200</td></tr>
+              <tr><th>+9 HP</th><td>Max HP +300 · +400</td></tr>
             </tbody></table></div>
-            <div class="hero-actions"><a class="button" href="#/memorial-dungeons">${miniIcon('map')}${navLabel('Open Memorial Dungeons','Ouvrir Memorial Dungeons')}</a></div>
           </section>
 
           <section class="enchant-tab-panel" id="enchant-panel-taming">
             <h2 id="taming-ring">Taming Ring</h2>
-            ${subnav([
-              ['taming-requirements',navLabel('Requirements','Prérequis')],['taming-process',navLabel('Procedure','Procédure')],['taming-risk',navLabel('Success / reset','Réussite / reset')],['taming-merchants',navLabel('Merchants','Marchands')]
-            ])}
-            ${facts([
-              [navLabel('Item','Objet'),itemLink('Taming Ring')],
-              [navLabel('Required level','Niveau requis'),'1'],
-              [navLabel('Equippable by','Utilisable par'),navLabel('All jobs — Accessory Right','Toutes les classes — Accessory Right')],
-              [navLabel('Ring price','Prix de la bague'),'50 000 zeny'],
-              ['Lv.1',navLabel('Requires 1 Pet Egg','Demande 1 Pet Egg')],
-              ['Lv.2',`${navLabel('Requires a 2nd identical Pet Egg','Demande un 2e Pet Egg identique')} · ${risk('warn','50% success','50 % de réussite')}`],
-              ['Reset',navLabel('Available in the Reset tab','Disponible dans l’onglet Reset')]
-            ])}
+            <div class="table-wrap"><table class="enchant-simple-table">
+              <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Cost','Coût')}</th><th>%</th><th>${navLabel('Break?','Casse ?')}</th><th>${navLabel('Description','Description')}</th></tr></thead>
+              <tbody>
+                <tr><td>${navLabel('Buy Taming Ring','Acheter Taming Ring')}</td><td>—</td><td>50 000 zeny</td><td>100%</td><td>${risk('safe','No','Non')}</td><td>${itemLink('Taming Ring')}</td></tr>
+                <tr><td>Lv.1</td><td>${navLabel('Taming Ring equipped in Accessory Right + 1 Pet Egg.','Taming Ring équipée en Accessory Right + 1 Pet Egg.')}</td><td>1 Pet Egg</td><td>—</td><td>—</td><td>${navLabel('Adds the selected pet enchant at Lv.1.','Ajoute l’enchant du pet sélectionné en Lv.1.')}</td></tr>
+                <tr><td>Lv.2</td><td>${navLabel('Lv.1 enchant + a second identical Pet Egg.','Enchant Lv.1 + un deuxième Pet Egg identique.')}</td><td>1 Pet Egg</td><td>50%</td><td>—</td><td>${navLabel('Attempts to upgrade the same pet enchant to Lv.2.','Tente de passer le même enchant de pet en Lv.2.')}</td></tr>
+                <tr><td>Reset</td><td>${navLabel('Enchanted Taming Ring.','Taming Ring enchantée.')}</td><td>—</td><td>—</td><td>—</td><td>${navLabel('Removes the current pet enchant.','Retire l’enchant de pet actuel.')}</td></tr>
+              </tbody>
+            </table></div>
 
-            <h3 id="taming-requirements">${navLabel('Requirements','Prérequis')}</h3>
-            <ul>
-              <li>${navLabel('Own and equip a Taming Ring in the right accessory slot.','Possède et équipe une Taming Ring dans le slot Accessory Right.')}</li>
-              <li>${navLabel('For Lv.1, you need the Pet Egg whose bonus you want to seal into the ring.','Pour le Lv.1, il faut le Pet Egg dont tu veux sceller le bonus dans la bague.')}</li>
-              <li>${navLabel('For Lv.2, you need a second egg of exactly the same pet.','Pour le Lv.2, il faut un second œuf exactement du même pet.')}</li>
-            </ul>
-
-            <h3 id="taming-process">${navLabel('Enchant interface and procedure','Interface et procédure d’enchantement')}</h3>
-            ${steps([
-              navLabel('Buy the Taming Ring from a Taming Merchant and equip it.','Achète la Taming Ring auprès d’un Taming Merchant et équipe-la.'),
-              navLabel('Open the enchantment interface. The General tab lists the Pet Eggs that can be sealed into the ring.','Ouvre l’interface d’enchantement. L’onglet General liste les Pet Eggs pouvant être scellés dans la bague.'),
-              navLabel('Select the egg in the General tab to create the Lv.1 enchant.','Sélectionne l’œuf dans l’onglet General pour créer l’enchantement Lv.1.'),
-              navLabel('To upgrade the same pet enchant, use the Growth tab with a second identical egg. Lv.2 has a 50% success rate.','Pour améliorer le même enchantement de pet, utilise l’onglet Growth avec un second œuf identique. Le Lv.2 possède 50 % de réussite.'),
-              navLabel('Use the Reset tab when you want to remove the current pet enchant and start again with another egg.','Utilise l’onglet Reset lorsque tu veux retirer l’enchantement de pet actuel et recommencer avec un autre œuf.')
-            ])}
-
-            <h3 id="taming-risk">${navLabel('Success, failure and reset','Réussite, échec et reset')}</h3>
-            <div class="table-wrap"><table><thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Confirmed rate','Taux confirmé')}</th><th>${navLabel('Other confirmed information','Autre information confirmée')}</th></tr></thead><tbody>
-              <tr><td>Lv.1</td><td>1 Pet Egg</td><td>—</td><td>—</td></tr>
-              <tr><td>Lv.2</td><td>${navLabel('2nd identical Pet Egg','2e Pet Egg identique')}</td><td>${risk('warn','50%','50 %')}</td><td>—</td></tr>
-              <tr><td>Reset</td><td>${navLabel('Reset tab','Onglet Reset')}</td><td>—</td><td>—</td></tr>
-            </tbody></table></div>
-
-            <h3 id="taming-merchants">${navLabel('Taming Merchants','Taming Merchants')}</h3>
-            <div class="table-wrap"><table><thead><tr><th>${navLabel('City','Ville')}</th><th>${navLabel('Navigation','Navigation')}</th></tr></thead><tbody>
+            <h3>${navLabel('Taming Merchants','Taming Merchants')}</h3>
+            <div class="table-wrap"><table class="enchant-simple-table"><thead><tr><th>${navLabel('City','Ville')}</th><th>/navi</th></tr></thead><tbody>
               <tr><td>Payon</td><td><code>/navi payon 175/131</code></td></tr>
               <tr><td>Geffen</td><td><code>/navi geffen 193/152</code></td></tr>
               <tr><td>Izlude</td><td><code>/navi izlude 72/98</code></td></tr>
               <tr><td>Morocc</td><td><code>/navi morocc 203/83</code></td></tr>
               <tr><td>Prontera</td><td><code>/navi prontera 218/21</code></td></tr>
             </tbody></table></div>
-            <div class="hero-actions"><a class="button" href="#/wiki/pet-system">${miniIcon('monster')}${navLabel('Open Pet System and egg bonuses','Ouvrir Système de Pet et les bonus des œufs')}</a></div>
           </section>
         </div>
       </div>
