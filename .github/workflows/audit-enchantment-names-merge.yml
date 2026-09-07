@@ -25,7 +25,15 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
       - name: Apply enchantment audit patch
-        run: python tools/audit_enchantment_names_merge.py
+        run: |
+          python tools/audit_enchantment_names_merge.py
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = '\n'.join(line.rstrip() for line in s.split('\n'))
+          p.write_text(s, encoding='utf-8')
+          PY
       - name: Validate
         run: |
           git diff --check
