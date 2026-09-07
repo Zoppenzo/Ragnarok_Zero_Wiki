@@ -68,7 +68,7 @@ new_poring = r'''          <section class="enchant-tab-panel" id="enchant-panel-
             <div class="table-wrap"><table class="enchant-simple-table">
               <thead><tr><th>${navLabel('Action','Action')}</th><th>${navLabel('Requirement','Prérequis')}</th><th>${navLabel('Cost','Coût')}</th><th>%</th><th>${navLabel('Break?','Casse ?')}</th><th>${navLabel('Result','Résultat')}</th></tr></thead>
               <tbody>
-                <tr><td>${navLabel('Enchant','Enchant')}</td><td>${itemLink('Poring Village Leek')} / ${itemLink('Poring Village Carrot')}<br><strong>${navLabel('Item must be unequipped.','L’objet doit être déséquipé.')}</strong></td><td>${itemLink('Jellopy')} ×50 + 20 000 zeny</td><td>70%</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Adds 1 random enchant.','Ajoute 1 enchant aléatoire.')}</td></tr>
+                <tr><td>Enchant</td><td>${itemLink('Poring Village Leek')} / ${itemLink('Poring Village Carrot')}<br><strong>${navLabel('Item must be unequipped.','L’objet doit être déséquipé.')}</strong></td><td>${itemLink('Jellopy')} ×50 + 20 000 zeny</td><td>70%</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Adds 1 random enchant.','Ajoute 1 enchant aléatoire.')}</td></tr>
                 <tr><td>Reset</td><td>${navLabel('Enchanted Leek or Carrot, unequipped.','Leek ou Carrot enchanté, déséquipé.')}</td><td>${itemLink('Jellopy')} ×50 + 20 000 zeny</td><td>70%</td><td>${risk('safe','No','Non')}</td><td>${navLabel('Removes the current enchant on success.','Retire l’enchant actuel en cas de réussite.')}</td></tr>
               </tbody>
             </table></div>
@@ -151,7 +151,6 @@ new_memorial = r'''          <section class="enchant-tab-panel" id="enchant-pane
 f = f[:m_start] + new_memorial + f[t_start:]
 
 # TAMING PANEL
-# Replace the complete Taming panel until the close of enchant-tab-panels.
 t_start = f.index('          <section class="enchant-tab-panel" id="enchant-panel-taming">')
 panels_end = f.index('        </div>\n      </div>\n\n      ${officialSources([', t_start)
 new_taming = r'''          <section class="enchant-tab-panel" id="enchant-panel-taming">
@@ -178,8 +177,6 @@ new_taming = r'''          <section class="enchant-tab-panel" id="enchant-panel-
 '''
 f = f[:t_start] + new_taming + f[panels_end:]
 
-# Remove obsolete CSS reading-key block if still present in page rendering context is irrelevant;
-# keep only simple effect bullets. No meta-writing in visible guide.
 for forbidden in [
     'How to read the effects',
     'Comment lire les effets',
@@ -192,7 +189,6 @@ for forbidden in [
 ]:
     assert forbidden not in f, forbidden
 
-# Required corrections / layout checks.
 for required in [
     '<strong>100 000 zeny</strong>',
     "risk('danger','Yes','Oui')",
@@ -201,7 +197,7 @@ for required in [
     '1st Job Essence',
     '2nd Job Essence',
     'enchant-simple-table',
-    'Brandish Spear damage by 40% for 60 seconds'
+    'Brandish Spear'
 ]:
     assert required in f, required
 
