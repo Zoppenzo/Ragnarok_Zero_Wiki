@@ -9864,25 +9864,7 @@ window.RO_DATA = {
       </div>`;
   }
 
-  function detailedSkillLevelTable(sk) {
-    const rows = wikiSkillLevelData(sk.id);
-    if (!rows) return '';
-    return `
-      <h2 id="levels">${navLabel('Level data','Données par niveau')}</h2>
-      <div class="table-wrap"><table class="skill-level-table">
-        <thead><tr>
-          <th style="width:75px">${navLabel('Level','Niveau')}</th>
-          <th style="width:70px">SP</th>
-          <th style="width:80px">${navLabel('Range','Portée')}</th>
-          <th style="width:100px">${navLabel('Cast Time','Temps de cast')}</th>
-          <th style="width:105px">${navLabel('Cast Delay','Délai après cast')}</th>
-          <th style="width:95px">${navLabel('Cooldown','Recharge')}</th>
-        </tr></thead>
-        <tbody>
-          ${rows.map(([lv,effect,sp,range,cast,delay,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${sp}</td><td>${range}</td><td>${esc(cast)}</td><td>${esc(delay)}</td><td>${esc(cd)}</td></tr>`).join('')}
-        </tbody>
-      </table></div>`;
-  }
+  function detailedSkillLevelTable(sk) { return ''; }
 
   function skillDetail(id) {
     if (id === 'frost-driver') id = 'frost-diver';
@@ -9946,14 +9928,11 @@ window.RO_DATA = {
         <div class="article-body">
           <p class="article-lead">${esc(sk.classId==='swordman' && hasDetailedLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}</p>
           ${toc([
-            ...(hasDetailedLevels ? [{id:'levels',label:navLabel('Level data','Données par niveau')}] : []),
             {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},
             {id:'prereq',label:t('prerequisites')},
             {id:'notes',label:t('notes')},
             ...(hasDetailedLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
           ])}
-
-          ${hasDetailedLevels ? detailedSkillLevelTable(sk) : ''}
 
           ${skillDamageFormulaBlock(sk)}
 
@@ -9961,7 +9940,9 @@ window.RO_DATA = {
           <div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${navLabel('Catalyst','Catalyseur')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div>
 
           <h2 id="notes">${t('notes')}</h2>
-          <div class="notes-box">${esc(txt(sk.notes))}</div>
+          <div class="notes-box">${Array.isArray(sk.noteList) && sk.noteList.length
+            ? `<ul>${sk.noteList.map(note=>`<li>${esc(txt(note))}</li>`).join('')}</ul>`
+            : esc(txt(sk.notes))}</div>
 
           ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
 
