@@ -9863,78 +9863,111 @@ window.RO_DATA = {
       </div>`;
   }
 
-  function skillDamageLevelRows(sk) {
+  function skillShortDescription(sk) {
+    let value = String(txt(sk && sk.description ? sk.description : '') || '').trim();
+    value = value
+      .replace(/\s*\[(?:Lv\.?|Level|Niv\.?)\s*1\][\s\S]*$/i, '')
+      .replace(/\s*\[SP\s+\d+[\s\S]*$/i, '')
+      .trim();
+
+    // Keep the class overview iRO-like: usually one or two short sentences.
+    const parts = value.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [];
+    if (parts.length > 2) value = parts.slice(0, 2).join(' ').trim();
+    if (value.length > 330) {
+      const cut = value.slice(0, 330);
+      value = cut.slice(0, Math.max(cut.lastIndexOf(' '), 250)).trim() + '…';
+    }
+    return value;
+  }
+
+  function skillLevelEffectRows(sk) {
     const r = window.RZ_CLIENT_SKILL_FOR ? window.RZ_CLIENT_SKILL_FOR(sk) : null;
-    if (!r || sk.role !== 'damage') return [];
+    if (!r) return [];
 
     const max = Math.max(1, Number(r.m || sk.maxLevel || 1));
-    const effects = Array.isArray(r.le) ? r.le : [];
-    const hitWord = n => n === 1 ? 'hit' : 'hits';
+    if (max <= 1) return [];
 
-    const specialDamage = i => {
-      const lv = i + 1;
-      switch (r.a) {
-        case 'MG_FIREBOLT':
-        case 'MG_COLDBOLT':
-        case 'MG_LIGHTNINGBOLT':
-        case 'MG_THUNDERSTORM':
-          return `MATK 100% × ${lv} ${hitWord(lv)}`;
-        case 'WZ_EARTHSPIKE':
-          return `MATK 200% × ${lv} ${hitWord(lv)}`;
-        case 'MG_SOULSTRIKE': {
-          const hits = Math.ceil(lv / 2);
-          return `MATK 100% × ${hits} ${hitWord(hits)} · +${lv * 5}% vs Undead`;
-        }
-        case 'MG_FIREWALL': {
-          const hits = lv + 2;
-          return `MATK 50% × up to ${hits} ${hitWord(hits)} per wall`;
-        }
-        case 'AL_RUWACH':
-          return 'MATK 145%';
-        case 'AC_CHARGEARROW':
-          return 'ATK 150%';
-        case 'TF_SPRINKLESAND':
-          return 'ATK 130%';
-        case 'TF_THROWSTONE':
-          return navLabel('50 fixed damage (ignores DEF)','50 dégâts fixes (ignore la DEF)');
-        case 'MC_CARTREVOLUTION':
-          return navLabel('ATK 150%–250% depending on cart weight','ATK 150 %–250 % selon le poids du chariot');
-        case 'AL_HOLYLIGHT':
-          return 'MATK 125%';
-        default:
-          return '';
-      }
+    const at = (arr, i) => Array.isArray(arr) && arr.length ? arr[Math.min(i, arr.length - 1)] : null;
+    const time = ms => {
+      if (ms == null) return '—';
+      const n = Number(ms);
+      if (!Number.isFinite(n) || n === 0) return '—';
+      if (n % 1000 === 0) return (n / 1000) + ' s';
+      return (n / 1000).toFixed(3).replace(/0+$/, '').replace(/\.$/, '') + ' s';
     };
+    const castAtLevel = i => {
+      if (!r.d) return '—';
+      const f = Number(at(r.d.cf, i) || 0);
+      const v = Number(at(r.d.cv, i) || 0);
+      const total = f + v;
+      if (!total) return '—';
+      if (f && v) return `${time(total)} (${time(f).replace(' s','')} fixed + ${time(v).replace(' s','')} variable)`;
+      if (f) return `${time(f)} fixed`;
+      return `${time(v)} variable`;
+    };
+
+    const enEffects = Array.isArray(r.le) ? r.le : [];
+    const frEffects = [];
+    const frText = String(r.df || '');
+    const frRe = /\[Niv\.\s*(\d+)\]\s*([\s\S]*?)(?=\[Niv\.\s*\d+\]|$)/gi;
+    let match;
+    while ((match = frRe.exec(frText))) {
+      frEffects[Number(match[1]) - 1] = String(match[2] || '').trim();
+    }
 
     const rows = [];
     for (let i = 0; i < max; i++) {
-      let damage = specialDamage(i);
-      if (!damage) {
-        const effect = String(effects[i] || '').trim();
-        if (/^Center:\s*MATK/i.test(effect)) {
-          damage = effect;
-        } else if (/^(ATK|MATK)\s/i.test(effect)) {
-          damage = effect.split(/,\s*(?=[A-Za-z])/)[0];
-        } else if (/^Damage:\s*/i.test(effect)) {
-          damage = `${navLabel('Normal physical damage','Dégâts physiques normaux')} ${effect.replace(/^Damage:\s*/i,'')}`;
-        }
+      let en = String(enEffects[i] || '').trim();
+      let fr = String(frEffects[i] || '').trim();
+
+      // Heal is the only current first-job multi-level skill whose client text
+      // exposes level scaling without listing a separate per-level Effect line.
+      if (r.a === 'AL_HEAL' && !en) {
+        en = `Heal strength: skill-level factor ×${i + 1}; final amount also scales with Base Level, total INT and weapon MATK.`;
+        fr = `Puissance de Heal : facteur de niveau ×${i + 1} ; le montant final dépend aussi du Base Level, de l’INT totale et de la MATK de l’arme.`;
       }
-      if (damage) rows.push([i + 1, damage]);
+
+      if (!en && fr) en = fr;
+      if (!fr && en) fr = en;
+      const effect = en || fr ? navLabel(en || fr, fr || en) : '—';
+
+      rows.push({
+        level: i + 1,
+        effect,
+        sp: at(r.sp, i) == null ? '—' : String(at(r.sp, i)),
+        range: at(r.r, i) == null ? '—' : String(at(r.r, i)),
+        cast: castAtLevel(i),
+        delay: r.d && Array.isArray(r.d.gd) ? time(at(r.d.gd, i)) : '—',
+        cooldown: r.d && Array.isArray(r.d.cd) ? time(at(r.d.cd, i)) : '—'
+      });
     }
     return rows;
   }
 
   function detailedSkillLevelTable(sk) {
-    const rows = skillDamageLevelRows(sk);
+    const rows = skillLevelEffectRows(sk);
     if (!rows.length) return '';
     return `
-      <h2 id="damage-levels">${navLabel('Damage by level','Dégâts par niveau')}</h2>
-      <div class="table-wrap"><table class="skill-damage-level-table">
+      <h2 id="level-effects">${navLabel('Effects by level','Effets par niveau')}</h2>
+      <div class="table-wrap"><table class="skill-level-effect-table">
         <thead><tr>
-          <th style="width:90px">${navLabel('Level','Niveau')}</th>
-          <th>${navLabel('Damage','Dégâts')}</th>
+          <th style="width:76px">${navLabel('Level','Niveau')}</th>
+          <th>${navLabel('Effect','Effet')}</th>
+          <th style="width:62px">SP</th>
+          <th style="width:72px">${navLabel('Range','Portée')}</th>
+          <th style="width:150px">Cast</th>
+          <th style="width:105px">Cast Delay</th>
+          <th style="width:105px">Cooldown</th>
         </tr></thead>
-        <tbody>${rows.map(([lv,damage])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${esc(damage)}</td></tr>`).join('')}</tbody>
+        <tbody>${rows.map(row=>`<tr>
+          <td><strong>Lv. ${row.level}</strong></td>
+          <td>${esc(row.effect)}</td>
+          <td>${esc(row.sp)}</td>
+          <td>${esc(row.range)}</td>
+          <td>${esc(row.cast)}</td>
+          <td>${esc(row.delay)}</td>
+          <td>${esc(row.cooldown)}</td>
+        </tr>`).join('')}</tbody>
       </table></div>`;
   }
 
@@ -9962,8 +9995,8 @@ window.RO_DATA = {
 
     const rows = wikiSkillLevelData(sk.id);
     const hasDetailedLevels = !!rows;
-    const damageLevelRows = skillDamageLevelRows(sk);
-    const hasDamageLevels = damageLevelRows.length > 0;
+    const effectLevelRows = skillLevelEffectRows(sk);
+    const hasEffectLevels = effectLevelRows.length > 0;
     const summarizeByLevel = (values, fallback) => {
       if (!rows) return fallback;
       const unique = [...new Set(values.map(v=>String(v)))];
@@ -10000,16 +10033,16 @@ window.RO_DATA = {
         </aside>
 
         <div class="article-body">
-          <p class="article-lead">${esc(sk.classId==='swordman' && hasDetailedLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}</p>
+          <p class="article-lead">${esc(skillShortDescription(sk))}</p>
           ${toc([
-            ...(hasDamageLevels ? [{id:'damage-levels',label:navLabel('Damage by level','Dégâts par niveau')}] : []),
+            ...(hasEffectLevels ? [{id:'level-effects',label:navLabel('Effects by level','Effets par niveau')}] : []),
             {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},
             {id:'prereq',label:t('prerequisites')},
             ...(Array.isArray(sk.noteList) && sk.noteList.length ? [{id:'notes',label:t('notes')}] : []),
             ...(hasDetailedLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
           ])}
 
-          ${hasDamageLevels ? detailedSkillLevelTable(sk) : ''}
+          ${hasEffectLevels ? detailedSkillLevelTable(sk) : ''}
 
           ${skillDamageFormulaBlock(sk)}
 
@@ -10111,13 +10144,13 @@ window.RO_DATA = {
     const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
     const regularRows = regular.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
     </tr>`).join('');
     const freeRows = free.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
       <td><span class="badge unverified">${navLabel('Quest details unavailable','Détails de quête indisponibles')}</span></td>
@@ -10181,13 +10214,13 @@ window.RO_DATA = {
     const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
     const rows = regular.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
     </tr>`).join('');
     const questRows = quest.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
       <td>${navLabel('Quest skill — no normal Job skill point','Compétence de quête — aucun point de Job normal')}</td>
@@ -10251,13 +10284,13 @@ window.RO_DATA = {
     const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
     const rows = regular.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
     </tr>`).join('');
     const questRows = quest.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
       <td>${navLabel('Quest skill — no normal Job skill point','Compétence de quête — aucun point de Job normal')}</td>
@@ -10323,13 +10356,13 @@ window.RO_DATA = {
     const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
     const rows = regular.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
     </tr>`).join('');
     const freeRows = free.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
       <td>${navLabel('Free Skill — no normal Job skill point','Free Skill — aucun point de Job normal')}</td>
@@ -10398,13 +10431,13 @@ window.RO_DATA = {
     const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
     const rows = regular.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
     </tr>`).join('');
     const freeRows = free.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
       <td>${navLabel('No normal Job skill point','Aucun point de Job normal')}</td>
@@ -10471,13 +10504,13 @@ window.RO_DATA = {
     const skillNameCell = sk => `<div style="display:flex;align-items:center;gap:10px;white-space:nowrap">${skillIconImg(sk,34)}<a class="table-link" href="#/skills/${sk.id}">${esc(sk.name)}</a></div>`;
     const rows = regular.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
     </tr>`).join('');
     const freeRows = free.map(sk=>`<tr>
       <td>${skillNameCell(sk)}</td>
-      <td>${esc(txt(sk.description))}</td>
+      <td>${esc(skillShortDescription(sk))}</td>
       <td style="text-align:center">${sk.maxLevel}</td>
       <td style="background:${skillTypeBackground(sk)}">${esc(sk.type)}</td>
       <td>${navLabel('No normal Job skill point','Aucun point de Job normal')}</td>
