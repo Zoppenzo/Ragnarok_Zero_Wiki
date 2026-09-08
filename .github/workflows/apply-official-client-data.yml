@@ -39,8 +39,7 @@ jobs:
           grep -q 'assets/client-sync.js' index.html
           grep -q "boss:'Orc Hero'" index.html
           ! grep -q "Client effect" assets/client-sync.js
-          grep -q "navLabel('Level data','Données par niveau')" index.html
-          ! grep -q "<th>\${navLabel('Effect','Effet')}</th>" index.html
+          grep -q "function skillLevelEffectRows" index.html
           grep -q "<th>\${navLabel('Bonus','Bonus')}</th>" index.html
           grep -q "Audit du contenu : 8 sept. 2026." index.html
           grep -q "if (data.type === 'none') return '';" index.html
@@ -53,5 +52,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy audit cleanup and official client data"
+          git commit -m "Deploy official Zero skill tables and audit cleanup"
           git push
