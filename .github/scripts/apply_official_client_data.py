@@ -102,7 +102,7 @@ damage_table_functions = r'''
 
 text = re.sub(
     r"\n  function (?:skillDamageLevelRows|detailedSkillLevelTable)\(sk\) \{.*?\n  \}\n(?:\n  function detailedSkillLevelTable\(sk\) \{.*?\n  \}\n)?\n  function skillDetail",
-    "\n" + damage_table_functions.strip("\n") + "\n\n  function skillDetail",
+    lambda _m: "\n" + damage_table_functions.strip("\n") + "\n\n  function skillDetail",
     text,
     count=1,
     flags=re.S,
