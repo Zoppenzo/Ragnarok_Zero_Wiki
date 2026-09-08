@@ -6,49 +6,60 @@
     const style = document.createElement('style');
     style.id = 'rz-item-neutral-style';
     style.textContent = `
-      /* Neutral RMS-style item tables: white / very light gray, no blue fills. */
+      /* Neutral RMS-style item tables: dark orange theme with light readable cells. */
       .rz-rms-result-title,
       .rz-rms-titlebar {
-        background: #f3f4f5 !important;
-        color: #202122 !important;
-        border-color: #c8ccd1 !important;
+        background: #b45309 !important;
+        color: #ffffff !important;
+        border-color: #7c2d12 !important;
       }
       .rz-rms-result-title a,
+      .rz-rms-result-title strong,
+      .rz-rms-result-title span,
       .rz-rms-titlebar h1,
       .rz-rms-titlebar .rz-rms-class,
       .rz-rms-titlebar .rz-rms-id,
       .rz-rms-titlebar .rz-rms-slot {
-        color: #202122 !important;
+        color: #ffffff !important;
       }
 
       .rz-rms-result-sheet,
       .rz-rms-sheet {
-        background: #fff !important;
+        background: #fffaf3 !important;
         color: #202122 !important;
-        border-color: #c8ccd1 !important;
+        border-color: #9a4a0a !important;
       }
       .rz-rms-result-sheet th,
       .rz-rms-result-sheet td,
       .rz-rms-sheet th,
       .rz-rms-sheet td {
-        border-color: #c8ccd1 !important;
-        color: #202122 !important;
+        border-color: #9a4a0a !important;
       }
       .rz-rms-result-sheet th,
       .rz-rms-sheet th {
-        background: #f1f2f3 !important;
+        background: #c45f0a !important;
+        color: #ffffff !important;
       }
       .rz-rms-result-sheet td,
       .rz-rms-sheet td {
-        background: #fff !important;
+        background: #fffaf3 !important;
+        color: #202122 !important;
       }
       .rz-rms-result-sheet tr:nth-child(even) td,
       .rz-rms-sheet tr:nth-child(even) td {
-        background: #fafafa !important;
+        background: #fff4e5 !important;
       }
       .rz-rms-result-sheet code,
       .rz-rms-sheet code {
         color: #202122 !important;
+      }
+
+      /* Missing database relations must stand out clearly. */
+      .rz-rms-red,
+      .rz-rms-result-sheet .rz-rms-red,
+      .rz-rms-sheet .rz-rms-red {
+        color: #d40000 !important;
+        font-weight: 700 !important;
       }
     `;
     document.head.appendChild(style);
