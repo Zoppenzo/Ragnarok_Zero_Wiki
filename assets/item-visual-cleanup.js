@@ -6,7 +6,7 @@
     const style = document.createElement('style');
     style.id = 'rz-item-neutral-style';
     style.textContent = `
-      /* Item database: neutral wiki palette, no blue table fills. */
+      /* Neutral RMS-style item tables: white / very light gray, no blue fills. */
       .rz-rms-result-title,
       .rz-rms-titlebar {
         background: #f3f4f5 !important;
@@ -55,9 +55,6 @@
   }
 
   function protectRenderedItemTitles(root = document) {
-    /* The RMS list has two links in its title: icon + item name.
-       If the renderer already supplied an icon, neither link should be
-       decorated again by client-item-icons.js. */
     root.querySelectorAll('.rz-rms-result-title').forEach(title => {
       if (!title.querySelector('.rz-item-icon')) return;
       title.querySelectorAll('a[href^="#/items/"],a[href^="#/cards/"]').forEach(a => {
