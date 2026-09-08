@@ -5,17 +5,16 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[2]
 
-# Generate the readable official-client skill dataset.
-packed_path = ROOT / "assets/client-data/skills.zlib.b64"
-skills_json = ROOT / "assets/client-data/skills.json"
-packed = packed_path.read_text(encoding="utf-8").strip()
+# Reassemble the official-client skill dataset from small repository-safe chunks.
+parts = [ROOT / f"assets/client-data/skills.part{i}" for i in range(1, 5)]
+packed = "".join(p.read_text(encoding="utf-8").strip() for p in parts)
 raw = zlib.decompress(base64.b64decode(packed)).decode("utf-8")
+skills_json = ROOT / "assets/client-data/skills.json"
 skills_json.write_text(raw, encoding="utf-8")
 
 # Remove the empty Effect column from the runtime-synchronized skill tables.
 sync_path = ROOT / "assets/client-sync.js"
 sync = sync_path.read_text(encoding="utf-8")
-
 sync = re.sub(
     r"function makeRow\(r,i,effect\) \{.*?\n    \}",
     """function makeRow(r,i) {
@@ -26,39 +25,25 @@ sync = re.sub(
     count=1,
     flags=re.S,
 )
-sync = sync.replace(
-    "      const effects=(isFr() && r.lf && r.lf.length ? r.lf : r.le) || [];\n",
-    "",
-)
-sync = re.sub(
-    r"\s*const old=\[\.\.\.table\.querySelectorAll\('tbody tr'\)\].*?;\n",
-    "",
-    sync,
-    count=1,
-)
+sync = sync.replace("      const effects=(isFr() && r.lf && r.lf.length ? r.lf : r.le) || [];\n", "")
+sync = re.sub(r"\s*const old=\[\.\.\.table\.querySelectorAll\('tbody tr'\)\].*?;\n", "", sync, count=1)
 sync = sync.replace(
     "        table.querySelector('tbody').innerHTML=Array.from({length:max},(_,i)=>makeRow(r,i,effects[i]||old[i]||'')).join('');",
-    "        const effectHeader=table.querySelector('thead tr th:nth-child(2)');\n"
-    "        if (effectHeader) effectHeader.remove();\n"
-    "        table.querySelector('tbody').innerHTML=Array.from({length:max},(_,i)=>makeRow(r,i)).join('');",
+    "        const effectHeader=table.querySelector('thead tr th:nth-child(2)');\n        if (effectHeader) effectHeader.remove();\n        table.querySelector('tbody').innerHTML=Array.from({length:max},(_,i)=>makeRow(r,i)).join('');",
 )
 sync = sync.replace("<th>${isFr()?'Effet client':'Client effect'}</th>", "")
-sync = sync.replace(
-    "Array.from({length:max},(_,i)=>makeRow(r,i,effects[i]||'')).join('')",
-    "Array.from({length:max},(_,i)=>makeRow(r,i)).join('')",
-)
+sync = sync.replace("Array.from({length:max},(_,i)=>makeRow(r,i,effects[i]||'')).join('')", "Array.from({length:max},(_,i)=>makeRow(r,i)).join('')")
 sync_path.write_text(sync, encoding="utf-8")
 
 # Patch the main single-file wiki.
 index_path = ROOT / "index.html"
 text = index_path.read_text(encoding="utf-8")
 
-# Load the official-client synchronizer on the live site.
 script_tag = '  <script src="assets/client-sync.js"></script>\n'
 if "assets/client-sync.js" not in text:
     text = text.replace("</body>", script_tag + "</body>")
 
-# Rename the section and remove the old hand-written Effect column at source.
+# Remove Effect-by-level from skill pages and rename the section more accurately.
 text = text.replace("Level-by-level effects','Effets par niveau", "Level data','Données par niveau")
 text = text.replace("          <th>${navLabel('Effect','Effet')}</th>\n", "")
 text = text.replace(
@@ -66,7 +51,7 @@ text = text.replace(
     "${rows.map(([lv,effect,sp,range,cast,delay,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${sp}</td><td>${range}</td><td>${esc(cast)}</td><td>${esc(delay)}</td><td>${esc(cd)}</td></tr>`).join('')}",
 )
 
-# Orc Hero is currently present and belongs in the active MVP Raid list.
+# Orc Hero is currently active.
 text = text.replace(
     "The two MVP Raids currently available are Golden Thief Bug in Prontera Culvert and Moonlight Flower in Payon Cave 5.",
     "The three MVP Raids currently available are Golden Thief Bug in Prontera Culvert, Moonlight Flower in Payon Cave 5 and Orc Hero on the Orc/Geffen raid map (b_gef_f03).",
@@ -85,15 +70,14 @@ moon = """      {
       }
 """
 if "boss:'Orc Hero'" not in text and moon in text:
-    orc = moon.rstrip() + ",\n" + """      {
+    text = text.replace(moon, moon.rstrip() + ",\n" + """      {
         boss:'Orc Hero',
         access:navLabel('Orc / Geffen raid map — b_gef_f03','Map de raid Orc / Geffen — b_gef_f03'),
         pve:navLabel('General Habitat / PvE','General Habitat / PvE'),
         pvp:navLabel('PK Habitat / PvP','PK Habitat / PvP'),
         release:navLabel('Currently available','Actuellement disponible')
       }
-"""
-    text = text.replace(moon, orc)
+""")
 
 toc_line = "        {id:'moonlight-raid',label:'Moonlight Flower'},\n"
 if "{id:'orc-hero-raid',label:'Orc Hero'}" not in text:
@@ -113,5 +97,4 @@ if 'id="orc-hero-raid"' not in text and rewards_heading in text:
 
 text = text.replace("Content audit: 6 Sep 2026.", "Content audit: 8 Sep 2026.")
 index_path.write_text(text, encoding="utf-8")
-
 print("Official client data prepared and wiki patched.")
