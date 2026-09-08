@@ -8196,6 +8196,7 @@ window.RO_DATA = {
       'STR +1','STR +2','AGI +1','AGI +2','VIT +1','VIT +2','INT +1','INT +2','DEX +1','DEX +2','LUK +1','LUK +2'
     ];
     const mdPlus9HpOptions = ['Max HP +300','Max HP +400'];
+    const mdFirstEssenceLv1Rows = firstEssences.map(e=>({name:e.names[0], effect:e.lv1}));
     const mdFirstEssenceRows = firstEssences.flatMap(e=>[
       {name:e.names[0], effect:e.lv1}, {name:e.names[1], effect:e.lv2}
     ]);
@@ -8216,6 +8217,7 @@ window.RO_DATA = {
     </tr>`).join('');
     const mdEssenceRows = (name, slot, pools) => {
       const rows = [];
+      if (pools.includes('first-lv1')) rows.push(...mdFirstEssenceLv1Rows);
       if (pools.includes('first')) rows.push(...mdFirstEssenceRows);
       if (pools.includes('second')) rows.push(...mdSecondEssenceRows);
       return rows.map(x=>`<tr>
@@ -8264,7 +8266,7 @@ window.RO_DATA = {
     </details>`;
 
     const mdSubjugationItems = [
-      {name:"Subjugation Team's Armor", normalSlots:['4th slot'], essenceSlot:'4th slot', essencePools:['first'], open:true},
+      {name:"Subjugation Team's Armor", normalSlots:['4th slot'], essenceSlot:'4th slot', essencePools:['first-lv1'], open:true},
       {name:"Subjugation Team's Shoulder Belt", normalSlots:['4th slot']},
       {name:'Subjugation Team Boots', normalSlots:['4th slot']},
       {name:"Subjugation Team's Ring", normalSlots:['4th slot']}
@@ -8287,7 +8289,7 @@ window.RO_DATA = {
         title:'Subjugation Armor — Grade IV',
         status:navLabel('Current rank','Rang actuel'),
         items:mdSubjugationItems,
-        intro:navLabel('Subjugation equipment is the Grade IV Memorial Dungeon set. Each piece has its own enchant table below. Job Essence is only shown on the compatible armor at +9.','L’équipement Subjugation correspond au Grade IV des Memorial Dungeons. Chaque pièce possède son propre tableau d’enchantement ci-dessous. Les Job Essence ne sont affichées que sur l’armure compatible à +9.')
+        intro:navLabel('Subjugation equipment is the Grade IV Memorial Dungeon set. At +9, Subjugation Team\'s Armor can roll 1st Job Essence Lv.1 only. Lv.2 Job Essence begins with higher-grade equipment.','L’équipement Subjugation correspond au Grade IV des Memorial Dungeons. À +9, Subjugation Team\'s Armor peut recevoir uniquement les 1st Job Essence Lv.1. Les Job Essence Lv.2 commencent avec les équipements de grade supérieur.')
       },
       'expedition-grade-iii': {
         title:'Expedition Armor — Grade III',
