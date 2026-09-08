@@ -8,10 +8,14 @@ on:
       - '.github/scripts/fix_skill_glossary_layout.py'
       - '.github/scripts/audit_cleanup.py'
       - '.github/scripts/build_client_items.py'
+      - '.github/scripts/build_item_icons.py'
       - '.github/scripts/apply_client_items.py'
+      - '.github/scripts/apply_item_icons.py'
       - 'assets/client-data/skills.part*'
-      - 'assets/client-data/items.part*'
+      - 'assets/client-data/items-core.part*'
+      - 'assets/client-data/item-icons-map.part*'
       - 'assets/client-items.js'
+      - 'assets/client-item-icons.js'
   workflow_dispatch:
 
 permissions:
@@ -37,8 +41,14 @@ jobs:
       - name: Build official client item data
         run: python .github/scripts/build_client_items.py
 
+      - name: Build official item icon mapping
+        run: python .github/scripts/build_item_icons.py
+
       - name: Apply official client item UI
         run: python .github/scripts/apply_client_items.py
+
+      - name: Apply item micro icons
+        run: python .github/scripts/apply_item_icons.py
 
       - name: Validate generated files
         run: |
@@ -57,14 +67,27 @@ jobs:
           ! grep -q "const pageObserver = new MutationObserver" index.html
 
           python -m json.tool assets/client-data/items.json >/dev/null
-          test -s assets/client-data/items.json
+          python - <<'PY'
+          import json
+          items=json.load(open('assets/client-data/items.json',encoding='utf-8'))
+          icons=json.load(open('assets/client-data/item-icons.json',encoding='utf-8'))
+          assert len(items)==4033, len(items)
+          assert len(icons)==3954, len(icons)
+          by_id={int(x['i']):x for x in items}
+          assert by_id[517]['n']=='Meat'
+          assert by_id[519]['n']=='Milk'
+          assert by_id[1201]['n']=='Knife' and by_id[1201]['a']==17
+          assert by_id[4001]['n']=='Poring Card'
+          PY
           test -s assets/client-items-data.js
+          test -s assets/client-data/item-icons.json
           grep -q 'assets/client-items-data.js' index.html
           grep -q 'assets/client-items.js' index.html
-          grep -q '"n":"Knife"' assets/client-data/items.json
-          grep -q '"n":"Poring Card"' assets/client-data/items.json
+          grep -q 'assets/client-item-icons.js' index.html
           grep -q 'window.RZ_CLIENT_ITEMS' assets/client-items-data.js
           grep -q "item.atk!=null?infoRow('ATK'" index.html
+          grep -q 'static.divine-pride.net/images/items/item/' assets/client-item-icons.js
+          ! grep -q 'MutationObserver' assets/client-item-icons.js
 
       - name: Commit deployment
         run: |
