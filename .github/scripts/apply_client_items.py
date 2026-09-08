@@ -39,5 +39,70 @@ if old_lead in text:
 elif "item.description?`<p class=\"article-lead\"" not in text:
     raise SystemExit("Could not patch empty item description rendering")
 
+# The homepage Ragnarok Database box must open the searchable database for each
+# entity type instead of the explanatory overview pages.
+database_links = {
+    "['monster','#/monsters'": "['monster','#/database/monsters'",
+    "['item','#/items'": "['item','#/database/items'",
+    "['card','#/cards'": "['card','#/database/cards'",
+    "['affix','#/affixes'": "['affix','#/database/affixes'",
+    "['memorial','#/memorial-dungeons'": "['memorial','#/database/memorial-dungeons'",
+    "['map','#/maps'": "['map','#/database/maps'",
+    "['skill','#/skills'": "['skill','#/database/skills'",
+    "['quest','#/quests'": "['quest','#/database/quests'",
+    "['npc','#/npcs'": "['npc','#/database/npcs'",
+}
+for old, new in database_links.items():
+    if old in text:
+        text = text.replace(old, new, 1)
+
+# Add a dedicated database dispatcher while keeping the existing overview
+# routes (#/items, #/maps, #/skills, ...) intact for guide/navigation links.
+if 'function databaseRouteView(type)' not in text:
+    marker = "  function listView(type) {"
+    dispatcher = """  function databaseRouteView(type) {
+    if (['monsters','items','cards','maps','skills','quests','npcs'].includes(type)) return listView(type);
+    if (type === 'affixes') return affixDatabasePage();
+    if (type === 'memorial-dungeons') return memorialDungeonDatabasePage();
+    return notFound();
+  }
+
+"""
+    if marker not in text:
+        raise SystemExit('Could not locate listView for database dispatcher')
+    text = text.replace(marker, dispatcher + marker, 1)
+
+# Route database hub URLs before the normal overview routes.
+if "hash[0]==='database'&&hash[1]" not in text:
+    marker = "    else if(hash[0]==='classes'&&!hash[1]) html=classIndexView();"
+    replacement = "    else if(hash[0]==='database'&&hash[1]) html=databaseRouteView(hash[1]);\n" + marker
+    if marker not in text:
+        raise SystemExit('Could not locate router insertion point for database routes')
+    text = text.replace(marker, replacement, 1)
+
+# Database rows link to canonical detail sheets. Preserve memorial-guide slug
+# fallbacks for old guide links, but prefer the real item/monster database sheet
+# whenever an imported entity exists.
+old_item_route = "    else if(hash[0]==='items'&&hash[1]) html=memorialDatabaseEntityPage('items',hash[1]);"
+new_item_route = "    else if(hash[0]==='items'&&hash[1]) html=getItem(hash[1])?itemDetail(hash[1],false):memorialDatabaseEntityPage('items',hash[1]);"
+if old_item_route in text:
+    text = text.replace(old_item_route, new_item_route, 1)
+elif new_item_route not in text:
+    raise SystemExit('Could not patch item detail routing')
+
+if "hash[0]==='cards'&&hash[1]" not in text:
+    marker = "    else if(hash[0]==='cards'&&!hash[1]) html=cardsOverviewPage();"
+    replacement = "    else if(hash[0]==='cards'&&hash[1]) html=itemDetail(hash[1],true);\n" + marker
+    if marker not in text:
+        raise SystemExit('Could not patch card detail routing')
+    text = text.replace(marker, replacement, 1)
+
+old_monster_route = "    else if(hash[0]==='monsters'&&hash[1]) html=memorialDatabaseEntityPage('monsters',hash[1]);"
+new_monster_route = "    else if(hash[0]==='monsters'&&hash[1]) html=getMonster(hash[1])?monsterDetail(hash[1]):memorialDatabaseEntityPage('monsters',hash[1]);"
+if old_monster_route in text:
+    text = text.replace(old_monster_route, new_monster_route, 1)
+elif new_monster_route not in text:
+    raise SystemExit('Could not patch monster detail routing')
+
 index_path.write_text(text, encoding="utf-8")
-print("Official client item UI integration applied.")
+print("Official client item UI and direct database routing applied.")
