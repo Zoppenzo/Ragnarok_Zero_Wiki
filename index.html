@@ -7121,10 +7121,9 @@ window.RO_DATA = {
 
       <h2 id="orc-hero-raid">Orc Hero</h2>
       <p>${navLabel(
-        'The Orc Hero MVP Raid is currently available. Official client navigation data links ORK_HERO to b_gef_f03 and its b_gef_f03_z variant.',
-        'Le MVP Raid Orc Hero est actuellement disponible. Les données de navigation du client officiel relient ORK_HERO à b_gef_f03 et à sa variante b_gef_f03_z.'
+        'Orc Hero is currently available as an MVP Raid on the Orc / Geffen raid map.',
+        'Orc Hero est actuellement disponible en MVP Raid sur la map de raid Orc / Geffen.'
       )}</p>
-      <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Official client cross-check','Vérification client officiel')}</strong><br><code>ORK_HERO → b_gef_f03</code> · <code>b_gef_f03_z</code></div></div>
 
       <h2 id="rewards">${navLabel('Reward boxes','Boîtes de récompense')}</h2>
       <p>${navLabel(
@@ -9930,7 +9929,7 @@ window.RO_DATA = {
           ${toc([
             {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},
             {id:'prereq',label:t('prerequisites')},
-            {id:'notes',label:t('notes')},
+            ...(Array.isArray(sk.noteList) && sk.noteList.length ? [{id:'notes',label:t('notes')}] : []),
             ...(hasDetailedLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
           ])}
 
@@ -9939,10 +9938,9 @@ window.RO_DATA = {
           <h2 id="prereq">${t('prerequisites')}</h2>
           <div class="table-wrap"><table><thead><tr><th>${t('skills')}</th><th>${t('level')}</th><th>${navLabel('Catalyst','Catalyseur')}</th><th>${t('status')}</th></tr></thead><tbody>${prereq}</tbody></table></div>
 
+          ${Array.isArray(sk.noteList) && sk.noteList.length ? `
           <h2 id="notes">${t('notes')}</h2>
-          <div class="notes-box">${Array.isArray(sk.noteList) && sk.noteList.length
-            ? `<ul>${sk.noteList.map(note=>`<li>${esc(txt(note))}</li>`).join('')}</ul>`
-            : esc(txt(sk.notes))}</div>
+          <div class="notes-box"><ul>${sk.noteList.map(note=>`<li>${esc(txt(note))}</li>`).join('')}</ul></div>` : ''}
 
           ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
 
