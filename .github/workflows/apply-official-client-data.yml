@@ -110,7 +110,7 @@ jobs:
           grep -q 'assets/client-item-icons.js' index.html
           grep -q 'assets/item-detail-rms.js' index.html
           grep -q 'assets/item-visual-cleanup.js' index.html
-          grep -q 'assets/database/item-backpack.svg?v=1' index.html
+          grep -q 'assets/database/item-backpack.svg?v=2' index.html
           grep -q 'window.RZ_CLIENT_ITEMS' assets/client-items-data.js
           grep -q 'window.RZ_ITEM_STAT_OVERLAY' assets/client-item-stats.js
           grep -q 'const DEFAULT_PAGE_SIZE = 25' assets/item-db-optimized.js
@@ -124,6 +124,8 @@ jobs:
           grep -q 'Dropped By' assets/item-detail-rms.js
           grep -q 'Sold By' assets/item-detail-rms.js
           grep -q 'Neutral RMS-style item tables' assets/item-visual-cleanup.js
+          grep -q '#b45309' assets/item-visual-cleanup.js
+          grep -q 'color: #d40000' assets/item-visual-cleanup.js
           grep -q 'static.divine-pride.net/images/items/item/' assets/client-item-icons.js
           ! grep -q 'MutationObserver' assets/client-item-icons.js
 
@@ -133,5 +135,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy neutral RMS-style Zero item database"
+          git commit -m "Deploy dark-orange Zero item database"
           git push
