@@ -12,6 +12,7 @@ on:
       - '.github/scripts/apply_client_items.py'
       - '.github/scripts/apply_item_icons.py'
       - '.github/scripts/apply_item_detail_rms.py'
+      - '.github/scripts/apply_database_icons.py'
       - 'assets/client-data/skills.part*'
       - 'assets/client-data/items-core.part*'
       - 'assets/client-data/item-icons-map.part*'
@@ -20,6 +21,7 @@ on:
       - 'assets/item-db-optimized.js'
       - 'assets/client-item-icons.js'
       - 'assets/item-detail-rms.js'
+      - 'assets/database/item-backpack.svg'
   workflow_dispatch:
 
 permissions:
@@ -57,6 +59,9 @@ jobs:
       - name: Apply RMS-style item details
         run: python .github/scripts/apply_item_detail_rms.py
 
+      - name: Apply database icons
+        run: python .github/scripts/apply_database_icons.py
+
       - name: Validate generated files
         run: |
           python -m json.tool assets/client-data/skills.json >/dev/null
@@ -91,15 +96,18 @@ jobs:
           test -s assets/client-item-stats.js
           test -s assets/item-db-optimized.js
           test -s assets/item-detail-rms.js
+          test -s assets/database/item-backpack.svg
           grep -q 'assets/client-items-data.js' index.html
           grep -q 'assets/client-item-stats.js' index.html
           grep -q 'assets/client-items.js' index.html
           grep -q 'assets/item-db-optimized.js' index.html
           grep -q 'assets/client-item-icons.js' index.html
           grep -q 'assets/item-detail-rms.js' index.html
+          grep -q 'assets/database/item-backpack.svg?v=1' index.html
           grep -q 'window.RZ_CLIENT_ITEMS' assets/client-items-data.js
           grep -q 'window.RZ_ITEM_STAT_OVERLAY' assets/client-item-stats.js
           grep -q 'const DEFAULT_PAGE_SIZE = 25' assets/item-db-optimized.js
+          grep -q 'rz-rms-result-sheet' assets/item-db-optimized.js
           grep -q "RZ_ITEM_DB_OPT?.wire(type)" index.html
           grep -q "mdef: extra.mdef" assets/client-items.js
           grep -q "sellPrice: r.sp" assets/client-items.js
@@ -117,5 +125,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy RMS-style Zero item detail sheets"
+          git commit -m "Deploy RMS-style Zero item database"
           git push
