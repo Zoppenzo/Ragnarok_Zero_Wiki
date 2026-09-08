@@ -3146,6 +3146,8 @@ window.RO_DATA = {
 };
 
 </script>
+<script src="assets/client-items-data.js"></script>
+<script src="assets/client-items.js"></script>
 <script>
 (() => {
   const DATA = window.RO_DATA;
@@ -9260,8 +9262,8 @@ window.RO_DATA = {
     return `${breadcrumbs([{label:t(cardRoute?'cards':'items'),href:cardRoute?'#/cards':'#/items'},{label:item.name}])}${demoAlert()}
       <article class="article-with-infobox">
         <div class="article-heading"><h1>${icon(pageIcon)}${esc(item.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
-        <aside class="infobox"><div class="infobox-title">${esc(item.name)}<span class="infobox-subtitle">${esc(item.type)}</span></div>${imagePlaceholder(pageIcon)}<table><tbody>${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${infoRow(t('requiredLevel'),esc(val(item.requiredLevel)))}${infoRow(t('weight'),esc(val(item.weight)))}${item.type==='Card'?infoRow(t('slot'),esc(item.equipmentSlot||t('unknown'))):''}</tbody></table><div class="infobox-footer">${badge(item.verified)}</div></aside>
-        <div class="article-body"><p class="article-lead">${esc(txt(item.description))}</p>${toc([{id:'effect',label:t('effect')},{id:'obtained',label:t('obtainedFrom')},{id:'notes',label:t('notes')}])}
+        <aside class="infobox"><div class="infobox-title">${esc(item.name)}<span class="infobox-subtitle">${esc(item.type)}</span></div>${imagePlaceholder(pageIcon)}<table><tbody>${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${item.requiredLevel!=null?infoRow(t('requiredLevel'),esc(val(item.requiredLevel))):''}${item.weight!=null?infoRow(t('weight'),esc(val(item.weight))):''}${item.atk!=null?infoRow('ATK',esc(val(item.atk))):''}${item.matk!=null?infoRow('MATK',esc(val(item.matk))):''}${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}${item.element?infoRow('Element',esc(item.element)):''}${item.slotCount?infoRow('Slots',esc(val(item.slotCount))):''}${item.position?infoRow('Position',esc(item.position)):''}${item.equipmentSlot?infoRow('Equipped on',esc(item.equipmentSlot)):''}</tbody></table><div class="infobox-footer">${badge(item.verified)}</div></aside>
+        <div class="article-body">${item.description?`<p class="article-lead">${esc(txt(item.description))}</p>`:''}${toc([{id:'effect',label:t('effect')},{id:'obtained',label:t('obtainedFrom')},{id:'notes',label:t('notes')}])}
           <h2 id="effect">${t('effect')}</h2><div class="notes-box">${esc(item.effect?txt(item.effect):t('unknown'))}</div>
           <h2 id="obtained">${t('obtainedFrom')}</h2><div class="table-wrap"><table><thead><tr><th>${t('monsters')}</th><th>${t('dropRate')}</th><th>${t('amount')}</th><th>${t('status')}</th></tr></thead><tbody>${sourceRows}</tbody></table></div>
           <h2 id="notes">${t('notes')}</h2><p>${lang==='en'?'Additional item sources, crafting and NPC shops can also appear on item pages.':'Les fiches d’objets peuvent aussi indiquer d’autres sources, crafts et boutiques NPC.'}</p>
