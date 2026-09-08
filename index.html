@@ -9863,7 +9863,80 @@ window.RO_DATA = {
       </div>`;
   }
 
-  function detailedSkillLevelTable(sk) { return ''; }
+  function skillDamageLevelRows(sk) {
+    const r = window.RZ_CLIENT_SKILL_FOR ? window.RZ_CLIENT_SKILL_FOR(sk) : null;
+    if (!r || sk.role !== 'damage') return [];
+
+    const max = Math.max(1, Number(r.m || sk.maxLevel || 1));
+    const effects = Array.isArray(r.le) ? r.le : [];
+    const hitWord = n => n === 1 ? 'hit' : 'hits';
+
+    const specialDamage = i => {
+      const lv = i + 1;
+      switch (r.a) {
+        case 'MG_FIREBOLT':
+        case 'MG_COLDBOLT':
+        case 'MG_LIGHTNINGBOLT':
+        case 'MG_THUNDERSTORM':
+          return `MATK 100% × ${lv} ${hitWord(lv)}`;
+        case 'WZ_EARTHSPIKE':
+          return `MATK 200% × ${lv} ${hitWord(lv)}`;
+        case 'MG_SOULSTRIKE': {
+          const hits = Math.ceil(lv / 2);
+          return `MATK 100% × ${hits} ${hitWord(hits)} · +${lv * 5}% vs Undead`;
+        }
+        case 'MG_FIREWALL': {
+          const hits = lv + 2;
+          return `MATK 50% × up to ${hits} ${hitWord(hits)} per wall`;
+        }
+        case 'AL_RUWACH':
+          return 'MATK 145%';
+        case 'AC_CHARGEARROW':
+          return 'ATK 150%';
+        case 'TF_SPRINKLESAND':
+          return 'ATK 130%';
+        case 'TF_THROWSTONE':
+          return navLabel('50 fixed damage (ignores DEF)','50 dégâts fixes (ignore la DEF)');
+        case 'MC_CARTREVOLUTION':
+          return navLabel('ATK 150%–250% depending on cart weight','ATK 150 %–250 % selon le poids du chariot');
+        case 'AL_HOLYLIGHT':
+          return 'MATK 125%';
+        default:
+          return '';
+      }
+    };
+
+    const rows = [];
+    for (let i = 0; i < max; i++) {
+      let damage = specialDamage(i);
+      if (!damage) {
+        const effect = String(effects[i] || '').trim();
+        if (/^Center:\s*MATK/i.test(effect)) {
+          damage = effect;
+        } else if (/^(ATK|MATK)\s/i.test(effect)) {
+          damage = effect.split(/,\s*(?=[A-Za-z])/)[0];
+        } else if (/^Damage:\s*/i.test(effect)) {
+          damage = `${navLabel('Normal physical damage','Dégâts physiques normaux')} ${effect.replace(/^Damage:\s*/i,'')}`;
+        }
+      }
+      if (damage) rows.push([i + 1, damage]);
+    }
+    return rows;
+  }
+
+  function detailedSkillLevelTable(sk) {
+    const rows = skillDamageLevelRows(sk);
+    if (!rows.length) return '';
+    return `
+      <h2 id="damage-levels">${navLabel('Damage by level','Dégâts par niveau')}</h2>
+      <div class="table-wrap"><table class="skill-damage-level-table">
+        <thead><tr>
+          <th style="width:90px">${navLabel('Level','Niveau')}</th>
+          <th>${navLabel('Damage','Dégâts')}</th>
+        </tr></thead>
+        <tbody>${rows.map(([lv,damage])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${esc(damage)}</td></tr>`).join('')}</tbody>
+      </table></div>`;
+  }
 
   function skillDetail(id) {
     if (id === 'frost-driver') id = 'frost-diver';
@@ -9889,6 +9962,8 @@ window.RO_DATA = {
 
     const rows = wikiSkillLevelData(sk.id);
     const hasDetailedLevels = !!rows;
+    const damageLevelRows = skillDamageLevelRows(sk);
+    const hasDamageLevels = damageLevelRows.length > 0;
     const summarizeByLevel = (values, fallback) => {
       if (!rows) return fallback;
       const unique = [...new Set(values.map(v=>String(v)))];
@@ -9927,11 +10002,14 @@ window.RO_DATA = {
         <div class="article-body">
           <p class="article-lead">${esc(sk.classId==='swordman' && hasDetailedLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}</p>
           ${toc([
+            ...(hasDamageLevels ? [{id:'damage-levels',label:navLabel('Damage by level','Dégâts par niveau')}] : []),
             {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},
             {id:'prereq',label:t('prerequisites')},
             ...(Array.isArray(sk.noteList) && sk.noteList.length ? [{id:'notes',label:t('notes')}] : []),
             ...(hasDetailedLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
           ])}
+
+          ${hasDamageLevels ? detailedSkillLevelTable(sk) : ''}
 
           ${skillDamageFormulaBlock(sk)}
 
