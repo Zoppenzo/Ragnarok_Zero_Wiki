@@ -37,7 +37,7 @@
         if (img.dataset.src && !img.src) img.src = img.dataset.src;
         observer.unobserve(img);
       }
-    }, { rootMargin: '320px 0px' });
+    }, { rootMargin: '40px 0px' });
     return observer;
   }
 
@@ -51,6 +51,7 @@
     img.alt = '';
     img.decoding = 'async';
     img.loading = 'lazy';
+    try { img.fetchPriority = 'low'; } catch (_) {}
     img.dataset.src = `${ICON_BASE}${id}.png`;
     img.style.cssText = `width:${size}px;height:${size}px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;display:inline-block;flex:0 0 ${size}px;`;
     img.addEventListener('error', () => img.remove(), { once: true });
