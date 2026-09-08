@@ -3,6 +3,7 @@ import base64
 import json
 import zlib
 
+# Rebuild and validate the official-client item icon map before deployment.
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / 'assets' / 'client-data'
 
