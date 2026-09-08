@@ -8,6 +8,7 @@ on:
       - '.github/scripts/fix_skill_glossary_layout.py'
       - '.github/scripts/audit_cleanup.py'
       - '.github/scripts/build_client_items.py'
+      - '.github/scripts/build_item_descriptions.py'
       - '.github/scripts/build_item_icons.py'
       - '.github/scripts/apply_client_items.py'
       - '.github/scripts/apply_item_icons.py'
@@ -16,8 +17,10 @@ on:
       - '.github/scripts/apply_item_visual_cleanup.py'
       - 'assets/client-data/skills.part*'
       - 'assets/client-data/items-core.part*'
+      - 'assets/client-data/item-desc.part*'
       - 'assets/client-data/item-icons-map.part*'
       - 'assets/client-items.js'
+      - 'assets/client-item-descriptions.js'
       - 'assets/client-item-stats.js'
       - 'assets/item-db-optimized.js'
       - 'assets/client-item-icons.js'
@@ -48,6 +51,9 @@ jobs:
 
       - name: Build official client item data
         run: python .github/scripts/build_client_items.py
+
+      - name: Build official item descriptions
+        run: python .github/scripts/build_item_descriptions.py
 
       - name: Build official item icon mapping
         run: python .github/scripts/build_item_icons.py
@@ -84,19 +90,26 @@ jobs:
           ! grep -q "const pageObserver = new MutationObserver" index.html
 
           python -m json.tool assets/client-data/items.json >/dev/null
+          python -m json.tool assets/client-data/item-descriptions.json >/dev/null
           python - <<'PY'
           import json
           items=json.load(open('assets/client-data/items.json',encoding='utf-8'))
           icons=json.load(open('assets/client-data/item-icons.json',encoding='utf-8'))
+          desc=json.load(open('assets/client-data/item-descriptions.json',encoding='utf-8'))
           assert len(items)==4033, len(items)
           assert len(icons)==3954, len(icons)
+          assert len(desc)==4032, len(desc)
           by_id={int(x['i']):x for x in items}
           assert by_id[517]['n']=='Meat'
           assert by_id[519]['n']=='Milk'
           assert by_id[1201]['n']=='Knife' and by_id[1201]['a']==17
           assert by_id[4001]['n']=='Poring Card'
+          assert desc['501']['d']=='Recovery tonic finely ground from Red Herb. Recovers about 45 HP.'
+          assert desc['1201']['d']=='Short dagger designed so anyone can use it with ease.'
+          assert 'Novice Class' in desc['1201']['j']
           PY
           test -s assets/client-items-data.js
+          test -s assets/client-item-descriptions.js
           test -s assets/client-data/item-icons.json
           test -s assets/client-item-stats.js
           test -s assets/item-db-optimized.js
@@ -106,6 +119,7 @@ jobs:
           test ! -e assets/database/item-backpack.svg
           grep -q 'assets/client-items-data.js' index.html
           grep -q 'assets/client-item-stats.js' index.html
+          grep -q 'assets/client-item-descriptions.js' index.html
           grep -q 'assets/client-items.js' index.html
           grep -q 'assets/item-db-optimized.js' index.html
           grep -q 'assets/client-item-icons.js' index.html
@@ -113,10 +127,13 @@ jobs:
           grep -q 'assets/item-visual-cleanup.js' index.html
           grep -q 'assets/database/item-ui.png?v=13' index.html
           grep -q 'window.RZ_CLIENT_ITEMS' assets/client-items-data.js
+          grep -q 'window.RZ_ITEM_DESCRIPTION_OVERLAY' assets/client-item-descriptions.js
           grep -q 'window.RZ_ITEM_STAT_OVERLAY' assets/client-item-stats.js
           grep -q 'const DEFAULT_PAGE_SIZE = 25' assets/item-db-optimized.js
           grep -q 'rz-rms-result-sheet' assets/item-db-optimized.js
           grep -q "RZ_ITEM_DB_OPT?.wire(type)" index.html
+          grep -q "description: desc.d" assets/client-items.js
+          grep -q "applicableJobs: desc.j" assets/client-items.js
           grep -q "mdef: extra.mdef" assets/client-items.js
           grep -q "sellPrice: r.sp" assets/client-items.js
           grep -q "item.mdef!=null?infoRow('MDEF'" index.html
@@ -124,9 +141,12 @@ jobs:
           grep -q 'Applicable Jobs' assets/item-detail-rms.js
           grep -q 'Dropped By' assets/item-detail-rms.js
           grep -q 'Sold By' assets/item-detail-rms.js
-          grep -q 'Neutral RMS-style item tables' assets/item-visual-cleanup.js
-          grep -q '#454a50' assets/item-visual-cleanup.js
-          grep -q 'color: #d40000' assets/item-visual-cleanup.js
+          ! grep -q 'No description available' assets/item-detail-rms.js
+          ! grep -q 'No description available' assets/item-db-optimized.js
+          ! grep -q 'Client-side fields come from' assets/item-detail-rms.js
+          grep -q 'Soft slate-gray RMS-style item tables' assets/item-visual-cleanup.js
+          grep -q '#728092' assets/item-visual-cleanup.js
+          grep -q 'color: #c40000' assets/item-visual-cleanup.js
           grep -q 'static.divine-pride.net/images/items/item/' assets/client-item-icons.js
           ! grep -q 'MutationObserver' assets/client-item-icons.js
 
@@ -136,5 +156,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy dark-gray Zero item database"
+          git commit -m "Deploy item descriptions and polished database"
           git push
