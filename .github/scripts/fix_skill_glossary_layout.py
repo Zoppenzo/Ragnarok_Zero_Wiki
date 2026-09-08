@@ -6,14 +6,23 @@ index_path = ROOT / "index.html"
 text = index_path.read_text(encoding="utf-8")
 
 # Keep Ragnarok/stat glossary terms in English even when the surrounding UI is French.
-# This is intentionally conservative: normal explanatory prose can remain translated,
-# while canonical game terms and abbreviations stay unchanged.
+# Normal explanatory prose remains translated, while canonical game terms do not.
 old_short = r'''  function skillShortDescription(sk) {
     let value = String(txt(sk && sk.description ? sk.description : '') || '').trim();
     value = value
       .replace(/\s*\[(?:Lv\.?|Level|Niv\.?)\s*1\][\s\S]*$/i, '')
       .replace(/\s*\[SP\s+\d+[\s\S]*$/i, '')
       .trim();
+
+    // Canonical Ragnarok glossary terms are never localized.
+    value = value
+      .replace(/\bM\.?ATQ\b/gi, 'MATK')
+      .replace(/\bATQ\b/gi, 'ATK')
+      .replace(/\bMax\s*PV\b/gi, 'Max HP')
+      .replace(/\bMax\s*PM\b/gi, 'Max SP')
+      .replace(/\bPV\b/g, 'HP')
+      .replace(/\bPM\b/g, 'SP')
+      .replace(/\bprécision\b/gi, 'Accuracy');
 
     // Keep the class overview iRO-like: usually one or two short sentences.
     const parts = value.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [];
@@ -36,11 +45,17 @@ new_short = r'''  function skillShortDescription(sk) {
     value = value
       .replace(/\bM\.?ATQ\b/gi, 'MATK')
       .replace(/\bATQ\b/gi, 'ATK')
+      .replace(/\bDÉF\.?M\b/gi, 'MDEF')
+      .replace(/\bDÉF\.?P\b/gi, 'DEF')
       .replace(/\bMax\s*PV\b/gi, 'Max HP')
       .replace(/\bMax\s*PM\b/gi, 'Max SP')
+      .replace(/\bMPV\b/g, 'MHP')
+      .replace(/\bMSP\b/g, 'MSP')
       .replace(/\bPV\b/g, 'HP')
       .replace(/\bPM\b/g, 'SP')
-      .replace(/\bprécision\b/gi, 'Accuracy');
+      .replace(/\bprécision\b/gi, 'Accuracy')
+      .replace(/\besquive parfaite\b/gi, 'Perfect Dodge')
+      .replace(/\bvitesse d[’']attaque\b/gi, 'ASPD');
 
     // Keep the class overview iRO-like: usually one or two short sentences.
     const parts = value.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [];
@@ -108,7 +123,6 @@ new_effect_block = r'''    const enEffects = Array.isArray(r.le) ? r.le : [];
 if old_effect_block in text:
     text = text.replace(old_effect_block, new_effect_block, 1)
 else:
-    # Idempotent fallback for small formatting differences.
     text = re.sub(
         r"    const enEffects = Array\.isArray\(r\.le\) \? r\.le : \[\];.*?      const effect = en \|\| fr \? navLabel\(en \|\| fr, fr \|\| en\) : '—';",
         lambda _m: new_effect_block,
@@ -129,5 +143,193 @@ text = text.replace(
 # localized heading/table implementation.
 text = text.replace("const effect = en || fr ? navLabel(en || fr, fr || en) : '—';", "const effect = en || '—';")
 
+# Global glossary/entity lock. This runs once after each page render and after a
+# language switch. It does NOT use a MutationObserver, so it does not recreate
+# the performance loop that previously affected skill pages.
+global_lock = r'''  <script id="rz-global-glossary-lock">
+  (() => {
+    'use strict';
+
+    const fixedRules = [
+      [/\bM\.?ATQ\b/gi, 'MATK'],
+      [/\bATQ\b/gi, 'ATK'],
+      [/\bDÉF\.?M\b/gi, 'MDEF'],
+      [/\bDÉF\.?P\b/gi, 'DEF'],
+      [/\bMax\s*PV\b/gi, 'Max HP'],
+      [/\bMax\s*PM\b/gi, 'Max SP'],
+      [/\bMPV\b/g, 'MHP'],
+      [/\bPV\b/g, 'HP'],
+      [/\bPM\b/g, 'SP'],
+      [/\bprécision\b/gi, 'Accuracy'],
+      [/\besquive parfaite\b/gi, 'Perfect Dodge'],
+      [/\bvitesse d[’']attaque\b/gi, 'ASPD'],
+      [/\bdéfense magique\b/gi, 'MDEF'],
+      [/\bdéfense physique\b/gi, 'DEF'],
+      [/\bÉtourdissement\b/g, 'Stun'],
+      [/\bPétrification\b/g, 'Stone'],
+      [/\bCongélation\b/g, 'Freeze'],
+      [/\bEmpoisonnement\b/g, 'Poison'],
+      [/\bAveuglement\b/g, 'Blind'],
+      [/\bSaignement\b/g, 'Bleeding'],
+      [/\bMalédiction\b/g, 'Curse'],
+      [/\bSommeil\b/g, 'Sleep'],
+      [/\bPropriété Feu\b/g, 'Fire property'],
+      [/\bPropriété Eau\b/g, 'Water property'],
+      [/\bPropriété Vent\b/g, 'Wind property'],
+      [/\bPropriété Terre\b/g, 'Earth property'],
+      [/\bPropriété Sacrée\b/g, 'Holy property'],
+      [/\bPropriété Ombre\b/g, 'Shadow property'],
+      [/\bPropriété Neutre\b/g, 'Neutral property'],
+      [/\bMort-vivant\b/g, 'Undead']
+    ];
+
+    const escRe = value => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const slugify = value => String(value || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    function canonicalCollections() {
+      const root = window.RO_DATA || {};
+      const skillMap = new Map();
+      const itemMap = new Map();
+      const exactNames = [];
+
+      const addAliases = (map, row, english) => {
+        if (!row || !english) return;
+        for (const key of [row.id, row.slug, slugify(english), english]) {
+          if (key != null && String(key)) map.set(String(key).toLowerCase(), english);
+        }
+      };
+
+      for (const row of Array.isArray(root.skills) ? root.skills : []) {
+        const english = typeof row.name === 'string' ? row.name : row.name?.en;
+        const french = typeof row.name === 'object' ? row.name?.fr : (row.nameFr || row.frName);
+        addAliases(skillMap, row, english);
+        if (french && english && french !== english) exactNames.push([french, english]);
+      }
+
+      for (const row of Array.isArray(root.items) ? root.items : []) {
+        const english = typeof row.name === 'string' ? row.name : row.name?.en;
+        const french = typeof row.name === 'object' ? row.name?.fr : (row.nameFr || row.frName);
+        addAliases(itemMap, row, english);
+        if (french && english && french !== english) exactNames.push([french, english]);
+      }
+
+      // Client skill names are bilingual. Use this to undo localized skill names
+      // inside otherwise-French descriptions (e.g. Coup fatal -> Fatal Blow).
+      const client = window.RZ_OFFICIAL_CLIENT_SKILLS || {};
+      for (const row of Object.values(client)) {
+        if (!row || !row.n) continue;
+        addAliases(skillMap, {id:row.id, slug:slugify(row.n)}, row.n);
+        if (row.fr && row.fr !== row.n) exactNames.push([row.fr, row.n]);
+      }
+
+      return {skillMap, itemMap, exactNames};
+    }
+
+    function normalizeText(value, exactNames) {
+      let out = String(value || '');
+      for (const [from, to] of fixedRules) out = out.replace(from, to);
+      for (const [from, to] of exactNames) {
+        if (from && to && from !== to && out.includes(from)) {
+          out = out.replace(new RegExp(escRe(from), 'g'), to);
+        }
+      }
+      return out;
+    }
+
+    function humanizeSlug(value) {
+      return decodeURIComponent(String(value || ''))
+        .replace(/[-_]+/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function canonicalFromHref(href, map, marker) {
+      const pos = href.indexOf(marker);
+      if (pos < 0) return null;
+      const raw = href.slice(pos + marker.length).split(/[?#/]/)[0];
+      const decoded = decodeURIComponent(raw || '');
+      return map.get(decoded.toLowerCase()) || map.get(slugify(decoded)) || (decoded ? humanizeSlug(decoded) : null);
+    }
+
+    function setAnchorName(anchor, english) {
+      if (!anchor || !english) return;
+      if (!anchor.children.length) {
+        anchor.textContent = english;
+        return;
+      }
+      const directText = [...anchor.childNodes].find(n => n.nodeType === Node.TEXT_NODE && n.nodeValue.trim());
+      if (directText) {
+        directText.nodeValue = english;
+        return;
+      }
+      const leaf = [...anchor.querySelectorAll('span,strong,em')].find(el => !el.children.length && el.textContent.trim());
+      if (leaf) leaf.textContent = english;
+    }
+
+    function lockEntityLinks(scope, skillMap, itemMap) {
+      for (const a of scope.querySelectorAll('a[href]')) {
+        const href = a.getAttribute('href') || '';
+        let english = null;
+        if (href.includes('#/skills/')) english = canonicalFromHref(href, skillMap, '#/skills/');
+        else if (href.includes('#/items/')) english = canonicalFromHref(href, itemMap, '#/items/');
+        else if (href.includes('#/item/')) english = canonicalFromHref(href, itemMap, '#/item/');
+        if (english) setAnchorName(a, english);
+      }
+    }
+
+    function applyGlobalGlossaryLock() {
+      const scope = document.querySelector('.wiki-shell') || document.body;
+      if (!scope) return;
+      const {skillMap, itemMap, exactNames} = canonicalCollections();
+
+      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          const parent = node.parentElement;
+          if (!parent || parent.closest('script,style,textarea,input,select,option')) return NodeFilter.FILTER_REJECT;
+          return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
+      });
+
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      for (const node of nodes) {
+        const next = normalizeText(node.nodeValue, exactNames);
+        if (next !== node.nodeValue) node.nodeValue = next;
+      }
+
+      lockEntityLinks(scope, skillMap, itemMap);
+    }
+
+    let raf1 = 0, raf2 = 0;
+    function schedule() {
+      if (raf1) cancelAnimationFrame(raf1);
+      if (raf2) cancelAnimationFrame(raf2);
+      raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(applyGlobalGlossaryLock);
+      });
+    }
+
+    window.addEventListener('hashchange', schedule);
+    document.addEventListener('click', event => {
+      if (event.target.closest('.lang-toggle')) setTimeout(schedule, 0);
+    });
+    window.addEventListener('rz-client-skills-ready', schedule);
+    schedule();
+  })();
+  </script>
+'''
+
+# Replace the global lock atomically if it already exists, otherwise append it
+# after client-sync and before </body>.
+text = re.sub(
+    r'\n?\s*<script id="rz-global-glossary-lock">.*?</script>\s*',
+    '\n',
+    text,
+    count=1,
+    flags=re.S,
+)
+text = text.replace('</body>', global_lock + '</body>', 1)
+
 index_path.write_text(text, encoding="utf-8")
-print("Skill glossary terminology kept in English; level heading/table spacing fixed.")
+print("Global English glossary, skill names and item names enforced across wiki pages; skill table spacing fixed.")
