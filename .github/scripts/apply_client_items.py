@@ -15,6 +15,7 @@ if 'assets/client-items-data.js' not in text:
     replacement = """</script>
 <script src="assets/client-items-data.js"></script>
 <script src="assets/client-item-stats.js"></script>
+<script src="assets/client-item-descriptions.js"></script>
 <script src="assets/client-items.js"></script>
 <script src="assets/item-db-optimized.js"></script>
 <script>
@@ -29,6 +30,12 @@ else:
         replacement = '<script src="assets/client-items-data.js"></script>\n<script src="assets/client-item-stats.js"></script>\n<script src="assets/client-items.js"></script>'
         if marker not in text:
             raise SystemExit('Could not insert client item stat overlay')
+        text = text.replace(marker, replacement, 1)
+    if 'assets/client-item-descriptions.js' not in text:
+        marker = '<script src="assets/client-item-stats.js"></script>\n<script src="assets/client-items.js"></script>'
+        replacement = '<script src="assets/client-item-stats.js"></script>\n<script src="assets/client-item-descriptions.js"></script>\n<script src="assets/client-items.js"></script>'
+        if marker not in text:
+            raise SystemExit('Could not insert client item description overlay')
         text = text.replace(marker, replacement, 1)
     if 'assets/item-db-optimized.js' not in text:
         marker = '<script src="assets/client-items.js"></script>'
@@ -133,4 +140,4 @@ elif new_monster_route not in text:
     raise SystemExit('Could not patch monster detail routing')
 
 index_path.write_text(text, encoding="utf-8")
-print("Official client item UI, pagination and direct database routing applied.")
+print("Official client item UI, descriptions, pagination and direct database routing applied.")
