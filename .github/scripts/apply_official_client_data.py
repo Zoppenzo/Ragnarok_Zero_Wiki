@@ -20,126 +20,178 @@ script_tag = '  <script src="assets/client-sync.js"></script>\n'
 if "assets/client-sync.js" not in text:
     text = text.replace("</body>", script_tag + "</body>")
 
-# Keep the old technical per-level table removed, but restore a compact
-# Damage-by-level table for offensive skills. Values come from the current
-# official Zero client data loaded by client-sync.js.
-damage_table_functions = r'''
-  function skillDamageLevelRows(sk) {
+# Skill list descriptions stay concise. Per-level client details belong in the
+# skill page's level table, not inside the description column.
+level_table_functions = r'''
+  function skillShortDescription(sk) {
+    let value = String(txt(sk && sk.description ? sk.description : '') || '').trim();
+    value = value
+      .replace(/\s*\[(?:Lv\.?|Level|Niv\.?)\s*1\][\s\S]*$/i, '')
+      .replace(/\s*\[SP\s+\d+[\s\S]*$/i, '')
+      .trim();
+
+    // Keep the class overview iRO-like: usually one or two short sentences.
+    const parts = value.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [];
+    if (parts.length > 2) value = parts.slice(0, 2).join(' ').trim();
+    if (value.length > 330) {
+      const cut = value.slice(0, 330);
+      value = cut.slice(0, Math.max(cut.lastIndexOf(' '), 250)).trim() + '…';
+    }
+    return value;
+  }
+
+  function skillLevelEffectRows(sk) {
     const r = window.RZ_CLIENT_SKILL_FOR ? window.RZ_CLIENT_SKILL_FOR(sk) : null;
-    if (!r || sk.role !== 'damage') return [];
+    if (!r) return [];
 
     const max = Math.max(1, Number(r.m || sk.maxLevel || 1));
-    const effects = Array.isArray(r.le) ? r.le : [];
-    const hitWord = n => n === 1 ? 'hit' : 'hits';
+    if (max <= 1) return [];
 
-    const specialDamage = i => {
-      const lv = i + 1;
-      switch (r.a) {
-        case 'MG_FIREBOLT':
-        case 'MG_COLDBOLT':
-        case 'MG_LIGHTNINGBOLT':
-        case 'MG_THUNDERSTORM':
-          return `MATK 100% × ${lv} ${hitWord(lv)}`;
-        case 'WZ_EARTHSPIKE':
-          return `MATK 200% × ${lv} ${hitWord(lv)}`;
-        case 'MG_SOULSTRIKE': {
-          const hits = Math.ceil(lv / 2);
-          return `MATK 100% × ${hits} ${hitWord(hits)} · +${lv * 5}% vs Undead`;
-        }
-        case 'MG_FIREWALL': {
-          const hits = lv + 2;
-          return `MATK 50% × up to ${hits} ${hitWord(hits)} per wall`;
-        }
-        case 'AL_RUWACH':
-          return 'MATK 145%';
-        case 'AC_CHARGEARROW':
-          return 'ATK 150%';
-        case 'TF_SPRINKLESAND':
-          return 'ATK 130%';
-        case 'TF_THROWSTONE':
-          return navLabel('50 fixed damage (ignores DEF)','50 dégâts fixes (ignore la DEF)');
-        case 'MC_CARTREVOLUTION':
-          return navLabel('ATK 150%–250% depending on cart weight','ATK 150 %–250 % selon le poids du chariot');
-        case 'AL_HOLYLIGHT':
-          return 'MATK 125%';
-        default:
-          return '';
-      }
+    const at = (arr, i) => Array.isArray(arr) && arr.length ? arr[Math.min(i, arr.length - 1)] : null;
+    const time = ms => {
+      if (ms == null) return '—';
+      const n = Number(ms);
+      if (!Number.isFinite(n) || n === 0) return '—';
+      if (n % 1000 === 0) return (n / 1000) + ' s';
+      return (n / 1000).toFixed(3).replace(/0+$/, '').replace(/\.$/, '') + ' s';
     };
+    const castAtLevel = i => {
+      if (!r.d) return '—';
+      const f = Number(at(r.d.cf, i) || 0);
+      const v = Number(at(r.d.cv, i) || 0);
+      const total = f + v;
+      if (!total) return '—';
+      if (f && v) return `${time(total)} (${time(f).replace(' s','')} fixed + ${time(v).replace(' s','')} variable)`;
+      if (f) return `${time(f)} fixed`;
+      return `${time(v)} variable`;
+    };
+
+    const enEffects = Array.isArray(r.le) ? r.le : [];
+    const frEffects = [];
+    const frText = String(r.df || '');
+    const frRe = /\[Niv\.\s*(\d+)\]\s*([\s\S]*?)(?=\[Niv\.\s*\d+\]|$)/gi;
+    let match;
+    while ((match = frRe.exec(frText))) {
+      frEffects[Number(match[1]) - 1] = String(match[2] || '').trim();
+    }
 
     const rows = [];
     for (let i = 0; i < max; i++) {
-      let damage = specialDamage(i);
-      if (!damage) {
-        const effect = String(effects[i] || '').trim();
-        if (/^Center:\s*MATK/i.test(effect)) {
-          damage = effect;
-        } else if (/^(ATK|MATK)\s/i.test(effect)) {
-          damage = effect.split(/,\s*(?=[A-Za-z])/)[0];
-        } else if (/^Damage:\s*/i.test(effect)) {
-          damage = `${navLabel('Normal physical damage','Dégâts physiques normaux')} ${effect.replace(/^Damage:\s*/i,'')}`;
-        }
+      let en = String(enEffects[i] || '').trim();
+      let fr = String(frEffects[i] || '').trim();
+
+      // Heal is the only current first-job multi-level skill whose client text
+      // exposes level scaling without listing a separate per-level Effect line.
+      if (r.a === 'AL_HEAL' && !en) {
+        en = `Heal strength: skill-level factor ×${i + 1}; final amount also scales with Base Level, total INT and weapon MATK.`;
+        fr = `Puissance de Heal : facteur de niveau ×${i + 1} ; le montant final dépend aussi du Base Level, de l’INT totale et de la MATK de l’arme.`;
       }
-      if (damage) rows.push([i + 1, damage]);
+
+      if (!en && fr) en = fr;
+      if (!fr && en) fr = en;
+      const effect = en || fr ? navLabel(en || fr, fr || en) : '—';
+
+      rows.push({
+        level: i + 1,
+        effect,
+        sp: at(r.sp, i) == null ? '—' : String(at(r.sp, i)),
+        range: at(r.r, i) == null ? '—' : String(at(r.r, i)),
+        cast: castAtLevel(i),
+        delay: r.d && Array.isArray(r.d.gd) ? time(at(r.d.gd, i)) : '—',
+        cooldown: r.d && Array.isArray(r.d.cd) ? time(at(r.d.cd, i)) : '—'
+      });
     }
     return rows;
   }
 
   function detailedSkillLevelTable(sk) {
-    const rows = skillDamageLevelRows(sk);
+    const rows = skillLevelEffectRows(sk);
     if (!rows.length) return '';
     return `
-      <h2 id="damage-levels">${navLabel('Damage by level','Dégâts par niveau')}</h2>
-      <div class="table-wrap"><table class="skill-damage-level-table">
+      <h2 id="level-effects">${navLabel('Effects by level','Effets par niveau')}</h2>
+      <div class="table-wrap"><table class="skill-level-effect-table">
         <thead><tr>
-          <th style="width:90px">${navLabel('Level','Niveau')}</th>
-          <th>${navLabel('Damage','Dégâts')}</th>
+          <th style="width:76px">${navLabel('Level','Niveau')}</th>
+          <th>${navLabel('Effect','Effet')}</th>
+          <th style="width:62px">SP</th>
+          <th style="width:72px">${navLabel('Range','Portée')}</th>
+          <th style="width:150px">Cast</th>
+          <th style="width:105px">Cast Delay</th>
+          <th style="width:105px">Cooldown</th>
         </tr></thead>
-        <tbody>${rows.map(([lv,damage])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${esc(damage)}</td></tr>`).join('')}</tbody>
+        <tbody>${rows.map(row=>`<tr>
+          <td><strong>Lv. ${row.level}</strong></td>
+          <td>${esc(row.effect)}</td>
+          <td>${esc(row.sp)}</td>
+          <td>${esc(row.range)}</td>
+          <td>${esc(row.cast)}</td>
+          <td>${esc(row.delay)}</td>
+          <td>${esc(row.cooldown)}</td>
+        </tr>`).join('')}</tbody>
       </table></div>`;
   }
 '''
 
-text = re.sub(
-    r"\n  function (?:skillDamageLevelRows|detailedSkillLevelTable)\(sk\) \{.*?\n  \}\n(?:\n  function detailedSkillLevelTable\(sk\) \{.*?\n  \}\n)?\n  function skillDetail",
-    lambda _m: "\n" + damage_table_functions.strip("\n") + "\n\n  function skillDetail",
-    text,
-    count=1,
-    flags=re.S,
+# Replace either the previous damage-only implementation or a previous version
+# of this generic implementation. Keep the operation idempotent.
+new_block_pattern = re.compile(
+    r"\n  function skillShortDescription\(sk\) \{.*?\n  \}\n\n"
+    r"  function skillLevelEffectRows\(sk\) \{.*?\n  \}\n\n"
+    r"  function detailedSkillLevelTable\(sk\) \{.*?\n  \}\n",
+    re.S,
+)
+old_block_pattern = re.compile(
+    r"\n  function skillDamageLevelRows\(sk\) \{.*?\n  \}\n\n"
+    r"  function detailedSkillLevelTable\(sk\) \{.*?\n  \}\n",
+    re.S,
 )
 
-# Older deployments may only contain the one-line disabled function.
+replacement = "\n" + level_table_functions.strip("\n") + "\n"
+text, changed = new_block_pattern.subn(lambda _m: replacement, text, count=1)
+if not changed:
+    text, changed = old_block_pattern.subn(lambda _m: replacement, text, count=1)
+if not changed:
+    text = text.replace(
+        "  function detailedSkillLevelTable(sk) { return ''; }\n\n  function skillDetail",
+        level_table_functions.strip("\n") + "\n\n  function skillDetail",
+        1,
+    )
+
+# Use the generic level table for every multi-level skill, active or passive.
 text = text.replace(
-    "  function detailedSkillLevelTable(sk) { return ''; }\n\n  function skillDetail",
-    damage_table_functions.strip("\n") + "\n\n  function skillDetail",
-    1,
+    "    const damageLevelRows = skillDamageLevelRows(sk);\n    const hasDamageLevels = damageLevelRows.length > 0;\n",
+    "    const effectLevelRows = skillLevelEffectRows(sk);\n    const hasEffectLevels = effectLevelRows.length > 0;\n",
 )
-
-# Ensure skillDetail knows whether a current-client damage table exists.
-if "const damageLevelRows = skillDamageLevelRows(sk);" not in text:
+if "const effectLevelRows = skillLevelEffectRows(sk);" not in text:
     text = text.replace(
         "    const hasDetailedLevels = !!rows;\n",
-        "    const hasDetailedLevels = !!rows;\n    const damageLevelRows = skillDamageLevelRows(sk);\n    const hasDamageLevels = damageLevelRows.length > 0;\n",
+        "    const hasDetailedLevels = !!rows;\n    const effectLevelRows = skillLevelEffectRows(sk);\n    const hasEffectLevels = effectLevelRows.length > 0;\n",
         1,
     )
 
-# Add Damage by level to the article TOC immediately before the formula.
-if "{id:'damage-levels',label:navLabel('Damage by level','Dégâts par niveau')}" not in text:
+text = text.replace(
+    "            ...(hasDamageLevels ? [{id:'damage-levels',label:navLabel('Damage by level','Dégâts par niveau')}] : []),\n",
+    "            ...(hasEffectLevels ? [{id:'level-effects',label:navLabel('Effects by level','Effets par niveau')}] : []),\n",
+)
+if "{id:'level-effects',label:navLabel('Effects by level','Effets par niveau')}" not in text:
     text = text.replace(
         "            {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},\n",
-        "            ...(hasDamageLevels ? [{id:'damage-levels',label:navLabel('Damage by level','Dégâts par niveau')}] : []),\n            {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},\n",
+        "            ...(hasEffectLevels ? [{id:'level-effects',label:navLabel('Effects by level','Effets par niveau')}] : []),\n            {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},\n",
         1,
     )
 
-# Render the compact damage table before the damage formula.
-if "${hasDamageLevels ? detailedSkillLevelTable(sk) : ''}" not in text:
+text = text.replace(
+    "          ${hasDamageLevels ? detailedSkillLevelTable(sk) : ''}\n\n",
+    "          ${hasEffectLevels ? detailedSkillLevelTable(sk) : ''}\n\n",
+)
+if "${hasEffectLevels ? detailedSkillLevelTable(sk) : ''}" not in text:
     text = text.replace(
         "          ${skillDamageFormulaBlock(sk)}\n",
-        "          ${hasDamageLevels ? detailedSkillLevelTable(sk) : ''}\n\n          ${skillDamageFormulaBlock(sk)}\n",
+        "          ${hasEffectLevels ? detailedSkillLevelTable(sk) : ''}\n\n          ${skillDamageFormulaBlock(sk)}\n",
         1,
     )
 
-# Remove any legacy Level data entry/table if still present.
+# Remove obsolete generic/damage level entries left by older deployments.
 text = text.replace(
     "            ...(hasDetailedLevels ? [{id:'levels',label:navLabel('Level data','Données par niveau')}] : []),\n",
     "",
@@ -147,6 +199,14 @@ text = text.replace(
 text = text.replace(
     "          ${hasDetailedLevels ? detailedSkillLevelTable(sk) : ''}\n\n",
     "",
+)
+
+# Keep class overview descriptions and the skill lead concise. Per-level values
+# are presented only in the table above.
+text = text.replace("${esc(txt(sk.description))}", "${esc(skillShortDescription(sk))}")
+text = text.replace(
+    "${esc(sk.classId==='swordman' && hasDetailedLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}",
+    "${esc(skillShortDescription(sk))}",
 )
 
 # Notes are iRO-style gameplay remarks: no generic verification text, no
@@ -234,4 +294,4 @@ text = re.sub(
 
 text = text.replace("Content audit: 6 Sep 2026.", "Content audit: 8 Sep 2026.")
 index_path.write_text(text, encoding="utf-8")
-print("Official client data prepared; damage-by-level tables restored for offensive skills.")
+print("Official client data prepared; concise skill descriptions and effect-by-level tables enabled for every multi-level skill.")
