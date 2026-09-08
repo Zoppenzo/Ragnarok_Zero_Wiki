@@ -149,25 +149,24 @@
       return {sp:arrAt(r.sp,i),range:arrAt(r.r,i),cast:castAt(r,i),delay:delayAt(r,i,'gd'),cd:delayAt(r,i,'cd')};
     }
 
-    function makeRow(r,i,effect) {
+    function makeRow(r,i) {
       const t=techAt(r,i);
-      return `<tr><td><strong>Lv. ${i+1}</strong></td><td>${esc(effect||'—')}</td><td>${t.sp==null?'—':esc(t.sp)}</td><td>${t.range==null?'—':esc(t.range)}</td><td>${esc(t.cast||'—')}</td><td>${esc(t.delay||'—')}</td><td>${esc(t.cd||'—')}</td></tr>`;
+      return `<tr><td><strong>Lv. ${i+1}</strong></td><td>${t.sp==null?'—':esc(t.sp)}</td><td>${t.range==null?'—':esc(t.range)}</td><td>${esc(t.cast||'—')}</td><td>${esc(t.delay||'—')}</td><td>${esc(t.cd||'—')}</td></tr>`;
     }
 
     function patchSkillTable(sk,r) {
       const max=r.m || sk.maxLevel || 1;
       let table=document.querySelector('.skill-level-table');
-      const effects=(isFr() && r.lf && r.lf.length ? r.lf : r.le) || [];
-      if (table) {
-        const old=[...table.querySelectorAll('tbody tr')].map(tr=>tr.children[1]?tr.children[1].textContent.trim():'');
-        table.querySelector('tbody').innerHTML=Array.from({length:max},(_,i)=>makeRow(r,i,effects[i]||old[i]||'')).join('');
+      if (table) {        const effectHeader=table.querySelector('thead tr th:nth-child(2)');
+        if (effectHeader) effectHeader.remove();
+        table.querySelector('tbody').innerHTML=Array.from({length:max},(_,i)=>makeRow(r,i)).join('');
         return;
       }
       const formula=document.querySelector('#formula');
       if (!formula || document.querySelector('.rz-client-levels')) return;
       const wrap=document.createElement('div');
       wrap.className='rz-client-levels';
-      wrap.innerHTML=`<h2>${isFr()?'Données client par niveau':'Official client level data'}</h2><div class="table-wrap"><table class="skill-level-table"><thead><tr><th>${isFr()?'Niveau':'Level'}</th><th>${isFr()?'Effet client':'Client effect'}</th><th>SP</th><th>${isFr()?'Portée':'Range'}</th><th>${isFr()?'Temps de cast':'Cast Time'}</th><th>${isFr()?'Délai après cast':'Cast Delay'}</th><th>${isFr()?'Recharge':'Cooldown'}</th></tr></thead><tbody>${Array.from({length:max},(_,i)=>makeRow(r,i,effects[i]||'')).join('')}</tbody></table></div>`;
+      wrap.innerHTML=`<h2>${isFr()?'Données client par niveau':'Official client level data'}</h2><div class="table-wrap"><table class="skill-level-table"><thead><tr><th>${isFr()?'Niveau':'Level'}</th><th>SP</th><th>${isFr()?'Portée':'Range'}</th><th>${isFr()?'Temps de cast':'Cast Time'}</th><th>${isFr()?'Délai après cast':'Cast Delay'}</th><th>${isFr()?'Recharge':'Cooldown'}</th></tr></thead><tbody>${Array.from({length:max},(_,i)=>makeRow(r,i)).join('')}</tbody></table></div>`;
       formula.parentNode.insertBefore(wrap,formula);
     }
 

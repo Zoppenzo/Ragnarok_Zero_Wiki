@@ -2594,7 +2594,7 @@ tbody tr:hover { background: #fcf8f3; }
       </div>
 
       <div class="sidebar-note" id="sidebar-note">
-        Community reference project for Ragnarok Zero: Global. Content audit: 6 Sep 2026.
+        Community reference project for Ragnarok Zero: Global. Content audit: 8 Sep 2026.
       </div>
     </aside>
 
@@ -3165,7 +3165,7 @@ window.RO_DATA = {
       home: 'Main Page', monsters: 'Monsters', items: 'Items', cards: 'Cards', maps: 'Maps', classes: 'Classes', skills: 'Skills', quests: 'Quests', npcs: 'NPCs', leveling: 'Leveling', tools: 'Tools',
       nav: 'Navigation', database: 'Database', guides: 'Guides', gettingStarted: 'Getting Started', mechanics: 'Game Mechanics', questIndex: 'Quest Index',
       article: 'Article', discussion: 'Discussion', search: 'Search', searchPlaceholder: 'Search Ragnarok Wiki',
-      subtitle: 'English / Français', footer: 'Some database sections are still being documented. Verification status is shown on each section.', sidebarNote: 'Community reference project for Ragnarok Zero: Global. Content audit: 6 Sep 2026.',
+      subtitle: 'English / Français', footer: 'Some database sections are still being documented. Verification status is shown on each section.', sidebarNote: 'Community reference project for Ragnarok Zero: Global. Content audit: 8 Sep 2026.',
       fromWiki: 'From Ragnarok Wiki', welcome: 'Welcome to Ragnarok Wiki',
       welcomeText: 'A bilingual community reference for Ragnarok Zero: Global. Game entities keep their English names; the interface and explanatory text can switch between English and French.',
       prototype: 'Database status',
@@ -6980,6 +6980,13 @@ window.RO_DATA = {
         pve:navLabel('General Habitat / PvE','General Habitat / PvE'),
         pvp:navLabel('PK Habitat / PvP','PK Habitat / PvP'),
         release:navLabel('August 18, 2026 — server launch','18 août 2026 — ouverture du serveur')
+      },
+      {
+        boss:'Orc Hero',
+        access:navLabel('Orc / Geffen raid map — b_gef_f03','Map de raid Orc / Geffen — b_gef_f03'),
+        pve:navLabel('General Habitat / PvE','General Habitat / PvE'),
+        pvp:navLabel('PK Habitat / PvP','PK Habitat / PvP'),
+        release:navLabel('Currently available','Actuellement disponible')
       }
     ];
 
@@ -7039,6 +7046,7 @@ window.RO_DATA = {
         {id:'hunting-quest',label:navLabel('Hunting Quest — Yakt','Quête de chasse — Yakt')},
         {id:'gtb-raid',label:'Golden Thief Bug'},
         {id:'moonlight-raid',label:'Moonlight Flower'},
+        {id:'orc-hero-raid',label:'Orc Hero'},
         {id:'rewards',label:navLabel('Reward boxes','Boîtes de récompense')},
         {id:'fragments',label:'Energy Fragments'},
         {id:'raid-manager',label:'Raid Manager Yakt'}
@@ -7050,8 +7058,8 @@ window.RO_DATA = {
         'Le raid est séparé des monstres normaux du donjon. Tu entres dans l’habitat dédié au MVP, tu trouves le boss lorsqu’il est présent, tu le tues puis tu récupères les récompenses et fragments liés au raid. Le système sert donc à la fois à chasser les MVP et à récupérer régulièrement des matériaux de progression.'
       )}</p>
       <p>${navLabel(
-        'The two MVP Raids currently available are Golden Thief Bug in Prontera Culvert and Moonlight Flower in Payon Cave 5.',
-        'Les deux MVP Raids actuellement disponibles sont Golden Thief Bug à Prontera Culvert et Moonlight Flower à Payon Cave 5.'
+        'The three MVP Raids currently available are Golden Thief Bug in Prontera Culvert, Moonlight Flower in Payon Cave 5 and Orc Hero on the Orc/Geffen raid map (b_gef_f03).',
+        'Les trois MVP Raids actuellement disponibles sont Golden Thief Bug à Prontera Culvert, Moonlight Flower à Payon Cave 5 et Orc Hero sur la map de raid Orc/Geffen (b_gef_f03).'
       )}</p>
 
       <h2 id="available-raids">${navLabel('Available MVP Raids','MVP Raids disponibles')}</h2>
@@ -7110,6 +7118,13 @@ window.RO_DATA = {
         'The Moonlight Flower raid is accessed from Payon Cave 5. It follows the same structure as GTB with a General Habitat and a PK Habitat, and its hunting quest gives Moonlight Flower-specific reward boxes.',
         'Le raid Moonlight Flower est accessible depuis Payon Cave 5. Il reprend la même structure que GTB avec une General Habitat et une PK Habitat, et sa quête de chasse donne des boîtes de récompense propres à Moonlight Flower.'
       )}</p>
+
+      <h2 id="orc-hero-raid">Orc Hero</h2>
+      <p>${navLabel(
+        'The Orc Hero MVP Raid is currently available. Official client navigation data links ORK_HERO to b_gef_f03 and its b_gef_f03_z variant.',
+        'Le MVP Raid Orc Hero est actuellement disponible. Les données de navigation du client officiel relient ORK_HERO à b_gef_f03 et à sa variante b_gef_f03_z.'
+      )}</p>
+      <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Official client cross-check','Vérification client officiel')}</strong><br><code>ORK_HERO → b_gef_f03</code> · <code>b_gef_f03_z</code></div></div>
 
       <h2 id="rewards">${navLabel('Reward boxes','Boîtes de récompense')}</h2>
       <p>${navLabel(
@@ -7707,7 +7722,6 @@ window.RO_DATA = {
       <div class="table-wrap"><table>
         <thead><tr>
           <th>Pet</th>
-          <th>${navLabel('Effect','Effet')}</th>
           <th>Taming Item</th>
           <th>${navLabel('Drop source','Source de drop')}</th>
         </tr></thead>
@@ -9854,11 +9868,10 @@ window.RO_DATA = {
     const rows = wikiSkillLevelData(sk.id);
     if (!rows) return '';
     return `
-      <h2 id="levels">${navLabel('Level-by-level effects','Effets par niveau')}</h2>
+      <h2 id="levels">${navLabel('Level data','Données par niveau')}</h2>
       <div class="table-wrap"><table class="skill-level-table">
         <thead><tr>
           <th style="width:75px">${navLabel('Level','Niveau')}</th>
-          <th>${navLabel('Effect','Effet')}</th>
           <th style="width:70px">SP</th>
           <th style="width:80px">${navLabel('Range','Portée')}</th>
           <th style="width:100px">${navLabel('Cast Time','Temps de cast')}</th>
@@ -9866,7 +9879,7 @@ window.RO_DATA = {
           <th style="width:95px">${navLabel('Cooldown','Recharge')}</th>
         </tr></thead>
         <tbody>
-          ${rows.map(([lv,effect,sp,range,cast,delay,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${esc(effect)}</td><td>${sp}</td><td>${range}</td><td>${esc(cast)}</td><td>${esc(delay)}</td><td>${esc(cd)}</td></tr>`).join('')}
+          ${rows.map(([lv,effect,sp,range,cast,delay,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${sp}</td><td>${range}</td><td>${esc(cast)}</td><td>${esc(delay)}</td><td>${esc(cd)}</td></tr>`).join('')}
         </tbody>
       </table></div>`;
   }
@@ -9933,7 +9946,7 @@ window.RO_DATA = {
         <div class="article-body">
           <p class="article-lead">${esc(sk.classId==='swordman' && hasDetailedLevels ? swordmanSkillExtraText(sk) : txt(sk.description))}</p>
           ${toc([
-            ...(hasDetailedLevels ? [{id:'levels',label:navLabel('Level-by-level effects','Effets par niveau')}] : []),
+            ...(hasDetailedLevels ? [{id:'levels',label:navLabel('Level data','Données par niveau')}] : []),
             {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},
             {id:'prereq',label:t('prerequisites')},
             {id:'notes',label:t('notes')},
@@ -11659,5 +11672,6 @@ window.RO_DATA = {
 })();
 
 </script>
+  <script src="assets/client-sync.js"></script>
 </body>
 </html>
