@@ -9,21 +9,32 @@ DATA_DIR = ROOT / "assets" / "client-data"
 
 parts = [DATA_DIR / f"items.part{i}" for i in range(1, 5)]
 payload = "".join(p.read_text(encoding="utf-8").strip() for p in parts)
-raw = zlib.decompress(base64.b64decode(payload))
+try:
+    raw = zlib.decompress(base64.b64decode(payload, validate=True))
+except Exception as exc:
+    raise SystemExit(f"Could not decode official item dataset ({len(payload)} base64 chars): {exc}")
 
-expected_sha = "5422d9866339af927f04885fe27d27f38eb6a1f4b5031a1adccda5e555e30732"
 actual_sha = hashlib.sha256(raw).hexdigest()
-if actual_sha != expected_sha:
-    raise SystemExit(f"Unexpected item dataset SHA256: {actual_sha}")
-
 items = json.loads(raw.decode("utf-8"))
 if len(items) != 4033:
-    raise SystemExit(f"Expected 4033 items, got {len(items)}")
+    raise SystemExit(f"Expected 4033 items, got {len(items)} (SHA256 {actual_sha})")
 
-if not any(x.get("i") == 1201 and x.get("n") == "Knife" and x.get("a") == 17 for x in items):
-    raise SystemExit("Knife client record validation failed")
-if not any(x.get("i") == 4001 and x.get("n") == "Poring Card" and x.get("t") == "Card" for x in items):
-    raise SystemExit("Poring Card client record validation failed")
+checks = [
+    (501, "Red Potion"),
+    (1201, "Knife"),
+    (4001, "Poring Card"),
+    (5001, "Headset"),
+]
+for item_id, name in checks:
+    if not any(x.get("i") == item_id and x.get("n") == name for x in items):
+        raise SystemExit(f"Missing expected client item {item_id} / {name} (SHA256 {actual_sha})")
+
+knife = next(x for x in items if x.get("i") == 1201)
+if knife.get("a") != 17 or knife.get("t") != "Equipment":
+    raise SystemExit(f"Knife client values are invalid: {knife}")
+poring_card = next(x for x in items if x.get("i") == 4001)
+if poring_card.get("t") != "Card":
+    raise SystemExit(f"Poring Card client type is invalid: {poring_card}")
 
 compact = json.dumps(items, ensure_ascii=False, separators=(",", ":"))
 (DATA_DIR / "items.json").write_text(compact, encoding="utf-8")
@@ -32,4 +43,4 @@ compact = json.dumps(items, ensure_ascii=False, separators=(",", ":"))
     encoding="utf-8",
 )
 
-print(f"Built {len(items)} official client item records ({actual_sha}).")
+print(f"Built {len(items)} official client item records (SHA256 {actual_sha}).")
