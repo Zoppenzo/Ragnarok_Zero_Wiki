@@ -6,12 +6,12 @@
     const style = document.createElement('style');
     style.id = 'rz-item-neutral-style';
     style.textContent = `
-      /* Neutral RMS-style item tables: dark orange theme with light readable cells. */
+      /* Neutral RMS-style item tables: dark gray theme with light readable cells. */
       .rz-rms-result-title,
       .rz-rms-titlebar {
-        background: #b45309 !important;
+        background: #454a50 !important;
         color: #ffffff !important;
-        border-color: #7c2d12 !important;
+        border-color: #2f3337 !important;
       }
       .rz-rms-result-title a,
       .rz-rms-result-title strong,
@@ -25,29 +25,29 @@
 
       .rz-rms-result-sheet,
       .rz-rms-sheet {
-        background: #fffaf3 !important;
+        background: #f2f3f4 !important;
         color: #202122 !important;
-        border-color: #9a4a0a !important;
+        border-color: #676d73 !important;
       }
       .rz-rms-result-sheet th,
       .rz-rms-result-sheet td,
       .rz-rms-sheet th,
       .rz-rms-sheet td {
-        border-color: #9a4a0a !important;
+        border-color: #676d73 !important;
       }
       .rz-rms-result-sheet th,
       .rz-rms-sheet th {
-        background: #c45f0a !important;
+        background: #5b6167 !important;
         color: #ffffff !important;
       }
       .rz-rms-result-sheet td,
       .rz-rms-sheet td {
-        background: #fffaf3 !important;
+        background: #f5f5f5 !important;
         color: #202122 !important;
       }
       .rz-rms-result-sheet tr:nth-child(even) td,
       .rz-rms-sheet tr:nth-child(even) td {
-        background: #fff4e5 !important;
+        background: #e9eaec !important;
       }
       .rz-rms-result-sheet code,
       .rz-rms-sheet code {
