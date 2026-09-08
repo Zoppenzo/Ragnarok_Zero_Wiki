@@ -1,6 +1,6 @@
 /* Ragnarok Zero Global official-client synchronizer.
- * Loads generated client-side facts from assets/client-data/skills.json and
- * applies them to the existing wiki without replacing server-only editorial data.
+ * Client-side facts come from the user's data.grf / System extraction.
+ * Server-only facts remain editorial and are not inferred from client files.
  */
 (function () {
   'use strict';
@@ -32,9 +32,31 @@
     'signum-crucis':'AL_CRUCIS','angelus':'AL_ANGELUS','blessing':'AL_BLESSING','cure':'AL_CURE','holy-light':'AL_HOLYLIGHT','mace-mastery':'PR_MACEMASTERY'
   };
 
+  /*
+   * Notes are deliberately conservative: only mechanics that are compatible
+   * with the current Zero client data are carried over from long-established
+   * Ragnarok/iRO documentation. Old numerical examples are not copied when
+   * Zero's current values differ.
+   */
+  const SKILL_NOTES = {
+    'magnum-break': [
+      {
+        en:'The 10-second buff does not change the weapon itself to Fire property. It adds a separate 20% Fire-property damage component on top of attacks, while the normal part of the attack keeps its own element.',
+        fr:'Le buff de 10 secondes ne transforme pas l’arme en propriété Feu. Il ajoute une composante séparée de 20 % de dégâts de propriété Feu aux attaques, tandis que la partie normale de l’attaque conserve son propre élément.'
+      },
+      {
+        en:'The additional Fire-property component is treated separately from the normal hit and pierces DEF. The old iRO 250% → 300% worked example is intentionally not reused because the current Zero client already lists Magnum Break at 300% ATK at Lv.10.',
+        fr:'La composante supplémentaire de propriété Feu est traitée séparément du coup normal et ignore la DEF. L’ancien exemple iRO 250 % → 300 % n’est volontairement pas repris, car le client Zero actuel indique déjà Magnum Break à 300 % ATK au niveau 10.'
+      },
+      {
+        en:'When an attack skill is pseudo-elemental, Magnum Break’s added 20% Fire component follows that pseudo-elemental behavior as well.',
+        fr:'Lorsqu’un skill d’attaque est pseudo-élémental, la composante Feu supplémentaire de 20 % de Magnum Break suit elle aussi ce comportement pseudo-élémental.'
+      }
+    ]
+  };
+
   const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'');
   const arrAt = (a,i) => Array.isArray(a) && a.length ? a[Math.min(i,a.length-1)] : null;
-  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const isFr = () => (document.documentElement.lang || '').toLowerCase().startsWith('fr');
 
   function time(ms) {
@@ -74,17 +96,6 @@
     return unique.length===1 ? unique[0] : 'Variable';
   }
 
-  function addProvenance(sk) {
-    const en='Verified against the official Ragnarok Zero Global client (data.grf / System, 2026 client tables).';
-    const fr='Vérifié dans le client officiel Ragnarok Zero Global (data.grf / System, tables client 2026).';
-    const oldEn=sk.notes && typeof sk.notes==='object' ? sk.notes.en : '';
-    const oldFr=sk.notes && typeof sk.notes==='object' ? sk.notes.fr : '';
-    sk.notes={
-      en: oldEn && !oldEn.includes('official Ragnarok Zero Global client') ? oldEn+' '+en : (oldEn||en),
-      fr: oldFr && !oldFr.includes('client officiel Ragnarok Zero Global') ? oldFr+' '+fr : (oldFr||fr)
-    };
-  }
-
   function install(client) {
     const rows=Object.values(client);
     const byAegis=new Map(rows.map(x=>[x.a,x]));
@@ -101,15 +112,18 @@
     function applyData() {
       const root=window.RO_DATA;
       if (!root || !Array.isArray(root.skills)) return false;
+
       const idToWiki=new Map();
       for (const sk of root.skills) {
         const r=clientForSkill(sk);
         if (r) idToWiki.set(Number(r.id),sk);
       }
+
       for (const sk of root.skills) {
         const r=clientForSkill(sk);
         if (!r) continue;
         const max=r.m || sk.maxLevel || 1;
+
         sk.clientId=r.id;
         sk.clientAegis=r.a;
         sk.maxLevel=max;
@@ -118,11 +132,13 @@
         sk.castTime=summarize(max,i=>castAt(r,i),sk.castTime);
         sk.castDelay=summarize(max,i=>delayAt(r,i,'gd'),sk.castDelay);
         sk.cooldown=summarize(max,i=>delayAt(r,i,'cd'),sk.cooldown);
+
         if (r.de) {
           sk.description=sk.description && typeof sk.description==='object' ? sk.description : {};
           sk.description.en=r.de;
           sk.description.fr=r.df || r.de;
         }
+
         const job=JOB_BY_CLASS[sk.classId];
         const prereqs=(r.po && job!=null && r.po[String(job)]) || r.p;
         if (Array.isArray(prereqs)) {
@@ -132,7 +148,8 @@
           }).filter(Boolean);
           if (mapped.length===prereqs.length) sk.prerequisites=mapped;
         }
-        addProvenance(sk);
+
+        if (SKILL_NOTES[sk.id]) sk.noteList=SKILL_NOTES[sk.id];
         sk.verified=true;
       }
       return true;
@@ -143,31 +160,6 @@
       if (!match || !window.RO_DATA) return null;
       const id=decodeURIComponent(match[1]);
       return (window.RO_DATA.skills||[]).find(x=>x.id===id || (id==='frost-driver' && x.id==='frost-diver')) || null;
-    }
-
-    function techAt(r,i) {
-      return {sp:arrAt(r.sp,i),range:arrAt(r.r,i),cast:castAt(r,i),delay:delayAt(r,i,'gd'),cd:delayAt(r,i,'cd')};
-    }
-
-    function makeRow(r,i) {
-      const t=techAt(r,i);
-      return `<tr><td><strong>Lv. ${i+1}</strong></td><td>${t.sp==null?'—':esc(t.sp)}</td><td>${t.range==null?'—':esc(t.range)}</td><td>${esc(t.cast||'—')}</td><td>${esc(t.delay||'—')}</td><td>${esc(t.cd||'—')}</td></tr>`;
-    }
-
-    function patchSkillTable(sk,r) {
-      const max=r.m || sk.maxLevel || 1;
-      let table=document.querySelector('.skill-level-table');
-      if (table) {        const effectHeader=table.querySelector('thead tr th:nth-child(2)');
-        if (effectHeader) effectHeader.remove();
-        table.querySelector('tbody').innerHTML=Array.from({length:max},(_,i)=>makeRow(r,i)).join('');
-        return;
-      }
-      const formula=document.querySelector('#formula');
-      if (!formula || document.querySelector('.rz-client-levels')) return;
-      const wrap=document.createElement('div');
-      wrap.className='rz-client-levels';
-      wrap.innerHTML=`<h2>${isFr()?'Données client par niveau':'Official client level data'}</h2><div class="table-wrap"><table class="skill-level-table"><thead><tr><th>${isFr()?'Niveau':'Level'}</th><th>SP</th><th>${isFr()?'Portée':'Range'}</th><th>${isFr()?'Temps de cast':'Cast Time'}</th><th>${isFr()?'Délai après cast':'Cast Delay'}</th><th>${isFr()?'Recharge':'Cooldown'}</th></tr></thead><tbody>${Array.from({length:max},(_,i)=>makeRow(r,i)).join('')}</tbody></table></div>`;
-      formula.parentNode.insertBefore(wrap,formula);
     }
 
     function patchInfobox(sk,r) {
@@ -209,25 +201,34 @@
       const sk=currentSkill();
       if (sk) {
         const r=clientForSkill(sk);
-        if (r) { patchSkillTable(sk,r); patchInfobox(sk,r); sourceNote(); }
+        if (r) patchInfobox(sk,r);
+        sourceNote();
         return;
       }
       if (/^#\/classes\/(novice|swordman|mage|archer|acolyte|merchant|thief)(?:$|[/?#])/.test(location.hash)) sourceNote();
     }
 
-    if (applyData()) {
-      setTimeout(()=>{
-        try { window.dispatchEvent(new HashChangeEvent('hashchange')); }
-        catch (_) { window.dispatchEvent(new Event('hashchange')); }
-        setTimeout(patchRendered,0);
-      },0);
+    let frameA=0, frameB=0;
+    function schedulePatch() {
+      if (frameA) cancelAnimationFrame(frameA);
+      if (frameB) cancelAnimationFrame(frameB);
+      frameA=requestAnimationFrame(()=>{
+        frameB=requestAnimationFrame(patchRendered);
+      });
     }
-    const app=document.getElementById('app');
-    if (app) new MutationObserver(patchRendered).observe(app,{childList:true,subtree:true});
-    window.addEventListener('hashchange',()=>setTimeout(patchRendered,0));
+
+    if (applyData()) {
+      /* Re-render once so the page uses the newly loaded official-client data. */
+      try { window.dispatchEvent(new HashChangeEvent('hashchange')); }
+      catch (_) { window.dispatchEvent(new Event('hashchange')); }
+      schedulePatch();
+    }
+
+    /* No MutationObserver here: rewriting observed DOM caused a self-triggering loop. */
+    window.addEventListener('hashchange',schedulePatch);
   }
 
-  fetch('assets/client-data/skills.json',{cache:'no-cache'})
+  fetch('assets/client-data/skills.json')
     .then(r=>{if(!r.ok) throw new Error('client skill data '+r.status); return r.json();})
     .then(install)
     .catch(err=>console.error('[RZ client sync]',err));
