@@ -20,9 +20,8 @@ script_tag = '  <script src="assets/client-sync.js"></script>\n'
 if "assets/client-sync.js" not in text:
     text = text.replace("</body>", script_tag + "</body>")
 
-# Per-level technical tables are intentionally removed. The infobox already
-# carries SP/range/cast/delay/cooldown summaries; the article section is now
-# reserved for useful Notes instead of repeating a mostly empty table.
+# Per-level technical tables stay removed: the infobox already exposes their
+# useful summaries. Skill articles use Notes only for special mechanics.
 text = re.sub(
     r"\n  function detailedSkillLevelTable\(sk\) \{.*?\n  \}\n\n  function skillDetail",
     "\n  function detailedSkillLevelTable(sk) { return ''; }\n\n  function skillDetail",
@@ -39,18 +38,33 @@ text = text.replace(
     "",
 )
 
-# Notes can now be structured as bullet points (sk.noteList) while retaining
-# the old plain-text sk.notes fallback for skills that do not yet have a list.
-old_notes = """          <h2 id=\"notes\">${t('notes')}</h2>
-          <div class=\"notes-box\">${esc(txt(sk.notes))}</div>"""
-new_notes = """          <h2 id=\"notes\">${t('notes')}</h2>
+# Notes are iRO-style gameplay remarks: no generic verification text, no
+# prerequisite repetition, and no empty Notes heading.
+text = text.replace(
+    "            {id:'notes',label:t('notes')},\n",
+    "            ...(Array.isArray(sk.noteList) && sk.noteList.length ? [{id:'notes',label:t('notes')}] : []),\n",
+)
+
+current_notes = """          <h2 id=\"notes\">${t('notes')}</h2>
           <div class=\"notes-box\">${Array.isArray(sk.noteList) && sk.noteList.length
             ? `<ul>${sk.noteList.map(note=>`<li>${esc(txt(note))}</li>`).join('')}</ul>`
             : esc(txt(sk.notes))}</div>"""
-if old_notes in text:
-    text = text.replace(old_notes, new_notes, 1)
+conditional_notes = """          ${Array.isArray(sk.noteList) && sk.noteList.length ? `
+          <h2 id=\"notes\">${t('notes')}</h2>
+          <div class=\"notes-box\"><ul>${sk.noteList.map(note=>`<li>${esc(txt(note))}</li>`).join('')}</ul></div>` : ''}"""
+if current_notes in text:
+    text = text.replace(current_notes, conditional_notes, 1)
+else:
+    # Backward-compatible replacement if an older plain-text Notes block is present.
+    text = text.replace(
+        """          <h2 id=\"notes\">${t('notes')}</h2>
+          <div class=\"notes-box\">${esc(txt(sk.notes))}</div>""",
+        conditional_notes,
+        1,
+    )
 
-# Orc Hero is currently active.
+# Orc Hero is currently active, but source/verification annotations are not
+# shown inside the article body.
 text = text.replace(
     "The two MVP Raids currently available are Golden Thief Bug in Prontera Culvert and Moonlight Flower in Payon Cave 5.",
     "The three MVP Raids currently available are Golden Thief Bug in Prontera Culvert, Moonlight Flower in Payon Cave 5 and Orc Hero on the Orc/Geffen raid map (b_gef_f03).",
@@ -86,14 +100,29 @@ rewards_heading = "      <h2 id=\"rewards\">${navLabel('Reward boxes','Boîtes d
 if 'id="orc-hero-raid"' not in text and rewards_heading in text:
     section = """      <h2 id="orc-hero-raid">Orc Hero</h2>
       <p>${navLabel(
-        'The Orc Hero MVP Raid is currently available. Official client navigation data links ORK_HERO to b_gef_f03 and its b_gef_f03_z variant.',
-        'Le MVP Raid Orc Hero est actuellement disponible. Les données de navigation du client officiel relient ORK_HERO à b_gef_f03 et à sa variante b_gef_f03_z.'
+        'Orc Hero is currently available as an MVP Raid on the Orc / Geffen raid map.',
+        'Orc Hero est actuellement disponible en MVP Raid sur la map de raid Orc / Geffen.'
       )}</p>
-      <div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Official client cross-check','Vérification client officiel')}</strong><br><code>ORK_HERO → b_gef_f03</code> · <code>b_gef_f03_z</code></div></div>
 
 """
     text = text.replace(rewards_heading, section + rewards_heading)
 
+# Remove older source-facing wording if it is already present from a previous deploy.
+text = text.replace(
+    "The Orc Hero MVP Raid is currently available. Official client navigation data links ORK_HERO to b_gef_f03 and its b_gef_f03_z variant.",
+    "Orc Hero is currently available as an MVP Raid on the Orc / Geffen raid map.",
+)
+text = text.replace(
+    "Le MVP Raid Orc Hero est actuellement disponible. Les données de navigation du client officiel relient ORK_HERO à b_gef_f03 et à sa variante b_gef_f03_z.",
+    "Orc Hero est actuellement disponible en MVP Raid sur la map de raid Orc / Geffen.",
+)
+text = re.sub(
+    r'\n\s*<div class="verified-topic-note"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>\$\{navLabel\(\'Official client cross-check\',\'Vérification client officiel\'\)\}</strong><br><code>ORK_HERO → b_gef_f03</code> · <code>b_gef_f03_z</code></div></div>',
+    '',
+    text,
+    count=1,
+)
+
 text = text.replace("Content audit: 6 Sep 2026.", "Content audit: 8 Sep 2026.")
 index_path.write_text(text, encoding="utf-8")
-print("Official client data prepared; level tables removed; notes layout enabled.")
+print("Official client data prepared; only useful gameplay notes are displayed.")
