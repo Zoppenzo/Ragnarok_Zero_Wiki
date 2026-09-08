@@ -1,6 +1,5 @@
 /* Ragnarok Zero Global official-client synchronizer.
- * Client-side facts come from the user's data.grf / System extraction.
- * Server-only facts remain editorial and are not inferred from client files.
+ * Applies client-side skill facts without exposing internal/source annotations in the UI.
  */
 (function () {
   'use strict';
@@ -33,10 +32,9 @@
   };
 
   /*
-   * Notes are deliberately conservative: only mechanics that are compatible
-   * with the current Zero client data are carried over from long-established
-   * Ragnarok/iRO documentation. Old numerical examples are not copied when
-   * Zero's current values differ.
+   * Notes follow the iRO Wiki idea: only non-obvious gameplay mechanics belong
+   * here. They are paraphrased and only kept when they also apply to Zero.
+   * Skills without a useful special note intentionally have no Notes section.
    */
   const SKILL_NOTES = {
     'magnum-break': [
@@ -45,8 +43,8 @@
         fr:'Le buff de 10 secondes ne transforme pas l’arme en propriété Feu. Il ajoute une composante séparée de 20 % de dégâts de propriété Feu aux attaques, tandis que la partie normale de l’attaque conserve son propre élément.'
       },
       {
-        en:'The additional Fire-property component is treated separately from the normal hit and pierces DEF. The old iRO 250% → 300% worked example is intentionally not reused because the current Zero client already lists Magnum Break at 300% ATK at Lv.10.',
-        fr:'La composante supplémentaire de propriété Feu est traitée séparément du coup normal et ignore la DEF. L’ancien exemple iRO 250 % → 300 % n’est volontairement pas repris, car le client Zero actuel indique déjà Magnum Break à 300 % ATK au niveau 10.'
+        en:'The additional Fire-property damage is a separate component that pierces DEF. It is also applied to Magnum Break’s own hit.',
+        fr:'Les dégâts supplémentaires de propriété Feu forment une composante séparée qui ignore la DEF. Cette composante s’applique également au coup de Magnum Break lui-même.'
       },
       {
         en:'When an attack skill is pseudo-elemental, Magnum Break’s added 20% Fire component follows that pseudo-elemental behavior as well.',
@@ -57,7 +55,6 @@
 
   const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'');
   const arrAt = (a,i) => Array.isArray(a) && a.length ? a[Math.min(i,a.length-1)] : null;
-  const isFr = () => (document.documentElement.lang || '').toLowerCase().startsWith('fr');
 
   function time(ms) {
     if (ms == null) return null;
@@ -149,7 +146,8 @@
           if (mapped.length===prereqs.length) sk.prerequisites=mapped;
         }
 
-        if (SKILL_NOTES[sk.id]) sk.noteList=SKILL_NOTES[sk.id];
+        /* Old generic notes are not displayed. Only curated mechanic notes survive. */
+        sk.noteList=SKILL_NOTES[sk.id] || [];
         sk.verified=true;
       }
       return true;
@@ -187,25 +185,11 @@
       }
     }
 
-    function sourceNote() {
-      if (document.querySelector('.rz-official-client-note')) return;
-      const lead=document.querySelector('.article-lead');
-      if (!lead) return;
-      const div=document.createElement('div');
-      div.className='verified-topic-note rz-official-client-note';
-      div.innerHTML=`<svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${isFr()?'Source primaire : client officiel':'Primary source: official client'}</strong><br>${isFr()?'Les valeurs client-side de cette page sont synchronisées avec data.grf / System (client Ragnarok Zero Global 2026). Les réglages purement serveur restent vérifiés séparément.':'Client-side values on this page are synchronized with data.grf / System (Ragnarok Zero Global 2026 client). Server-only settings are verified separately.'}</div>`;
-      lead.insertAdjacentElement('afterend',div);
-    }
-
     function patchRendered() {
       const sk=currentSkill();
-      if (sk) {
-        const r=clientForSkill(sk);
-        if (r) patchInfobox(sk,r);
-        sourceNote();
-        return;
-      }
-      if (/^#\/classes\/(novice|swordman|mage|archer|acolyte|merchant|thief)(?:$|[/?#])/.test(location.hash)) sourceNote();
+      if (!sk) return;
+      const r=clientForSkill(sk);
+      if (r) patchInfobox(sk,r);
     }
 
     let frameA=0, frameB=0;
@@ -218,13 +202,11 @@
     }
 
     if (applyData()) {
-      /* Re-render once so the page uses the newly loaded official-client data. */
       try { window.dispatchEvent(new HashChangeEvent('hashchange')); }
       catch (_) { window.dispatchEvent(new Event('hashchange')); }
       schedulePatch();
     }
 
-    /* No MutationObserver here: rewriting observed DOM caused a self-triggering loop. */
     window.addEventListener('hashchange',schedulePatch);
   }
 
