@@ -5,8 +5,12 @@
   const PAGE_SIZES = [25, 50, 100, 200];
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const num = value => Number.isFinite(Number(value)) ? Number(value) : null;
-  const fmt = value => value == null || value === '' ? '—' : Number(value).toLocaleString();
+  const num = value => {
+    if (value == null || value === '') return null;
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  };
+  const fmt = value => num(value) == null ? '—' : Number(value).toLocaleString();
   const langFr = () => (document.documentElement.lang || '').toLowerCase().startsWith('fr');
 
   function iconHtml(item, size = 22) {
@@ -23,21 +27,26 @@
   }
 
   const SORTS = [
-    ['name-asc', 'Name A → Z', 'Nom A → Z'],
-    ['name-desc', 'Name Z → A', 'Nom Z → A'],
-    ['weight-desc', 'Weight: high → low', 'Weight : décroissant'],
-    ['weight-asc', 'Weight: low → high', 'Weight : croissant'],
-    ['sell-desc', 'Sell Price: high → low', 'Sell Price : décroissant'],
-    ['sell-asc', 'Sell Price: low → high', 'Sell Price : croissant'],
-    ['atk-desc', 'ATK: high → low', 'ATK : décroissant'],
-    ['atk-asc', 'ATK: low → high', 'ATK : croissant'],
-    ['matk-desc', 'MATK: high → low', 'MATK : décroissant'],
-    ['matk-asc', 'MATK: low → high', 'MATK : croissant'],
-    ['def-desc', 'DEF: high → low', 'DEF : décroissant'],
-    ['def-asc', 'DEF: low → high', 'DEF : croissant'],
-    ['mdef-desc', 'MDEF: high → low', 'MDEF : décroissant'],
-    ['mdef-asc', 'MDEF: low → high', 'MDEF : croissant'],
+    ['name-asc', 'Name A → Z', 'Nom A → Z', null],
+    ['name-desc', 'Name Z → A', 'Nom Z → A', null],
+    ['weight-desc', 'Weight: high → low', 'Weight : décroissant', 'weight'],
+    ['weight-asc', 'Weight: low → high', 'Weight : croissant', 'weight'],
+    ['sell-desc', 'Sell Price: high → low', 'Sell Price : décroissant', 'sellPrice'],
+    ['sell-asc', 'Sell Price: low → high', 'Sell Price : croissant', 'sellPrice'],
+    ['atk-desc', 'ATK: high → low', 'ATK : décroissant', 'atk'],
+    ['atk-asc', 'ATK: low → high', 'ATK : croissant', 'atk'],
+    ['matk-desc', 'MATK: high → low', 'MATK : décroissant', 'matk'],
+    ['matk-asc', 'MATK: low → high', 'MATK : croissant', 'matk'],
+    ['def-desc', 'DEF: high → low', 'DEF : décroissant', 'def'],
+    ['def-asc', 'DEF: low → high', 'DEF : croissant', 'def'],
+    ['mdef-desc', 'MDEF: high → low', 'MDEF : décroissant', 'mdef'],
+    ['mdef-asc', 'MDEF: low → high', 'MDEF : croissant', 'mdef'],
   ];
+
+  function usableSorts(source) {
+    const has = field => source.some(item => num(item[field]) != null);
+    return SORTS.filter(([, , , field]) => !field || has(field));
+  }
 
   function sortRows(rows, mode) {
     const [field, dirName] = mode.split('-');
@@ -56,7 +65,7 @@
     });
   }
 
-  function renderRows(type, rows) {
+  function renderRows(type, rows, showSellPrice) {
     const cardRoute = type === 'cards';
     const body = rows.map(item => {
       const href = `${cardRoute ? '#/cards/' : '#/items/'}${encodeURIComponent(item.id)}`;
@@ -69,14 +78,14 @@
         <td>${fmt(item.matk)}</td>
         <td>${fmt(item.def)}</td>
         <td>${fmt(item.mdef)}</td>
-        <td>${fmt(item.sellPrice)}</td>
+        ${showSellPrice ? `<td>${fmt(item.sellPrice)}</td>` : ''}
         <td>${fmt(item.requiredLevel)}</td>
       </tr>`;
     }).join('');
     return `<div class="table-wrap rz-item-db-table"><table>
       <thead><tr>
         <th>${langFr()?'Nom':'Name'}</th><th>Type</th><th>${langFr()?'Sous-type':'Subtype'}</th>
-        <th>Weight</th><th>ATK</th><th>MATK</th><th>DEF</th><th>MDEF</th><th>Sell Price</th><th>Required Lv.</th>
+        <th>Weight</th><th>ATK</th><th>MATK</th><th>DEF</th><th>MDEF</th>${showSellPrice?'<th>Sell Price</th>':''}<th>Required Lv.</th>
       </tr></thead><tbody>${body}</tbody>
     </table></div>`;
   }
@@ -107,7 +116,7 @@
     style.id = 'rz-item-db-opt-style';
     style.textContent = `
       .rz-item-db-link{display:inline-flex;align-items:center;gap:6px;min-height:24px}
-      .rz-item-db-table table{min-width:980px}
+      .rz-item-db-table table{min-width:920px}
       .rz-item-db-table th:nth-child(n+4),.rz-item-db-table td:nth-child(n+4){text-align:right;white-space:nowrap}
       .rz-db-pager{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0}
       .rz-db-pages{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
@@ -145,13 +154,15 @@
     const filters = search.closest('.filters');
     if (!filters) return false;
 
+    const availableSorts = usableSorts(source);
+    const showSellPrice = source.some(item => num(item.sellPrice) != null);
     const state = { page:1, pageSize:DEFAULT_PAGE_SIZE, sort:'name-asc' };
 
     let sortSelect = document.getElementById('rz-db-sort');
     if (!sortSelect) {
       const field = document.createElement('div');
       field.className = 'form-field rz-db-sort-field';
-      field.innerHTML = `<label>${langFr()?'Trier par':'Sort by'}</label><select id="rz-db-sort" class="select">${SORTS.map(([v,en,fr])=>`<option value="${v}">${esc(langFr()?fr:en)}</option>`).join('')}</select>`;
+      field.innerHTML = `<label>${langFr()?'Trier par':'Sort by'}</label><select id="rz-db-sort" class="select">${availableSorts.map(([v,en,fr])=>`<option value="${v}">${esc(langFr()?fr:en)}</option>`).join('')}</select>`;
       filters.appendChild(field);
       sortSelect = field.querySelector('select');
     }
@@ -186,13 +197,13 @@
       const start = (state.page - 1) * state.pageSize;
       const visible = rows.slice(start, start + state.pageSize);
       count.textContent = `${rows.length.toLocaleString()} ${langFr()?'résultats':'results'}`;
-      output.innerHTML = renderRows(type, visible);
+      output.innerHTML = renderRows(type, visible, showSellPrice);
       pager.innerHTML = pagerHtml(state.page, pages, rows.length, state.pageSize);
       requestAnimationFrame(() => window.RZ_DECORATE_ITEM_ICONS?.());
       pager.querySelectorAll('[data-page]').forEach(btn => btn.addEventListener('click', () => {
         state.page = Number(btn.dataset.page) || 1;
         refresh();
-        document.querySelector('.filters')?.scrollIntoView({block:'start'});
+        filters.scrollIntoView({block:'start'});
       }));
     };
 
