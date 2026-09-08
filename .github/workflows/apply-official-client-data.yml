@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/apply-official-client-data.yml'
       - '.github/scripts/apply_official_client_data.py'
+      - '.github/scripts/fix_skill_glossary_layout.py'
       - 'assets/client-data/skills.part*'
   workflow_dispatch:
 
@@ -22,6 +23,9 @@ jobs:
       - name: Apply official client data
         run: python .github/scripts/apply_official_client_data.py
 
+      - name: Apply skill glossary and layout rules
+        run: python .github/scripts/fix_skill_glossary_layout.py
+
       - name: Validate generated files
         run: |
           python -m json.tool assets/client-data/skills.json >/dev/null
@@ -29,6 +33,8 @@ jobs:
           grep -q 'assets/client-sync.js' index.html
           grep -q "boss:'Orc Hero'" index.html
           ! grep -q "Client effect" assets/client-sync.js
+          grep -q "let effect = String(enEffects" index.html
+          grep -q 'clear:both;margin-bottom:10px' index.html
 
       - name: Commit deployment
         run: |
