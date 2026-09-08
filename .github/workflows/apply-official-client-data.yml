@@ -11,6 +11,7 @@ on:
       - '.github/scripts/build_item_icons.py'
       - '.github/scripts/apply_client_items.py'
       - '.github/scripts/apply_item_icons.py'
+      - '.github/scripts/apply_item_detail_rms.py'
       - 'assets/client-data/skills.part*'
       - 'assets/client-data/items-core.part*'
       - 'assets/client-data/item-icons-map.part*'
@@ -18,6 +19,7 @@ on:
       - 'assets/client-item-stats.js'
       - 'assets/item-db-optimized.js'
       - 'assets/client-item-icons.js'
+      - 'assets/item-detail-rms.js'
   workflow_dispatch:
 
 permissions:
@@ -52,6 +54,9 @@ jobs:
       - name: Apply item micro icons
         run: python .github/scripts/apply_item_icons.py
 
+      - name: Apply RMS-style item details
+        run: python .github/scripts/apply_item_detail_rms.py
+
       - name: Validate generated files
         run: |
           python -m json.tool assets/client-data/skills.json >/dev/null
@@ -85,11 +90,13 @@ jobs:
           test -s assets/client-data/item-icons.json
           test -s assets/client-item-stats.js
           test -s assets/item-db-optimized.js
+          test -s assets/item-detail-rms.js
           grep -q 'assets/client-items-data.js' index.html
           grep -q 'assets/client-item-stats.js' index.html
           grep -q 'assets/client-items.js' index.html
           grep -q 'assets/item-db-optimized.js' index.html
           grep -q 'assets/client-item-icons.js' index.html
+          grep -q 'assets/item-detail-rms.js' index.html
           grep -q 'window.RZ_CLIENT_ITEMS' assets/client-items-data.js
           grep -q 'window.RZ_ITEM_STAT_OVERLAY' assets/client-item-stats.js
           grep -q 'const DEFAULT_PAGE_SIZE = 25' assets/item-db-optimized.js
@@ -97,6 +104,10 @@ jobs:
           grep -q "mdef: extra.mdef" assets/client-items.js
           grep -q "sellPrice: r.sp" assets/client-items.js
           grep -q "item.mdef!=null?infoRow('MDEF'" index.html
+          grep -q 'rz-rms-sheet' assets/item-detail-rms.js
+          grep -q 'Applicable Jobs' assets/item-detail-rms.js
+          grep -q 'Dropped By' assets/item-detail-rms.js
+          grep -q 'Sold By' assets/item-detail-rms.js
           grep -q 'static.divine-pride.net/images/items/item/' assets/client-item-icons.js
           ! grep -q 'MutationObserver' assets/client-item-icons.js
 
@@ -106,5 +117,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy optimized Zero item database"
+          git commit -m "Deploy RMS-style Zero item detail sheets"
           git push
