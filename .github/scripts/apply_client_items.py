@@ -46,20 +46,24 @@ if old_wire in text:
 elif new_wire not in text:
     raise SystemExit('Could not patch list renderer for item pagination')
 
-# Expand the item infobox with client-side fields when they exist. Drop/source
-# information remains separate and is not inferred from the client.
+# Expand the item infobox with client-side fields and optional server-side
+# pricing fields when a separate verified price overlay provides them.
 old_infobox = """${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${infoRow(t('requiredLevel'),esc(val(item.requiredLevel)))}${infoRow(t('weight'),esc(val(item.weight)))}${item.type==='Card'?infoRow(t('slot'),esc(item.equipmentSlot||t('unknown'))):''}"""
-new_infobox = """${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${item.requiredLevel!=null?infoRow(t('requiredLevel'),esc(val(item.requiredLevel))):''}${item.weight!=null?infoRow(t('weight'),esc(val(item.weight))):''}${item.atk!=null?infoRow('ATK',esc(val(item.atk))):''}${item.matk!=null?infoRow('MATK',esc(val(item.matk))):''}${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}${item.element?infoRow('Element',esc(item.element)):''}${item.slotCount?infoRow('Slots',esc(val(item.slotCount))):''}${item.position?infoRow('Position',esc(item.position)):''}${item.equipmentSlot?infoRow('Equipped on',esc(item.equipmentSlot)):''}"""
+new_infobox = """${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${item.requiredLevel!=null?infoRow(t('requiredLevel'),esc(val(item.requiredLevel))):''}${item.weight!=null?infoRow(t('weight'),esc(val(item.weight))):''}${item.atk!=null?infoRow('ATK',esc(val(item.atk))):''}${item.matk!=null?infoRow('MATK',esc(val(item.matk))):''}${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.buyPrice!=null?infoRow('NPC Buy',esc(val(item.buyPrice))+' Zeny'):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))+' Zeny'):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}${item.element?infoRow('Element',esc(item.element)):''}${item.slotCount!=null&&item.type==='Equipment'?infoRow('Slots',esc(val(item.slotCount))):''}${item.position?infoRow('Position',esc(item.position)):''}${item.equipmentSlot?infoRow('Equipped on',esc(item.equipmentSlot)):''}"""
 if old_infobox in text:
     text = text.replace(old_infobox, new_infobox, 1)
 else:
-    # Upgrade the already-expanded version from the previous deployment.
-    old_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
-    new_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
-    if old_mid in text:
-        text = text.replace(old_mid, new_mid, 1)
-    elif "item.mdef!=null?infoRow('MDEF'" not in text:
-        raise SystemExit("Could not patch item infobox")
+    old_price = "${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))):''}"
+    new_price = "${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.buyPrice!=null?infoRow('NPC Buy',esc(val(item.buyPrice))+' Zeny'):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))+' Zeny'):''}"
+    if old_price in text:
+        text = text.replace(old_price, new_price, 1)
+    elif "item.buyPrice!=null?infoRow('NPC Buy'" not in text:
+        old_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
+        new_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.buyPrice!=null?infoRow('NPC Buy',esc(val(item.buyPrice))+' Zeny'):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))+' Zeny'):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
+        if old_mid in text:
+            text = text.replace(old_mid, new_mid, 1)
+        elif "item.mdef!=null?infoRow('MDEF'" not in text:
+            raise SystemExit("Could not patch item infobox")
 
 # Avoid rendering an empty lead paragraph for the compact client dataset.
 old_lead = '<div class="article-body"><p class="article-lead">${esc(txt(item.description))}</p>${toc('
@@ -86,8 +90,6 @@ for old, new in database_links.items():
     if old in text:
         text = text.replace(old, new, 1)
 
-# Add a dedicated database dispatcher while keeping the existing overview
-# routes (#/items, #/maps, #/skills, ...) intact for guide/navigation links.
 if 'function databaseRouteView(type)' not in text:
     marker = "  function listView(type) {"
     dispatcher = """  function databaseRouteView(type) {
@@ -102,7 +104,6 @@ if 'function databaseRouteView(type)' not in text:
         raise SystemExit('Could not locate listView for database dispatcher')
     text = text.replace(marker, dispatcher + marker, 1)
 
-# Route database hub URLs before the normal overview routes.
 if "hash[0]==='database'&&hash[1]" not in text:
     marker = "    else if(hash[0]==='classes'&&!hash[1]) html=classIndexView();"
     replacement = "    else if(hash[0]==='database'&&hash[1]) html=databaseRouteView(hash[1]);\n" + marker
@@ -110,9 +111,6 @@ if "hash[0]==='database'&&hash[1]" not in text:
         raise SystemExit('Could not locate router insertion point for database routes')
     text = text.replace(marker, replacement, 1)
 
-# Database rows link to canonical detail sheets. Preserve memorial-guide slug
-# fallbacks for old guide links, but prefer the real item/monster database sheet
-# whenever an imported entity exists.
 old_item_route = "    else if(hash[0]==='items'&&hash[1]) html=memorialDatabaseEntityPage('items',hash[1]);"
 new_item_route = "    else if(hash[0]==='items'&&hash[1]) html=getItem(hash[1])?itemDetail(hash[1],false):memorialDatabaseEntityPage('items',hash[1]);"
 if old_item_route in text:
