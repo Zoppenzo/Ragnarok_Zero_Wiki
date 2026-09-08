@@ -1,0 +1,34 @@
+name: Fix Subjugation Essence Pool
+
+on:
+  push:
+    paths:
+      - tools/fix_subjugation_essence_pool.py
+      - .github/workflows/fix-subjugation-essence-pool.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply correction
+        run: python tools/fix_subjugation_essence_pool.py
+      - name: Validate main inline script
+        run: |
+          python - <<'PY'
+          import re, pathlib
+          s=pathlib.Path('index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          pathlib.Path('/tmp/main.js').write_text(max(scripts,key=len),encoding='utf-8')
+          PY
+          node --check /tmp/main.js
+      - name: Commit
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Correct Subjugation Job Essence pool" || exit 0
+          git push
