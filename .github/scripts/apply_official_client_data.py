@@ -5,35 +5,12 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[2]
 
-# Reassemble the official-client skill dataset from small repository-safe chunks.
+# Reassemble the official-client skill dataset from repository-safe chunks.
 parts = [ROOT / f"assets/client-data/skills.part{i}" for i in range(1, 5)]
 packed = "".join(p.read_text(encoding="utf-8").strip() for p in parts)
 raw = zlib.decompress(base64.b64decode(packed)).decode("utf-8")
 skills_json = ROOT / "assets/client-data/skills.json"
 skills_json.write_text(raw, encoding="utf-8")
-
-# Remove the empty Effect column from the runtime-synchronized skill tables.
-sync_path = ROOT / "assets/client-sync.js"
-sync = sync_path.read_text(encoding="utf-8")
-sync = re.sub(
-    r"function makeRow\(r,i,effect\) \{.*?\n    \}",
-    """function makeRow(r,i) {
-      const t=techAt(r,i);
-      return `<tr><td><strong>Lv. ${i+1}</strong></td><td>${t.sp==null?'—':esc(t.sp)}</td><td>${t.range==null?'—':esc(t.range)}</td><td>${esc(t.cast||'—')}</td><td>${esc(t.delay||'—')}</td><td>${esc(t.cd||'—')}</td></tr>`;
-    }""",
-    sync,
-    count=1,
-    flags=re.S,
-)
-sync = sync.replace("      const effects=(isFr() && r.lf && r.lf.length ? r.lf : r.le) || [];\n", "")
-sync = re.sub(r"\s*const old=\[\.\.\.table\.querySelectorAll\('tbody tr'\)\].*?;\n", "", sync, count=1)
-sync = sync.replace(
-    "        table.querySelector('tbody').innerHTML=Array.from({length:max},(_,i)=>makeRow(r,i,effects[i]||old[i]||'')).join('');",
-    "        const effectHeader=table.querySelector('thead tr th:nth-child(2)');\n        if (effectHeader) effectHeader.remove();\n        table.querySelector('tbody').innerHTML=Array.from({length:max},(_,i)=>makeRow(r,i)).join('');",
-)
-sync = sync.replace("<th>${isFr()?'Effet client':'Client effect'}</th>", "")
-sync = sync.replace("Array.from({length:max},(_,i)=>makeRow(r,i,effects[i]||'')).join('')", "Array.from({length:max},(_,i)=>makeRow(r,i)).join('')")
-sync_path.write_text(sync, encoding="utf-8")
 
 # Patch the main single-file wiki.
 index_path = ROOT / "index.html"
@@ -43,13 +20,35 @@ script_tag = '  <script src="assets/client-sync.js"></script>\n'
 if "assets/client-sync.js" not in text:
     text = text.replace("</body>", script_tag + "</body>")
 
-# Remove Effect-by-level from skill pages and rename the section more accurately.
-text = text.replace("Level-by-level effects','Effets par niveau", "Level data','Données par niveau")
-text = text.replace("          <th>${navLabel('Effect','Effet')}</th>\n", "")
-text = text.replace(
-    "${rows.map(([lv,effect,sp,range,cast,delay,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${esc(effect)}</td><td>${sp}</td><td>${range}</td><td>${esc(cast)}</td><td>${esc(delay)}</td><td>${esc(cd)}</td></tr>`).join('')}",
-    "${rows.map(([lv,effect,sp,range,cast,delay,cd])=>`<tr><td><strong>Lv. ${lv}</strong></td><td>${sp}</td><td>${range}</td><td>${esc(cast)}</td><td>${esc(delay)}</td><td>${esc(cd)}</td></tr>`).join('')}",
+# Per-level technical tables are intentionally removed. The infobox already
+# carries SP/range/cast/delay/cooldown summaries; the article section is now
+# reserved for useful Notes instead of repeating a mostly empty table.
+text = re.sub(
+    r"\n  function detailedSkillLevelTable\(sk\) \{.*?\n  \}\n\n  function skillDetail",
+    "\n  function detailedSkillLevelTable(sk) { return ''; }\n\n  function skillDetail",
+    text,
+    count=1,
+    flags=re.S,
 )
+text = text.replace(
+    "            ...(hasDetailedLevels ? [{id:'levels',label:navLabel('Level data','Données par niveau')}] : []),\n",
+    "",
+)
+text = text.replace(
+    "          ${hasDetailedLevels ? detailedSkillLevelTable(sk) : ''}\n\n",
+    "",
+)
+
+# Notes can now be structured as bullet points (sk.noteList) while retaining
+# the old plain-text sk.notes fallback for skills that do not yet have a list.
+old_notes = """          <h2 id=\"notes\">${t('notes')}</h2>
+          <div class=\"notes-box\">${esc(txt(sk.notes))}</div>"""
+new_notes = """          <h2 id=\"notes\">${t('notes')}</h2>
+          <div class=\"notes-box\">${Array.isArray(sk.noteList) && sk.noteList.length
+            ? `<ul>${sk.noteList.map(note=>`<li>${esc(txt(note))}</li>`).join('')}</ul>`
+            : esc(txt(sk.notes))}</div>"""
+if old_notes in text:
+    text = text.replace(old_notes, new_notes, 1)
 
 # Orc Hero is currently active.
 text = text.replace(
@@ -97,4 +96,4 @@ if 'id="orc-hero-raid"' not in text and rewards_heading in text:
 
 text = text.replace("Content audit: 6 Sep 2026.", "Content audit: 8 Sep 2026.")
 index_path.write_text(text, encoding="utf-8")
-print("Official client data prepared and wiki patched.")
+print("Official client data prepared; level tables removed; notes layout enabled.")
