@@ -9870,6 +9870,16 @@ window.RO_DATA = {
       .replace(/\s*\[SP\s+\d+[\s\S]*$/i, '')
       .trim();
 
+    // Canonical Ragnarok glossary terms are never localized.
+    value = value
+      .replace(/\bM\.?ATQ\b/gi, 'MATK')
+      .replace(/\bATQ\b/gi, 'ATK')
+      .replace(/\bMax\s*PV\b/gi, 'Max HP')
+      .replace(/\bMax\s*PM\b/gi, 'Max SP')
+      .replace(/\bPV\b/g, 'HP')
+      .replace(/\bPM\b/g, 'SP')
+      .replace(/\bprécision\b/gi, 'Accuracy');
+
     // Keep the class overview iRO-like: usually one or two short sentences.
     const parts = value.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [];
     if (parts.length > 2) value = parts.slice(0, 2).join(' ').trim();
@@ -9907,29 +9917,18 @@ window.RO_DATA = {
     };
 
     const enEffects = Array.isArray(r.le) ? r.le : [];
-    const frEffects = [];
-    const frText = String(r.df || '');
-    const frRe = /\[Niv\.\s*(\d+)\]\s*([\s\S]*?)(?=\[Niv\.\s*\d+\]|$)/gi;
-    let match;
-    while ((match = frRe.exec(frText))) {
-      frEffects[Number(match[1]) - 1] = String(match[2] || '').trim();
-    }
 
     const rows = [];
     for (let i = 0; i < max; i++) {
-      let en = String(enEffects[i] || '').trim();
-      let fr = String(frEffects[i] || '').trim();
+      let effect = String(enEffects[i] || '').trim();
 
-      // Heal is the only current first-job multi-level skill whose client text
-      // exposes level scaling without listing a separate per-level Effect line.
-      if (r.a === 'AL_HEAL' && !en) {
-        en = `Heal strength: skill-level factor ×${i + 1}; final amount also scales with Base Level, total INT and weapon MATK.`;
-        fr = `Puissance de Heal : facteur de niveau ×${i + 1} ; le montant final dépend aussi du Base Level, de l’INT totale et de la MATK de l’arme.`;
+      // Heal exposes its scaling through the formula rather than separate
+      // client Effect rows, so provide the level factor explicitly.
+      if (r.a === 'AL_HEAL' && !effect) {
+        effect = `Heal strength: Skill Level factor ×${i + 1}; final amount also scales with Base Level, total INT and weapon MATK.`;
       }
 
-      if (!en && fr) en = fr;
-      if (!fr && en) fr = en;
-      const effect = en || fr ? navLabel(en || fr, fr || en) : '—';
+      if (!effect) effect = '—';
 
       rows.push({
         level: i + 1,
@@ -9948,7 +9947,7 @@ window.RO_DATA = {
     const rows = skillLevelEffectRows(sk);
     if (!rows.length) return '';
     return `
-      <h2 id="level-effects">${navLabel('Effects by level','Effets par niveau')}</h2>
+      <h2 id="level-effects" style="clear:both;margin-bottom:10px">${navLabel('Effects by level','Effets par niveau')}</h2>
       <div class="table-wrap"><table class="skill-level-effect-table">
         <thead><tr>
           <th style="width:76px">${navLabel('Level','Niveau')}</th>
