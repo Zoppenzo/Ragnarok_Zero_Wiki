@@ -3760,15 +3760,15 @@ window.RO_DATA = {
 
   function databaseCategoryRows() {
     const rows = [
-      ['monster','#/monsters','assets/database/monster-poring.gif',navLabel('Monster','Monstre'),navLabel('Monster database, drops and spawn locations.','Base des monstres, drops et lieux d’apparition.')],
-      ['item','#/items','assets/database/item-ui.png?v=12',navLabel('Item','Objet'),navLabel('Equipment, consumables and miscellaneous items.','Équipements, consommables et objets divers.')],
-      ['card','#/cards','assets/database/card.png?v=16',navLabel('Card','Card'),navLabel('Card effects, slots and monster sources.','Effets des cartes, emplacements et monstres sources.')],
-      ['affix','#/affixes','assets/database/affix.png?v=13',navLabel('Affix','Affix'),navLabel('Equipment affixes, option slots and value ranges.','Affixes d’équipement, slots d’options et plages de valeurs.')],
-      ['memorial','#/memorial-dungeons','assets/database/memorial-dungeon.png?v=18',navLabel('Memorial Dungeon','Mémorial Donjon'),navLabel('Memorial Dungeon database and documented entries.','Base des Mémorial Donjons et entrées documentées.')],
-      ['map','#/maps','assets/database/map.png?v=16',navLabel('Maps','Maps'),navLabel('Fields, towns, dungeons, monsters and NPCs.','Champs, villes, donjons, monstres et NPCs.')],
-      ['skill','#/skills','assets/database/skill.png?v=19',navLabel('Skill','Compétence'),navLabel('Player skills, prerequisites and class links.','Compétences, prérequis et classes associées.')],
-      ['quest','#/quests','assets/database/quest.png?v=16',navLabel('Quests','Quêtes'),navLabel('Quest index, requirements, steps and rewards.','Index des quêtes, prérequis, étapes et récompenses.')],
-      ['npc','#/npcs','assets/database/npc.png',navLabel('NPC','NPC'),navLabel('NPC locations, services and related quests.','Localisation des NPCs, services et quêtes associées.')]
+      ['monster','#/database/monsters','assets/database/monster-poring.gif',navLabel('Monster','Monstre'),navLabel('Monster database, drops and spawn locations.','Base des monstres, drops et lieux d’apparition.')],
+      ['item','#/database/items','assets/database/item-ui.png?v=12',navLabel('Item','Objet'),navLabel('Equipment, consumables and miscellaneous items.','Équipements, consommables et objets divers.')],
+      ['card','#/database/cards','assets/database/card.png?v=16',navLabel('Card','Card'),navLabel('Card effects, slots and monster sources.','Effets des cartes, emplacements et monstres sources.')],
+      ['affix','#/database/affixes','assets/database/affix.png?v=13',navLabel('Affix','Affix'),navLabel('Equipment affixes, option slots and value ranges.','Affixes d’équipement, slots d’options et plages de valeurs.')],
+      ['memorial','#/database/memorial-dungeons','assets/database/memorial-dungeon.png?v=18',navLabel('Memorial Dungeon','Mémorial Donjon'),navLabel('Memorial Dungeon database and documented entries.','Base des Mémorial Donjons et entrées documentées.')],
+      ['map','#/database/maps','assets/database/map.png?v=16',navLabel('Maps','Maps'),navLabel('Fields, towns, dungeons, monsters and NPCs.','Champs, villes, donjons, monstres et NPCs.')],
+      ['skill','#/database/skills','assets/database/skill.png?v=19',navLabel('Skill','Compétence'),navLabel('Player skills, prerequisites and class links.','Compétences, prérequis et classes associées.')],
+      ['quest','#/database/quests','assets/database/quest.png?v=16',navLabel('Quests','Quêtes'),navLabel('Quest index, requirements, steps and rewards.','Index des quêtes, prérequis, étapes et récompenses.')],
+      ['npc','#/database/npcs','assets/database/npc.png',navLabel('NPC','NPC'),navLabel('NPC locations, services and related quests.','Localisation des NPCs, services et quêtes associées.')]
     ];
     return `<div class="database-category-list database-category-list-fixed">${rows.map(([key,href,img,title,desc])=>{
       const src = asset(img);
@@ -9149,6 +9149,13 @@ window.RO_DATA = {
       `;
   }
 
+  function databaseRouteView(type) {
+    if (['monsters','items','cards','maps','skills','quests','npcs'].includes(type)) return listView(type);
+    if (type === 'affixes') return affixDatabasePage();
+    if (type === 'memorial-dungeons') return memorialDungeonDatabasePage();
+    return notFound();
+  }
+
   function listView(type) {
     const cfg = listConfig[type];
     if (!cfg) return notFound();
@@ -10935,17 +10942,18 @@ window.RO_DATA = {
     else if(hash[0]==='quests'&&hash[1]) html=questDetail(hash[1]);
     else if(hash[0]==='npcs'&&hash[1]) html=npcDetail(hash[1]);
     else if(hash[0]==='guides'&&hash[1]) html=guideDetail(hash[1]);
+    else if(hash[0]==='database'&&hash[1]) html=databaseRouteView(hash[1]);
     else if(hash[0]==='classes'&&!hash[1]) html=classIndexView();
     else if(hash[0]==='crafting'&&hash[1]) html=craftingDetailPage(hash[1]);
     else if(hash[0]==='wiki'&&hash[1]) html=topicDetail(hash[1]);
     else if(hash[0]==='skills'&&!hash[1]) html=skillsOverviewPage();
-    else if(hash[0]==='items'&&hash[1]) html=memorialDatabaseEntityPage('items',hash[1]);
+    else if(hash[0]==='items'&&hash[1]) html=getItem(hash[1])?itemDetail(hash[1],false):memorialDatabaseEntityPage('items',hash[1]);
     else if(hash[0]==='items'&&!hash[1]) html=itemsOverviewPage();
     else if(hash[0]==='cards'&&!hash[1]) html=cardsOverviewPage();
     else if(hash[0]==='affixes'&&!hash[1]) html=affixDatabasePage();
     else if(hash[0]==='memorial-dungeons'&&hash[1]) html=memorialDungeonDetail(hash[1]);
     else if(hash[0]==='memorial-dungeons'&&!hash[1]) html=memorialDungeonDatabasePage();
-    else if(hash[0]==='monsters'&&hash[1]) html=memorialDatabaseEntityPage('monsters',hash[1]);
+    else if(hash[0]==='monsters'&&hash[1]) html=getMonster(hash[1])?monsterDetail(hash[1]):memorialDatabaseEntityPage('monsters',hash[1]);
     else if(hash[0]==='monsters'&&!hash[1]) html=monstersOverviewPage();
     else if(hash[0]==='maps'&&!hash[1]) html=worldMapPage();
     else if(['quests','npcs'].includes(hash[0])) html=listView(hash[0]);
