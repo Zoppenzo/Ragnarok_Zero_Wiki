@@ -4,17 +4,23 @@
   const ICON_BASE = 'https://static.divine-pride.net/images/items/item/';
   const ITEMS = () => (window.RO_DATA && Array.isArray(window.RO_DATA.items) ? window.RO_DATA.items : []);
   let observer = null;
+  let cachedItems = null;
+  let cachedLookup = null;
 
   function maps() {
+    const rows = ITEMS();
+    if (cachedItems === rows && cachedLookup) return cachedLookup;
     const byId = new Map();
     const byName = new Map();
-    for (const item of ITEMS()) {
+    for (const item of rows) {
       const id = Number(item.clientId || item.id);
       if (!Number.isFinite(id) || !item.name) continue;
       byId.set(String(id), item);
       byName.set(String(item.name).trim().toLowerCase(), item);
     }
-    return { byId, byName };
+    cachedItems = rows;
+    cachedLookup = { byId, byName };
+    return cachedLookup;
   }
 
   function resolveItem(anchor, lookup) {
@@ -63,7 +69,7 @@
   function decorateLinks(root = document) {
     const lookup = maps();
     if (!lookup.byId.size) return;
-    for (const a of root.querySelectorAll('a')) {
+    for (const a of root.querySelectorAll('a[href^="#/items/"],a[href^="#/cards/"]')) {
       if (a.dataset.rzItemIcon === '1' || a.closest('.brand')) continue;
       const item = resolveItem(a, lookup);
       if (!item) continue;
@@ -96,7 +102,8 @@
   }
 
   function decorate() {
-    decorateLinks(document);
+    const main = document.querySelector('.main-content') || document;
+    decorateLinks(main);
     decorateHeading();
   }
 
