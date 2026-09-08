@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - '.github/workflows/apply-official-client-data.yml'
+      - '.github/scripts/apply_official_client_data.py'
+      - 'assets/client-data/skills.part*'
   workflow_dispatch:
 
 permissions:
