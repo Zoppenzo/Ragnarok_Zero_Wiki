@@ -14,22 +14,52 @@ if 'assets/client-items-data.js' not in text:
   const DATA = window.RO_DATA;"""
     replacement = """</script>
 <script src="assets/client-items-data.js"></script>
+<script src="assets/client-item-stats.js"></script>
 <script src="assets/client-items.js"></script>
+<script src="assets/item-db-optimized.js"></script>
 <script>
 (() => {
   const DATA = window.RO_DATA;"""
     if marker not in text:
         raise SystemExit("Could not locate RO_DATA/renderer boundary for item scripts")
     text = text.replace(marker, replacement, 1)
+else:
+    if 'assets/client-item-stats.js' not in text:
+        marker = '<script src="assets/client-items-data.js"></script>\n<script src="assets/client-items.js"></script>'
+        replacement = '<script src="assets/client-items-data.js"></script>\n<script src="assets/client-item-stats.js"></script>\n<script src="assets/client-items.js"></script>'
+        if marker not in text:
+            raise SystemExit('Could not insert client item stat overlay')
+        text = text.replace(marker, replacement, 1)
+    if 'assets/item-db-optimized.js' not in text:
+        marker = '<script src="assets/client-items.js"></script>'
+        replacement = '<script src="assets/client-items.js"></script>\n<script src="assets/item-db-optimized.js"></script>'
+        if marker not in text:
+            raise SystemExit('Could not insert optimized item database script')
+        text = text.replace(marker, replacement, 1)
+
+# Use the optimized paginated renderer for Items and Cards. Other searchable
+# databases keep the original renderer.
+old_wire = '    setTimeout(() => wireList(type), 0);'
+new_wire = "    setTimeout(() => { if (!window.RZ_ITEM_DB_OPT?.wire(type)) wireList(type); }, 0);"
+if old_wire in text:
+    text = text.replace(old_wire, new_wire, 1)
+elif new_wire not in text:
+    raise SystemExit('Could not patch list renderer for item pagination')
 
 # Expand the item infobox with client-side fields when they exist. Drop/source
 # information remains separate and is not inferred from the client.
 old_infobox = """${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${infoRow(t('requiredLevel'),esc(val(item.requiredLevel)))}${infoRow(t('weight'),esc(val(item.weight)))}${item.type==='Card'?infoRow(t('slot'),esc(item.equipmentSlot||t('unknown'))):''}"""
-new_infobox = """${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${item.requiredLevel!=null?infoRow(t('requiredLevel'),esc(val(item.requiredLevel))):''}${item.weight!=null?infoRow(t('weight'),esc(val(item.weight))):''}${item.atk!=null?infoRow('ATK',esc(val(item.atk))):''}${item.matk!=null?infoRow('MATK',esc(val(item.matk))):''}${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}${item.element?infoRow('Element',esc(item.element)):''}${item.slotCount?infoRow('Slots',esc(val(item.slotCount))):''}${item.position?infoRow('Position',esc(item.position)):''}${item.equipmentSlot?infoRow('Equipped on',esc(item.equipmentSlot)):''}"""
+new_infobox = """${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${item.requiredLevel!=null?infoRow(t('requiredLevel'),esc(val(item.requiredLevel))):''}${item.weight!=null?infoRow(t('weight'),esc(val(item.weight))):''}${item.atk!=null?infoRow('ATK',esc(val(item.atk))):''}${item.matk!=null?infoRow('MATK',esc(val(item.matk))):''}${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}${item.element?infoRow('Element',esc(item.element)):''}${item.slotCount?infoRow('Slots',esc(val(item.slotCount))):''}${item.position?infoRow('Position',esc(item.position)):''}${item.equipmentSlot?infoRow('Equipped on',esc(item.equipmentSlot)):''}"""
 if old_infobox in text:
     text = text.replace(old_infobox, new_infobox, 1)
-elif "item.atk!=null?infoRow('ATK'" not in text:
-    raise SystemExit("Could not patch item infobox")
+else:
+    # Upgrade the already-expanded version from the previous deployment.
+    old_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
+    new_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
+    if old_mid in text:
+        text = text.replace(old_mid, new_mid, 1)
+    elif "item.mdef!=null?infoRow('MDEF'" not in text:
+        raise SystemExit("Could not patch item infobox")
 
 # Avoid rendering an empty lead paragraph for the compact client dataset.
 old_lead = '<div class="article-body"><p class="article-lead">${esc(txt(item.description))}</p>${toc('
@@ -105,4 +135,4 @@ elif new_monster_route not in text:
     raise SystemExit('Could not patch monster detail routing')
 
 index_path.write_text(text, encoding="utf-8")
-print("Official client item UI and direct database routing applied.")
+print("Official client item UI, pagination and direct database routing applied.")
