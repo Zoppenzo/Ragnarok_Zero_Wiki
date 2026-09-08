@@ -6,12 +6,24 @@
     const style = document.createElement('style');
     style.id = 'rz-item-neutral-style';
     style.textContent = `
-      /* Neutral RMS-style item tables: dark gray theme with light readable cells. */
+      /* Soft slate-gray RMS-style item tables. */
+      .rz-rms-result,
+      .rz-rms-wrap {
+        filter: none !important;
+      }
+      .rz-rms-result {
+        border-radius: 7px !important;
+        overflow: hidden !important;
+        box-shadow: 0 2px 9px rgba(31, 41, 55, .08) !important;
+      }
       .rz-rms-result-title,
       .rz-rms-titlebar {
-        background: #454a50 !important;
+        background: #728092 !important;
         color: #ffffff !important;
-        border-color: #2f3337 !important;
+        border-color: #9ba7b4 !important;
+      }
+      .rz-rms-titlebar {
+        border-radius: 7px 7px 0 0 !important;
       }
       .rz-rms-result-title a,
       .rz-rms-result-title strong,
@@ -19,46 +31,54 @@
       .rz-rms-titlebar h1,
       .rz-rms-titlebar .rz-rms-class,
       .rz-rms-titlebar .rz-rms-id,
-      .rz-rms-titlebar .rz-rms-slot {
+      .rz-rms-titlebar .rz-rms-slot,
+      .rz-rms-titlebar .rz-rms-name,
+      .rz-rms-titlebar .rz-rms-class-link,
+      .rz-rms-titlebar a {
         color: #ffffff !important;
       }
 
       .rz-rms-result-sheet,
       .rz-rms-sheet {
-        background: #f2f3f4 !important;
-        color: #202122 !important;
-        border-color: #676d73 !important;
+        background: #f7f9fb !important;
+        color: #27323c !important;
+        border-color: #aeb8c3 !important;
       }
       .rz-rms-result-sheet th,
       .rz-rms-result-sheet td,
       .rz-rms-sheet th,
       .rz-rms-sheet td {
-        border-color: #676d73 !important;
+        border-color: #aeb8c3 !important;
       }
       .rz-rms-result-sheet th,
       .rz-rms-sheet th {
-        background: #5b6167 !important;
-        color: #ffffff !important;
+        background: #d9e0e7 !important;
+        color: #263442 !important;
+        font-weight: 700 !important;
       }
       .rz-rms-result-sheet td,
       .rz-rms-sheet td {
-        background: #f5f5f5 !important;
-        color: #202122 !important;
+        background: #fbfcfd !important;
+        color: #27323c !important;
       }
       .rz-rms-result-sheet tr:nth-child(even) td,
       .rz-rms-sheet tr:nth-child(even) td {
-        background: #e9eaec !important;
+        background: #f0f3f6 !important;
       }
       .rz-rms-result-sheet code,
       .rz-rms-sheet code {
-        color: #202122 !important;
+        color: #27323c !important;
+      }
+      .rz-rms-table-scroll {
+        border-radius: 0 0 7px 7px !important;
       }
 
       /* Missing database relations must stand out clearly. */
       .rz-rms-red,
       .rz-rms-result-sheet .rz-rms-red,
-      .rz-rms-sheet .rz-rms-red {
-        color: #d40000 !important;
+      .rz-rms-sheet .rz-rms-red,
+      .rz-rms-missing {
+        color: #c40000 !important;
         font-weight: 700 !important;
       }
     `;
