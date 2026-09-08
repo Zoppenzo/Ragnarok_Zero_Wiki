@@ -3210,7 +3210,7 @@ window.RO_DATA = {
       home: 'Accueil', monsters: 'Monstres', items: 'Objets', cards: 'Cartes', maps: 'Maps', classes: 'Classes', skills: 'Compétences', quests: 'Quêtes', npcs: 'NPCs', leveling: 'Leveling', tools: 'Outils',
       nav: 'Navigation', database: 'Base de données', guides: 'Guides', gettingStarted: 'Bien débuter', mechanics: 'Mécaniques de jeu', questIndex: 'Index des quêtes',
       article: 'Article', discussion: 'Discussion', search: 'Rechercher', searchPlaceholder: 'Rechercher dans Ragnarok Wiki',
-      subtitle: 'English / Français', footer: 'Certaines bases de données sont encore en cours de documentation. Le statut de vérification est indiqué par section.', sidebarNote: 'Projet de référence communautaire pour Ragnarok Zero: Global. Audit du contenu : 6 sept. 2026.',
+      subtitle: 'English / Français', footer: 'Certaines bases de données sont encore en cours de documentation. Le statut de vérification est indiqué par section.', sidebarNote: 'Projet de référence communautaire pour Ragnarok Zero: Global. Audit du contenu : 8 sept. 2026.',
       fromWiki: 'De Ragnarok Wiki', welcome: 'Bienvenue sur Ragnarok Wiki',
       welcomeText: "Une référence communautaire bilingue pour Ragnarok Zero: Global. Les noms des éléments du jeu restent en anglais ; l'interface et les explications peuvent passer entre anglais et français.",
       prototype: 'État de la base de données',
@@ -7721,6 +7721,7 @@ window.RO_DATA = {
       <div class="table-wrap"><table>
         <thead><tr>
           <th>Pet</th>
+          <th>${navLabel('Bonus','Bonus')}</th>
           <th>Taming Item</th>
           <th>${navLabel('Drop source','Source de drop')}</th>
         </tr></thead>
@@ -9313,14 +9314,12 @@ window.RO_DATA = {
         </aside>
         <div class="article-body">
           <p class="article-lead">${navLabel('Enables the use of Basic Interface Skills.','Permet l’utilisation des fonctions d’interface de base.')}</p>
-          ${toc([{id:'levels',label:navLabel('Levels','Niveaux')},{id:'formula',label:navLabel('Damage formula','Formule des dégâts')},{id:'notes',label:t('notes')},{id:'sources',label:navLabel('Sources','Sources')}])}
+          ${toc([{id:'levels',label:navLabel('Levels','Niveaux')},{id:'notes',label:t('notes')},{id:'sources',label:navLabel('Sources','Sources')}])}
           <h2 id="levels">${navLabel('Levels','Niveaux')}</h2>
           <div class="table-wrap"><table><thead><tr><th>${t('level')}</th><th>${navLabel('Unlocked function','Fonction débloquée')}</th><th>SP</th><th>${navLabel('Range','Portée')}</th></tr></thead><tbody>
             ${rows.map(([lv,effect])=>`<tr><td>Lv. ${lv}</td><td>${esc(String(effect))}</td><td>0</td><td>1</td></tr>`).join('')}
           </tbody></table></div>
           <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div>${navLabel('Basic Skill Lv.8 has no named function.','Basic Skill Lv.8 n’a aucune fonction nommée.')}</div></div>
-          <h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
-          <div class="notes-box">${navLabel('Basic Skill does not inflict damage, so it has no direct damage formula.','Basic Skill n’inflige pas de dégâts ; elle n’a donc pas de formule de dégâts directe.')}</div>
           <h2 id="notes">${t('notes')}</h2>
           <div class="notes-box">${navLabel('Basic Skill reaches level 9. Job Change is unlocked at Lv.9.','Basic Skill atteint le niveau 9. Job Change est débloqué au Lv.9.')}</div>
           ${skillClassNav(sk)}
@@ -9850,10 +9849,7 @@ window.RO_DATA = {
       return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
         <div class="notice info-notice"><svg class="notice-icon"><use href="#i-info"></use></svg><div><strong>${navLabel('Formula unavailable','Formule indisponible')}</strong><br>${navLabel(data.en,data.fr)}</div></div>`;
     }
-    if (data.type === 'none') {
-      return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
-        <div class="notes-box">${navLabel(data.en,data.fr)}</div>`;
-    }
+    if (data.type === 'none') return '';
     return `<h2 id="formula">${navLabel('Damage formula','Formule des dégâts')}</h2>
       <div class="notes-box">
         <p><code>${esc(data.formula)}</code></p>
@@ -9953,11 +9949,10 @@ window.RO_DATA = {
     const rows = skillLevelEffectRows(sk);
     if (!rows.length) return '';
     return `
-      <h2 id="level-effects" style="clear:both;margin-bottom:10px">${navLabel('Effects by level','Effets par niveau')}</h2>
+      <h2 id="level-effects" style="clear:both;margin-bottom:10px">${navLabel('Level data','Données par niveau')}</h2>
       <div class="table-wrap"><table class="skill-level-effect-table">
         <thead><tr>
           <th style="width:76px">${navLabel('Level','Niveau')}</th>
-          <th>${navLabel('Effect','Effet')}</th>
           <th style="width:62px">SP</th>
           <th style="width:72px">${navLabel('Range','Portée')}</th>
           <th style="width:150px">Cast</th>
@@ -9966,7 +9961,6 @@ window.RO_DATA = {
         </tr></thead>
         <tbody>${rows.map(row=>`<tr>
           <td><strong>Lv. ${row.level}</strong></td>
-          <td>${esc(row.effect)}</td>
           <td>${esc(row.sp)}</td>
           <td>${esc(row.range)}</td>
           <td>${esc(row.cast)}</td>
@@ -9998,10 +9992,12 @@ window.RO_DATA = {
       ? `<div class="infobox-image" style="height:96px"><img src="${sk.image}" alt="${esc(sk.name)}" width="34" height="34"></div>`
       : imagePlaceholder('skill');
 
-    const rows = wikiSkillLevelData(sk.id);
-    const hasDetailedLevels = !!rows;
+    const rows = null; // legacy manual table intentionally bypassed
+    const hasDetailedLevels = false;
     const effectLevelRows = skillLevelEffectRows(sk);
     const hasEffectLevels = effectLevelRows.length > 0;
+    const hasClientData = !!(window.RZ_CLIENT_SKILL_FOR && window.RZ_CLIENT_SKILL_FOR(sk));
+    const hasFormulaSection = skillDamageFormulaData(sk).type !== 'none';
     const summarizeByLevel = (values, fallback) => {
       if (!rows) return fallback;
       const unique = [...new Set(values.map(v=>String(v)))];
@@ -10040,11 +10036,11 @@ window.RO_DATA = {
         <div class="article-body">
           <p class="article-lead">${esc(skillShortDescription(sk))}</p>
           ${toc([
-            ...(hasEffectLevels ? [{id:'level-effects',label:navLabel('Effects by level','Effets par niveau')}] : []),
-            {id:'formula',label:navLabel('Damage formula','Formule des dégâts')},
+            ...(hasEffectLevels ? [{id:'level-effects',label:navLabel('Level data','Données par niveau')}] : []),
+            ...(hasFormulaSection ? [{id:'formula',label:navLabel('Damage formula','Formule des dégâts')}] : []),
             {id:'prereq',label:t('prerequisites')},
             ...(Array.isArray(sk.noteList) && sk.noteList.length ? [{id:'notes',label:t('notes')}] : []),
-            ...(hasDetailedLevels ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
+            ...(hasClientData ? [{id:'sources',label:navLabel('Sources','Sources')}] : [])
           ])}
 
           ${hasEffectLevels ? detailedSkillLevelTable(sk) : ''}
@@ -10060,7 +10056,7 @@ window.RO_DATA = {
 
           ${sk.id==='first-aid' ? `<h2>${navLabel('Skill Level','Niveau de compétence')}</h2><div class="table-wrap"><table><thead><tr><th>${navLabel('Skill Level','Niveau')}</th><th>${navLabel('HP Recovered','HP récupérés')}</th><th>${navLabel('SP Consumed','SP consommés')}</th></tr></thead><tbody><tr><td>1</td><td>5</td><td>3</td></tr></tbody></table></div>` : ''}
 
-          ${hasDetailedLevels ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
+          ${hasClientData ? `<h2 id="sources">${navLabel('Sources','Sources')}</h2><div class="source-box"><ul>
             <li><a href="https://midgardhub.com/tools/skills" target="_blank" rel="noopener">MidgardHub — Skill Simulator</a></li>
             <li><a href="${sk.classId==='mage'?'https://roz.prontera.info/skills/planner?class=wizard':(sk.classId==='archer'?'https://roz.prontera.info/skills/planner?class=hunter':(sk.classId==='merchant'?'https://rz.fharr.com/db/skilltree':(sk.classId==='thief'?'https://roz.prontera.info/skills/planner?class=assassin':(sk.classId==='acolyte'?'https://roz.prontera.info/skills/planner?class=high-priest':'https://roz.prontera.info/skills/planner?class=crusader'))))}" target="_blank" rel="noopener">Prontera.info — Skill Planner</a></li>
             <li><a href="https://rz.fharr.com/db/skilltree" target="_blank" rel="noopener">RagZero / fharr — extracted skill-tree reference</a></li>
@@ -11752,8 +11748,7 @@ window.RO_DATA = {
     preparePage();
   });
 
-  const pageObserver = new MutationObserver(() => preparePage());
-  pageObserver.observe(app, { childList: true, subtree: true });
+  // Full-app subtree observer removed; explicit lifecycle refreshes are used.
 
   const languageObserver = new MutationObserver(() => {
     if (editMode) leaveEditMode();
