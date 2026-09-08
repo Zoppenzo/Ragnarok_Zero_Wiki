@@ -7,7 +7,11 @@ on:
       - '.github/scripts/apply_official_client_data.py'
       - '.github/scripts/fix_skill_glossary_layout.py'
       - '.github/scripts/audit_cleanup.py'
+      - '.github/scripts/build_client_items.py'
+      - '.github/scripts/apply_client_items.py'
       - 'assets/client-data/skills.part*'
+      - 'assets/client-data/items.part*'
+      - 'assets/client-items.js'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Apply official client data
+      - name: Apply official client skill data
         run: python .github/scripts/apply_official_client_data.py
 
       - name: Apply skill glossary and layout rules
@@ -29,6 +33,12 @@ jobs:
 
       - name: Apply audit cleanup
         run: python .github/scripts/audit_cleanup.py
+
+      - name: Build official client item data
+        run: python .github/scripts/build_client_items.py
+
+      - name: Apply official client item UI
+        run: python .github/scripts/apply_client_items.py
 
       - name: Validate generated files
         run: |
@@ -46,11 +56,21 @@ jobs:
           grep -q "const hasFormulaSection = skillDamageFormulaData(sk).type !== 'none';" index.html
           ! grep -q "const pageObserver = new MutationObserver" index.html
 
+          python -m json.tool assets/client-data/items.json >/dev/null
+          test -s assets/client-data/items.json
+          test -s assets/client-items-data.js
+          grep -q 'assets/client-items-data.js' index.html
+          grep -q 'assets/client-items.js' index.html
+          grep -q '"n":"Knife"' assets/client-data/items.json
+          grep -q '"n":"Poring Card"' assets/client-data/items.json
+          grep -q 'window.RZ_CLIENT_ITEMS' assets/client-items-data.js
+          grep -q "item.atk!=null?infoRow('ATK'" index.html
+
       - name: Commit deployment
         run: |
           git config user.name "Ragnarok Zero Wiki Bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy official Zero skill tables and audit cleanup"
+          git commit -m "Deploy official Zero skill and item data"
           git push
