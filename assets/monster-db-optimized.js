@@ -96,11 +96,15 @@
       count.textContent=`${rows.length.toLocaleString()} ${langFr()?'résultats':'results'}`;
       output.innerHTML=`<div class="rz-monster-db-results">${visible.map(m=>window.RZ_MONSTER_SHEET_HTML(m)).join('')}</div>`;
       pager.innerHTML=pagerHtml(state.page,pages,rows.length,state.pageSize);
-      queueMicrotask(()=>window.RZ_DECORATE_MONSTER_SPRITES?.(output));
+      requestAnimationFrame(()=>{
+        window.RZ_COLOR_MONSTER_ELEMENTS?.(output);
+        window.RZ_DECORATE_MONSTER_SPRITES?.(output);
+      });
       pager.querySelectorAll('[data-page]').forEach(btn=>btn.addEventListener('click',()=>{state.page=Number(btn.dataset.page)||1;refresh();filters.scrollIntoView({block:'start'});}));
     };
 
-    search.addEventListener('input',()=>{state.page=1;refresh();});
+    let searchTimer=0;
+    search.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{state.page=1;refresh();},120);});
     raceFilter?.addEventListener('change',()=>{state.page=1;refresh();});
     bossCheck.addEventListener('change',()=>{state.page=1;refresh();});
     mvpCheck.addEventListener('change',()=>{state.page=1;refresh();});
