@@ -78,9 +78,11 @@
   function wire(type){
     if(type!=='monsters'||typeof window.RZ_MONSTER_SHEET_HTML!=='function')return false;
     ensureStyles();
-    // Keep client-only identities in RO_DATA for future enrichment, but do not
-    // show entries whose public sheet would contain only ??? / No Result.
-    const source=(Array.isArray(window.RO_DATA?.monsters)?window.RO_DATA.monsters:[]).filter(hasMeaningfulData);
+    // Every monster with a real client monster sprite remains searchable, even
+    // when the server-side values are still unknown. Non-client placeholders
+    // still need meaningful data before they are shown.
+    const source=(Array.isArray(window.RO_DATA?.monsters)?window.RO_DATA.monsters:[])
+      .filter(m=>m?.clientRosterPresent===true||hasMeaningfulData(m));
     const search=document.getElementById('list-search');
     const raceFilter=document.getElementById('list-filter');
     const count=document.getElementById('result-count');
