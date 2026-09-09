@@ -34,19 +34,23 @@
     wrap.dataset.rzMemorial='1';
   }
 
-  function fixDropIcons(wrap){
-    // Synchronous decoration: the icon node is inserted in the same rendering turn
-    // as the monster sheet, so there is no artificial text-first/icon-later flash.
-    window.RZ_DECORATE_ITEM_ICONS?.(wrap);
+  function wrapsIn(root){
+    if(!root) return [];
+    if(root.matches?.('.rz-monster-sheet-wrap')) return [root];
+    return [...(root.querySelectorAll?.('.rz-monster-sheet-wrap')||[])];
   }
 
   function decorate(root=document){
-    root.querySelectorAll?.('.rz-monster-sheet-wrap').forEach(wrap=>{
+    const wraps=wrapsIn(root);
+    if(!wraps.length) return;
+    for(const wrap of wraps){
       fixUnknowns(wrap);
       fixSkillRates(wrap);
       fixMemorialFrame(wrap);
-      fixDropIcons(wrap);
-    });
+    }
+    // One scoped pass for the current rendered page instead of one full-page
+    // scan per monster and per icon insertion.
+    window.RZ_DECORATE_ITEM_ICONS?.(root);
   }
 
   if(!document.getElementById(STYLE_ID)){
@@ -68,8 +72,16 @@
   const run=()=>decorate(document);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
   window.addEventListener('hashchange',()=>queueMicrotask(run));
+
   const observer=new MutationObserver(mutations=>{
-    if(mutations.some(m=>m.addedNodes?.length)) run();
+    for(const mutation of mutations){
+      for(const node of mutation.addedNodes||[]){
+        if(node.nodeType!==Node.ELEMENT_NODE) continue;
+        if(node.matches?.('.rz-monster-sheet-wrap') || node.querySelector?.('.rz-monster-sheet-wrap')){
+          decorate(node);
+        }
+      }
+    }
   });
   const observe=()=>observer.observe(document.querySelector('.main-content')||document.body,{childList:true,subtree:true});
   if(document.body)observe();else document.addEventListener('DOMContentLoaded',observe,{once:true});
