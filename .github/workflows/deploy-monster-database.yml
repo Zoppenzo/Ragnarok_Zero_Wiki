@@ -8,6 +8,7 @@ on:
       - 'assets/client-monsters-data.js'
       - 'assets/client-monsters.js'
       - 'assets/monster-detail-rms.js'
+      - 'assets/monster-db-optimized.js'
   workflow_dispatch:
 
 permissions:
@@ -29,18 +30,26 @@ jobs:
           test -s assets/client-monsters-data.js
           test -s assets/client-monsters.js
           test -s assets/monster-detail-rms.js
+          test -s assets/monster-db-optimized.js
           grep -q 'assets/client-monsters-data.js' index.html
           grep -q 'assets/client-monsters.js' index.html
           grep -q 'assets/monster-detail-rms.js' index.html
+          grep -q 'assets/monster-db-optimized.js' index.html
           grep -q '1193,ALARM,88,0,1,60,c_tower3:145;c_tower4:20' assets/client-monsters-data.js
           grep -q "window.RO_DATA.monsters = rows" assets/client-monsters.js
           grep -q "const races = \['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'\]" assets/client-monsters.js
           grep -q 'RZ_RENDER_RMS_MONSTER_DETAIL' index.html
           grep -q 'rz-monster-rms-pending' index.html
+          grep -q 'RZ_MONSTER_SHEET_HTML' assets/monster-detail-rms.js
           grep -q 'Mob-ID#' assets/monster-detail-rms.js
           grep -q 'On Maps' assets/monster-detail-rms.js
           grep -q 'Monster Skills' assets/monster-detail-rms.js
           grep -q 'static.divine-pride.net/images/mobs/png/' assets/monster-detail-rms.js
+          grep -q 'const DEFAULT_PAGE_SIZE = 5' assets/monster-db-optimized.js
+          grep -q 'const PAGE_SIZES = \[5, 10, 25, 50\]' assets/monster-db-optimized.js
+          grep -q 'rz-monster-db-results' assets/monster-db-optimized.js
+          grep -q 'RZ_MONSTER_DB_OPT' assets/monster-db-optimized.js
+          grep -q 'RZ_MONSTER_DB_OPT?.wire(type)' index.html
           python - <<'PY'
           html=open('index.html',encoding='utf-8').read()
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
@@ -48,6 +57,8 @@ jobs:
           assert 'RZ_RENDER_RMS_MONSTER_DETAIL' in renderer
           assert 'article-with-infobox' not in renderer
           assert 'stats-grid' not in renderer
+          list_view=html.split('function listView(type)',1)[1].split('function wireList(type)',1)[0]
+          assert 'RZ_MONSTER_DB_OPT?.wire(type)' in list_view
           PY
 
       - name: Commit deployment
@@ -56,5 +67,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy RMS monster details"
+          git commit -m "Deploy paginated RMS monster database"
           git push
