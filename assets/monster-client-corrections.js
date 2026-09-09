@@ -184,6 +184,53 @@
   upsert({id:3974,memorial:true,name:'Thief Bug Egg (Memorial)'});
   [3810,3811,3812,3813,3814,3815,3816,20076,20077,20078,20079,20080].forEach(id=>upsert({id,memorial:true}));
 
+  // Recover map locations and spawn counts directly from the supplied client's
+  // navigation monster table. Match by exact Mob-ID first, avoiding internal-name
+  // differences such as ORC_/ORK_ and suffix variants. Existing special maps are
+  // preserved; client Navi only fills missing maps or adds missing map entries.
+  const rawNav = Array.isArray(window.RZ_CLIENT_MONSTERS_RAW) ? window.RZ_CLIENT_MONSTERS_RAW : [];
+  const mapLabels = Array.isArray(window.RZ_CLIENT_MONSTER_MAP_LABELS) ? window.RZ_CLIENT_MONSTER_MAP_LABELS : [];
+  const mapIndex = window.RZ_CLIENT_MONSTER_MAP_INDEX && typeof window.RZ_CLIENT_MONSTER_MAP_INDEX === 'object' ? window.RZ_CLIENT_MONSTER_MAP_INDEX : {};
+  const navById = new Map();
+  for (const entry of rawNav) {
+    if (!Array.isArray(entry) || entry.length < 7) continue;
+    const mobId = Number(entry[0]);
+    const rawMaps = Array.isArray(entry[6]) ? entry[6] : [];
+    if (!Number.isFinite(mobId) || !rawMaps.length) continue;
+    const bucket = navById.get(mobId) || new Map();
+    for (const pair of rawMaps) {
+      if (!Array.isArray(pair) || !pair.length) continue;
+      const mapId = String(pair[0] ?? '').trim();
+      if (!mapId) continue;
+      const rawAmount = Number(pair[1]);
+      const amount = Number.isFinite(rawAmount) && rawAmount > 0 ? rawAmount : null;
+      const idx = mapIndex[mapId];
+      const mapName = Number.isInteger(idx) && mapLabels[idx] ? mapLabels[idx] : mapId;
+      const previous = bucket.get(mapId);
+      if (!previous || (amount ?? 0) > (previous.amount ?? 0)) {
+        bucket.set(mapId,{mapId,mapName,amount,respawn:null,verified:true,clientVerified:true,source:'client-navigation'});
+      }
+    }
+    if (bucket.size) navById.set(mobId,bucket);
+  }
+  for (const monster of rows) {
+    const mobId = Number(monster?.clientId ?? monster?.id);
+    const navMaps = navById.get(mobId);
+    if (!navMaps?.size) continue;
+    const merged = new Map();
+    for (const existing of (Array.isArray(monster.maps) ? monster.maps : [])) {
+      const mapId = String(existing?.mapId ?? '').trim();
+      if (mapId) merged.set(mapId,existing);
+    }
+    for (const [mapId,navMap] of navMaps) {
+      const existing = merged.get(mapId);
+      if (!existing) merged.set(mapId,navMap);
+      else if (existing.amount == null && navMap.amount != null) merged.set(mapId,{...existing,amount:navMap.amount,clientVerified:true,source:existing.source||'client-navigation'});
+    }
+    monster.maps=[...merged.values()];
+    monster.clientNavigationRecovered=true;
+  }
+
   rows.forEach(m => { m.skills = cleanSkills(m.skills); });
   rows.sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),'en',{sensitivity:'base'}));
   window.RZ_CLIENT_MONSTERS = rows;
