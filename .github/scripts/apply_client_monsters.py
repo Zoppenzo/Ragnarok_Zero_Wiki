@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260909-monster-audit2'
+version='20260909-monster-audit3'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-identity.js',
@@ -54,4 +54,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official client + Zero consensus wired. Audited Memorial/Nordfeld identities, client-validated Zero animated sprites and final monster UI fixes are loaded.')
+print('Official client + Zero consensus wired. Audited Memorial/Nordfeld identities, animated Zero sprites, unknown markers, drop-icon fallbacks and final monster UI fixes are loaded.')
