@@ -37,7 +37,7 @@
     return lookup.byName.get(name) || null;
   }
 
-  function makeIcon(item, size) {
+  function makeIcon(item, size, priority='auto') {
     const id = Number(item.clientId || item.id);
     if (!Number.isFinite(id)) return null;
     const img = document.createElement('img');
@@ -47,7 +47,7 @@
     img.alt = '';
     img.decoding = 'async';
     img.loading = 'eager';
-    try { img.fetchPriority = 'high'; } catch (_) {}
+    try { img.fetchPriority = priority; } catch (_) {}
     img.dataset.fallback = DP_ICON(id);
     img.style.cssText = `width:${size}px;height:${size}px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;display:inline-block;flex:0 0 ${size}px;`;
     let fallbackUsed=false;
@@ -55,18 +55,20 @@
       if(!fallbackUsed && img.dataset.fallback){fallbackUsed=true;img.src=img.dataset.fallback;return;}
       img.remove();
     });
-    // Start the request immediately. Do not wait for IntersectionObserver/viewport entry.
+    // Eager means immediate for this rendered page only. We no longer scan
+    // hidden/off-page database results, so this does not preload the whole DB.
     img.src = ZERO_ICON(id);
     return img;
   }
 
   function decorateLinks(root = document) {
+    if(!root?.querySelectorAll) return;
     const lookup = maps();
     for (const a of root.querySelectorAll('a[href^="#/items/"],a[href^="#/cards/"],a[data-rz-drop-item-id]')) {
       if (a.dataset.rzItemIcon === '1' || a.closest('.brand')) continue;
       const item = resolveItem(a, lookup);
       if (!item) continue;
-      const icon = makeIcon(item, 22);
+      const icon = makeIcon(item, 22, 'auto');
       if (!icon) continue;
       a.dataset.rzItemIcon = '1';
       a.style.display = 'inline-flex';
@@ -85,7 +87,7 @@
     if (!item) return;
     const h1 = document.querySelector('.main-content h1');
     if (!h1 || h1.dataset.rzItemIcon === '1') return;
-    const icon = makeIcon(item, 32);
+    const icon = makeIcon(item, 32, 'high');
     if (!icon) return;
     h1.dataset.rzItemIcon = '1';
     h1.style.display = 'flex';
@@ -94,13 +96,23 @@
     h1.insertBefore(icon, h1.firstChild);
   }
 
-  function decorate(root) {
-    const main = root || document.querySelector('.main-content') || document;
-    decorateLinks(main);
-    decorateHeading();
+  function currentPageScope() {
+    // The optimized Monster DB only puts the current pagination slice in this
+    // host. Restricting decoration here guarantees that page 2/3/... icons are
+    // requested only when the user actually opens those pages.
+    const monsterResults=document.querySelector('#list-results .rz-monster-db-results, #list-output .rz-monster-db-results');
+    if(monsterResults) return monsterResults;
+    return document.querySelector('.main-content') || document;
   }
 
-  // Expose direct sources so renderers can put the icon in their first HTML frame.
+  function decorate(root) {
+    const scoped = !!root;
+    const scope = root?.querySelectorAll ? root : currentPageScope();
+    decorateLinks(scope);
+    // A scoped call from a monster sheet/result page must not rescan unrelated UI.
+    if(!scoped) decorateHeading();
+  }
+
   window.RZ_ITEM_ICON_SOURCES = id => ({primary:ZERO_ICON(id),fallback:DP_ICON(id)});
   window.RZ_DECORATE_ITEM_ICONS = decorate;
 
