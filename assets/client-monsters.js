@@ -16,7 +16,6 @@
   const MVP_IDS = new Set([1038,1039,1046,1086,1087,1112,1115,1147,1150,1157,1159,1190,1251,1252,1272,1312,1373,1389,1418,1492,1511,1583,1630,1688]);
   const BOSS_IDS = new Set([1089,1090,1091,1092,1093,1096,1120,1262,1283,1295,1302,1582]);
 
-  // Decoded directly from the Zero Global client navigation files.
   const CLIENT_NAV_BOSS_TYPES = new Set([
     'AMON_RA','BLOODY_KNIGHT','B_FLAME_GHOST','B_ICE_GHOST','DARK_LORD','DRAKE','EDDGA',
     'EXTRA_JOKER','FLAME_GHOST','GENERAL_ORC','GOLDEN_BUG','ICE_GHOST','JENIFFER','MAYA',
@@ -29,11 +28,13 @@
     SWORD_FISH:'Swordfish', NERAID:'Nereid', GIANT_HONET:'Giant Hornet'
   };
 
-  const pretty = value => displayNames[value] || String(value || '').replace(/^C[12]_/, '').replace(/_{1,2}\d+$/, '').replace(/_+/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+  const pretty = value => displayNames[value] || String(value || '').replace(/^C[12]_/, '').replace(/_{1,2}\d+$/, '').replace(/_+$/,'').replace(/_+/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
   const canonicalKey = internal => {
     let key=String(internal || '').replace(/^C[12]_/, '').replace(/_{1,2}\d+$/, '').replace(/_+$/, '');
     return aliases[key] || key;
   };
+  const cells=value=>Number.isFinite(Number(value))?`${Number(value)} cells`:null;
+  const milliseconds=value=>Number.isFinite(Number(value))?`${Number(value)} ms`:null;
 
   const mapsByKey = new Map();
   for (const r of raw) {
@@ -85,13 +86,14 @@
       attackMin:fv('attackMin'), attackMax:fv('attackMax'), magicAttackMin:fv('magicAttackMin'), magicAttackMax:fv('magicAttackMax'),
       def:overlay.def??fv('def'), mdef:overlay.mdef??fv('mdef'), hit:fv('hit'), flee:fv('flee'),
       str:fv('str'), agi:fv('agi'), vit:fv('vit'), int:fv('int'), dex:fv('dex'), luk:fv('luk'),
-      // These remain n/a unless a Ragnarok Zero database supplies them. No RMS/Renewal fallback.
-      walkSpeed:null, attackDelay:null, delayAfterHit:null,
-      attackRange:fv('attackRange'), spellRange:null, sightRange:null,
+      // Only Zero database values are allowed here; absent fields stay n/a.
+      walkSpeed:milliseconds(fv('moveSpeedMs')), attackDelay:null, delayAfterHit:null,
+      attackRange:cells(fv('attackRange')), spellRange:null, sightRange:null,
       elementModifiers:overlay.elementModifiers&&typeof overlay.elementModifiers==='object'?overlay.elementModifiers:{},
       aggressive:modes.includes('Aggressive')?true:null, boss:isBoss, mvp:isMvp, modes, clientBossType, clientNavigationType,
       propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
-      image:null, description:{en:'',fr:''}, drops:Array.isArray(consensus.drops)?consensus.drops:[], maps, skills:[], notes:{en:'',fr:''},
+      image:null, description:{en:'',fr:''}, drops:Array.isArray(consensus.drops)?consensus.drops:[], maps,
+      skills:Array.isArray(consensus.skills)?consensus.skills:[], notes:{en:'',fr:''},
       verified:false, clientVerified:true, fieldMeta:fields,
       zeroOverlayApplied:Object.keys(overlay).length>0,
       zeroConsensusApplied:Object.keys(consensus).length>0
