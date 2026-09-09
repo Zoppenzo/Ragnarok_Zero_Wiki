@@ -175,7 +175,7 @@
     const droppedBy = item.droppedBy || 'No Result';
     const soldBy = item.soldBy || item.npcVendors || null;
     const refinable = has(item.refinable) ? (item.refinable ? 'Yes' : 'No') : 'n/a';
-    const description = item.description || 'No description available.';
+    const description = item.description || 'n/a';
 
     return `<section class="rz-rms-result">
       <div class="rz-rms-result-title">

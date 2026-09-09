@@ -136,7 +136,7 @@
     const script = item.itemScript || item.script || 'n/a';
     const droppedBy = item.droppedBy || 'No Result';
     const soldBy = item.soldBy || item.npcVendors || 'No Result';
-    const description = item.description || 'No description available.';
+    const description = item.description || 'n/a';
     const combat = topCombatPairs(item);
     const route = item.type === 'Card' ? 'cards' : 'items';
 
@@ -188,7 +188,6 @@
           </tr>
         </tbody>
       </table>
-      <div class="rz-rms-note">Client-side fields come from the Zero client. Buy/Sell, NPC vendors, Item Script and drops remain n/a until verified server-side data is imported.</div>
     </div>`;
 
     requestAnimationFrame(() => window.RZ_DECORATE_ITEM_ICONS?.());
