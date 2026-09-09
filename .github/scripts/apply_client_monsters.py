@@ -4,12 +4,13 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260909-zero-consensus1'
+version='20260909-client-fields2'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-identity.js',
     'assets/monster-zero-stats.js',
     'assets/monster-zero-consensus.js',
+    'assets/rms-monster-behavior.js',
     'assets/client-monsters.js',
     'assets/client-monster-sprites.js',
     'assets/monster-detail-rms.js',
@@ -17,8 +18,7 @@ script_paths=[
     'assets/monster-mvp-style.js',
     'assets/monster-db-optimized.js',
 ]
-# Remove both current scripts and the retired RateMyServer/Renewal layer.
-for path in script_paths + ['assets/rms-monster-behavior.js']:
+for path in script_paths:
     s=re.sub(rf'\s*<script src="{re.escape(path)}(?:\?v=[^"]+)?"></script>\s*','\n',s)
 scripts=[f'<script src="{path}?v={version}"></script>' for path in script_paths]
 
@@ -50,4 +50,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official client monster data + Zero-only cross-database consensus wired; RateMyServer/Renewal monster layer disabled.')
+print('Official client + Zero consensus wired. RMS-compatible data is loaded only for Walk Speed; unsupported timing/range/attribute rows stay removed.')
