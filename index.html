@@ -3152,6 +3152,7 @@ window.RO_DATA = {
 <script src="assets/client-items.js"></script>
 <script src="assets/client-monsters-data.js"></script>
 <script src="assets/client-monsters.js"></script>
+<script src="assets/monster-detail-rms.js"></script>
 <script src="assets/item-db-optimized.js"></script>
 <script>
 (() => {
@@ -9237,32 +9238,8 @@ window.RO_DATA = {
   function monsterDetail(id) {
     const m = getMonster(id);
     if (!m) return notFound();
-    const drops = m.drops.length ? m.drops.map(d => {
-      const item = getItem(d.itemId);
-      return `<tr><td>${entityCell(item?.name||d.itemId,`#/items/${d.itemId}`,item?.type==='Card'?'card':'item')}</td><td>${val(d.amount)}</td><td>${val(d.rate)}</td><td>${badge(d.verified)}</td></tr>`;
-    }).join('') : `<tr><td colspan="4">${t('none')}</td></tr>`;
-    const spawns = m.maps.length ? m.maps.map(mm => `<tr><td><a href="#/maps/${mm.mapId}">${esc(getMap(mm.mapId)?.name||mm.mapId)}</a></td><td>${val(mm.amount)}</td><td>${val(mm.respawn)}</td><td>${badge(mm.verified)}</td></tr>`).join('') : `<tr><td colspan="4">${t('none')}</td></tr>`;
-    return `${breadcrumbs([{label:t('monsters'),href:'#/monsters'},{label:m.name}])}${demoAlert()}
-      <article class="article-with-infobox">
-        <div class="article-heading"><h1>${icon('monster')}${esc(m.name)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
-        <aside class="infobox">
-          <div class="infobox-title">${esc(m.name)}<span class="infobox-subtitle">Monster</span></div>
-          ${imagePlaceholder('monster')}
-          <table><tbody>
-            ${infoRow(t('level'),esc(val(m.level)))}${infoRow(t('hp'),esc(val(m.hp)))}${infoRow(t('race'),esc(m.race))}${infoRow(t('element'),esc(m.element)+(m.elementLevel?` ${m.elementLevel}`:''))}${infoRow(t('size'),esc(m.size))}${infoRow(t('aggressive'),yesNo(m.aggressive))}${infoRow(t('boss'),yesNo(m.boss))}${infoRow(t('mvp'),yesNo(m.mvp))}
-          </tbody></table>
-          <div class="infobox-footer">${badge(m.verified)}</div>
-        </aside>
-        <div class="article-body">
-          <p class="article-lead">${esc(txt(m.description))}</p>
-          ${toc([{id:'stats',label:t('stats')},{id:'drops',label:t('drops')},{id:'spawn',label:t('spawn')},{id:'notes',label:t('notes')}])}
-          <h2 id="stats">${t('stats')}</h2>
-          <div class="stats-grid">${statCell(t('level'),m.level)}${statCell(t('hp'),m.hp)}${statCell(t('sp'),m.sp)}${statCell(t('attack'),m.attackMin==null&&m.attackMax==null?null:`${val(m.attackMin)}–${val(m.attackMax)}`)}${statCell(t('defense'),m.def)}${statCell(t('mdef'),m.mdef)}${statCell(t('hit'),m.hit)}${statCell(t('flee'),m.flee)}${statCell(t('baseExp'),m.baseExp)}${statCell(t('jobExp'),m.jobExp)}${statCell(t('race'),m.race)}${statCell(t('size'),m.size)}</div>
-          <h2 id="drops">${t('drops')}</h2><div class="table-wrap"><table><thead><tr><th>${t('items')}</th><th>${t('amount')}</th><th>${t('dropRate')}</th><th>${t('status')}</th></tr></thead><tbody>${drops}</tbody></table></div>
-          <h2 id="spawn">${t('spawn')}</h2><div class="table-wrap"><table><thead><tr><th>${t('map')}</th><th>${t('amount')}</th><th>${t('respawn')}</th><th>${t('status')}</th></tr></thead><tbody>${spawns}</tbody></table></div>
-          <h2 id="notes">${t('notes')}</h2><div class="notes-box">${esc(txt(m.notes))}</div>
-        </div>
-      </article>`;
+    queueMicrotask(() => window.RZ_RENDER_RMS_MONSTER_DETAIL?.());
+    return `<div class="rz-monster-rms-pending" data-monster-id="${esc(m.id)}"></div>`;
   }
 
   function itemDetail(id, cardRoute=false) {
