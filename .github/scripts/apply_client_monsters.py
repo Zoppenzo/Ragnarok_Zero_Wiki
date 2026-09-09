@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260909-grf-audit1'
+version='20260909-monster-audit2'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-identity.js',
@@ -13,24 +13,16 @@ script_paths=[
     'assets/rms-monster-behavior.js',
     'assets/client-monsters.js',
     'assets/monster-client-corrections.js',
-    'assets/client-monster-sprite-data-01.js',
-    'assets/client-monster-sprite-data-02.js',
-    'assets/client-monster-sprite-data-03.js',
-    'assets/client-monster-sprite-data-04.js',
-    'assets/client-monster-sprite-data-05.js',
-    'assets/client-monster-sprite-data-06.js',
-    'assets/client-monster-sprite-data-07.js',
-    'assets/client-monster-sprite-data-08.js',
-    'assets/client-monster-sprite-data-09.js',
-    'assets/client-monster-sprite-data-10.js',
-    'assets/client-monster-sprite-data-11.js',
+    'assets/monster-audit-20260909.js',
     'assets/client-monster-sprites.js',
     'assets/monster-detail-rms.js',
     'assets/monster-element-colors.js',
     'assets/monster-mvp-style.js',
+    'assets/monster-final-fixes.js',
     'assets/monster-db-optimized.js',
 ]
-for path in script_paths:
+legacy_sprite_paths=[f'assets/client-monster-sprite-data-{i:02d}.js' for i in range(1,12)]
+for path in script_paths+legacy_sprite_paths:
     s=re.sub(rf'\s*<script src="{re.escape(path)}(?:\?v=[^"]+)?"></script>\s*','\n',s)
 scripts=[f'<script src="{path}?v={version}"></script>' for path in script_paths]
 
@@ -62,4 +54,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official client + Zero consensus wired. Client-confirmed Memorial/Nordfeld identities and embedded GRF sprites are loaded after the base monster dataset.')
+print('Official client + Zero consensus wired. Audited Memorial/Nordfeld identities, client-validated Zero animated sprites and final monster UI fixes are loaded.')
