@@ -8,10 +8,11 @@ scripts = [
     '<script src="assets/client-monsters-data.js"></script>',
     '<script src="assets/client-monsters.js"></script>',
     '<script src="assets/monster-detail-rms.js"></script>',
+    '<script src="assets/monster-db-optimized.js"></script>',
 ]
 
-# Remove stale duplicates first, then place the monster loaders after the item
-# client loader and before the main application closes over RO_DATA.
+# Remove stale duplicates first, then place the monster data + shared RMS
+# renderers before the application closes over RO_DATA.
 for tag in scripts:
     s = s.replace(tag + '\n', '').replace(tag, '')
 
@@ -21,8 +22,20 @@ if marker not in s:
 insert = marker + '\n' + '\n'.join(scripts)
 s = s.replace(marker, insert, 1)
 
-# The search database stays a compact list. A clicked monster gets one canonical
-# RMS-style detail renderer, instead of the old article/infobox page.
+# Database -> Monsters uses the same detailed RMS sheet as individual monster
+# pages, with its own pagination. Items/Cards keep their optimized renderer.
+item_wire = "    setTimeout(() => { if (!window.RZ_ITEM_DB_OPT?.wire(type)) wireList(type); }, 0);"
+monster_wire = "    setTimeout(() => { if (window.RZ_MONSTER_DB_OPT?.wire(type)) return; if (!window.RZ_ITEM_DB_OPT?.wire(type)) wireList(type); }, 0);"
+legacy_wire = '    setTimeout(() => wireList(type), 0);'
+if item_wire in s:
+    s = s.replace(item_wire, monster_wire, 1)
+elif legacy_wire in s:
+    s = s.replace(legacy_wire, monster_wire, 1)
+elif monster_wire not in s:
+    raise SystemExit('Could not wire paginated monster database renderer')
+
+# A clicked monster uses one canonical RMS-style detail renderer instead of the
+# old article/infobox page.
 canonical = '''  function monsterDetail(id) {
     const m = getMonster(id);
     if (!m) return notFound();
