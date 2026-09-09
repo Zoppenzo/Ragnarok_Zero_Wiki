@@ -16,7 +16,8 @@ const files=[
   'assets/rms-monster-behavior.js',
   'assets/client-monsters.js',
   'assets/monster-client-corrections.js',
-  'assets/monster-audit-20260909.js'
+  'assets/monster-audit-20260909.js',
+  'assets/monster-instance-maps.js'
 ];
 for(const rel of files){
   const p=path.join(root,rel);
@@ -58,6 +59,7 @@ const visible=monsters.filter(useful);
 const incomplete=visible.map(m=>({
   id:Number(m.clientId||m.id),internalName:m.internalName||'',name:m.name||'',missing:missing(m),
   memorial:/^MD_/i.test(String(m.internalName||'')),
+  instanceLabel:m.instanceLabel||null,
   dwarf:/BOULDERDWARF|NORDIUM|PORING_GEM|APARGREL/i.test(String(m.internalName||''))
 })).filter(x=>x.missing.length).sort((a,b)=>b.missing.length-a.missing.length||a.id-b.id);
 
@@ -101,6 +103,6 @@ const lines=[
 if(!contradictions.length)lines.push('None.');
 else contradictions.forEach(x=>lines.push(`- **#${x.id} ${x.name} (${x.internalName})** — ${Object.entries(x.diff).map(([k,v])=>`${k}: wiki=${v.wiki}, client=${v.client}`).join('; ')}`));
 lines.push('','## Incomplete visible monsters','');
-incomplete.forEach(x=>lines.push(`- **#${x.id} ${x.name} (${x.internalName})** — ${x.missing.join(', ')}`));
+incomplete.forEach(x=>lines.push(`- **#${x.id} ${x.name} (${x.internalName})** — ${x.missing.join(', ')}${x.instanceLabel?` · instance: ${x.instanceLabel}`:''}`));
 fs.writeFileSync(path.join(root,'audit/monster-data-audit.md'),lines.join('\n')+'\n');
 console.log(JSON.stringify(summary,null,2));
