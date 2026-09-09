@@ -53,32 +53,37 @@ if old_wire in text:
 elif new_wire not in text:
     raise SystemExit('Could not patch list renderer for item pagination')
 
-# Expand the item infobox with client-side fields and optional server-side
-# pricing fields when a separate verified price overlay provides them.
+# Expand the legacy item infobox when it still exists. Once the canonical RMS
+# renderer has replaced the legacy detail markup, these legacy-only patches are
+# intentionally skipped so repeated workflow runs remain idempotent.
+canonical_rms = 'rz-rms-pending' in text and 'RZ_RENDER_RMS_ITEM_DETAIL' in text
 old_infobox = """${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${infoRow(t('requiredLevel'),esc(val(item.requiredLevel)))}${infoRow(t('weight'),esc(val(item.weight)))}${item.type==='Card'?infoRow(t('slot'),esc(item.equipmentSlot||t('unknown'))):''}"""
 new_infobox = """${infoRow(t('type'),esc(item.type))}${infoRow(t('subtype'),esc(item.subtype||t('unknown')))}${item.requiredLevel!=null?infoRow(t('requiredLevel'),esc(val(item.requiredLevel))):''}${item.weight!=null?infoRow(t('weight'),esc(val(item.weight))):''}${item.atk!=null?infoRow('ATK',esc(val(item.atk))):''}${item.matk!=null?infoRow('MATK',esc(val(item.matk))):''}${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.buyPrice!=null?infoRow('NPC Buy',esc(val(item.buyPrice))+' Zeny'):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))+' Zeny'):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}${item.element?infoRow('Element',esc(item.element)):''}${item.slotCount!=null&&item.type==='Equipment'?infoRow('Slots',esc(val(item.slotCount))):''}${item.position?infoRow('Position',esc(item.position)):''}${item.equipmentSlot?infoRow('Equipped on',esc(item.equipmentSlot)):''}"""
-if old_infobox in text:
-    text = text.replace(old_infobox, new_infobox, 1)
-else:
-    old_price = "${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))):''}"
-    new_price = "${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.buyPrice!=null?infoRow('NPC Buy',esc(val(item.buyPrice))+' Zeny'):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))+' Zeny'):''}"
-    if old_price in text:
-        text = text.replace(old_price, new_price, 1)
-    elif "item.buyPrice!=null?infoRow('NPC Buy'" not in text:
-        old_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
-        new_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.buyPrice!=null?infoRow('NPC Buy',esc(val(item.buyPrice))+' Zeny'):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))+' Zeny'):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
-        if old_mid in text:
-            text = text.replace(old_mid, new_mid, 1)
-        elif "item.mdef!=null?infoRow('MDEF'" not in text:
-            raise SystemExit("Could not patch item infobox")
+if not canonical_rms:
+    if old_infobox in text:
+        text = text.replace(old_infobox, new_infobox, 1)
+    else:
+        old_price = "${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))):''}"
+        new_price = "${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.buyPrice!=null?infoRow('NPC Buy',esc(val(item.buyPrice))+' Zeny'):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))+' Zeny'):''}"
+        if old_price in text:
+            text = text.replace(old_price, new_price, 1)
+        elif "item.buyPrice!=null?infoRow('NPC Buy'" not in text:
+            old_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
+            new_mid = "${item.def!=null?infoRow('DEF',esc(val(item.def))):''}${item.mdef!=null?infoRow('MDEF',esc(val(item.mdef))):''}${item.buyPrice!=null?infoRow('NPC Buy',esc(val(item.buyPrice))+' Zeny'):''}${item.sellPrice!=null?infoRow('Sell Price',esc(val(item.sellPrice))+' Zeny'):''}${item.weaponLevel!=null?infoRow('Weapon Level',esc(val(item.weaponLevel))):''}"
+            if old_mid in text:
+                text = text.replace(old_mid, new_mid, 1)
+            elif "item.mdef!=null?infoRow('MDEF'" not in text:
+                raise SystemExit("Could not patch item infobox")
 
-# Avoid rendering an empty lead paragraph for the compact client dataset.
-old_lead = '<div class="article-body"><p class="article-lead">${esc(txt(item.description))}</p>${toc('
-new_lead = '<div class="article-body">${item.description?`<p class="article-lead">${esc(txt(item.description))}</p>`:\'\'}${toc('
-if old_lead in text:
-    text = text.replace(old_lead, new_lead, 1)
-elif "item.description?`<p class=\"article-lead\"" not in text:
-    raise SystemExit("Could not patch empty item description rendering")
+# Avoid rendering an empty lead paragraph for the compact client dataset when
+# the legacy detail page is still present.
+if not canonical_rms:
+    old_lead = '<div class="article-body"><p class="article-lead">${esc(txt(item.description))}</p>${toc('
+    new_lead = '<div class="article-body">${item.description?`<p class="article-lead">${esc(txt(item.description))}</p>`:\'\'}${toc('
+    if old_lead in text:
+        text = text.replace(old_lead, new_lead, 1)
+    elif "item.description?`<p class=\"article-lead\"" not in text:
+        raise SystemExit("Could not patch empty item description rendering")
 
 # The homepage Ragnarok Database box must open the searchable database for each
 # entity type instead of the explanatory overview pages.
