@@ -112,8 +112,8 @@ jobs:
           rms_meta_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[1].rstrip().rstrip(';')
           rms=json.loads(rms_payload)
           rms_meta=json.loads(rms_meta_payload)
-          assert len(rms) >= 230
-          assert rms_meta['complete'] >= 230
+          assert len(rms) >= 250
+          assert rms_meta['complete'] >= 250
           assert rms_meta['requested'] >= rms_meta['complete']
           expected={
               '1002':('Very Slow','Short','1 cells','10 cells','12 cells'),
@@ -121,6 +121,9 @@ jobs:
               '1191':('Very Fast','Very Short','1 cells','10 cells','12 cells'),
               '1192':('Slow','Very Short','1 cells','10 cells','12 cells'),
               '1001':('Slow','Average','1 cells','10 cells','12 cells'),
+              '1020':('Immovable','Average','4 cells','10 cells','12 cells'),
+              '1047':('Immovable','n/a','non-attacker','10 cells','12 cells'),
+              '1068':('Immovable','Average','7 cells','10 cells','12 cells'),
           }
           for mob_id, want in expected.items():
               row=rms[mob_id]
