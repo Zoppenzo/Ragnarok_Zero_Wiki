@@ -4,6 +4,23 @@
   const PAGE_SIZES=[5,10,25,50];
   const langFr=()=> (document.documentElement.lang||'').toLowerCase().startsWith('fr');
   const num=value=>value==null||value===''?null:(Number.isFinite(Number(value))?Number(value):null);
+  const meaningful=value=>{
+    if(value===null||value===undefined)return false;
+    const s=String(value).trim();
+    return s!==''&&!/^(?:n\/?a|\?\?\?|—|no result)$/i.test(s);
+  };
+  const hasMeaningfulData=m=>{
+    if(!m||typeof m!=='object')return false;
+    const scalarKeys=[
+      'level','hp','baseExp','jobExp','race','size','element','elementLevel',
+      'attackMin','attackMax','magicAttackMin','magicAttackMax','def','mdef',
+      'hit','flee','walkSpeed'
+    ];
+    if(scalarKeys.some(key=>meaningful(m[key])))return true;
+    if(['maps','drops','skills','modes'].some(key=>Array.isArray(m[key])&&m[key].length>0))return true;
+    const mods=m.elementModifiers;
+    return !!(mods&&typeof mods==='object'&&Object.values(mods).some(meaningful));
+  };
 
   function pagerHtml(page,pages,total,pageSize){
     const start=total?(page-1)*pageSize+1:0;
@@ -52,8 +69,6 @@
   }
 
   function decorateVisible(output){
-    // Only the HTML currently inside the paginated result container is touched.
-    // No whole-document scan and no background MutationObserver.
     window.RZ_COLOR_MONSTER_ELEMENTS?.(output);
     window.RZ_DECORATE_MONSTER_SPRITES?.(output);
     window.RZ_DECORATE_MONSTER_MVP?.(output);
@@ -63,7 +78,9 @@
   function wire(type){
     if(type!=='monsters'||typeof window.RZ_MONSTER_SHEET_HTML!=='function')return false;
     ensureStyles();
-    const source=Array.isArray(window.RO_DATA?.monsters)?window.RO_DATA.monsters:[];
+    // Keep client-only identities in RO_DATA for future enrichment, but do not
+    // show entries whose public sheet would contain only ??? / No Result.
+    const source=(Array.isArray(window.RO_DATA?.monsters)?window.RO_DATA.monsters:[]).filter(hasMeaningfulData);
     const search=document.getElementById('list-search');
     const raceFilter=document.getElementById('list-filter');
     const count=document.getElementById('result-count');
@@ -128,8 +145,6 @@
       count.textContent=`${rows.length.toLocaleString()} ${langFr()?'résultats':'results'}`;
       output.innerHTML=`<div class="rz-monster-db-results">${visible.map(m=>window.RZ_MONSTER_SHEET_HTML(m)).join('')}</div>`;
       pager.innerHTML=pagerHtml(state.page,pages,rows.length,state.pageSize);
-
-      // Synchronous, scoped pass: only the current page's 5/10/25/50 records.
       decorateVisible(output);
 
       pager.querySelectorAll('[data-page]').forEach(btn=>btn.addEventListener('click',()=>{
