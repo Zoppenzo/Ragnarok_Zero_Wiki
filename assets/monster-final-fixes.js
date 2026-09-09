@@ -60,6 +60,9 @@
       .rz-monster-sheet-wrap-memorial>.rz-monster-sheet{border-color:#8057ad!important;box-shadow:inset 0 0 0 1px #d8c0ef!important}
       .rz-monster-sheet-wrap-memorial .rz-monster-title{background:linear-gradient(#eee1fb,#c9ace4)!important;color:#44275f!important;border-color:#8057ad!important}
       .rz-monster-sheet-wrap-memorial .rz-monster-title a{color:#44275f!important}
+      .rz-monster-drop-grid{justify-items:start!important}
+      .rz-monster-drop{justify-self:start!important;justify-content:flex-start!important;width:max-content!important;max-width:100%;gap:5px!important;white-space:nowrap}
+      .rz-monster-drop small{margin-left:0!important;white-space:nowrap}
     `;
     document.head.appendChild(style);
   }
