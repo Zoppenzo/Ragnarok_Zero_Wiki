@@ -67,8 +67,9 @@ jobs:
           grep -q 'window.RZ_MONSTER_ZERO_CONSENSUS=' assets/monster-zero-consensus.js
           grep -q 'zeroConsensus' assets/client-monsters.js
           ! grep -q 'rmsBehavior' assets/client-monsters.js
-          grep -q "walkSpeed:null" assets/client-monsters.js
-          grep -q "attackRange:fv('attackRange')" assets/client-monsters.js
+          grep -q "walkSpeed:milliseconds(fv('moveSpeedMs'))" assets/client-monsters.js
+          grep -q "attackRange:cells(fv('attackRange'))" assets/client-monsters.js
+          grep -q 'skills:Array.isArray(consensus.skills)' assets/client-monsters.js
           grep -q 'magicAttackMin' assets/client-monsters.js
           grep -q 'fieldMeta:fields' assets/client-monsters.js
           grep -q 'elementLevel:elementLevel' assets/client-monsters.js
@@ -111,12 +112,24 @@ jobs:
           assert len(consensus) >= 230, len(consensus)
           assert meta['twrozPages'] >= 200, meta
           assert meta['pronteraPages'] >= 80, meta
+          assert meta['coverage']['attackMin'] >= 200, meta
+          assert meta['coverage']['magicAttackMin'] >= 200, meta
+          assert meta['coverage']['hit'] >= 200, meta
+          assert meta['coverage']['agi'] >= 200, meta
           p=consensus['1002']
           assert p['fields']['hp']['value'] == 55
           assert p['fields']['attackMin']['value'] == 13
           assert p['fields']['attackMax']['value'] == 17
+          assert p['fields']['magicAttackMin']['value'] == 2
+          assert p['fields']['magicAttackMax']['value'] == 4
+          assert p['fields']['hit']['value'] == 203
+          assert p['fields']['flee']['value'] == 178
+          assert len(p['skills']) >= 2
           j=next(x for x in p['drops'] if x.get('itemId')==909)
           assert j['rate'] == 70 and not j['conflict']
+          apple=next(x for x in p['drops'] if x.get('itemId')==512)
+          assert apple['rate'] == 10 and apple['conflict'] is True
+          assert isinstance(apple['sources'].get('RagnaDex'), list)
           card=next(x for x in p['drops'] if x.get('itemId')==4001)
           assert card['conflict'] is True, card
           assert card['sources'].get('TWRoZ') == 0.2
