@@ -1,0 +1,1 @@
+Reproducible official Ragnarok Zero item description payload reconstructed from the supplied client iteminfo_enUS.lub. The deployment builder verifies the canonical SHA-256 and record count before generating the public overlay.
