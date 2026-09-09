@@ -3,6 +3,7 @@
   const raw = Array.isArray(window.RZ_CLIENT_MONSTERS_RAW) ? window.RZ_CLIENT_MONSTERS_RAW : [];
   const identity = window.RZ_CLIENT_MONSTER_IDENTITY && typeof window.RZ_CLIENT_MONSTER_IDENTITY === 'object' ? window.RZ_CLIENT_MONSTER_IDENTITY : {};
   const aliases = window.RZ_CLIENT_MONSTER_ALIASES && typeof window.RZ_CLIENT_MONSTER_ALIASES === 'object' ? window.RZ_CLIENT_MONSTER_ALIASES : {};
+  const zeroStats = window.RZ_MONSTER_ZERO_STATS && typeof window.RZ_MONSTER_ZERO_STATS === 'object' ? window.RZ_MONSTER_ZERO_STATS : {};
   if (!window.RO_DATA || !Object.keys(identity).length) return;
 
   const races = ['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'];
@@ -57,15 +58,18 @@
     const elementIndex=((propertyCode % 20)+20)%20;
     const elementLevel=Math.floor(propertyCode/20);
     const maps=[...(mapsByKey.get(internal)?.values?.() || [])];
+    const overlay=zeroStats[String(id)] || {};
     const isMvp=MVP_IDS.has(id);
     const isBoss=!isMvp && BOSS_IDS.has(id);
     rows.push({
       id:String(id), clientId:id, spriteId:id, internalName:internal, name:pretty(internal), aliases:[],
-      level:Number.isFinite(level)?level:null, hp:null, sp:null, baseExp:null, jobExp:null,
+      level:Number.isFinite(level)?level:null, hp:overlay.hp??null, sp:null, baseExp:overlay.baseExp??null, jobExp:overlay.jobExp??null,
       race:races[raceCode] || 'n/a', element:elements[elementIndex] || 'n/a', elementLevel:elementLevel || null,
-      size:sizes[sizeCode] || 'n/a', attackMin:null, attackMax:null, def:null, mdef:null, hit:null, flee:null,
+      size:sizes[sizeCode] || 'n/a', attackMin:null, attackMax:null, def:overlay.def??null, mdef:overlay.mdef??null, hit:null, flee:null,
+      elementModifiers:overlay.elementModifiers&&typeof overlay.elementModifiers==='object'?overlay.elementModifiers:{},
       aggressive:null, boss:isBoss, mvp:isMvp, propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
-      image:null, description:{en:'',fr:''}, drops:[], maps, skills:[], notes:{en:'',fr:''}, verified:false, clientVerified:true
+      image:null, description:{en:'',fr:''}, drops:[], maps, skills:[], notes:{en:'',fr:''}, verified:false, clientVerified:true,
+      zeroOverlayApplied:Object.keys(overlay).length>0
     });
   }
 
