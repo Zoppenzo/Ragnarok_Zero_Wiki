@@ -73,10 +73,6 @@
       .rz-monster-wide-title{font-size:15px!important;line-height:1.1!important;padding:4px 5px!important}
       .rz-monster-section-title{font-size:14px!important;line-height:1.1!important;margin:-2px -4px 2px!important;padding:3px 4px!important}
 
-      /* Warm orange backdrop, playing the same visual role as RMS' darker blue. */
-      .rz-monster-db-results{background:#c98f5a!important;padding:12px 10px!important;border:1px solid #a66c38!important;border-radius:3px!important}
-      .rz-monster-sheet-wrap:not(.rz-monster-sheet-wrap-mvp):not(.rz-monster-sheet-wrap-memorial){background:#c98f5a!important;padding:5px!important;border:1px solid #a66c38!important;border-radius:3px!important;box-shadow:0 1px 3px rgba(92,52,24,.18)!important}
-
       .rz-monster-subtable{table-layout:fixed!important}
       .rz-monster-subtable th,.rz-monster-subtable td{padding:2px 4px!important;line-height:1.12!important}
       .rz-monster-left-block{width:27%!important}
