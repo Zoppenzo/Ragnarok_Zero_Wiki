@@ -16,30 +16,35 @@
 
   // Display labels extracted from the supplied Ragnarok Zero client
   // SkillID.lub + SkillInfoList_enUS.lub. These do not prove that a monster
-  // uses the skill; they only replace external/internal NPC_* labels when a
-  // monster skill entry is already present in the Zero consensus layer.
+  // uses the skill; they only replace external/internal labels when a monster
+  // skill entry is already present in the Zero consensus layer.
   const clientNpcSkillNames = {
     NPC_ALLHEAL:'Full Heal',
     NPC_ALL_STAT_DOWN:'All Stats Down',
     NPC_ANTIMAGIC:'Deadzone',
+    NPC_ARMORBRAKE:'Armor Break',
     NPC_ARROWSTORM:'Tempestade de Flechas',
     NPC_CLOUD_KILL:'Killing Cloud',
     NPC_COMET:'Comet',
     NPC_CRITICALWOUND:'Critical Wounds',
     NPC_DAMAGE_HEAL:'Convert Damage to Heal',
+    NPC_DARKNESSATTACK:'Dark Attribute Attack',
     NPC_DEADLYCURSE2:'Wide Deadly Curse',
     NPC_DEFENDER:'Defender',
     NPC_DRAGONBREATH:"Dragon's Breath",
     NPC_DRAGONFEAR:'Dragon Fear',
     NPC_EARTHQUAKE:'Earthquake',
     NPC_ELECTRICWALK:'Electric Walk',
+    NPC_EMOTION:'Emotion',
     NPC_EVILLAND:'Evil Land',
     NPC_EVILLAND2:'Demonic Evil Land',
     NPC_FATALMENACE:'Fatal Menace',
+    NPC_FIREATTACK:'Fire Attribute Attack',
     NPC_FIRESTORM:'Fire storm',
     NPC_FIREWALK:'Fire Walk',
     NPC_FLAMECROSS:'Flame cross',
     NPC_GRADUAL_GRAVITY:'Gravity Increase',
+    NPC_GROUNDATTACK:'Earth Attribute Attack',
     NPC_GROUNDDRIVE:'Ground Drive',
     NPC_HALLUCINATIONWALK:'Hallucination Walk',
     NPC_HELLJUDGEMENT:"Hell's Judgement",
@@ -57,6 +62,8 @@
     NPC_MAXPAIN:'Max Pain',
     NPC_MILLENNIUMSHIELD:'Millenium Shield',
     NPC_MOVE_COORDINATE:'Position Shift',
+    NPC_PIERCINGATT:'Piercing Attack',
+    NPC_POISON:'Poison',
     NPC_PSYCHIC_WAVE:'Psychic Wave',
     NPC_PULSESTRIKE:'Pulse Strike',
     NPC_RAINOFMETEOR:'Rain of Meteor',
@@ -65,8 +72,10 @@
     NPC_SLOWCAST:'Slow Cast',
     NPC_SR_CURSEDCIRCLE:'Cursed Circle',
     NPC_STONESKIN:'Stone Skin',
+    NPC_SUMMONSLAVE:'Summon Slave',
     NPC_VAMPIRE_GIFT:"Vampire's Gift",
     NPC_VENOMFOG:'Venom fog',
+    NPC_WATERATTACK:'Water Attribute Attack',
     NPC_WIDEBLEEDING:'Bloody Party',
     NPC_WIDEBLEEDING2:'Demonic Mass Bleeding',
     NPC_WIDEBODYBURNNING:'Wide area burnning',
@@ -93,7 +102,8 @@
     NPC_WIDESTUN2:'Demonic Mass Stun',
     NPC_WIDESUCK:'Wide bloodsucking',
     NPC_WIDEWEB:'Wide web',
-    NPC_WIDE_DEEP_SLEEP:'Wide area deep sleep'
+    NPC_WIDE_DEEP_SLEEP:'Wide area deep sleep',
+    NPC_WINDATTACK:'Wind Attribute Attack'
   };
   const normalizeMonsterSkill = skill => {
     if (!skill || typeof skill !== 'object') return skill;
