@@ -1,6 +1,23 @@
 (() => {
   'use strict';
   const STYLE_ID='rz-monster-final-fixes-style';
+  const MEMORIAL_MVP_IDS=new Set([3810,3901,3975]);
+
+  function applyMemorialMvpClassification(){
+    const rows=window.RO_DATA?.monsters;
+    if(!Array.isArray(rows)) return;
+    for(const monster of rows){
+      const id=Number(monster?.clientId??monster?.id);
+      if(!MEMORIAL_MVP_IDS.has(id)) continue;
+      monster.mvp=true;
+      monster.boss=true;
+      monster.memorial=true;
+      const modes=Array.isArray(monster.modes)?monster.modes:[];
+      if(!modes.includes('Boss Type')) modes.unshift('Boss Type');
+      monster.modes=modes;
+    }
+  }
+  applyMemorialMvpClassification();
 
   function monsterForWrap(wrap){
     const title=wrap?.querySelector?.('.rz-monster-title');
@@ -41,6 +58,7 @@
   }
 
   function decorate(root=document){
+    applyMemorialMvpClassification();
     const wraps=wrapsIn(root);
     if(!wraps.length) return;
     for(const wrap of wraps){
