@@ -21,8 +21,6 @@
   }
 
   function fixSkillRates(wrap){
-    // Skill use percentages are server AI data and are not present in the supplied client.
-    // Keep skill name + confirmed level only.
     wrap.querySelectorAll?.('.rz-monster-skill-grid small').forEach(node=>{
       if(/%\s*$/.test(String(node.textContent||''))) node.remove();
     });
@@ -37,10 +35,9 @@
   }
 
   function fixDropIcons(wrap){
-    // Monster sheets are rendered asynchronously after the generic item-icon pass.
-    // Run it again once their drop links actually exist.
-    queueMicrotask(()=>window.RZ_DECORATE_ITEM_ICONS?.(wrap));
-    requestAnimationFrame(()=>window.RZ_DECORATE_ITEM_ICONS?.(wrap));
+    // Synchronous decoration: the icon node is inserted in the same rendering turn
+    // as the monster sheet, so there is no artificial text-first/icon-later flash.
+    window.RZ_DECORATE_ITEM_ICONS?.(wrap);
   }
 
   function decorate(root=document){
@@ -69,10 +66,10 @@
 
   window.RZ_DECORATE_MONSTER_FINAL=decorate;
   const run=()=>decorate(document);
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else queueMicrotask(run);
-  window.addEventListener('hashchange',()=>requestAnimationFrame(run));
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+  window.addEventListener('hashchange',()=>queueMicrotask(run));
   const observer=new MutationObserver(mutations=>{
-    if(mutations.some(m=>m.addedNodes?.length)) requestAnimationFrame(run);
+    if(mutations.some(m=>m.addedNodes?.length)) run();
   });
   const observe=()=>observer.observe(document.querySelector('.main-content')||document.body,{childList:true,subtree:true});
   if(document.body)observe();else document.addEventListener('DOMContentLoaded',observe,{once:true});
