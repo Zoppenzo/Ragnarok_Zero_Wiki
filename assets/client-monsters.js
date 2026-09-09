@@ -5,6 +5,7 @@
   const aliases = window.RZ_CLIENT_MONSTER_ALIASES && typeof window.RZ_CLIENT_MONSTER_ALIASES === 'object' ? window.RZ_CLIENT_MONSTER_ALIASES : {};
   const zeroStats = window.RZ_MONSTER_ZERO_STATS && typeof window.RZ_MONSTER_ZERO_STATS === 'object' ? window.RZ_MONSTER_ZERO_STATS : {};
   const zeroConsensus = window.RZ_MONSTER_ZERO_CONSENSUS && typeof window.RZ_MONSTER_ZERO_CONSENSUS === 'object' ? window.RZ_MONSTER_ZERO_CONSENSUS : {};
+  const rmsBehavior = window.RZ_MONSTER_RMS_BEHAVIOR && typeof window.RZ_MONSTER_RMS_BEHAVIOR === 'object' ? window.RZ_MONSTER_RMS_BEHAVIOR : {};
   if (!window.RO_DATA || !Object.keys(identity).length) return;
 
   const races = ['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'];
@@ -33,8 +34,6 @@
     let key=String(internal || '').replace(/^C[12]_/, '').replace(/_{1,2}\d+$/, '').replace(/_+$/, '');
     return aliases[key] || key;
   };
-  const cells=value=>Number.isFinite(Number(value))?`${Number(value)} cells`:null;
-  const milliseconds=value=>Number.isFinite(Number(value))?`${Number(value)} ms`:null;
 
   const mapsByKey = new Map();
   for (const r of raw) {
@@ -68,6 +67,7 @@
     const consensus=zeroConsensus[String(id)] || {};
     const fields=consensus.fields&&typeof consensus.fields==='object'?consensus.fields:{};
     const fv=key=>fields[key]?.value ?? null;
+    const rms=rmsBehavior[String(id)] || {};
     const isMvp=MVP_IDS.has(id);
     const isBoss=!isMvp && BOSS_IDS.has(id);
     const hasNavigation=mapsByKey.has(internal);
@@ -85,10 +85,11 @@
       size:sizes[sizeCode] || 'n/a',
       attackMin:fv('attackMin'), attackMax:fv('attackMax'), magicAttackMin:fv('magicAttackMin'), magicAttackMax:fv('magicAttackMax'),
       def:overlay.def??fv('def'), mdef:overlay.mdef??fv('mdef'), hit:fv('hit'), flee:fv('flee'),
-      str:fv('str'), agi:fv('agi'), vit:fv('vit'), int:fv('int'), dex:fv('dex'), luk:fv('luk'),
-      // Only Zero database values are allowed here; absent fields stay n/a.
-      walkSpeed:milliseconds(fv('moveSpeedMs')), attackDelay:null, delayAfterHit:null,
-      attackRange:cells(fv('attackRange')), spellRange:null, sightRange:null,
+      // Removed from the public sheet: these are not available in the supplied Zero client files.
+      str:null, agi:null, vit:null, int:null, dex:null, luk:null,
+      // Explicit exception requested by the wiki owner: Walk Speed may use the RMS-compatible reference layer.
+      walkSpeed:rms.walkSpeed??null,
+      attackDelay:null, delayAfterHit:null, attackRange:null, spellRange:null, sightRange:null,
       elementModifiers:overlay.elementModifiers&&typeof overlay.elementModifiers==='object'?overlay.elementModifiers:{},
       aggressive:modes.includes('Aggressive')?true:null, boss:isBoss, mvp:isMvp, modes, clientBossType, clientNavigationType,
       propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
@@ -96,7 +97,8 @@
       skills:Array.isArray(consensus.skills)?consensus.skills:[], notes:{en:'',fr:''},
       verified:false, clientVerified:true, fieldMeta:fields,
       zeroOverlayApplied:Object.keys(overlay).length>0,
-      zeroConsensusApplied:Object.keys(consensus).length>0
+      zeroConsensusApplied:Object.keys(consensus).length>0,
+      rmsWalkSpeedApplied:Boolean(rms.walkSpeed)
     });
   }
 
