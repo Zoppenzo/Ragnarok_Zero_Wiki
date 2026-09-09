@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260909-client-fields2'
+version='20260909-client-special3'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-identity.js',
@@ -12,6 +12,7 @@ script_paths=[
     'assets/monster-zero-consensus.js',
     'assets/rms-monster-behavior.js',
     'assets/client-monsters.js',
+    'assets/monster-client-corrections.js',
     'assets/client-monster-sprites.js',
     'assets/monster-detail-rms.js',
     'assets/monster-element-colors.js',
@@ -50,4 +51,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official client + Zero consensus wired. RMS-compatible data is loaded only for Walk Speed; unsupported timing/range/attribute rows stay removed.')
+print('Official client + Zero consensus wired. Client-confirmed special monster corrections are applied before rendering; RMS-compatible data is loaded only for Walk Speed.')
