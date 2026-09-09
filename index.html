@@ -3775,7 +3775,7 @@ window.RO_DATA = {
     ];
     return `<div class="database-category-list database-category-list-fixed">${rows.map(([key,href,img,title,desc])=>{
       const src = asset(img);
-      const icon = key === 'item' ? `<svg class="icon database-category-icon database-category-icon-item" aria-hidden="true"><use href="#i-item"></use></svg>` : `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;
+      const icon = key === 'item' ? `<img class="database-category-icon database-category-icon-item" src="${src}" alt="" data-replaces="#i-item">` : `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;
       return `<a class="database-category-row database-category-${key}" href="${href}">
         <span class="database-category-sprite">
           ${icon}
