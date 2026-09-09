@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-import html
 import json
 import re
-import time
 import unicodedata
 import urllib.error
 import urllib.request
@@ -17,7 +15,7 @@ OUT = Path('assets/monster-zero-consensus.js')
 RAGNADEX_URL = 'https://ragnadex.com/api/monsters.json'
 TWROZ_URL = 'https://ragnarokzero.net/database/monsters/{id}'
 PRONTERA_URL = 'https://roz.prontera.info/mobs/{slug}'
-UA = 'Ragnarok-Zero-Wiki/2.0 (+https://github.com/Zoppenzo/Ragnarok_Zero_Wiki)'
+UA = 'Ragnarok-Zero-Wiki/2.1 (+https://github.com/Zoppenzo/Ragnarok_Zero_Wiki)'
 
 
 class VisibleTextParser(HTMLParser):
@@ -38,7 +36,8 @@ class VisibleTextParser(HTMLParser):
             self.parts.append('\n')
     def handle_data(self, data):
         if not self.skip:
-            self.parts.append(data)
+            # Keep sibling inline spans separated: <span>HP</span><span>55</span> -> "HP 55".
+            self.parts.append(' ' + data + ' ')
     def text(self) -> str:
         raw=''.join(self.parts)
         lines=[]
@@ -129,7 +128,7 @@ def num(s):
     if s is None:
         return None
     s=str(s).strip().replace(',','')
-    if not s or s in {'—','-','n/a','N/A','?','??','???'}:
+    if not s or s in {'—','-','n/a','N/A','?','??','???','unknown'}:
         return None
     try:
         f=float(s)
@@ -143,6 +142,11 @@ def first(pattern: str, text: str, flags=0):
     return m.group(1) if m else None
 
 
+def label_number(text: str, label: str):
+    # Values can be on the same line or the next line depending on the site's markup.
+    return num(first(rf'(?im)^\s*{label}\s+([\d,]+|—)\b',text))
+
+
 def slugify(value: str) -> str:
     value=unicodedata.normalize('NFKD',value or '').encode('ascii','ignore').decode('ascii')
     value=value.lower().replace("'",'').replace('’','')
@@ -154,7 +158,7 @@ SLUG_ALIASES={
     'farmiliar':'familiar','ork-warrior':'orc-warrior','ork-hero':'orc-hero',
     'knight-of-abyss':'abysmal-knight','c-tower-manager':'clock-tower-manager',
     'moonlight':'moonlight-flower','sword-fish':'swordfish','neraid':'nereid',
-    'giant-honet':'giant-hornet','baphomet':'baphomet','golden-bug':'golden-thief-bug',
+    'giant-honet':'giant-hornet','golden-bug':'golden-thief-bug',
 }
 
 
@@ -167,30 +171,33 @@ def parse_identity_ids() -> set[int]:
     return {int(v[0]) for v in obj.values() if isinstance(v,list) and v and str(v[0]).isdigit()}
 
 
+def parse_range(value: str | None):
+    if not value:
+        return (None,None)
+    m=re.match(r'\s*([\d,]+)(?:\s*[–-]\s*([\d,]+))?\s*$',value)
+    if not m:
+        return (None,None)
+    lo=num(m.group(1)); hi=num(m.group(2) or m.group(1))
+    return lo,hi
+
+
 def parse_twroz(mob_id: int, raw: str) -> dict:
     text=visible_text(raw)
-    if not re.search(rf'(?m)^#?{mob_id}\b',text) and f'#{mob_id}' not in text:
+    if f'#{mob_id}' not in text:
         return {}
     out={'_source':'TWRoZ'}
-    patterns={
-        'level':r'(?m)^Level\s*$\n([\d,]+)', 'hp':r'(?m)^HP\s*$\n([\d,]+)',
-        'baseExp':r'(?m)^Base EXP\s*$\n([\d,]+|—)', 'jobExp':r'(?m)^Job EXP\s*$\n([\d,]+|—)',
-        'def':r'(?m)^DEF\s*$\n([\d,]+)', 'mdef':r'(?m)^MDEF\s*$\n([\d,]+)',
-        'hit':r'(?m)^Hit \(100%\)\s*$\n([\d,]+)', 'flee':r'(?m)^Flee \(95%\)\s*$\n([\d,]+)',
-        'str':r'(?m)^STR\s*$\n([\d,]+)', 'agi':r'(?m)^AGI\s*$\n([\d,]+)', 'vit':r'(?m)^VIT\s*$\n([\d,]+)',
-        'int':r'(?m)^INT\s*$\n([\d,]+)', 'dex':r'(?m)^DEX\s*$\n([\d,]+)', 'luk':r'(?m)^LUK\s*$\n([\d,]+)',
+    labels={
+        'level':'Level','hp':'HP','baseExp':'Base EXP','jobExp':'Job EXP',
+        'def':'DEF','mdef':'MDEF','hit':r'Hit \(100%\)','flee':r'Flee \(95%\)',
+        'str':'STR','agi':'AGI','vit':'VIT','int':'INT','dex':'DEX','luk':'LUK',
     }
-    for k,p in patterns.items(): out[k]=num(first(p,text))
-    atk=first(r'(?m)^ATK\s*$\n([^\n]+)',text)
-    if atk:
-        m=re.match(r'([\d,]+)(?:\s*[–-]\s*([\d,]+))?$',atk.strip())
-        if m:
-            out['attackMin']=num(m.group(1)); out['attackMax']=num(m.group(2) or m.group(1))
-    matk=first(r'(?m)^MATK\s*$\n([^\n]+)',text)
-    if matk:
-        m=re.match(r'([\d,]+)(?:\s*[–-]\s*([\d,]+))?$',matk.strip())
-        if m:
-            out['magicAttackMin']=num(m.group(1)); out['magicAttackMax']=num(m.group(2) or m.group(1))
+    for key,label in labels.items():
+        out[key]=label_number(text,label)
+    atk=first(r'(?im)^\s*ATK\s+([\d,]+(?:\s*[–-]\s*[\d,]+)?)\s*$',text)
+    out['attackMin'],out['attackMax']=parse_range(atk)
+    matk=first(r'(?im)^\s*MATK\s+([\d,]+(?:\s*[–-]\s*[\d,]+)?)\s*$',text)
+    out['magicAttackMin'],out['magicAttackMax']=parse_range(matk)
+
     modes=[]
     known=['Aggressive','Physically attackable','Can move','Loots items','Detector','Detects Hidden','Angry',
            'Changes Target When Attacked','Changes Target on Melee','Cast Sensor','Cast Sensor (Idle)','Cast Sensor (Chase)',
@@ -200,13 +207,12 @@ def parse_twroz(mob_id: int, raw: str) -> dict:
         if label.lower() in low:
             modes.append(label.replace('Physically attackable','Physically Attackable').replace('Can move','Can Move').replace('Loots items','Loots Items'))
     out['modes']=modes
-    # Drops: the rendered page is regular: item name, ID, drop rate.
+
     section=text.split('\nDrops',1)[1] if '\nDrops' in text else ''
     if section:
         section=re.split(r'\n(?:Skill AI|Spawns|Source)\b',section,1)[0]
         lines=section.splitlines()
         drops=[]; candidate=None; item_id=None
-        ignore={'Image','ID:','Drop rate:'}
         for line in lines:
             if re.fullmatch(r'ID:\s*[\d,]+',line):
                 item_id=int(line.split(':',1)[1].replace(',','').strip()); continue
@@ -216,11 +222,31 @@ def parse_twroz(mob_id: int, raw: str) -> dict:
                 if candidate and item_id is not None:
                     drops.append({'itemId':item_id,'name':candidate,'rate':rate})
                 candidate=None; item_id=None; continue
-            if line.startswith('≈') or line.startswith('Drops (') or line in ignore:
+            if line.startswith('≈') or line.startswith('Drops ('):
                 continue
-            if not line.startswith('ID:') and not line.startswith('Drop rate:'):
+            if not line.startswith('ID:') and not line.startswith('Drop rate:') and line not in {'Image'}:
                 candidate=line
         out['drops']=drops
+
+    tp=SectionTableParser(); tp.feed(raw)
+    skills=[]
+    for section,row in tp.tables:
+        if not section.startswith('Skill AI') or len(row)<2:
+            continue
+        if row[0].lower()=='skill':
+            continue
+        raw_name=re.sub(r'\s+',' ',row[0]).strip()
+        parts=raw_name.split(' ')
+        name=parts[0] if parts and parts[0].startswith(('NPC_','MG_','SM_','TF_','AL_','MC_','AC_','PR_','WZ_')) else raw_name
+        skills.append({
+            'name':name,'level':num(row[1]),
+            'rate':num((row[2] if len(row)>2 else '').replace('%','')),
+            'state':row[3] if len(row)>3 else None,
+            'target':row[4] if len(row)>4 else None,
+            'condition':row[5] if len(row)>5 else None,
+            'source':'TWRoZ'
+        })
+    out['skills']=skills
     return out
 
 
@@ -229,17 +255,16 @@ def parse_prontera(mob_id: int, raw: str) -> dict:
     if not re.search(rf'\bID\s+{mob_id}\b',text):
         return {}
     out={'_source':'Prontera'}
-    patterns={
-        'hp':r'(?m)^HP\s*$\n([\d,]+)', 'def':r'(?m)^DEF\s*$\n([\d,]+)', 'mdef':r'(?m)^MDEF\s*$\n([\d,]+)',
-        'baseExp':r'(?m)^Base EXP\s*$\n([\d,]+|—)', 'jobExp':r'(?m)^Job EXP\s*$\n([\d,]+|—)',
-        'hit':r'(?m)^Hit \(100%\)\s*$\n([\d,]+|—)', 'flee':r'(?m)^Flee \(95%\)\s*$\n([\d,]+|—)',
-        'str':r'(?m)^STR\s*$\n([\d,]+)', 'agi':r'(?m)^AGI\s*$\n([\d,]+)', 'vit':r'(?m)^VIT\s*$\n([\d,]+)',
-        'int':r'(?m)^INT\s*$\n([\d,]+)', 'dex':r'(?m)^DEX\s*$\n([\d,]+)', 'luk':r'(?m)^LUK\s*$\n([\d,]+)',
-        'attackRange':r'(?m)^ATK Range \(cells\)\s*$\n([\d,]+|—)',
+    labels={
+        'hp':'HP','def':'DEF','mdef':'MDEF','baseExp':'Base EXP','jobExp':'Job EXP',
+        'hit':r'Hit \(100%\)','flee':r'Flee \(95%\)','str':'STR','agi':'AGI','vit':'VIT',
+        'int':'INT','dex':'DEX','luk':'LUK','attackRange':r'ATK Range \(cells\)',
+        'moveSpeedMs':r'Move Speed \(ms\)'
     }
-    for k,p in patterns.items(): out[k]=num(first(p,text))
-    out['attackMin']=num(first(r'(?m)^ATK Min\s*$\n([\d,]+|—)',text))
-    out['attackMax']=num(first(r'(?m)^ATK Max\s*$\n([\d,]+|—)',text))
+    for key,label in labels.items():
+        out[key]=label_number(text,label)
+    out['attackMin']=label_number(text,'ATK Min')
+    out['attackMax']=label_number(text,'ATK Max')
     out['_verified']={
         'combat': bool(re.search(r'Combat\s+Verified\b',text)),
         'experience': bool(re.search(r'Experience\s+Verified\b',text)),
@@ -273,30 +298,27 @@ def source_value(source: dict, field: str):
     return v if isinstance(v,(int,float)) else None
 
 
-def same(a,b):
-    if isinstance(a,float) or isinstance(b,float):
-        return abs(float(a)-float(b)) < 1e-9
-    return a==b
-
-
 def choose_field(field: str, ragna: dict, tw: dict, pro: dict) -> dict | None:
     values=[]
     rmap={'hp':'hp','def':'def','mdef':'mdef','baseExp':'basis_exp','jobExp':'job_exp','hit':'hit_100','flee':'flee_95',
-          'str':'str','agi':'agi','vit':'vit','int':'int','dex':'dex','luk':'luk','attackRange':'angriffsweite'}
+          'str':'str','agi':'agi','vit':'vit','int':'int','dex':'dex','luk':'luk','attackRange':'angriffsweite','moveSpeedMs':'bewegung'}
     rk=rmap.get(field)
     if rk and ragna.get(rk) is not None:
         verified=rk in set(ragna.get('zero_felder') or [])
         values.append(('RagnaDex',ragna.get(rk),verified,'zero-verified' if verified else 'unverified-fallback'))
     tv=source_value(tw,field)
-    if tv is not None: values.append(('TWRoZ',tv,False,'zero-regional'))
+    if tv is not None:
+        values.append(('TWRoZ',tv,False,'zero-regional'))
     pv=source_value(pro,field)
     if pv is not None:
-        group='combat' if field in {'hp','def','mdef','attackMin','attackMax','attackRange'} else ('experience' if field in {'baseExp','jobExp','hit','flee'} else 'primary')
+        if field in {'hp','def','mdef','attackMin','attackMax','attackRange'}:
+            group='combat'
+        elif field in {'baseExp','jobExp','hit','flee','moveSpeedMs'}:
+            group='experience'
+        else:
+            group='primary'
         verified=bool((pro.get('_verified') or {}).get(group))
         values.append(('Prontera',pv,verified,'global-verified' if verified else 'zero-db-unconfirmed'))
-    if field in {'attackMin','attackMax','magicAttackMin','magicAttackMax'}:
-        # RagnaDex atk/matk are not the same min/max semantics; never import them here.
-        pass
     if not values:
         return None
     verified_vals=[x for x in values if x[2]]
@@ -311,6 +333,25 @@ def choose_field(field: str, ragna: dict, tw: dict, pro: dict) -> dict | None:
     return {'value':chosen[1],'status':status,'conflict':conflict,'sources':{x[0]:x[1] for x in values}}
 
 
+def add_source_rate(bucket: dict, source: str, rate):
+    if source not in bucket['sources']:
+        bucket['sources'][source]=rate
+        return
+    old=bucket['sources'][source]
+    if old==rate:
+        return
+    vals=[]
+    for v in (old if isinstance(old,list) else [old]) + (rate if isinstance(rate,list) else [rate]):
+        if v not in vals:
+            vals.append(v)
+    bucket['sources'][source]=sorted(vals,key=lambda x:(x is None,float(x or 0)))
+
+
+def numeric_candidates(value):
+    vals=value if isinstance(value,list) else [value]
+    return {float(v) for v in vals if isinstance(v,(int,float))}
+
+
 def merge_drops(ragna: dict, tw: dict, pro: dict) -> list[dict]:
     by_key={}
     def add(source, rec, verified=False):
@@ -319,15 +360,15 @@ def merge_drops(ragna: dict, tw: dict, pro: dict) -> list[dict]:
         if not key or key=='name:': return
         bucket=by_key.setdefault(key,{'itemId':int(iid) if iid is not None else None,'name':name,'sources':{},'verifiedSources':set()})
         if not bucket['name'] and name: bucket['name']=name
-        bucket['sources'][source]=rec.get('rate')
+        add_source_rate(bucket,source,rec.get('rate'))
         if verified: bucket['verifiedSources'].add(source)
-    for d in tw.get('drops') or []: add('TWRoZ',d)
-    # Match Prontera names onto an existing item ID where possible.
+    for d in tw.get('drops') or []:
+        add('TWRoZ',d)
     existing_by_name={normalize_name(v['name']):k for k,v in by_key.items() if v.get('name')}
     for d in pro.get('drops') or []:
         k=existing_by_name.get(normalize_name(d.get('name') or ''))
         if k:
-            by_key[k]['sources']['Prontera']=d.get('rate')
+            add_source_rate(by_key[k],'Prontera',d.get('rate'))
             if d.get('status')=='verified': by_key[k]['verifiedSources'].add('Prontera')
         else:
             add('Prontera',d,d.get('status')=='verified')
@@ -335,24 +376,33 @@ def merge_drops(ragna: dict, tw: dict, pro: dict) -> list[dict]:
         iid=d.get('item_id'); name=d.get('name') or ''
         k=f'id:{int(iid)}' if iid is not None else existing_by_name.get(normalize_name(name))
         if k in by_key:
-            by_key[k]['sources']['RagnaDex']=d.get('rate')
-        # Do not create RagnaDex-only drops: its unverified drop fallback may be Renewal.
+            add_source_rate(by_key[k],'RagnaDex',d.get('rate'))
+        # Never create a RagnaDex-only drop: its non-Zero fallback can be Renewal.
+
     out=[]
     for b in by_key.values():
-        vals=[(s,v) for s,v in b['sources'].items() if isinstance(v,(int,float))]
+        family_rates={s:numeric_candidates(v) for s,v in b['sources'].items()}
+        all_rates=set().union(*family_rates.values()) if family_rates else set()
         chosen=None; status='unknown'
-        verified=[(s,v) for s,v in vals if s in b['verifiedSources']]
-        if verified:
-            chosen=verified[0][1]; status='verified'
-        elif vals:
-            counts=Counter(str(v) for _,v in vals); top,count=counts.most_common(1)[0]
+        verified_candidates=[]
+        for source in b['verifiedSources']:
+            verified_candidates.extend(sorted(family_rates.get(source,set())))
+        if verified_candidates:
+            chosen=verified_candidates[0]; status='verified'
+        elif all_rates:
+            votes=Counter()
+            for rates in family_rates.values():
+                for rate in rates:
+                    votes[rate]+=1
+            top,count=votes.most_common(1)[0]
             if count>=2:
-                chosen=next(v for _,v in vals if str(v)==top); status='consensus'
-            elif 'TWRoZ' in b['sources'] and isinstance(b['sources']['TWRoZ'],(int,float)):
-                chosen=b['sources']['TWRoZ']; status='zero-regional'
-            elif 'Prontera' in b['sources'] and isinstance(b['sources']['Prontera'],(int,float)):
-                chosen=b['sources']['Prontera']; status='zero-db-unconfirmed'
-        conflict=len({str(v) for _,v in vals})>1
+                chosen=top; status='consensus'
+            elif family_rates.get('TWRoZ'):
+                chosen=sorted(family_rates['TWRoZ'])[0]; status='zero-regional'
+            elif family_rates.get('Prontera'):
+                chosen=sorted(family_rates['Prontera'])[0]; status='zero-db-unconfirmed'
+        if isinstance(chosen,float) and chosen.is_integer(): chosen=int(chosen)
+        conflict=len(all_rates)>1
         out.append({'itemId':b['itemId'],'name':b['name'],'rate':chosen,'status':status,'conflict':conflict,'sources':b['sources']})
     out.sort(key=lambda d:(d['rate'] is None,-float(d['rate'] or 0),d['name']))
     return out
@@ -372,7 +422,7 @@ if not raw: raise SystemExit('RagnaDex API unavailable')
 ragna_rows=json.loads(raw)
 ragna={int(r['id']):r for r in ragna_rows if isinstance(r,dict) and r.get('id') is not None}
 
-# Fetch the two additional Zero databases in parallel, but keep a small worker count.
+
 def fetch_one(mid: int):
     r=ragna.get(mid,{})
     tw_raw=fetch(TWROZ_URL.format(id=mid))
@@ -386,6 +436,7 @@ def fetch_one(mid: int):
                 pro=parsed; pro['_slug']=slug; break
     return mid,tw,pro
 
+
 fetched={}
 with ThreadPoolExecutor(max_workers=5) as ex:
     futs={ex.submit(fetch_one,mid):mid for mid in sorted(ids)}
@@ -393,38 +444,44 @@ with ThreadPoolExecutor(max_workers=5) as ex:
         mid,tw,pro=fut.result(); fetched[mid]=(tw,pro)
         if i%40==0: print(f'Fetched {i}/{len(futs)} Zero monster pages')
 
-fields=['hp','baseExp','jobExp','attackMin','attackMax','magicAttackMin','magicAttackMax','def','mdef','hit','flee','str','agi','vit','int','dex','luk','attackRange']
+fields=['hp','baseExp','jobExp','attackMin','attackMax','magicAttackMin','magicAttackMax','def','mdef','hit','flee','str','agi','vit','int','dex','luk','attackRange','moveSpeedMs']
 consensus={}; coverage=Counter(); conflicts=Counter(); pro_hits=0; tw_hits=0
 for mid in sorted(ids):
     r=ragna.get(mid,{})
     tw,pro=fetched.get(mid,({},{}))
     tw_hits+=bool(tw); pro_hits+=bool(pro)
-    rec={'fields':{},'drops':merge_drops(r,tw,pro),'modes':[]}
+    rec={'fields':{},'drops':merge_drops(r,tw,pro),'modes':[],'skills':tw.get('skills') or []}
     for field in fields:
         meta=choose_field(field,r,tw,pro)
         if meta:
             rec['fields'][field]=meta; coverage[field]+=1; conflicts[field]+=bool(meta.get('conflict'))
     modes=[]
     for source_modes in [tw.get('modes') or [], r.get('merkmale') or []]:
+        if not isinstance(source_modes,list):
+            continue
         for mode in source_modes:
             mode=str(mode).strip()
             if mode and mode not in modes: modes.append(mode)
     rec['modes']=modes
     rec['sourceAvailability']={'RagnaDex':bool(r),'TWRoZ':bool(tw),'Prontera':bool(pro)}
-    if rec['fields'] or rec['drops'] or rec['modes']:
+    if rec['fields'] or rec['drops'] or rec['modes'] or rec['skills']:
         consensus[str(mid)]=rec
 
-# Hard validation on Poring demonstrates the intended conflict handling.
 p=consensus.get('1002') or {}
 assert p.get('fields',{}).get('hp',{}).get('value')==55, p
 assert p.get('fields',{}).get('attackMin',{}).get('value')==13, p
 assert p.get('fields',{}).get('attackMax',{}).get('value')==17, p
+assert p.get('fields',{}).get('magicAttackMin',{}).get('value')==2, p
+assert p.get('fields',{}).get('magicAttackMax',{}).get('value')==4, p
 jellopy=next((d for d in p.get('drops',[]) if d.get('itemId')==909),None)
-assert jellopy and jellopy.get('rate')==70, jellopy
+assert jellopy and jellopy.get('rate')==70 and not jellopy.get('conflict'), jellopy
+apple=next((d for d in p.get('drops',[]) if d.get('itemId')==512),None)
+assert apple and apple.get('rate')==10 and apple.get('conflict') is True, apple
 card=next((d for d in p.get('drops',[]) if d.get('itemId')==4001),None)
-assert card and card.get('conflict') is True, card
+assert card and card.get('rate')==0.2 and card.get('conflict') is True, card
+assert len(p.get('skills') or []) >= 2, p.get('skills')
 
-meta={'sources':['RagnaDex','RagnarokZero.net / TWRoZ','Prontera.Info ROZ'],'policy':'Zero databases only; verified Global/Zero fields first, then Zero-source consensus, with conflicts preserved','monsters':len(consensus),'twrozPages':tw_hits,'pronteraPages':pro_hits,'coverage':dict(coverage),'conflicts':dict(conflicts)}
+meta={'sources':['RagnaDex','RagnarokZero.net / TWRoZ','Prontera.Info ROZ'],'policy':'Zero databases only; client and verified Global/Zero fields first, then Zero-source consensus, with conflicts preserved','monsters':len(consensus),'twrozPages':tw_hits,'pronteraPages':pro_hits,'coverage':dict(coverage),'conflicts':dict(conflicts)}
 OUT.write_text(
     '// Cross-database Ragnarok Zero monster consensus. No Renewal/iRO/RateMyServer fallback is imported.\n'
     + 'window.RZ_MONSTER_ZERO_CONSENSUS=' + json.dumps(consensus,ensure_ascii=False,separators=(',',':'),sort_keys=True) + ';\n'
