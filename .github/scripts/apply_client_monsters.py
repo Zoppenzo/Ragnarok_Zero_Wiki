@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260909-monster-audit4'
+version='20260909-monster-audit5'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-identity.js',
