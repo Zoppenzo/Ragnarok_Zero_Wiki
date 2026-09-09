@@ -19,6 +19,16 @@
   const MVP_IDS = new Set([1038,1039,1046,1086,1087,1112,1115,1147,1150,1157,1159,1190,1251,1252,1272,1312,1373,1389,1418,1492,1511,1583,1630,1688]);
   const BOSS_IDS = new Set([1089,1090,1091,1092,1093,1096,1120,1262,1283,1295,1302,1582]);
 
+  // Decoded directly from the Zero Global client navigation files:
+  // Navi_Mob_data.lub + Navi_Mob_enUS.lub. Navigation type 301 marks
+  // boss-type/special monster entries; type 300 is the normal entry type.
+  // This is NOT a bitmask for Aggressive/Looter/Assist/etc.
+  const CLIENT_NAV_BOSS_TYPES = new Set([
+    'AMON_RA','BLOODY_KNIGHT','B_FLAME_GHOST','B_ICE_GHOST','DARK_LORD','DRAKE','EDDGA',
+    'EXTRA_JOKER','FLAME_GHOST','GENERAL_ORC','GOLDEN_BUG','ICE_GHOST','JENIFFER','MAYA',
+    'MOONLIGHT','ORC_LORD','ORK_HERO','OSIRIS','PHREEONI','SIEGLOUSE','TAO_GUNKA','VOCAL','ZHERLTHSH'
+  ]);
+
   const displayNames = {
     KNIGHT_OF_ABYSS:'Abysmal Knight', FARMILIAR:'Familiar', C_TOWER_MANAGER:'Tower Keeper',
     KNIGHT_OF_WINDSTORM:'Stormy Knight', ORK_HERO:'Orc Hero', ORK_WARRIOR:'Orc Warrior',
@@ -63,6 +73,8 @@
     const behavior=rmsBehavior[String(id)] || {};
     const isMvp=MVP_IDS.has(id);
     const isBoss=!isMvp && BOSS_IDS.has(id);
+    const clientBossType=CLIENT_NAV_BOSS_TYPES.has(internal);
+    const modes=clientBossType?['Boss Type']:[];
     rows.push({
       id:String(id), clientId:id, spriteId:id, internalName:internal, name:pretty(internal), aliases:[],
       level:Number.isFinite(level)?level:null, hp:overlay.hp??null, sp:null, baseExp:overlay.baseExp??null, jobExp:overlay.jobExp??null,
@@ -71,7 +83,8 @@
       walkSpeed:behavior.walkSpeed??null, attackDelay:null, delayAfterHit:behavior.delayAfterHit??null,
       attackRange:behavior.attackRange??null, spellRange:behavior.spellRange??null, sightRange:behavior.sightRange??null,
       elementModifiers:overlay.elementModifiers&&typeof overlay.elementModifiers==='object'?overlay.elementModifiers:{},
-      aggressive:null, boss:isBoss, mvp:isMvp, propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
+      aggressive:null, boss:isBoss, mvp:isMvp, modes, clientBossType, clientNavigationType:clientBossType?301:null,
+      propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
       image:null, description:{en:'',fr:''}, drops:[], maps, skills:[], notes:{en:'',fr:''}, verified:false, clientVerified:true,
       zeroOverlayApplied:Object.keys(overlay).length>0,
       rmsBehaviorApplied:Object.keys(behavior).length>0
