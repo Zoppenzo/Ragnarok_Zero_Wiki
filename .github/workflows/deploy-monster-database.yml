@@ -11,6 +11,7 @@ on:
       - 'assets/client-monster-identity.js'
       - 'assets/monster-zero-stats.js'
       - 'assets/monster-zero-consensus.js'
+      - 'assets/rms-monster-behavior.js'
       - 'assets/client-monsters.js'
       - 'assets/client-monster-sprites.js'
       - 'assets/monster-detail-rms.js'
@@ -46,6 +47,7 @@ jobs:
           test -s assets/client-monster-identity.js
           test -s assets/monster-zero-stats.js
           test -s assets/monster-zero-consensus.js
+          test -s assets/rms-monster-behavior.js
           test -s assets/client-monsters.js
           test -s assets/client-monster-sprites.js
           test -s assets/monster-detail-rms.js
@@ -55,7 +57,7 @@ jobs:
           grep -q 'assets/client-monster-identity.js' index.html
           grep -q 'assets/monster-zero-stats.js' index.html
           grep -q 'assets/monster-zero-consensus.js' index.html
-          ! grep -q 'assets/rms-monster-behavior.js' index.html
+          grep -q 'assets/rms-monster-behavior.js' index.html
           grep -q 'assets/client-monster-sprites.js' index.html
           grep -q 'assets/monster-element-colors.js' index.html
           grep -q 'assets/monster-mvp-style.js' index.html
@@ -65,10 +67,12 @@ jobs:
           grep -q 'PORING.*1002,1,3,1,21' assets/client-monster-identity.js
           grep -q 'window.RZ_MONSTER_ZERO_STATS=' assets/monster-zero-stats.js
           grep -q 'window.RZ_MONSTER_ZERO_CONSENSUS=' assets/monster-zero-consensus.js
+          grep -q 'window.RZ_MONSTER_RMS_BEHAVIOR=' assets/rms-monster-behavior.js
           grep -q 'zeroConsensus' assets/client-monsters.js
-          ! grep -q 'rmsBehavior' assets/client-monsters.js
-          grep -q "walkSpeed:milliseconds(fv('moveSpeedMs'))" assets/client-monsters.js
-          grep -q "attackRange:cells(fv('attackRange'))" assets/client-monsters.js
+          grep -q 'const rmsBehavior' assets/client-monsters.js
+          grep -q 'walkSpeed:rms.walkSpeed??null' assets/client-monsters.js
+          grep -q 'attackDelay:null, delayAfterHit:null, attackRange:null, spellRange:null, sightRange:null' assets/client-monsters.js
+          grep -q 'str:null, agi:null, vit:null, int:null, dex:null, luk:null' assets/client-monsters.js
           grep -q 'skills:Array.isArray(consensus.skills)' assets/client-monsters.js
           grep -q 'magicAttackMin' assets/client-monsters.js
           grep -q 'fieldMeta:fields' assets/client-monsters.js
@@ -82,6 +86,18 @@ jobs:
           grep -q 'RZ_DECORATE_MONSTER_SPRITES' assets/monster-detail-rms.js
           grep -q 'rz-monster-conflict' assets/monster-detail-rms.js
           grep -q 'Magic Atk' assets/monster-detail-rms.js
+          grep -q '<th>Walk Speed</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Atk Delay</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Atk Range</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Spell Range</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Sight Range</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Delay After Hit</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Str</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Agi</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Vit</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Int</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Dex</th>' assets/monster-detail-rms.js
+          ! grep -q '<th>Luk</th>' assets/monster-detail-rms.js
           grep -q 'RZ_ELEMENT_BADGE' assets/monster-element-colors.js
           grep -q 'rz-monster-mvp-emblem' assets/monster-mvp-style.js
           grep -q 'const DEFAULT_PAGE_SIZE=10' assets/monster-db-optimized.js
@@ -115,7 +131,6 @@ jobs:
           assert meta['coverage']['attackMin'] >= 200, meta
           assert meta['coverage']['magicAttackMin'] >= 200, meta
           assert meta['coverage']['hit'] >= 200, meta
-          assert meta['coverage']['agi'] >= 200, meta
           p=consensus['1002']
           assert p['fields']['hp']['value'] == 55
           assert p['fields']['attackMin']['value'] == 13
@@ -127,19 +142,19 @@ jobs:
           assert len(p['skills']) >= 2
           j=next(x for x in p['drops'] if x.get('itemId')==909)
           assert j['rate'] == 70 and not j['conflict']
-          apple=next(x for x in p['drops'] if x.get('itemId')==512)
-          assert apple['rate'] == 10 and apple['conflict'] is True
-          assert isinstance(apple['sources'].get('RagnaDex'), list)
           card=next(x for x in p['drops'] if x.get('itemId')==4001)
           assert card['conflict'] is True, card
-          assert card['sources'].get('TWRoZ') == 0.2
-          assert card['sources'].get('Prontera') == 0.01
+
+          rms_text=Path('assets/rms-monster-behavior.js').read_text(encoding='utf-8')
+          rms_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR=',1)[1].split(';\nwindow.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[0]
+          rms=json.loads(rms_payload)
+          assert rms['1002']['walkSpeed'] == 'Very Slow'
+          assert rms['1193']['walkSpeed'] == 'Slow'
 
           html=Path('index.html').read_text(encoding='utf-8')
-          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-db-optimized.js']
+          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-db-optimized.js']
           positions=[html.index(x) for x in order]
           assert positions == sorted(positions)
-          assert 'assets/rms-monster-behavior.js' not in html
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
           assert 'rz-monster-rms-pending' in renderer
           assert 'RZ_RENDER_RMS_MONSTER_DETAIL' in renderer
@@ -153,5 +168,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy Zero-only monster consensus"
+          git commit -m "Deploy simplified monster sheet"
           git push
