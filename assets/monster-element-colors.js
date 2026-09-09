@@ -27,9 +27,7 @@
     if(!key)return null;
     return {key,level:match[2]||''};
   }
-  function canonical(value){
-    return parseElement(value)?.key||null;
-  }
+  function canonical(value){return parseElement(value)?.key||null;}
   function badge(value){
     const parsed=parseElement(value);
     if(!parsed)return esc(value);
@@ -54,8 +52,8 @@
   }
 
   function decorateResistanceValues(root=document){
-    root.querySelectorAll?.('.rz-monster-elements .rz-monster-subtable td').forEach(td=>{
-      td.classList.remove('rz-element-more','rz-element-less','rz-element-neutral');
+    root.querySelectorAll?.('.rz-monster-elements .rz-monster-subtable td:not([data-rz-resistance-decorated])').forEach(td=>{
+      td.dataset.rzResistanceDecorated='1';
       const match=String(td.textContent||'').match(/-?\d+(?:\.\d+)?/);
       if(!match)return;
       const value=Number(match[0]);
@@ -70,11 +68,10 @@
     root.querySelectorAll?.('.rz-monster-left-block .rz-monster-subtable tr').forEach(tr=>{
       const th=tr.querySelector('th');
       const td=tr.querySelector('td');
-      if(!th||!td||String(th.textContent||'').trim().toLowerCase()!=='property')return;
-      if(td.dataset?.rzPropertyDecorated==='1'||td.querySelector?.('.rz-element-badge'))return;
+      if(!th||!td||td.dataset.rzPropertyDecorated==='1'||String(th.textContent||'').trim().toLowerCase()!=='property')return;
       const text=String(td.textContent||'').trim();
       if(!parseElement(text))return;
-      if(td.dataset)td.dataset.rzPropertyDecorated='1';
+      td.dataset.rzPropertyDecorated='1';
       td.classList.add('rz-monster-property-badge');
       td.innerHTML=badge(text);
     });
@@ -85,12 +82,11 @@
     if(!route.includes('element'))return;
     const host=root.querySelector?.('.main-content')||root;
     host.querySelectorAll?.('td,th,a,span,strong,button,label').forEach(node=>{
-      if(node.dataset?.rzElementDecorated==='1'||node.querySelector?.('.rz-element-badge'))return;
-      if(node.children?.length)return;
+      if(node.dataset?.rzElementDecorated==='1'||node.querySelector?.('.rz-element-badge')||node.children?.length)return;
       const text=String(node.textContent||'').trim();
       if(!parseElement(text))return;
-      if(node.dataset)node.dataset.rzElementDecorated='1';
       node.innerHTML=badge(text);
+      if(node.dataset)node.dataset.rzElementDecorated='1';
     });
   }
 
@@ -99,19 +95,9 @@
     decorateMonsterProperty(root);
     decorateElementPage(root);
   }
-
   window.RZ_COLOR_MONSTER_ELEMENTS=decorate;
-  let scheduled=false;
-  const run=()=>{
-    if(scheduled)return;
-    scheduled=true;
-    queueMicrotask(()=>{
-      scheduled=false;
-      decorate(document);
-    });
-  };
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});
-  else run();
-  window.addEventListener('hashchange',run);
-  new MutationObserver(run).observe(document.documentElement,{childList:true,subtree:true});
+
+  const schedule=()=>requestAnimationFrame(()=>decorate(document));
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+  window.addEventListener('hashchange',()=>requestAnimationFrame(()=>requestAnimationFrame(()=>decorate(document))));
 })();
