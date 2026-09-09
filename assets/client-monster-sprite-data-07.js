@@ -1,0 +1,1 @@
+window.RZ_CLIENT_MONSTER_SPRITE_DATA=Object.assign(window.RZ_CLIENT_MONSTER_SPRITE_DATA||{},{});
