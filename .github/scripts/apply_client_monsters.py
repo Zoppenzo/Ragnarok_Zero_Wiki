@@ -11,6 +11,7 @@ scripts=[
     '<script src="assets/client-monsters.js"></script>',
     '<script src="assets/client-monster-sprites.js"></script>',
     '<script src="assets/monster-detail-rms.js"></script>',
+    '<script src="assets/monster-element-colors.js"></script>',
     '<script src="assets/monster-db-optimized.js"></script>',
 ]
 for tag in scripts:
@@ -44,4 +45,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official monster identity, verified Zero stats and animated sprite renderer wired.')
+print('Official monster identity, verified Zero stats, element colors and animated sprite renderer wired.')
