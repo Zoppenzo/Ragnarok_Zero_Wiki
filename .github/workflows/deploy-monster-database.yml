@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/deploy-monster-database.yml'
       - '.github/scripts/apply_client_monsters.py'
+      - '.github/scripts/build_monster_zero_overlay.py'
       - 'assets/client-monsters-data.js'
       - 'assets/client-monster-identity.js'
       - 'assets/client-monsters.js'
@@ -24,6 +25,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Build verified Zero monster overlay
+        run: python .github/scripts/build_monster_zero_overlay.py
+
       - name: Wire monster client data
         run: python .github/scripts/apply_client_monsters.py
 
@@ -31,16 +35,21 @@ jobs:
         run: |
           test -s assets/client-monsters-data.js
           test -s assets/client-monster-identity.js
+          test -s assets/monster-zero-stats.js
           test -s assets/client-monsters.js
           test -s assets/client-monster-sprites.js
           test -s assets/monster-detail-rms.js
           test -s assets/monster-db-optimized.js
           grep -q 'assets/client-monster-identity.js' index.html
+          grep -q 'assets/monster-zero-stats.js' index.html
           grep -q 'assets/client-monster-sprites.js' index.html
           grep -q 'assets/monster-db-optimized.js' index.html
           grep -q 'KNIGHT_OF_ABYSS.*1219,122,7,2,87' assets/client-monster-identity.js
           grep -q 'ALARM.*1193,88,0,1,60' assets/client-monster-identity.js
           grep -q 'ABYSMAL_KNIGHT.*KNIGHT_OF_ABYSS' assets/client-monster-identity.js
+          grep -q 'window.RZ_MONSTER_ZERO_STATS=' assets/monster-zero-stats.js
+          grep -q 'zeroStats' assets/client-monsters.js
+          grep -q 'elementModifiers:overlay.elementModifiers' assets/client-monsters.js
           grep -q 'window.RO_DATA.monsters = rows' assets/client-monsters.js
           grep -q 'spriteId:id' assets/client-monsters.js
           grep -q "KNIGHT_OF_ABYSS:'Abysmal Knight'" assets/client-monsters.js
@@ -60,8 +69,23 @@ jobs:
           grep -q 'On Maps' assets/monster-detail-rms.js
           grep -q 'Monster Skills' assets/monster-detail-rms.js
           python - <<'PY'
-          html=open('index.html',encoding='utf-8').read()
-          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-db-optimized.js']
+          import json
+          from pathlib import Path
+
+          overlay_text=Path('assets/monster-zero-stats.js').read_text(encoding='utf-8')
+          payload=overlay_text.split('window.RZ_MONSTER_ZERO_STATS=',1)[1].split(';\nwindow.RZ_MONSTER_ZERO_STATS_META=',1)[0]
+          overlay=json.loads(payload)
+          assert len(overlay) >= 400
+          poring=overlay['1002']
+          assert poring['hp'] == 55
+          assert poring['def'] == 2
+          assert poring['mdef'] == 5
+          assert poring['baseExp'] == 150
+          assert poring['jobExp'] == 30
+          assert poring['elementModifiers']['Water'] == 25
+
+          html=Path('index.html').read_text(encoding='utf-8')
+          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-db-optimized.js']
           positions=[html.index(x) for x in order]
           assert positions == sorted(positions)
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
@@ -76,7 +100,7 @@ jobs:
         run: |
           git config user.name "Ragnarok Zero Wiki Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html
+          git add index.html assets/monster-zero-stats.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy Boss and MVP monster filters"
+          git commit -m "Deploy verified Zero monster stats"
           git push
