@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 # Keep the final visual override loaded after the database renderers.
 p = Path('index.html')
@@ -17,24 +18,25 @@ if old_icon in s:
 elif new_icon not in s:
     raise SystemExit('Could not locate database category icon renderer')
 
-# Item/Card detail pages used to render the legacy detail table first and then
-# replace it with the RMS sheet a couple of animation frames later. Do not put
-# the legacy table in the DOM at all: render only a neutral host and let the
-# canonical RMS renderer fill it immediately.
-legacy_head = """  function itemDetail(id, cardRoute=false) {
-    const item = getItem(id);
-    if (!item) return notFound();
-"""
-canonical_head = """  function itemDetail(id, cardRoute=false) {
+# Keep exactly one Item/Card detail renderer in the produced page. The old
+# inline renderer used to build a complete legacy table before item-detail-rms.js
+# replaced it. Remove that implementation completely, leaving only a neutral
+# host for the canonical RMS renderer. This prevents both duplicate markup and
+# the visible old-table flash during navigation/loading.
+canonical_function = '''  function itemDetail(id, cardRoute=false) {
     const item = getItem(id);
     if (!item) return notFound();
     queueMicrotask(() => window.RZ_RENDER_RMS_ITEM_DETAIL?.());
-    return `<div class=\"rz-rms-pending\" data-item-id=\"${esc(item.id)}\"></div>`;
-"""
-if legacy_head in s:
-    s = s.replace(legacy_head, canonical_head, 1)
-elif canonical_head not in s:
-    raise SystemExit('Could not locate legacy item detail renderer')
+    return `<div class="rz-rms-pending" data-item-id="${esc(item.id)}"></div>`;
+  }
+'''
+pattern = re.compile(
+    r"  function itemDetail\(id, cardRoute=false\) \{.*?\n  \}\n\n  function mapDetail\(id\) \{",
+    re.S,
+)
+s, replaced = pattern.subn(canonical_function + '\n  function mapDetail(id) {', s, count=1)
+if replaced != 1:
+    raise SystemExit(f'Expected exactly one legacy itemDetail renderer, replaced {replaced}')
 
 p.write_text(s, encoding='utf-8')
 
