@@ -1,7 +1,8 @@
 (() => {
   'use strict';
 
-  const ICON_BASE = 'https://static.divine-pride.net/images/items/item/';
+  const ZERO_ICON = id => `https://ragnarokzero.net/images/items/${id}.gif`;
+  const DP_ICON = id => `https://static.divine-pride.net/images/items/item/${id}.png`;
   const ITEMS = () => (window.RO_DATA && Array.isArray(window.RO_DATA.items) ? window.RO_DATA.items : []);
   let observer = null;
   let cachedItems = null;
@@ -24,11 +25,14 @@
   }
 
   function resolveItem(anchor, lookup) {
+    const explicit=anchor.dataset.rzDropItemId;
+    if(explicit && /^\d+$/.test(explicit)) return lookup.byId.get(explicit) || {id:explicit,clientId:explicit,name:(anchor.textContent||'').trim()};
     const href = anchor.getAttribute('href') || '';
     const m = href.match(/#\/(?:items|cards)\/([^?#]+)/i);
     if (m) {
       const token = decodeURIComponent(m[1]);
       if (lookup.byId.has(token)) return lookup.byId.get(token);
+      if(/^\d+$/.test(token)) return {id:token,clientId:token,name:(anchor.textContent||'').trim()};
     }
     const name = (anchor.textContent || '').trim().toLowerCase();
     return lookup.byName.get(name) || null;
@@ -58,9 +62,14 @@
     img.decoding = 'async';
     img.loading = 'lazy';
     try { img.fetchPriority = 'low'; } catch (_) {}
-    img.dataset.src = `${ICON_BASE}${id}.png`;
+    img.dataset.src = ZERO_ICON(id);
+    img.dataset.fallback = DP_ICON(id);
     img.style.cssText = `width:${size}px;height:${size}px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;display:inline-block;flex:0 0 ${size}px;`;
-    img.addEventListener('error', () => img.remove(), { once: true });
+    let fallbackUsed=false;
+    img.addEventListener('error', () => {
+      if(!fallbackUsed && img.dataset.fallback){fallbackUsed=true;img.src=img.dataset.fallback;return;}
+      img.remove();
+    });
     const io = ensureObserver();
     if (io) io.observe(img); else img.src = img.dataset.src;
     return img;
@@ -68,8 +77,7 @@
 
   function decorateLinks(root = document) {
     const lookup = maps();
-    if (!lookup.byId.size) return;
-    for (const a of root.querySelectorAll('a[href^="#/items/"],a[href^="#/cards/"]')) {
+    for (const a of root.querySelectorAll('a[href^="#/items/"],a[href^="#/cards/"],a[data-rz-drop-item-id]')) {
       if (a.dataset.rzItemIcon === '1' || a.closest('.brand')) continue;
       const item = resolveItem(a, lookup);
       if (!item) continue;
@@ -88,7 +96,7 @@
     if (!m) return;
     const lookup = maps();
     const token = decodeURIComponent(m[1]);
-    const item = lookup.byId.get(token) || lookup.byName.get(token.replace(/[-_]+/g, ' ').toLowerCase());
+    const item = lookup.byId.get(token) || lookup.byName.get(token.replace(/[-_]+/g, ' ').toLowerCase()) || (/^\d+$/.test(token)?{id:token,clientId:token}:null);
     if (!item) return;
     const h1 = document.querySelector('.main-content h1');
     if (!h1 || h1.dataset.rzItemIcon === '1') return;
