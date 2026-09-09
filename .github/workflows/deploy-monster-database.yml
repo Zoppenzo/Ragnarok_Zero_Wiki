@@ -1,0 +1,43 @@
+name: Deploy monster database
+
+on:
+  push:
+    paths:
+      - '.github/workflows/deploy-monster-database.yml'
+      - '.github/scripts/apply_client_monsters.py'
+      - 'assets/client-monsters-data.js'
+      - 'assets/client-monsters.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Wire monster client data
+        run: python .github/scripts/apply_client_monsters.py
+
+      - name: Validate monster database
+        run: |
+          test -s assets/client-monsters-data.js
+          test -s assets/client-monsters.js
+          grep -q 'assets/client-monsters-data.js' index.html
+          grep -q 'assets/client-monsters.js' index.html
+          grep -q '1193,ALARM,88,0,1,60,c_tower3:145;c_tower4:20' assets/client-monsters-data.js
+          grep -q "window.RO_DATA.monsters = rows" assets/client-monsters.js
+          grep -q "const races = \['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'\]" assets/client-monsters.js
+
+      - name: Commit deployment
+        run: |
+          git config user.name "Ragnarok Zero Wiki Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Deploy Zero monster database"
+          git push
