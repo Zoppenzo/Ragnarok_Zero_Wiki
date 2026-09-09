@@ -4,19 +4,21 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-scripts=[
-    '<script src="assets/client-monsters-data.js"></script>',
-    '<script src="assets/client-monster-identity.js"></script>',
-    '<script src="assets/monster-zero-stats.js"></script>',
-    '<script src="assets/rms-monster-behavior.js"></script>',
-    '<script src="assets/client-monsters.js"></script>',
-    '<script src="assets/client-monster-sprites.js"></script>',
-    '<script src="assets/monster-detail-rms.js"></script>',
-    '<script src="assets/monster-element-colors.js"></script>',
-    '<script src="assets/monster-db-optimized.js"></script>',
+version='20260909-perf2'
+script_paths=[
+    'assets/client-monsters-data.js',
+    'assets/client-monster-identity.js',
+    'assets/monster-zero-stats.js',
+    'assets/rms-monster-behavior.js',
+    'assets/client-monsters.js',
+    'assets/client-monster-sprites.js',
+    'assets/monster-detail-rms.js',
+    'assets/monster-element-colors.js',
+    'assets/monster-db-optimized.js',
 ]
-for tag in scripts:
-    s=s.replace(tag+'\n','').replace(tag,'')
+for path in script_paths:
+    s=re.sub(rf'\s*<script src="{re.escape(path)}(?:\?v=[^"]+)?"></script>\s*','\n',s)
+scripts=[f'<script src="{path}?v={version}"></script>' for path in script_paths]
 
 marker='<script src="assets/client-items.js"></script>'
 if marker not in s:
@@ -46,4 +48,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official monster identity, verified Zero stats, RMS behavior fields, element badges and animated sprite renderer wired.')
+print('Official monster identity, verified Zero stats, RMS behavior fields, element badges and animated sprite renderer wired with cache-busting.')
