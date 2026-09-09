@@ -4,7 +4,7 @@
   const identity = window.RZ_CLIENT_MONSTER_IDENTITY && typeof window.RZ_CLIENT_MONSTER_IDENTITY === 'object' ? window.RZ_CLIENT_MONSTER_IDENTITY : {};
   const aliases = window.RZ_CLIENT_MONSTER_ALIASES && typeof window.RZ_CLIENT_MONSTER_ALIASES === 'object' ? window.RZ_CLIENT_MONSTER_ALIASES : {};
   const zeroStats = window.RZ_MONSTER_ZERO_STATS && typeof window.RZ_MONSTER_ZERO_STATS === 'object' ? window.RZ_MONSTER_ZERO_STATS : {};
-  const rmsBehavior = window.RZ_MONSTER_RMS_BEHAVIOR && typeof window.RZ_MONSTER_RMS_BEHAVIOR === 'object' ? window.RZ_MONSTER_RMS_BEHAVIOR : {};
+  const zeroConsensus = window.RZ_MONSTER_ZERO_CONSENSUS && typeof window.RZ_MONSTER_ZERO_CONSENSUS === 'object' ? window.RZ_MONSTER_ZERO_CONSENSUS : {};
   if (!window.RO_DATA || !Object.keys(identity).length) return;
 
   const races = ['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'];
@@ -13,16 +13,10 @@
   const labels = Array.isArray(window.RZ_CLIENT_MONSTER_MAP_LABELS) ? window.RZ_CLIENT_MONSTER_MAP_LABELS : [];
   const mapIndex = window.RZ_CLIENT_MONSTER_MAP_INDEX || {};
 
-  // Category tags only. These sets do not import HP/EXP/ATK/drop values.
-  // MVP and Boss are intentionally exclusive in the UI: Boss means a
-  // boss-class/miniboss that is not tagged MVP.
   const MVP_IDS = new Set([1038,1039,1046,1086,1087,1112,1115,1147,1150,1157,1159,1190,1251,1252,1272,1312,1373,1389,1418,1492,1511,1583,1630,1688]);
   const BOSS_IDS = new Set([1089,1090,1091,1092,1093,1096,1120,1262,1283,1295,1302,1582]);
 
-  // Decoded directly from the Zero Global client navigation files:
-  // Navi_Mob_data.lub + Navi_Mob_enUS.lub. Navigation type 301 marks
-  // boss-type/special monster entries; type 300 is the normal entry type.
-  // This is NOT a bitmask for Aggressive/Looter/Assist/etc.
+  // Decoded directly from the Zero Global client navigation files.
   const CLIENT_NAV_BOSS_TYPES = new Set([
     'AMON_RA','BLOODY_KNIGHT','B_FLAME_GHOST','B_ICE_GHOST','DARK_LORD','DRAKE','EDDGA',
     'EXTRA_JOKER','FLAME_GHOST','GENERAL_ORC','GOLDEN_BUG','ICE_GHOST','JENIFFER','MAYA',
@@ -70,26 +64,37 @@
     const elementLevel=Math.floor(propertyCode/20);
     const maps=[...(mapsByKey.get(internal)?.values?.() || [])];
     const overlay=zeroStats[String(id)] || {};
-    const behavior=rmsBehavior[String(id)] || {};
+    const consensus=zeroConsensus[String(id)] || {};
+    const fields=consensus.fields&&typeof consensus.fields==='object'?consensus.fields:{};
+    const fv=key=>fields[key]?.value ?? null;
     const isMvp=MVP_IDS.has(id);
     const isBoss=!isMvp && BOSS_IDS.has(id);
     const hasNavigation=mapsByKey.has(internal);
     const clientBossType=CLIENT_NAV_BOSS_TYPES.has(internal);
     const clientNavigationType=clientBossType?301:(hasNavigation?300:null);
-    const modes=clientNavigationType===301?['Boss Type']:(clientNavigationType===300?['Normal Type']:[]);
+    const modes=[];
+    const addMode=x=>{x=String(x||'').trim(); if(x&&!modes.includes(x))modes.push(x);};
+    if(clientNavigationType===301)addMode('Boss Type'); else if(clientNavigationType===300)addMode('Normal Type');
+    (Array.isArray(consensus.modes)?consensus.modes:[]).forEach(addMode);
     rows.push({
       id:String(id), clientId:id, spriteId:id, internalName:internal, name:pretty(internal), aliases:[],
-      level:Number.isFinite(level)?level:null, hp:overlay.hp??null, sp:null, baseExp:overlay.baseExp??null, jobExp:overlay.jobExp??null,
+      level:Number.isFinite(level)?level:null,
+      hp:overlay.hp??fv('hp'), sp:null, baseExp:overlay.baseExp??fv('baseExp'), jobExp:overlay.jobExp??fv('jobExp'),
       race:races[raceCode] || 'n/a', element:elements[elementIndex] || 'n/a', elementLevel:elementLevel || null,
-      size:sizes[sizeCode] || 'n/a', attackMin:null, attackMax:null, def:overlay.def??null, mdef:overlay.mdef??null, hit:null, flee:null,
-      walkSpeed:behavior.walkSpeed??null, attackDelay:null, delayAfterHit:behavior.delayAfterHit??null,
-      attackRange:behavior.attackRange??null, spellRange:behavior.spellRange??null, sightRange:behavior.sightRange??null,
+      size:sizes[sizeCode] || 'n/a',
+      attackMin:fv('attackMin'), attackMax:fv('attackMax'), magicAttackMin:fv('magicAttackMin'), magicAttackMax:fv('magicAttackMax'),
+      def:overlay.def??fv('def'), mdef:overlay.mdef??fv('mdef'), hit:fv('hit'), flee:fv('flee'),
+      str:fv('str'), agi:fv('agi'), vit:fv('vit'), int:fv('int'), dex:fv('dex'), luk:fv('luk'),
+      // These remain n/a unless a Ragnarok Zero database supplies them. No RMS/Renewal fallback.
+      walkSpeed:null, attackDelay:null, delayAfterHit:null,
+      attackRange:fv('attackRange'), spellRange:null, sightRange:null,
       elementModifiers:overlay.elementModifiers&&typeof overlay.elementModifiers==='object'?overlay.elementModifiers:{},
-      aggressive:null, boss:isBoss, mvp:isMvp, modes, clientBossType, clientNavigationType,
+      aggressive:modes.includes('Aggressive')?true:null, boss:isBoss, mvp:isMvp, modes, clientBossType, clientNavigationType,
       propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
-      image:null, description:{en:'',fr:''}, drops:[], maps, skills:[], notes:{en:'',fr:''}, verified:false, clientVerified:true,
+      image:null, description:{en:'',fr:''}, drops:Array.isArray(consensus.drops)?consensus.drops:[], maps, skills:[], notes:{en:'',fr:''},
+      verified:false, clientVerified:true, fieldMeta:fields,
       zeroOverlayApplied:Object.keys(overlay).length>0,
-      rmsBehaviorApplied:Object.keys(behavior).length>0
+      zeroConsensusApplied:Object.keys(consensus).length>0
     });
   }
 
