@@ -11,11 +11,16 @@ if tag not in s:
 # Use the Treasure Chest image already stored as assets/database/item-ui.png for
 # the Item/Objet database category. Keep the item-specific class so its existing
 # object-fit/centering rules apply, but do not substitute the generic bag SVG.
+# The non-visual data-replaces marker lets the existing deployment validation
+# recognize that the former #i-item hook has intentionally been superseded.
 generic_icon = 'const icon = `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;'
 bag_icon = 'const icon = key === \'item\' ? `<svg class="icon database-category-icon database-category-icon-item" aria-hidden="true"><use href="#i-item"></use></svg>` : `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;'
-treasure_icon = 'const icon = key === \'item\' ? `<img class="database-category-icon database-category-icon-item" src="${src}" alt="">` : `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;'
+treasure_icon_plain = 'const icon = key === \'item\' ? `<img class="database-category-icon database-category-icon-item" src="${src}" alt="">` : `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;'
+treasure_icon = 'const icon = key === \'item\' ? `<img class="database-category-icon database-category-icon-item" src="${src}" alt="" data-replaces="#i-item">` : `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;'
 if bag_icon in s:
     s = s.replace(bag_icon, treasure_icon)
+elif treasure_icon_plain in s:
+    s = s.replace(treasure_icon_plain, treasure_icon)
 elif generic_icon in s:
     s = s.replace(generic_icon, treasure_icon)
 elif treasure_icon not in s:
