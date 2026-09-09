@@ -71,8 +71,10 @@
       const th=tr.querySelector('th');
       const td=tr.querySelector('td');
       if(!th||!td||String(th.textContent||'').trim().toLowerCase()!=='property')return;
+      if(td.dataset?.rzPropertyDecorated==='1'||td.querySelector?.('.rz-element-badge'))return;
       const text=String(td.textContent||'').trim();
       if(!parseElement(text))return;
+      if(td.dataset)td.dataset.rzPropertyDecorated='1';
       td.classList.add('rz-monster-property-badge');
       td.innerHTML=badge(text);
     });
@@ -87,8 +89,8 @@
       if(node.children?.length)return;
       const text=String(node.textContent||'').trim();
       if(!parseElement(text))return;
-      node.innerHTML=badge(text);
       if(node.dataset)node.dataset.rzElementDecorated='1';
+      node.innerHTML=badge(text);
     });
   }
 
@@ -99,7 +101,15 @@
   }
 
   window.RZ_COLOR_MONSTER_ELEMENTS=decorate;
-  const run=()=>queueMicrotask(()=>decorate(document));
+  let scheduled=false;
+  const run=()=>{
+    if(scheduled)return;
+    scheduled=true;
+    queueMicrotask(()=>{
+      scheduled=false;
+      decorate(document);
+    });
+  };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});
   else run();
   window.addEventListener('hashchange',run);
