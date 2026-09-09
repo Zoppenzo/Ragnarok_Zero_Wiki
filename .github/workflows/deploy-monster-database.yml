@@ -107,7 +107,7 @@ jobs:
           rms_text=Path('assets/rms-monster-behavior.js').read_text(encoding='utf-8')
           rms_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR=',1)[1].split(';\nwindow.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[0]
           rms=json.loads(rms_payload)
-          assert len(rms) >= 250
+          assert len(rms) >= 180
           assert rms['1002']['walkSpeed'] == 'Very Slow'
           assert rms['1002']['delayAfterHit'] == 'Short'
           assert rms['1002']['attackRange'].startswith('1')

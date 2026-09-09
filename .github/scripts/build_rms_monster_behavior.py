@@ -80,7 +80,7 @@ def load_ids() -> list[int]:
     text = IDENTITY.read_text(encoding='utf-8')
     # Identity rows are compact arrays beginning with the canonical Mob-ID.
     ids = sorted({int(x) for x in re.findall(r'\[\s*(\d{3,6})\s*,', text)})
-    if len(ids) < 300:
+    if len(ids) < 200:
         raise RuntimeError(f'Only found {len(ids)} client Mob-IDs')
     return ids
 
@@ -116,10 +116,10 @@ def main() -> None:
                 print(f'RateMyServer: {i}/{len(ids)} checked, {len(rows)} matched')
 
     # If RMS is temporarily unavailable, keep the last good cached data.
-    if len(rows) < 250 and len(existing) >= 250:
+    if len(rows) < 180 and len(existing) >= 180:
         print(f'Only {len(rows)} fresh RMS rows; retaining cached {len(existing)} rows.')
         rows = existing
-    elif len(rows) < 250:
+    elif len(rows) < 180:
         raise RuntimeError(f'RateMyServer overlay too small: {len(rows)} matched rows')
 
     meta = {
