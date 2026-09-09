@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260909-mode2'
+version='20260909-mvp1'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-identity.js',
@@ -14,6 +14,7 @@ script_paths=[
     'assets/client-monster-sprites.js',
     'assets/monster-detail-rms.js',
     'assets/monster-element-colors.js',
+    'assets/monster-mvp-style.js',
     'assets/monster-db-optimized.js',
 ]
 for path in script_paths:
@@ -48,4 +49,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official monster identity, verified Zero stats, RMS behavior fields, client navigation modes, element badges and animated sprite renderer wired with cache-busting.')
+print('Official monster identity, verified Zero stats, RMS behavior fields, client navigation modes, element badges, MVP styling and animated sprite renderer wired with cache-busting.')
