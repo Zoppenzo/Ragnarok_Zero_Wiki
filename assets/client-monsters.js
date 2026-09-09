@@ -4,6 +4,7 @@
   const identity = window.RZ_CLIENT_MONSTER_IDENTITY && typeof window.RZ_CLIENT_MONSTER_IDENTITY === 'object' ? window.RZ_CLIENT_MONSTER_IDENTITY : {};
   const aliases = window.RZ_CLIENT_MONSTER_ALIASES && typeof window.RZ_CLIENT_MONSTER_ALIASES === 'object' ? window.RZ_CLIENT_MONSTER_ALIASES : {};
   const zeroStats = window.RZ_MONSTER_ZERO_STATS && typeof window.RZ_MONSTER_ZERO_STATS === 'object' ? window.RZ_MONSTER_ZERO_STATS : {};
+  const rmsBehavior = window.RZ_MONSTER_RMS_BEHAVIOR && typeof window.RZ_MONSTER_RMS_BEHAVIOR === 'object' ? window.RZ_MONSTER_RMS_BEHAVIOR : {};
   if (!window.RO_DATA || !Object.keys(identity).length) return;
 
   const races = ['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'];
@@ -59,6 +60,7 @@
     const elementLevel=Math.floor(propertyCode/20);
     const maps=[...(mapsByKey.get(internal)?.values?.() || [])];
     const overlay=zeroStats[String(id)] || {};
+    const behavior=rmsBehavior[String(id)] || {};
     const isMvp=MVP_IDS.has(id);
     const isBoss=!isMvp && BOSS_IDS.has(id);
     rows.push({
@@ -66,10 +68,13 @@
       level:Number.isFinite(level)?level:null, hp:overlay.hp??null, sp:null, baseExp:overlay.baseExp??null, jobExp:overlay.jobExp??null,
       race:races[raceCode] || 'n/a', element:elements[elementIndex] || 'n/a', elementLevel:elementLevel || null,
       size:sizes[sizeCode] || 'n/a', attackMin:null, attackMax:null, def:overlay.def??null, mdef:overlay.mdef??null, hit:null, flee:null,
+      walkSpeed:behavior.walkSpeed??null, attackDelay:null, delayAfterHit:behavior.delayAfterHit??null,
+      attackRange:behavior.attackRange??null, spellRange:behavior.spellRange??null, sightRange:behavior.sightRange??null,
       elementModifiers:overlay.elementModifiers&&typeof overlay.elementModifiers==='object'?overlay.elementModifiers:{},
       aggressive:null, boss:isBoss, mvp:isMvp, propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
       image:null, description:{en:'',fr:''}, drops:[], maps, skills:[], notes:{en:'',fr:''}, verified:false, clientVerified:true,
-      zeroOverlayApplied:Object.keys(overlay).length>0
+      zeroOverlayApplied:Object.keys(overlay).length>0,
+      rmsBehaviorApplied:Object.keys(behavior).length>0
     });
   }
 

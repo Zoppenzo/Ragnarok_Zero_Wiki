@@ -6,11 +6,15 @@ on:
       - '.github/workflows/deploy-monster-database.yml'
       - '.github/scripts/apply_client_monsters.py'
       - '.github/scripts/build_monster_zero_overlay.py'
+      - '.github/scripts/build_rms_monster_behavior.py'
       - 'assets/client-monsters-data.js'
       - 'assets/client-monster-identity.js'
+      - 'assets/monster-zero-stats.js'
+      - 'assets/rms-monster-behavior.js'
       - 'assets/client-monsters.js'
       - 'assets/client-monster-sprites.js'
       - 'assets/monster-detail-rms.js'
+      - 'assets/monster-element-colors.js'
       - 'assets/monster-db-optimized.js'
   workflow_dispatch:
 
@@ -28,6 +32,9 @@ jobs:
       - name: Build verified Zero monster overlay
         run: python .github/scripts/build_monster_zero_overlay.py
 
+      - name: Build RateMyServer behavior overlay
+        run: python .github/scripts/build_rms_monster_behavior.py
+
       - name: Wire monster client data
         run: python .github/scripts/apply_client_monsters.py
 
@@ -36,19 +43,29 @@ jobs:
           test -s assets/client-monsters-data.js
           test -s assets/client-monster-identity.js
           test -s assets/monster-zero-stats.js
+          test -s assets/rms-monster-behavior.js
           test -s assets/client-monsters.js
           test -s assets/client-monster-sprites.js
           test -s assets/monster-detail-rms.js
+          test -s assets/monster-element-colors.js
           test -s assets/monster-db-optimized.js
           grep -q 'assets/client-monster-identity.js' index.html
           grep -q 'assets/monster-zero-stats.js' index.html
+          grep -q 'assets/rms-monster-behavior.js' index.html
           grep -q 'assets/client-monster-sprites.js' index.html
+          grep -q 'assets/monster-element-colors.js' index.html
           grep -q 'assets/monster-db-optimized.js' index.html
           grep -q 'KNIGHT_OF_ABYSS.*1219,122,7,2,87' assets/client-monster-identity.js
           grep -q 'ALARM.*1193,88,0,1,60' assets/client-monster-identity.js
           grep -q 'ABYSMAL_KNIGHT.*KNIGHT_OF_ABYSS' assets/client-monster-identity.js
           grep -q 'window.RZ_MONSTER_ZERO_STATS=' assets/monster-zero-stats.js
-          grep -q 'zeroStats' assets/client-monsters.js
+          grep -q 'window.RZ_MONSTER_RMS_BEHAVIOR=' assets/rms-monster-behavior.js
+          grep -q 'rmsBehavior' assets/client-monsters.js
+          grep -q 'walkSpeed:behavior.walkSpeed' assets/client-monsters.js
+          grep -q 'delayAfterHit:behavior.delayAfterHit' assets/client-monsters.js
+          grep -q 'attackRange:behavior.attackRange' assets/client-monsters.js
+          grep -q 'spellRange:behavior.spellRange' assets/client-monsters.js
+          grep -q 'sightRange:behavior.sightRange' assets/client-monsters.js
           grep -q 'elementModifiers:overlay.elementModifiers' assets/client-monsters.js
           grep -q 'window.RO_DATA.monsters = rows' assets/client-monsters.js
           grep -q 'spriteId:id' assets/client-monsters.js
@@ -59,6 +76,9 @@ jobs:
           grep -q 'render.ragnaplace.com/c/gateway-iro_job-' assets/client-monster-sprites.js
           grep -q 'RZ_MONSTER_SPRITE_HTML' assets/monster-detail-rms.js
           grep -q 'RZ_DECORATE_MONSTER_SPRITES' assets/monster-detail-rms.js
+          grep -q 'RZ_ELEMENT_BADGE' assets/monster-element-colors.js
+          grep -q 'rz-monster-property-badge' assets/monster-element-colors.js
+          grep -q "route.includes('element')" assets/monster-element-colors.js
           grep -q 'const DEFAULT_PAGE_SIZE=10' assets/monster-db-optimized.js
           grep -q 'const PAGE_SIZES=\[5,10,25,50\]' assets/monster-db-optimized.js
           grep -q 'rz-monster-boss-filter' assets/monster-db-optimized.js
@@ -84,8 +104,20 @@ jobs:
           assert poring['jobExp'] == 30
           assert poring['elementModifiers']['Water'] == 25
 
+          rms_text=Path('assets/rms-monster-behavior.js').read_text(encoding='utf-8')
+          rms_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR=',1)[1].split(';\nwindow.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[0]
+          rms=json.loads(rms_payload)
+          assert len(rms) >= 250
+          assert rms['1002']['walkSpeed'] == 'Very Slow'
+          assert rms['1002']['delayAfterHit'] == 'Short'
+          assert rms['1002']['attackRange'].startswith('1')
+          assert rms['1002']['spellRange'].startswith('10')
+          assert rms['1002']['sightRange'].startswith('12')
+          assert rms['1193']['walkSpeed'] == 'Slow'
+          assert rms['1193']['delayAfterHit'] == 'Long'
+
           html=Path('index.html').read_text(encoding='utf-8')
-          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-db-optimized.js']
+          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-db-optimized.js']
           positions=[html.index(x) for x in order]
           assert positions == sorted(positions)
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
@@ -100,7 +132,7 @@ jobs:
         run: |
           git config user.name "Ragnarok Zero Wiki Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html assets/monster-zero-stats.js
+          git add index.html assets/monster-zero-stats.js assets/rms-monster-behavior.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy verified Zero monster stats"
+          git commit -m "Deploy Zero monster stats and RMS behavior fields"
           git push

@@ -8,6 +8,7 @@ scripts=[
     '<script src="assets/client-monsters-data.js"></script>',
     '<script src="assets/client-monster-identity.js"></script>',
     '<script src="assets/monster-zero-stats.js"></script>',
+    '<script src="assets/rms-monster-behavior.js"></script>',
     '<script src="assets/client-monsters.js"></script>',
     '<script src="assets/client-monster-sprites.js"></script>',
     '<script src="assets/monster-detail-rms.js"></script>',
@@ -45,4 +46,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official monster identity, verified Zero stats, element colors and animated sprite renderer wired.')
+print('Official monster identity, verified Zero stats, RMS behavior fields, element badges and animated sprite renderer wired.')
