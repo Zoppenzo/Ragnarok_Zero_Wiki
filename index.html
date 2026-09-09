@@ -3153,6 +3153,7 @@ window.RO_DATA = {
 <script src="assets/client-monsters-data.js"></script>
 <script src="assets/client-monsters.js"></script>
 <script src="assets/monster-detail-rms.js"></script>
+<script src="assets/monster-db-optimized.js"></script>
 <script src="assets/item-db-optimized.js"></script>
 <script>
 (() => {
@@ -9165,7 +9166,7 @@ window.RO_DATA = {
   function listView(type) {
     const cfg = listConfig[type];
     if (!cfg) return notFound();
-    setTimeout(() => { if (!window.RZ_ITEM_DB_OPT?.wire(type)) wireList(type); }, 0);
+    setTimeout(() => { if (window.RZ_MONSTER_DB_OPT?.wire(type)) return; if (!window.RZ_ITEM_DB_OPT?.wire(type)) wireList(type); }, 0);
     return `${breadcrumbs([{label:t(cfg.title)}])}
       <div class="article-heading"><h1>${icon(cfg.icon)}${t(cfg.title)}</h1><div class="page-subtitle">${t('fromWiki')}</div></div>
       <p>${t(cfg.intro)}</p>
