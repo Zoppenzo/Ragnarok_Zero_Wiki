@@ -7,6 +7,7 @@ on:
       - '.github/scripts/apply_client_monsters.py'
       - '.github/scripts/build_monster_zero_overlay.py'
       - '.github/scripts/build_zero_monster_consensus.py'
+      - '.github/scripts/build_rms_monster_behavior.py'
       - 'assets/client-monsters-data.js'
       - 'assets/client-monster-identity.js'
       - 'assets/monster-zero-stats.js'
@@ -37,6 +38,9 @@ jobs:
 
       - name: Build Zero-only cross-database consensus
         run: python .github/scripts/build_zero_monster_consensus.py
+
+      - name: Build RateMyServer Walk Speed overlay
+        run: python .github/scripts/build_rms_monster_behavior.py
 
       - name: Wire monster client data
         run: python .github/scripts/apply_client_monsters.py
@@ -71,8 +75,6 @@ jobs:
           grep -q 'zeroConsensus' assets/client-monsters.js
           grep -q 'const rmsBehavior' assets/client-monsters.js
           grep -q 'walkSpeed:rms.walkSpeed??null' assets/client-monsters.js
-          grep -q 'attackDelay:null, delayAfterHit:null, attackRange:null, spellRange:null, sightRange:null' assets/client-monsters.js
-          grep -q 'str:null, agi:null, vit:null, int:null, dex:null, luk:null' assets/client-monsters.js
           grep -q 'skills:visibleMonsterSkills(consensus.skills)' assets/client-monsters.js
           grep -q "internal==='NPC_EMOTION'" assets/client-monsters.js
           grep -q "id:3810,internalName:'MD_KING_PORING'" assets/client-monsters.js
@@ -150,9 +152,13 @@ jobs:
 
           rms_text=Path('assets/rms-monster-behavior.js').read_text(encoding='utf-8')
           rms_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR=',1)[1].split(';\nwindow.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[0]
-          rms=json.loads(rms_payload)
+          rms_meta_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[1].rstrip().rstrip(';')
+          rms=json.loads(rms_payload); rms_meta=json.loads(rms_meta_payload)
           assert rms['1002']['walkSpeed'] == 'Very Slow'
           assert rms['1193']['walkSpeed'] == 'Slow'
+          assert rms_meta['fields'] == ['walkSpeed'], rms_meta
+          allowed={'walkSpeed','walkSpeedMs'}
+          assert all(set(row).issubset(allowed) for row in rms.values())
 
           html=Path('index.html').read_text(encoding='utf-8')
           order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-db-optimized.js']
@@ -169,7 +175,7 @@ jobs:
         run: |
           git config user.name "Ragnarok Zero Wiki Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js
+          git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js assets/rms-monster-behavior.js
           git diff --cached --quiet && exit 0
           git commit -m "Deploy simplified monster sheet"
           git push
