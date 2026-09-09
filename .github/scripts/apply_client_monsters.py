@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260909-monster-audit3'
+version='20260909-monster-audit4'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-identity.js',
@@ -19,6 +19,7 @@ script_paths=[
     'assets/monster-element-colors.js',
     'assets/monster-mvp-style.js',
     'assets/monster-final-fixes.js',
+    'assets/monster-instance-maps.js',
     'assets/monster-db-optimized.js',
 ]
 legacy_sprite_paths=[f'assets/client-monster-sprite-data-{i:02d}.js' for i in range(1,12)]
@@ -54,4 +55,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official client + Zero consensus wired. Audited Memorial/Nordfeld identities, animated Zero sprites, unknown markers, drop-icon fallbacks and final monster UI fixes are loaded.')
+print('Official client + Zero consensus wired. Audited Memorial/Nordfeld identities, animated Zero sprites, instance map fallbacks, unknown markers, drop-icon fallbacks and final monster UI fixes are loaded.')
