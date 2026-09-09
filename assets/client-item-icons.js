@@ -4,7 +4,6 @@
   const ZERO_ICON = id => `https://ragnarokzero.net/images/items/${id}.gif`;
   const DP_ICON = id => `https://static.divine-pride.net/images/items/item/${id}.png`;
   const ITEMS = () => (window.RO_DATA && Array.isArray(window.RO_DATA.items) ? window.RO_DATA.items : []);
-  let observer = null;
   let cachedItems = null;
   let cachedLookup = null;
 
@@ -38,19 +37,6 @@
     return lookup.byName.get(name) || null;
   }
 
-  function ensureObserver() {
-    if (observer || !('IntersectionObserver' in window)) return observer;
-    observer = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const img = entry.target;
-        if (img.dataset.src && !img.src) img.src = img.dataset.src;
-        observer.unobserve(img);
-      }
-    }, { rootMargin: '40px 0px' });
-    return observer;
-  }
-
   function makeIcon(item, size) {
     const id = Number(item.clientId || item.id);
     if (!Number.isFinite(id)) return null;
@@ -60,9 +46,8 @@
     img.height = size;
     img.alt = '';
     img.decoding = 'async';
-    img.loading = 'lazy';
-    try { img.fetchPriority = 'low'; } catch (_) {}
-    img.dataset.src = ZERO_ICON(id);
+    img.loading = 'eager';
+    try { img.fetchPriority = 'high'; } catch (_) {}
     img.dataset.fallback = DP_ICON(id);
     img.style.cssText = `width:${size}px;height:${size}px;object-fit:contain;image-rendering:pixelated;vertical-align:middle;display:inline-block;flex:0 0 ${size}px;`;
     let fallbackUsed=false;
@@ -70,8 +55,8 @@
       if(!fallbackUsed && img.dataset.fallback){fallbackUsed=true;img.src=img.dataset.fallback;return;}
       img.remove();
     });
-    const io = ensureObserver();
-    if (io) io.observe(img); else img.src = img.dataset.src;
+    // Start the request immediately. Do not wait for IntersectionObserver/viewport entry.
+    img.src = ZERO_ICON(id);
     return img;
   }
 
@@ -109,24 +94,21 @@
     h1.insertBefore(icon, h1.firstChild);
   }
 
-  function decorate() {
-    const main = document.querySelector('.main-content') || document;
+  function decorate(root) {
+    const main = root || document.querySelector('.main-content') || document;
     decorateLinks(main);
     decorateHeading();
   }
 
-  function afterRender() {
-    requestAnimationFrame(() => {
-      decorate();
-      requestAnimationFrame(decorate);
-    });
-  }
-
+  // Expose direct sources so renderers can put the icon in their first HTML frame.
+  window.RZ_ITEM_ICON_SOURCES = id => ({primary:ZERO_ICON(id),fallback:DP_ICON(id)});
   window.RZ_DECORATE_ITEM_ICONS = decorate;
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', afterRender, { once: true });
-  else afterRender();
-  window.addEventListener('hashchange', afterRender);
+
+  const run=()=>decorate();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
+  else run();
+  window.addEventListener('hashchange', () => queueMicrotask(run));
   document.addEventListener('input', e => {
-    if (e.target && e.target.closest && e.target.closest('.global-search-wrap')) requestAnimationFrame(decorate);
+    if (e.target && e.target.closest && e.target.closest('.global-search-wrap')) queueMicrotask(run);
   });
 })();
