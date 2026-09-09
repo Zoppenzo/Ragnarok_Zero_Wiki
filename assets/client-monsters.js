@@ -73,8 +73,10 @@
     const behavior=rmsBehavior[String(id)] || {};
     const isMvp=MVP_IDS.has(id);
     const isBoss=!isMvp && BOSS_IDS.has(id);
+    const hasNavigation=mapsByKey.has(internal);
     const clientBossType=CLIENT_NAV_BOSS_TYPES.has(internal);
-    const modes=clientBossType?['Boss Type']:[];
+    const clientNavigationType=clientBossType?301:(hasNavigation?300:null);
+    const modes=clientNavigationType===301?['Boss Type']:(clientNavigationType===300?['Normal Type']:[]);
     rows.push({
       id:String(id), clientId:id, spriteId:id, internalName:internal, name:pretty(internal), aliases:[],
       level:Number.isFinite(level)?level:null, hp:overlay.hp??null, sp:null, baseExp:overlay.baseExp??null, jobExp:overlay.jobExp??null,
@@ -83,7 +85,7 @@
       walkSpeed:behavior.walkSpeed??null, attackDelay:null, delayAfterHit:behavior.delayAfterHit??null,
       attackRange:behavior.attackRange??null, spellRange:behavior.spellRange??null, sightRange:behavior.sightRange??null,
       elementModifiers:overlay.elementModifiers&&typeof overlay.elementModifiers==='object'?overlay.elementModifiers:{},
-      aggressive:null, boss:isBoss, mvp:isMvp, modes, clientBossType, clientNavigationType:clientBossType?301:null,
+      aggressive:null, boss:isBoss, mvp:isMvp, modes, clientBossType, clientNavigationType,
       propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
       image:null, description:{en:'',fr:''}, drops:[], maps, skills:[], notes:{en:'',fr:''}, verified:false, clientVerified:true,
       zeroOverlayApplied:Object.keys(overlay).length>0,
