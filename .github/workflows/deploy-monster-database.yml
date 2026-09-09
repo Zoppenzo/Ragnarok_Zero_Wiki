@@ -44,11 +44,18 @@ jobs:
           grep -q 'window.RO_DATA.monsters = rows' assets/client-monsters.js
           grep -q 'spriteId:id' assets/client-monsters.js
           grep -q "KNIGHT_OF_ABYSS:'Abysmal Knight'" assets/client-monsters.js
+          grep -q 'const MVP_IDS = new Set' assets/client-monsters.js
+          grep -q 'const BOSS_IDS = new Set' assets/client-monsters.js
+          grep -q 'boss:isBoss, mvp:isMvp' assets/client-monsters.js
           grep -q 'render.ragnaplace.com/c/gateway-iro_job-' assets/client-monster-sprites.js
           grep -q 'RZ_MONSTER_SPRITE_HTML' assets/monster-detail-rms.js
           grep -q 'RZ_DECORATE_MONSTER_SPRITES' assets/monster-detail-rms.js
           grep -q 'const DEFAULT_PAGE_SIZE=10' assets/monster-db-optimized.js
           grep -q 'const PAGE_SIZES=\[5,10,25,50\]' assets/monster-db-optimized.js
+          grep -q 'rz-monster-boss-filter' assets/monster-db-optimized.js
+          grep -q 'rz-monster-mvp-filter' assets/monster-db-optimized.js
+          grep -q 'wantBoss&&m.boss===true' assets/monster-db-optimized.js
+          grep -q 'wantMvp&&m.mvp===true' assets/monster-db-optimized.js
           grep -q 'Mob-ID#' assets/monster-detail-rms.js
           grep -q 'On Maps' assets/monster-detail-rms.js
           grep -q 'Monster Skills' assets/monster-detail-rms.js
@@ -71,5 +78,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy corrected animated monster sprites"
+          git commit -m "Deploy Boss and MVP monster filters"
           git push

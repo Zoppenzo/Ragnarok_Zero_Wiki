@@ -10,6 +10,13 @@
   const elements = ['Neutral','Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
   const labels = Array.isArray(window.RZ_CLIENT_MONSTER_MAP_LABELS) ? window.RZ_CLIENT_MONSTER_MAP_LABELS : [];
   const mapIndex = window.RZ_CLIENT_MONSTER_MAP_INDEX || {};
+
+  // Category tags only. These sets do not import HP/EXP/ATK/drop values.
+  // MVP and Boss are intentionally exclusive in the UI: Boss means a
+  // boss-class/miniboss that is not tagged MVP.
+  const MVP_IDS = new Set([1038,1039,1046,1086,1087,1112,1115,1147,1150,1157,1159,1190,1251,1252,1272,1312,1373,1389,1418,1492,1511,1583,1630,1688]);
+  const BOSS_IDS = new Set([1089,1090,1091,1092,1093,1096,1120,1262,1283,1295,1302,1582]);
+
   const displayNames = {
     KNIGHT_OF_ABYSS:'Abysmal Knight', FARMILIAR:'Familiar', C_TOWER_MANAGER:'Tower Keeper',
     KNIGHT_OF_WINDSTORM:'Stormy Knight', ORK_HERO:'Orc Hero', ORK_WARRIOR:'Orc Warrior',
@@ -50,12 +57,14 @@
     const elementIndex=((propertyCode % 20)+20)%20;
     const elementLevel=Math.floor(propertyCode/20);
     const maps=[...(mapsByKey.get(internal)?.values?.() || [])];
+    const isMvp=MVP_IDS.has(id);
+    const isBoss=!isMvp && BOSS_IDS.has(id);
     rows.push({
       id:String(id), clientId:id, spriteId:id, internalName:internal, name:pretty(internal), aliases:[],
       level:Number.isFinite(level)?level:null, hp:null, sp:null, baseExp:null, jobExp:null,
       race:races[raceCode] || 'n/a', element:elements[elementIndex] || 'n/a', elementLevel:elementLevel || null,
       size:sizes[sizeCode] || 'n/a', attackMin:null, attackMax:null, def:null, mdef:null, hit:null, flee:null,
-      aggressive:null, boss:null, mvp:null, propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
+      aggressive:null, boss:isBoss, mvp:isMvp, propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
       image:null, description:{en:'',fr:''}, drops:[], maps, skills:[], notes:{en:'',fr:''}, verified:false, clientVerified:true
     });
   }
