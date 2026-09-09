@@ -2,64 +2,34 @@
   'use strict';
   const getId=monster=>Number(monster?.spriteId??monster?.clientId??monster?.id);
   const embedded=key=>key&&window.RZ_CLIENT_MONSTER_SPRITE_DATA?.[String(key).toLowerCase()]||null;
-  const animated=id=>`https://render.ragnaplace.com/c/gateway-iro_job-${id}_action-0_enableShadow-false.png`;
-  const fallback=id=>`https://game.ragnaplace.com/ro/job/${id}/0.png`;
-  const correctedCache=new Map();
-
-  // The first GRF sprite export interpreted the client palette as BGRA.
-  // This client stores these SPR palette entries as RGBA, so red and blue
-  // were reversed (orange/brown skin became blue). Correct every embedded
-  // GRF sprite once in-browser while preserving the original alpha channel.
-  function correctedEmbedded(key,done){
-    const raw=embedded(key);
-    if(!raw){done(null);return;}
-    if(correctedCache.has(raw)){done(correctedCache.get(raw));return;}
-    const source=new Image();
-    source.onload=()=>{
-      try{
-        const canvas=document.createElement('canvas');
-        canvas.width=source.naturalWidth||source.width;
-        canvas.height=source.naturalHeight||source.height;
-        const ctx=canvas.getContext('2d',{willReadFrequently:true});
-        ctx.drawImage(source,0,0);
-        const frame=ctx.getImageData(0,0,canvas.width,canvas.height);
-        const px=frame.data;
-        for(let i=0;i<px.length;i+=4){
-          const r=px[i]; px[i]=px[i+2]; px[i+2]=r;
-        }
-        ctx.putImageData(frame,0,0);
-        const fixed=canvas.toDataURL('image/png');
-        correctedCache.set(raw,fixed);
-        done(fixed);
-      }catch(_){done(raw);}
-    };
-    source.onerror=()=>done(null);
-    source.src=raw;
-  }
+  const ragnaplaceAnimated=id=>`https://render.ragnaplace.com/c/gateway-iro_job-${id}_action-0_enableShadow-false.png`;
+  const ragnaplaceFallback=id=>`https://game.ragnaplace.com/ro/job/${id}/0.png`;
+  // Current Zero Global sprite pack used by RO ZERO DATABASE. The identities/sprite keys
+  // for these IDs were independently checked in the supplied Zero client (NPCIdentity + JobName + SPR).
+  const ZERO_SPECIAL_IDS=new Set([
+    3810,3811,3812,3813,3814,3815,3816,3897,3898,3901,3903,3972,3973,3974,3975,
+    20076,20077,20078,20079,20080,
+    25321,25322,25323,25324,25325,25326,25327,25328,25329,25330,25331,25332,25333,25334,25336
+  ]);
+  const zeroAnimated=id=>`https://rozerodb.com/assets/global-20260813/monsters/${id}.gif`;
 
   function decorate(root=document){
     root.querySelectorAll?.('img[data-rz-monster-sprite]:not([data-rz-monster-ready])').forEach(img=>{
       const id=Number(img.dataset.rzMonsterSprite);
       if(!Number.isFinite(id))return;
       img.dataset.rzMonsterReady='1';
-      const rawLocal=embedded(img.dataset.rzClientSpriteKey);
-      let stage=rawLocal?'local':'animated';
+      const local=embedded(img.dataset.rzClientSpriteKey);
+      const stages=ZERO_SPECIAL_IDS.has(id)
+        ? [zeroAnimated(id),local,ragnaplaceAnimated(id),ragnaplaceFallback(id)].filter(Boolean)
+        : [ragnaplaceAnimated(id),local,ragnaplaceFallback(id)].filter(Boolean);
+      let index=0;
       img.onerror=()=>{
-        if(stage==='local'){
-          stage='animated'; img.src=animated(id); return;
-        }
-        if(stage==='animated'){
-          stage='fallback'; img.src=fallback(id); return;
-        }
+        index+=1;
+        if(index<stages.length){img.src=stages[index];return;}
         img.style.display='none';
         const next=img.nextElementSibling;if(next)next.style.display='inline';
       };
-      if(rawLocal){
-        correctedEmbedded(img.dataset.rzClientSpriteKey,fixed=>{
-          if(fixed)img.src=fixed;
-          else {stage='animated';img.src=animated(id);}
-        });
-      }else img.src=animated(id);
+      img.src=stages[0];
     });
   }
 
