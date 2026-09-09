@@ -18,6 +18,8 @@ on:
       - 'assets/client-data/skills.part*'
       - 'assets/client-data/items-core.part*'
       - 'assets/client-data/item-desc.part*'
+      - 'assets/client-data/itemdesc85v2/part*'
+      - 'assets/client-data/item-descriptions.json'
       - 'assets/client-data/item-icons-map.part*'
       - 'assets/client-items.js'
       - 'assets/client-item-descriptions.js'
@@ -92,21 +94,27 @@ jobs:
           python -m json.tool assets/client-data/items.json >/dev/null
           python -m json.tool assets/client-data/item-descriptions.json >/dev/null
           python - <<'PY'
+          import hashlib
           import json
           items=json.load(open('assets/client-data/items.json',encoding='utf-8'))
           icons=json.load(open('assets/client-data/item-icons.json',encoding='utf-8'))
-          desc=json.load(open('assets/client-data/item-descriptions.json',encoding='utf-8'))
+          raw=open('assets/client-data/item-descriptions.json','rb').read()
+          desc=json.loads(raw)
           assert len(items)==4033, len(items)
           assert len(icons)==3954, len(icons)
           assert len(desc)==4032, len(desc)
+          assert hashlib.sha256(raw).hexdigest()=='a83d6b0ff58c68ea00794ae64ac60d91275b8dd4316016e1f510fd16a00303a5'
           by_id={int(x['i']):x for x in items}
           assert by_id[517]['n']=='Meat'
           assert by_id[519]['n']=='Milk'
           assert by_id[1201]['n']=='Knife' and by_id[1201]['a']==17
           assert by_id[4001]['n']=='Poring Card'
           assert desc['501']['d']=='Recovery tonic finely ground from Red Herb. Recovers about 45 HP.'
+          assert desc['517']['d']=='Well-cooked meat, looks appetizing. Recovers a small amount of HP.'
+          assert desc['519']['d']=='Processed and sterilized milk from cows. Commonly used as nutritious food for Kids. Recovers a small amount of HP.'
           assert desc['1201']['d']=='Short dagger designed so anyone can use it with ease.'
           assert 'Novice Class' in desc['1201']['j']
+          assert desc['4001']['p']=='Armor'
           PY
           test -s assets/client-items-data.js
           test -s assets/client-item-descriptions.js
@@ -144,8 +152,9 @@ jobs:
           ! grep -q 'No description available' assets/item-detail-rms.js
           ! grep -q 'No description available' assets/item-db-optimized.js
           ! grep -q 'Client-side fields come from' assets/item-detail-rms.js
-          grep -q 'Soft slate-gray RMS-style item tables' assets/item-visual-cleanup.js
-          grep -q '#728092' assets/item-visual-cleanup.js
+          grep -q 'Light blue-gray RMS-style item tables' assets/item-visual-cleanup.js
+          grep -q '#c8d8e6' assets/item-visual-cleanup.js
+          grep -q '#dde8f1' assets/item-visual-cleanup.js
           grep -q 'color: #c40000' assets/item-visual-cleanup.js
           grep -q 'static.divine-pride.net/images/items/item/' assets/client-item-icons.js
           ! grep -q 'MutationObserver' assets/client-item-icons.js

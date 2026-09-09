@@ -6,7 +6,7 @@
     const style = document.createElement('style');
     style.id = 'rz-item-neutral-style';
     style.textContent = `
-      /* Soft slate-gray RMS-style item tables. */
+      /* Light blue-gray RMS-style item tables. */
       .rz-rms-result,
       .rz-rms-wrap {
         filter: none !important;
@@ -18,9 +18,9 @@
       }
       .rz-rms-result-title,
       .rz-rms-titlebar {
-        background: #728092 !important;
-        color: #ffffff !important;
-        border-color: #9ba7b4 !important;
+        background: #c8d8e6 !important;
+        color: #24384a !important;
+        border-color: #9fb3c4 !important;
       }
       .rz-rms-titlebar {
         border-radius: 7px 7px 0 0 !important;
@@ -35,39 +35,39 @@
       .rz-rms-titlebar .rz-rms-name,
       .rz-rms-titlebar .rz-rms-class-link,
       .rz-rms-titlebar a {
-        color: #ffffff !important;
+        color: #24384a !important;
       }
 
       .rz-rms-result-sheet,
       .rz-rms-sheet {
-        background: #f7f9fb !important;
-        color: #27323c !important;
-        border-color: #aeb8c3 !important;
+        background: #f7fafc !important;
+        color: #263846 !important;
+        border-color: #aabcc9 !important;
       }
       .rz-rms-result-sheet th,
       .rz-rms-result-sheet td,
       .rz-rms-sheet th,
       .rz-rms-sheet td {
-        border-color: #aeb8c3 !important;
+        border-color: #aabcc9 !important;
       }
       .rz-rms-result-sheet th,
       .rz-rms-sheet th {
-        background: #d9e0e7 !important;
-        color: #263442 !important;
+        background: #dde8f1 !important;
+        color: #294052 !important;
         font-weight: 700 !important;
       }
       .rz-rms-result-sheet td,
       .rz-rms-sheet td {
-        background: #fbfcfd !important;
-        color: #27323c !important;
+        background: #fbfdff !important;
+        color: #263846 !important;
       }
       .rz-rms-result-sheet tr:nth-child(even) td,
       .rz-rms-sheet tr:nth-child(even) td {
-        background: #f0f3f6 !important;
+        background: #f1f6fa !important;
       }
       .rz-rms-result-sheet code,
       .rz-rms-sheet code {
-        color: #27323c !important;
+        color: #263846 !important;
       }
       .rz-rms-table-scroll {
         border-radius: 0 0 7px 7px !important;
