@@ -14,6 +14,94 @@
   const labels = Array.isArray(window.RZ_CLIENT_MONSTER_MAP_LABELS) ? window.RZ_CLIENT_MONSTER_MAP_LABELS : [];
   const mapIndex = window.RZ_CLIENT_MONSTER_MAP_INDEX || {};
 
+  // Display labels extracted from the supplied Ragnarok Zero client
+  // SkillID.lub + SkillInfoList_enUS.lub. These do not prove that a monster
+  // uses the skill; they only replace external/internal NPC_* labels when a
+  // monster skill entry is already present in the Zero consensus layer.
+  const clientNpcSkillNames = {
+    NPC_ALLHEAL:'Full Heal',
+    NPC_ALL_STAT_DOWN:'All Stats Down',
+    NPC_ANTIMAGIC:'Deadzone',
+    NPC_ARROWSTORM:'Tempestade de Flechas',
+    NPC_CLOUD_KILL:'Killing Cloud',
+    NPC_COMET:'Comet',
+    NPC_CRITICALWOUND:'Critical Wounds',
+    NPC_DAMAGE_HEAL:'Convert Damage to Heal',
+    NPC_DEADLYCURSE2:'Wide Deadly Curse',
+    NPC_DEFENDER:'Defender',
+    NPC_DRAGONBREATH:"Dragon's Breath",
+    NPC_DRAGONFEAR:'Dragon Fear',
+    NPC_EARTHQUAKE:'Earthquake',
+    NPC_ELECTRICWALK:'Electric Walk',
+    NPC_EVILLAND:'Evil Land',
+    NPC_EVILLAND2:'Demonic Evil Land',
+    NPC_FATALMENACE:'Fatal Menace',
+    NPC_FIRESTORM:'Fire storm',
+    NPC_FIREWALK:'Fire Walk',
+    NPC_FLAMECROSS:'Flame cross',
+    NPC_GRADUAL_GRAVITY:'Gravity Increase',
+    NPC_GROUNDDRIVE:'Ground Drive',
+    NPC_HALLUCINATIONWALK:'Hallucination Walk',
+    NPC_HELLJUDGEMENT:"Hell's Judgement",
+    NPC_HELLJUDGEMENT2:'Demonic Hell Judgment',
+    NPC_HELLPOWER:"Hell's Power",
+    NPC_ICEMINE:'Ice mine',
+    NPC_IGNITIONBREAK:'Ignition Break',
+    NPC_IMMUNE_PROPERTY:'Elemental Immunity',
+    NPC_JACKFROST:'Jack Frost',
+    NPC_LEASH:'Leash',
+    NPC_LEX_AETERNA:'Wide area Lex Aeterna',
+    NPC_MAGICMIRROR:'Magic Mirror',
+    NPC_MAGMA_ERUPTION:'Lava Flow',
+    NPC_MANDRAGORA:'Mandragora Howl',
+    NPC_MAXPAIN:'Max Pain',
+    NPC_MILLENNIUMSHIELD:'Millenium Shield',
+    NPC_MOVE_COORDINATE:'Position Shift',
+    NPC_PSYCHIC_WAVE:'Psychic Wave',
+    NPC_PULSESTRIKE:'Pulse Strike',
+    NPC_RAINOFMETEOR:'Rain of Meteor',
+    NPC_RAYOFGENESIS:'Genesis Ray',
+    NPC_REVERBERATION:'Reverberation',
+    NPC_SLOWCAST:'Slow Cast',
+    NPC_SR_CURSEDCIRCLE:'Cursed Circle',
+    NPC_STONESKIN:'Stone Skin',
+    NPC_VAMPIRE_GIFT:"Vampire's Gift",
+    NPC_VENOMFOG:'Venom fog',
+    NPC_WIDEBLEEDING:'Bloody Party',
+    NPC_WIDEBLEEDING2:'Demonic Mass Bleeding',
+    NPC_WIDEBODYBURNNING:'Wide area burnning',
+    NPC_WIDECOLD:'Wide area freeze',
+    NPC_WIDECONFUSE:'Confusion Rule',
+    NPC_WIDECONFUSE2:'Demonic Mass Confuse',
+    NPC_WIDECURSE:'Cursed Fate',
+    NPC_WIDECURSE2:'Demonic Mass Curse',
+    NPC_WIDEFREEZE:'Frozen Heart',
+    NPC_WIDEFREEZE2:'Demonic Mass Freeze',
+    NPC_WIDEFROSTMISTY:'Wide area frost misty',
+    NPC_WIDEHEALTHFEAR:'Wide area fear',
+    NPC_WIDELEASH:'Wide Leash',
+    NPC_WIDESIGHT:'Wide sight',
+    NPC_WIDESILENCE:'Bedlam',
+    NPC_WIDESILENCE2:'Demonic Mass Silence',
+    NPC_WIDESIREN:'Wide area fascination',
+    NPC_WIDESLEEP:'Morpheus Slumber',
+    NPC_WIDESLEEP2:'Demonic Mass Sleep',
+    NPC_WIDESOULDRAIN:'Souless Defeat',
+    NPC_WIDESTONE:"Medusa's Stare",
+    NPC_WIDESTONE2:'Demonic Mass Stone',
+    NPC_WIDESTUN:'Stunning Gaze',
+    NPC_WIDESTUN2:'Demonic Mass Stun',
+    NPC_WIDESUCK:'Wide bloodsucking',
+    NPC_WIDEWEB:'Wide web',
+    NPC_WIDE_DEEP_SLEEP:'Wide area deep sleep'
+  };
+  const normalizeMonsterSkill = skill => {
+    if (!skill || typeof skill !== 'object') return skill;
+    const internal = String(skill.name || skill.skill || '').trim();
+    const clientName = clientNpcSkillNames[internal];
+    return clientName ? { ...skill, internalName:internal, name:clientName, clientNameVerified:true } : skill;
+  };
+
   const MVP_IDS = new Set([1038,1039,1046,1086,1087,1112,1115,1147,1150,1157,1159,1190,1251,1252,1272,1312,1373,1389,1418,1492,1511,1583,1630,1688]);
   const BOSS_IDS = new Set([1089,1090,1091,1092,1093,1096,1120,1262,1283,1295,1302,1582]);
 
@@ -94,7 +182,7 @@
       aggressive:modes.includes('Aggressive')?true:null, boss:isBoss, mvp:isMvp, modes, clientBossType, clientNavigationType,
       propertyCode:Number.isFinite(propertyCode)?propertyCode:null,
       image:null, description:{en:'',fr:''}, drops:Array.isArray(consensus.drops)?consensus.drops:[], maps,
-      skills:Array.isArray(consensus.skills)?consensus.skills:[], notes:{en:'',fr:''},
+      skills:Array.isArray(consensus.skills)?consensus.skills.map(normalizeMonsterSkill):[], notes:{en:'',fr:''},
       verified:false, clientVerified:true, fieldMeta:fields,
       zeroOverlayApplied:Object.keys(overlay).length>0,
       zeroConsensusApplied:Object.keys(consensus).length>0,
