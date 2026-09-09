@@ -12,6 +12,7 @@ on:
       - 'assets/client-monsters.js'
       - 'assets/monster-client-corrections.js'
       - 'assets/monster-audit-20260909.js'
+      - 'assets/monster-instance-maps.js'
       - '.github/scripts/audit_monster_completeness.js'
       - '.github/workflows/audit-monster-data.yml'
   workflow_dispatch:
