@@ -7,6 +7,14 @@
   let cachedItems = null;
   let cachedLookup = null;
 
+  function normaliseName(value) {
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/\s*\[\d+\]\s*$/, '');
+  }
+
   function maps() {
     const rows = ITEMS();
     if (cachedItems === rows && cachedLookup) return cachedLookup;
@@ -16,25 +24,43 @@
       const id = Number(item.clientId || item.id);
       if (!Number.isFinite(id) || !item.name) continue;
       byId.set(String(id), item);
-      byName.set(String(item.name).trim().toLowerCase(), item);
+      const nameKey = normaliseName(item.name);
+      if (nameKey && !byName.has(nameKey)) byName.set(nameKey, item);
     }
     cachedItems = rows;
     cachedLookup = { byId, byName };
     return cachedLookup;
   }
 
+  function anchorDisplayName(anchor) {
+    // Monster drops keep the item name in their direct <span>; using the whole
+    // anchor text would incorrectly include the trailing "???" / drop rate.
+    const directName = anchor.querySelector?.(':scope > span')?.textContent;
+    return String(directName || anchor.dataset.rzDropItemName || anchor.textContent || '').trim();
+  }
+
   function resolveItem(anchor, lookup) {
-    const explicit=anchor.dataset.rzDropItemId;
-    if(explicit && /^\d+$/.test(explicit)) return lookup.byId.get(explicit) || {id:explicit,clientId:explicit,name:(anchor.textContent||'').trim()};
+    const displayName = anchorDisplayName(anchor);
+    const byName = lookup.byName.get(normaliseName(displayName)) || null;
+    const explicit = anchor.dataset.rzDropItemId;
+
+    // Some monster-drop sources still carry an old/non-Zero item ID. Prefer the
+    // official client item with the same display name before synthesising an ID.
+    if (explicit && /^\d+$/.test(explicit)) {
+      if (lookup.byId.has(explicit)) return lookup.byId.get(explicit);
+      if (byName) return byName;
+      return { id:explicit, clientId:explicit, name:displayName };
+    }
+
     const href = anchor.getAttribute('href') || '';
     const m = href.match(/#\/(?:items|cards)\/([^?#]+)/i);
     if (m) {
       const token = decodeURIComponent(m[1]);
       if (lookup.byId.has(token)) return lookup.byId.get(token);
-      if(/^\d+$/.test(token)) return {id:token,clientId:token,name:(anchor.textContent||'').trim()};
+      if (byName) return byName;
+      if (/^\d+$/.test(token)) return { id:token, clientId:token, name:displayName };
     }
-    const name = (anchor.textContent || '').trim().toLowerCase();
-    return lookup.byName.get(name) || null;
+    return byName;
   }
 
   function makeIcon(item, size, priority='auto') {
@@ -55,8 +81,7 @@
       if(!fallbackUsed && img.dataset.fallback){fallbackUsed=true;img.src=img.dataset.fallback;return;}
       img.remove();
     });
-    // Eager means immediate for this rendered page only. We no longer scan
-    // hidden/off-page database results, so this does not preload the whole DB.
+    // Immediate only for the currently rendered pagination slice.
     img.src = ZERO_ICON(id);
     return img;
   }
@@ -83,7 +108,7 @@
     if (!m) return;
     const lookup = maps();
     const token = decodeURIComponent(m[1]);
-    const item = lookup.byId.get(token) || lookup.byName.get(token.replace(/[-_]+/g, ' ').toLowerCase()) || (/^\d+$/.test(token)?{id:token,clientId:token}:null);
+    const item = lookup.byId.get(token) || lookup.byName.get(normaliseName(token.replace(/[-_]+/g, ' '))) || (/^\d+$/.test(token)?{id:token,clientId:token}:null);
     if (!item) return;
     const h1 = document.querySelector('.main-content h1');
     if (!h1 || h1.dataset.rzItemIcon === '1') return;
@@ -97,9 +122,6 @@
   }
 
   function currentPageScope() {
-    // The optimized Monster DB only puts the current pagination slice in this
-    // host. Restricting decoration here guarantees that page 2/3/... icons are
-    // requested only when the user actually opens those pages.
     const monsterResults=document.querySelector('#list-results .rz-monster-db-results, #list-output .rz-monster-db-results');
     if(monsterResults) return monsterResults;
     return document.querySelector('.main-content') || document;
@@ -109,7 +131,6 @@
     const scoped = !!root;
     const scope = root?.querySelectorAll ? root : currentPageScope();
     decorateLinks(scope);
-    // A scoped call from a monster sheet/result page must not rescan unrelated UI.
     if(!scoped) decorateHeading();
   }
 
