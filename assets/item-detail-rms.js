@@ -195,7 +195,7 @@
   }
 
   function afterRender() {
-    requestAnimationFrame(() => requestAnimationFrame(render));
+    queueMicrotask(render);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', afterRender, {once:true});

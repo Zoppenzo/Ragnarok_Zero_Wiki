@@ -3775,7 +3775,7 @@ window.RO_DATA = {
     ];
     return `<div class="database-category-list database-category-list-fixed">${rows.map(([key,href,img,title,desc])=>{
       const src = asset(img);
-      const icon = `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;
+      const icon = key === 'item' ? `<svg class="icon database-category-icon database-category-icon-item" aria-hidden="true"><use href="#i-item"></use></svg>` : `<img class="database-category-icon database-category-icon-${key}" src="${src}" alt="">`;
       return `<a class="database-category-row database-category-${key}" href="${href}">
         <span class="database-category-sprite">
           ${icon}
@@ -9266,6 +9266,8 @@ window.RO_DATA = {
   function itemDetail(id, cardRoute=false) {
     const item = getItem(id);
     if (!item) return notFound();
+    queueMicrotask(() => window.RZ_RENDER_RMS_ITEM_DETAIL?.());
+    return `<div class="rz-rms-pending" data-item-id="${esc(item.id)}"></div>`;
     const sources = DATA.monsters.flatMap(m => m.drops.filter(d=>d.itemId===id).map(d=>({m,d})));
     const sourceRows = sources.length ? sources.map(({m,d})=>`<tr><td>${entityCell(m.name,`#/monsters/${m.id}`,'monster')}</td><td>${val(d.rate)}</td><td>${val(d.amount)}</td><td>${badge(d.verified)}</td></tr>`).join('') : `<tr><td colspan="4">${t('none')}</td></tr>`;
     const pageIcon = item.type === 'Card' ? 'card' : 'item';
