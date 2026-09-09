@@ -6,15 +6,16 @@ on:
       - '.github/workflows/deploy-monster-database.yml'
       - '.github/scripts/apply_client_monsters.py'
       - '.github/scripts/build_monster_zero_overlay.py'
-      - '.github/scripts/build_rms_monster_behavior.py'
+      - '.github/scripts/build_zero_monster_consensus.py'
       - 'assets/client-monsters-data.js'
       - 'assets/client-monster-identity.js'
       - 'assets/monster-zero-stats.js'
-      - 'assets/rms-monster-behavior.js'
+      - 'assets/monster-zero-consensus.js'
       - 'assets/client-monsters.js'
       - 'assets/client-monster-sprites.js'
       - 'assets/monster-detail-rms.js'
       - 'assets/monster-element-colors.js'
+      - 'assets/monster-mvp-style.js'
       - 'assets/monster-db-optimized.js'
   workflow_dispatch:
 
@@ -24,6 +25,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,8 +34,8 @@ jobs:
       - name: Build verified Zero monster overlay
         run: python .github/scripts/build_monster_zero_overlay.py
 
-      - name: Build RateMyServer-compatible behavior overlay
-        run: python .github/scripts/build_rms_monster_behavior.py
+      - name: Build Zero-only cross-database consensus
+        run: python .github/scripts/build_zero_monster_consensus.py
 
       - name: Wire monster client data
         run: python .github/scripts/apply_client_monsters.py
@@ -43,52 +45,47 @@ jobs:
           test -s assets/client-monsters-data.js
           test -s assets/client-monster-identity.js
           test -s assets/monster-zero-stats.js
-          test -s assets/rms-monster-behavior.js
+          test -s assets/monster-zero-consensus.js
           test -s assets/client-monsters.js
           test -s assets/client-monster-sprites.js
           test -s assets/monster-detail-rms.js
           test -s assets/monster-element-colors.js
+          test -s assets/monster-mvp-style.js
           test -s assets/monster-db-optimized.js
           grep -q 'assets/client-monster-identity.js' index.html
           grep -q 'assets/monster-zero-stats.js' index.html
-          grep -q 'assets/rms-monster-behavior.js' index.html
+          grep -q 'assets/monster-zero-consensus.js' index.html
+          ! grep -q 'assets/rms-monster-behavior.js' index.html
           grep -q 'assets/client-monster-sprites.js' index.html
           grep -q 'assets/monster-element-colors.js' index.html
+          grep -q 'assets/monster-mvp-style.js' index.html
           grep -q 'assets/monster-db-optimized.js' index.html
           grep -q 'KNIGHT_OF_ABYSS.*1219,122,7,2,87' assets/client-monster-identity.js
           grep -q 'ALARM.*1193,88,0,1,60' assets/client-monster-identity.js
           grep -q 'PORING.*1002,1,3,1,21' assets/client-monster-identity.js
-          grep -q 'ABYSMAL_KNIGHT.*KNIGHT_OF_ABYSS' assets/client-monster-identity.js
           grep -q 'window.RZ_MONSTER_ZERO_STATS=' assets/monster-zero-stats.js
-          grep -q 'window.RZ_MONSTER_RMS_BEHAVIOR=' assets/rms-monster-behavior.js
-          grep -q 'rmsBehavior' assets/client-monsters.js
-          grep -q 'walkSpeed:behavior.walkSpeed' assets/client-monsters.js
-          grep -q 'delayAfterHit:behavior.delayAfterHit' assets/client-monsters.js
-          grep -q 'attackRange:behavior.attackRange' assets/client-monsters.js
-          grep -q 'spellRange:behavior.spellRange' assets/client-monsters.js
-          grep -q 'sightRange:behavior.sightRange' assets/client-monsters.js
+          grep -q 'window.RZ_MONSTER_ZERO_CONSENSUS=' assets/monster-zero-consensus.js
+          grep -q 'zeroConsensus' assets/client-monsters.js
+          ! grep -q 'rmsBehavior' assets/client-monsters.js
+          grep -q "walkSpeed:null" assets/client-monsters.js
+          grep -q "attackRange:fv('attackRange')" assets/client-monsters.js
+          grep -q 'magicAttackMin' assets/client-monsters.js
+          grep -q 'fieldMeta:fields' assets/client-monsters.js
           grep -q 'elementLevel:elementLevel' assets/client-monsters.js
-          grep -q 'elementModifiers:overlay.elementModifiers' assets/client-monsters.js
           grep -q 'window.RO_DATA.monsters = rows' assets/client-monsters.js
           grep -q 'spriteId:id' assets/client-monsters.js
           grep -q "KNIGHT_OF_ABYSS:'Abysmal Knight'" assets/client-monsters.js
           grep -q 'const MVP_IDS = new Set' assets/client-monsters.js
-          grep -q 'const BOSS_IDS = new Set' assets/client-monsters.js
           grep -q 'boss:isBoss, mvp:isMvp' assets/client-monsters.js
-          grep -q 'render.ragnaplace.com/c/gateway-iro_job-' assets/client-monster-sprites.js
           grep -q 'RZ_MONSTER_SPRITE_HTML' assets/monster-detail-rms.js
           grep -q 'RZ_DECORATE_MONSTER_SPRITES' assets/monster-detail-rms.js
+          grep -q 'rz-monster-conflict' assets/monster-detail-rms.js
+          grep -q 'Magic Atk' assets/monster-detail-rms.js
           grep -q 'RZ_ELEMENT_BADGE' assets/monster-element-colors.js
-          grep -q 'rz-monster-property-badge' assets/monster-element-colors.js
-          grep -q 'data-rz-element-level' assets/monster-element-colors.js
-          grep -q 'td.innerHTML=badge(text)' assets/monster-element-colors.js
-          grep -q "route.includes('element')" assets/monster-element-colors.js
+          grep -q 'rz-monster-mvp-emblem' assets/monster-mvp-style.js
           grep -q 'const DEFAULT_PAGE_SIZE=10' assets/monster-db-optimized.js
-          grep -q 'const PAGE_SIZES=\[5,10,25,50\]' assets/monster-db-optimized.js
           grep -q 'rz-monster-boss-filter' assets/monster-db-optimized.js
           grep -q 'rz-monster-mvp-filter' assets/monster-db-optimized.js
-          grep -q 'wantBoss&&m.boss===true' assets/monster-db-optimized.js
-          grep -q 'wantMvp&&m.mvp===true' assets/monster-db-optimized.js
           grep -q 'Mob-ID#' assets/monster-detail-rms.js
           grep -q 'On Maps' assets/monster-detail-rms.js
           grep -q 'Monster Skills' assets/monster-detail-rms.js
@@ -107,37 +104,32 @@ jobs:
           assert poring['baseExp'] == 150
           assert poring['elementModifiers']['Water'] == 25
 
-          rms_text=Path('assets/rms-monster-behavior.js').read_text(encoding='utf-8')
-          rms_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR=',1)[1].split(';\nwindow.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[0]
-          rms_meta_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[1].rstrip().rstrip(';')
-          rms=json.loads(rms_payload)
-          rms_meta=json.loads(rms_meta_payload)
-          assert len(rms) >= 250
-          assert rms_meta['complete'] >= 250
-          assert rms_meta['requested'] >= rms_meta['complete']
-          expected={
-              '1002':('Very Slow','Short','1 cells','10 cells','12 cells'),
-              '1193':('Slow','Long','1 cells','10 cells','12 cells'),
-              '1191':('Very Fast','Very Short','1 cells','10 cells','12 cells'),
-              '1192':('Slow','Very Short','1 cells','10 cells','12 cells'),
-              '1001':('Slow','Average','1 cells','10 cells','12 cells'),
-              '1020':('Immovable','Average','4 cells','10 cells','12 cells'),
-              '1047':('Immovable','n/a','non-attacker','10 cells','12 cells'),
-              '1068':('Immovable','Average','7 cells','10 cells','12 cells'),
-          }
-          for mob_id, want in expected.items():
-              row=rms[mob_id]
-              got=(row['walkSpeed'],row['delayAfterHit'],row['attackRange'],row['spellRange'],row['sightRange'])
-              assert got == want, (mob_id,got,want)
+          ctext=Path('assets/monster-zero-consensus.js').read_text(encoding='utf-8')
+          cpayload=ctext.split('window.RZ_MONSTER_ZERO_CONSENSUS=',1)[1].split(';\nwindow.RZ_MONSTER_ZERO_CONSENSUS_META=',1)[0]
+          mpayload=ctext.split('window.RZ_MONSTER_ZERO_CONSENSUS_META=',1)[1].rstrip().rstrip(';')
+          consensus=json.loads(cpayload); meta=json.loads(mpayload)
+          assert len(consensus) >= 230, len(consensus)
+          assert meta['twrozPages'] >= 200, meta
+          assert meta['pronteraPages'] >= 80, meta
+          p=consensus['1002']
+          assert p['fields']['hp']['value'] == 55
+          assert p['fields']['attackMin']['value'] == 13
+          assert p['fields']['attackMax']['value'] == 17
+          j=next(x for x in p['drops'] if x.get('itemId')==909)
+          assert j['rate'] == 70 and not j['conflict']
+          card=next(x for x in p['drops'] if x.get('itemId')==4001)
+          assert card['conflict'] is True, card
+          assert card['sources'].get('TWRoZ') == 0.2
+          assert card['sources'].get('Prontera') == 0.01
 
           html=Path('index.html').read_text(encoding='utf-8')
-          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-db-optimized.js']
+          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-db-optimized.js']
           positions=[html.index(x) for x in order]
           assert positions == sorted(positions)
+          assert 'assets/rms-monster-behavior.js' not in html
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
           assert 'rz-monster-rms-pending' in renderer
           assert 'RZ_RENDER_RMS_MONSTER_DETAIL' in renderer
-          assert 'article-with-infobox' not in renderer
           list_view=html.split('function listView(type)',1)[1].split('function wireList(type)',1)[0]
           assert 'RZ_MONSTER_DB_OPT?.wire(type)' in list_view
           PY
@@ -146,7 +138,7 @@ jobs:
         run: |
           git config user.name "Ragnarok Zero Wiki Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html assets/monster-zero-stats.js assets/rms-monster-behavior.js
+          git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy complete monster behavior fields"
+          git commit -m "Deploy Zero-only monster consensus"
           git push
