@@ -73,7 +73,10 @@ jobs:
           grep -q 'walkSpeed:rms.walkSpeed??null' assets/client-monsters.js
           grep -q 'attackDelay:null, delayAfterHit:null, attackRange:null, spellRange:null, sightRange:null' assets/client-monsters.js
           grep -q 'str:null, agi:null, vit:null, int:null, dex:null, luk:null' assets/client-monsters.js
-          grep -q 'skills:Array.isArray(consensus.skills)' assets/client-monsters.js
+          grep -q 'skills:visibleMonsterSkills(consensus.skills)' assets/client-monsters.js
+          grep -q "internal==='NPC_EMOTION'" assets/client-monsters.js
+          grep -q "id:3810,internalName:'MD_KING_PORING'" assets/client-monsters.js
+          grep -q "id:25327,internalName:'BOULDERDWARF_HAMMER_MJ'" assets/client-monsters.js
           grep -q 'magicAttackMin' assets/client-monsters.js
           grep -q 'fieldMeta:fields' assets/client-monsters.js
           grep -q 'elementLevel:elementLevel' assets/client-monsters.js
