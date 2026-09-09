@@ -32,6 +32,9 @@
   // Keep it as a hint only so these future client records are not exposed as live spawns.
   [20076,20077,20078,20079,20080].forEach(id=>setLabel(id,'Ant Hell · Memorial','1@ant01'));
 
+  // The audit runs this file in Node without a DOM. Data mutations above still apply.
+  if(typeof document==='undefined') return;
+
   function monsterForWrap(wrap){
     const title=wrap?.querySelector?.('.rz-monster-title');
     const id=title?.textContent?.match(/Mob-ID#\s*(\d+)/i)?.[1];
