@@ -48,9 +48,16 @@
       fixSkillRates(wrap);
       fixMemorialFrame(wrap);
     }
-    // Strictly scoped to the rendered monster sheet(s) supplied by the caller.
-    // No DOM watcher: pagination/detail renderers explicitly call this once.
     window.RZ_DECORATE_ITEM_ICONS?.(root);
+  }
+
+  function decorateDetailOnce(){
+    if(!/^#\/monsters\//i.test(location.hash)) return;
+    requestAnimationFrame(()=>{
+      const main=document.querySelector('.main-content')||document;
+      const wrap=main.querySelector('.rz-monster-sheet-wrap');
+      if(wrap) decorate(wrap);
+    });
   }
 
   if(!document.getElementById(STYLE_ID)){
@@ -69,4 +76,7 @@
   }
 
   window.RZ_DECORATE_MONSTER_FINAL=decorate;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',decorateDetailOnce,{once:true});
+  else decorateDetailOnce();
+  window.addEventListener('hashchange',decorateDetailOnce);
 })();
