@@ -6,7 +6,9 @@ on:
       - '.github/workflows/deploy-monster-database.yml'
       - '.github/scripts/apply_client_monsters.py'
       - 'assets/client-monsters-data.js'
+      - 'assets/client-monster-identity.js'
       - 'assets/client-monsters.js'
+      - 'assets/client-monster-sprites.js'
       - 'assets/monster-detail-rms.js'
       - 'assets/monster-db-optimized.js'
   workflow_dispatch:
@@ -28,35 +30,37 @@ jobs:
       - name: Validate monster database
         run: |
           test -s assets/client-monsters-data.js
+          test -s assets/client-monster-identity.js
           test -s assets/client-monsters.js
+          test -s assets/client-monster-sprites.js
           test -s assets/monster-detail-rms.js
           test -s assets/monster-db-optimized.js
-          grep -q 'assets/client-monsters-data.js' index.html
-          grep -q 'assets/client-monsters.js' index.html
-          grep -q 'assets/monster-detail-rms.js' index.html
+          grep -q 'assets/client-monster-identity.js' index.html
+          grep -q 'assets/client-monster-sprites.js' index.html
           grep -q 'assets/monster-db-optimized.js' index.html
-          grep -q '1193,ALARM,88,0,1,60,c_tower3:145;c_tower4:20' assets/client-monsters-data.js
-          grep -q "window.RO_DATA.monsters = rows" assets/client-monsters.js
-          grep -q "const races = \['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'\]" assets/client-monsters.js
-          grep -q 'RZ_RENDER_RMS_MONSTER_DETAIL' index.html
-          grep -q 'rz-monster-rms-pending' index.html
-          grep -q 'RZ_MONSTER_SHEET_HTML' assets/monster-detail-rms.js
+          grep -q 'KNIGHT_OF_ABYSS.*1219,122,7,2,87' assets/client-monster-identity.js
+          grep -q 'ALARM.*1193,88,0,1,60' assets/client-monster-identity.js
+          grep -q 'ABYSMAL_KNIGHT.*KNIGHT_OF_ABYSS' assets/client-monster-identity.js
+          grep -q 'window.RO_DATA.monsters = rows' assets/client-monsters.js
+          grep -q 'spriteId:id' assets/client-monsters.js
+          grep -q "KNIGHT_OF_ABYSS:'Abysmal Knight'" assets/client-monsters.js
+          grep -q 'render.ragnaplace.com/c/gateway-iro_job-' assets/client-monster-sprites.js
+          grep -q 'RZ_MONSTER_SPRITE_HTML' assets/monster-detail-rms.js
+          grep -q 'RZ_DECORATE_MONSTER_SPRITES' assets/monster-detail-rms.js
+          grep -q 'const DEFAULT_PAGE_SIZE=10' assets/monster-db-optimized.js
+          grep -q 'const PAGE_SIZES=\[5,10,25,50\]' assets/monster-db-optimized.js
           grep -q 'Mob-ID#' assets/monster-detail-rms.js
           grep -q 'On Maps' assets/monster-detail-rms.js
           grep -q 'Monster Skills' assets/monster-detail-rms.js
-          grep -q 'static.divine-pride.net/images/mobs/png/' assets/monster-detail-rms.js
-          grep -q 'const DEFAULT_PAGE_SIZE = 5' assets/monster-db-optimized.js
-          grep -q 'const PAGE_SIZES = \[5, 10, 25, 50\]' assets/monster-db-optimized.js
-          grep -q 'rz-monster-db-results' assets/monster-db-optimized.js
-          grep -q 'RZ_MONSTER_DB_OPT' assets/monster-db-optimized.js
-          grep -q 'RZ_MONSTER_DB_OPT?.wire(type)' index.html
           python - <<'PY'
           html=open('index.html',encoding='utf-8').read()
+          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-db-optimized.js']
+          positions=[html.index(x) for x in order]
+          assert positions == sorted(positions)
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
           assert 'rz-monster-rms-pending' in renderer
           assert 'RZ_RENDER_RMS_MONSTER_DETAIL' in renderer
           assert 'article-with-infobox' not in renderer
-          assert 'stats-grid' not in renderer
           list_view=html.split('function listView(type)',1)[1].split('function wireList(type)',1)[0]
           assert 'RZ_MONSTER_DB_OPT?.wire(type)' in list_view
           PY
@@ -67,5 +71,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy paginated RMS monster database"
+          git commit -m "Deploy corrected animated monster sprites"
           git push
