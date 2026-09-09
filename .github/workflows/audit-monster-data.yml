@@ -1,0 +1,35 @@
+name: Audit monster data
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/client-monsters-data.js'
+      - 'assets/client-monster-identity.js'
+      - 'assets/monster-zero-stats.js'
+      - 'assets/monster-zero-consensus.js'
+      - 'assets/rms-monster-behavior.js'
+      - 'assets/client-monsters.js'
+      - 'assets/monster-client-corrections.js'
+      - 'assets/monster-audit-20260909.js'
+      - '.github/scripts/audit_monster_completeness.js'
+      - '.github/workflows/audit-monster-data.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build audit
+        run: node .github/scripts/audit_monster_completeness.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: monster-data-audit
+          path: audit/
