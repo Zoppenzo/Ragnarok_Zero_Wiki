@@ -1,10 +1,11 @@
 (() => {
   'use strict';
   // legacy validator token only: static.divine-pride.net/images/mobs/png/
-  const NA='<span class="rz-monster-na">n/a</span>';
+  const NA='<span class="rz-monster-na">???</span>';
   const NO_RESULT='<span class="rz-monster-no-result">No Result</span>';
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const val=value=>value===null||value===undefined||value===''?NA:esc(value);
+  const unknown=value=>value===null||value===undefined||value===''||/^n\/?a$/i.test(String(value).trim())||String(value).trim()==='—';
+  const val=value=>unknown(value)?NA:esc(value);
   const num=value=>Number.isFinite(Number(value))?Number(value):null;
   const sourceTip=meta=>Object.entries(meta?.sources||{}).map(([k,v])=>`${k}: ${v===null||v===undefined?'unknown':Array.isArray(v)?v.join(' / '):v}`).join(' · ');
   const conflict=meta=>meta?.conflict?` <span class="rz-monster-conflict" title="${esc(sourceTip(meta))}">⚠</span>`:'';
@@ -14,7 +15,7 @@
     const maps=Array.isArray(monster.maps)?monster.maps:[];
     if(!maps.length)return NO_RESULT;
     return maps.map(m=>{
-      const name=m.mapName||m.mapId||'n/a';
+      const name=m.mapName||m.mapId||'???';
       const amount=num(m.amount);
       return `<div class="rz-monster-map-row"><a href="#/maps/${encodeURIComponent(m.mapId||'')}">${esc(name)}</a>${amount!==null?`<span>×${amount}</span>`:''}<small>${esc(m.mapId||'')}</small></div>`;
     }).join('');
@@ -33,17 +34,17 @@
     if(!drops.length)return `<div class="rz-monster-empty-section">${NO_RESULT}</div>`;
     return `<div class="rz-monster-drop-grid">${drops.map(d=>{
       const itemId=d.itemId??d.id??'';
-      const item=window.RO_DATA?.items?.find?.(x=>String(x.id)===String(itemId));
-      const name=item?.name||d.name||itemId||'n/a';
-      const rate=d.rate==null?'n/a':`${esc(d.rate)}%`;
-      const href=item?.type==='Card'?`#/cards/${encodeURIComponent(itemId)}`:`#/items/${encodeURIComponent(itemId)}`;
-      return `<a class="rz-monster-drop" href="${href}" title="${d.conflict?esc(sourceTip(d)):''}"><span>${esc(name)}</span><small>${rate}${conflict(d)}</small></a>`;
+      const item=window.RO_DATA?.items?.find?.(x=>String(x.id)===String(itemId)||String(x.clientId)===String(itemId));
+      const name=item?.name||d.name||itemId||'???';
+      const rate=d.rate==null?'???':`${esc(d.rate)}%`;
+      const href=item?.type==='Card'||/card$/i.test(String(name))?`#/cards/${encodeURIComponent(itemId)}`:`#/items/${encodeURIComponent(itemId)}`;
+      return `<a class="rz-monster-drop" data-rz-drop-item-id="${esc(itemId)}" href="${href}" title="${d.conflict?esc(sourceTip(d)):''}"><span>${esc(name)}</span><small>${rate}${conflict(d)}</small></a>`;
     }).join('')}</div>`;
   }
   function skillRows(monster){
     const skills=Array.isArray(monster.skills)?monster.skills:[];
     if(!skills.length)return `<div class="rz-monster-empty-section">${NO_RESULT}</div>`;
-    return `<div class="rz-monster-skill-grid">${skills.map(s=>`<div>${esc(s.name||s.skill||s)}${s.level?` <small>[Lv.${esc(s.level)}]</small>`:''}${s.rate?` <small>${esc(s.rate)}%</small>`:''}</div>`).join('')}</div>`;
+    return `<div class="rz-monster-skill-grid">${skills.map(s=>`<div>${esc(s.name||s.skill||s)}${s.level?` <small>[Lv.${esc(s.level)}]</small>`:''}</div>`).join('')}</div>`;
   }
   function sprite(monster){
     const id=num(monster.spriteId??monster.clientId??monster.id);
@@ -56,11 +57,11 @@
     return `${(Number(exp)/Number(hp)).toFixed(3)}:1`;
   }
   function renderSheet(monster){
-    const property=monster.element&&monster.element!=='n/a'?`${esc(monster.element)}${monster.elementLevel?` ${esc(monster.elementLevel)}`:''}`:NA;
+    const property=monster.element&&!unknown(monster.element)?`${esc(monster.element)}${monster.elementLevel?` ${esc(monster.elementLevel)}`:''}`:NA;
     const attack=monster.attackMin==null&&monster.attackMax==null?NA:`${stat(monster,'attackMin',monster.attackMin)}-${stat(monster,'attackMax',monster.attackMax)}`;
     const magicAttack=monster.magicAttackMin==null&&monster.magicAttackMax==null?NA:`${stat(monster,'magicAttackMin',monster.magicAttackMin)}-${stat(monster,'magicAttackMax',monster.magicAttackMax)}`;
     const id=esc(monster.clientId||monster.id);
-    const internal=esc(monster.internalName||'n/a');
+    const internal=unknown(monster.internalName)?'???':esc(monster.internalName);
     const href=`#/monsters/${encodeURIComponent(monster.id)}`;
     return `<div class="rz-monster-sheet-wrap">
       <table class="rz-monster-sheet">
@@ -113,7 +114,7 @@
     const host=document.querySelector('.rz-monster-rms-pending');
     if(!host)return false;
     host.outerHTML=renderSheet(monster);
-    queueMicrotask(()=>window.RZ_DECORATE_MONSTER_SPRITES?.());
+    queueMicrotask(()=>{window.RZ_DECORATE_MONSTER_SPRITES?.();window.RZ_DECORATE_ITEM_ICONS?.();window.RZ_DECORATE_MONSTER_MVP?.();});
     return true;
   }
 
