@@ -17,16 +17,25 @@
   const STYLE_ID='rz-monster-element-colors-style';
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  function canonical(value){
+  function parseElement(value){
     const raw=String(value||'').trim();
-    if(/^dark$/i.test(raw))return 'Dark';
-    return Object.keys(ELEMENTS).find(k=>k.toLowerCase()===raw.toLowerCase())||null;
+    if(!raw)return null;
+    const match=raw.match(/^([A-Za-z]+)(?:\s+(\d+))?$/);
+    if(!match)return null;
+    const requested=/^dark$/i.test(match[1])?'Dark':match[1];
+    const key=Object.keys(ELEMENTS).find(k=>k.toLowerCase()===requested.toLowerCase())||null;
+    if(!key)return null;
+    return {key,level:match[2]||''};
+  }
+  function canonical(value){
+    return parseElement(value)?.key||null;
   }
   function badge(value){
-    const key=canonical(value);
-    if(!key)return esc(value);
-    const e=ELEMENTS[key];
-    return `<span class="rz-element-badge rz-element-${key.toLowerCase()}" data-rz-element="${esc(key)}">${esc(e.label)}</span>`;
+    const parsed=parseElement(value);
+    if(!parsed)return esc(value);
+    const e=ELEMENTS[parsed.key];
+    const suffix=parsed.level?` ${esc(parsed.level)}`:'';
+    return `<span class="rz-element-badge rz-element-${parsed.key.toLowerCase()}" data-rz-element="${esc(parsed.key)}"${parsed.level?` data-rz-element-level="${esc(parsed.level)}"`:''}>${esc(e.label)}${suffix}</span>`;
   }
   window.RZ_ELEMENT_BADGE=badge;
 
@@ -63,10 +72,9 @@
       const td=tr.querySelector('td');
       if(!th||!td||String(th.textContent||'').trim().toLowerCase()!=='property')return;
       const text=String(td.textContent||'').trim();
-      const key=Object.keys(ELEMENTS).find(name=>new RegExp(`^${name}\\b`,'i').test(text));
-      if(!key)return;
+      if(!parseElement(text))return;
       td.classList.add('rz-monster-property-badge');
-      td.innerHTML=badge(key);
+      td.innerHTML=badge(text);
     });
   }
 
@@ -77,9 +85,9 @@
     host.querySelectorAll?.('td,th,a,span,strong,button,label').forEach(node=>{
       if(node.dataset?.rzElementDecorated==='1'||node.querySelector?.('.rz-element-badge'))return;
       if(node.children?.length)return;
-      const key=canonical(String(node.textContent||'').trim());
-      if(!key)return;
-      node.innerHTML=badge(key);
+      const text=String(node.textContent||'').trim();
+      if(!parseElement(text))return;
+      node.innerHTML=badge(text);
       if(node.dataset)node.dataset.rzElementDecorated='1';
     });
   }
