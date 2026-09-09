@@ -4,16 +4,19 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260909-monster-audit5'
+version='20260910-monster-client-roster1'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-identity.js',
+    'assets/client-monster-navigation-current.js',
+    'assets/client-monster-roster.js',
     'assets/monster-zero-stats.js',
     'assets/monster-zero-consensus.js',
     'assets/rms-monster-behavior.js',
     'assets/client-monsters.js',
     'assets/monster-client-corrections.js',
     'assets/monster-audit-20260909.js',
+    'assets/client-monster-current-overlay.js',
     'assets/client-monster-sprites.js',
     'assets/monster-detail-rms.js',
     'assets/monster-element-colors.js',
@@ -23,7 +26,8 @@ script_paths=[
     'assets/monster-db-optimized.js',
 ]
 legacy_sprite_paths=[f'assets/client-monster-sprite-data-{i:02d}.js' for i in range(1,12)]
-for path in script_paths+legacy_sprite_paths:
+legacy_nav_paths=[f'assets/client-monster-navigation-current-{i:02d}.js' for i in range(1,5)]
+for path in script_paths+legacy_sprite_paths+legacy_nav_paths:
     s=re.sub(rf'\s*<script src="{re.escape(path)}(?:\?v=[^"]+)?"></script>\s*','\n',s)
 scripts=[f'<script src="{path}?v={version}"></script>' for path in script_paths]
 
@@ -55,4 +59,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Official client + Zero consensus wired. Audited Memorial/Nordfeld identities, animated Zero sprites, instance map fallbacks, unknown markers, drop-icon fallbacks and final monster UI fixes are loaded.')
+print('Current client monster roster and exact Navi Mob-ID/map/count data wired. Legacy pseudo-ID navigation is not loaded into the final map layer.')
