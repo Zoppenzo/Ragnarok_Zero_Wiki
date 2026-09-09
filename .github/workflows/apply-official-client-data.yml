@@ -115,6 +115,14 @@ jobs:
           assert desc['1201']['d']=='Short dagger designed so anyone can use it with ease.'
           assert 'Novice Class' in desc['1201']['j']
           assert desc['4001']['p']=='Armor'
+
+          html=open('index.html',encoding='utf-8').read()
+          item_renderer=html.split('function itemDetail(id, cardRoute=false)',1)[1].split('function mapDetail(id)',1)[0]
+          assert 'rz-rms-pending' in item_renderer
+          assert 'RZ_RENDER_RMS_ITEM_DETAIL' in item_renderer
+          assert 'article-with-infobox' not in item_renderer
+          assert 'sourceRows' not in item_renderer
+          assert "key === 'item'" in html and '#i-item' in html
           PY
           test -s assets/client-items-data.js
           test -s assets/client-item-descriptions.js
@@ -144,8 +152,10 @@ jobs:
           grep -q "applicableJobs: desc.j" assets/client-items.js
           grep -q "mdef: extra.mdef" assets/client-items.js
           grep -q "sellPrice: r.sp" assets/client-items.js
-          grep -q "item.mdef!=null?infoRow('MDEF'" index.html
+          grep -q 'rz-rms-pending' index.html
+          grep -q 'RZ_RENDER_RMS_ITEM_DETAIL' index.html
           grep -q 'rz-rms-sheet' assets/item-detail-rms.js
+          grep -q 'queueMicrotask(render)' assets/item-detail-rms.js
           grep -q 'Applicable Jobs' assets/item-detail-rms.js
           grep -q 'Dropped By' assets/item-detail-rms.js
           grep -q 'Sold By' assets/item-detail-rms.js
