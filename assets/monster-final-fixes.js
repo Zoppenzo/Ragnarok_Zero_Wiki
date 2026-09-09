@@ -1,0 +1,76 @@
+(() => {
+  'use strict';
+  const STYLE_ID='rz-monster-final-fixes-style';
+
+  function monsterForWrap(wrap){
+    const title=wrap?.querySelector?.('.rz-monster-title');
+    const id=title?.textContent?.match(/Mob-ID#\s*(\d+)/i)?.[1];
+    return id ? window.RO_DATA?.monsters?.find?.(m=>String(m.clientId||m.id)===String(id)) : null;
+  }
+
+  function fixUnknowns(wrap){
+    wrap.querySelectorAll?.('.rz-monster-na').forEach(node=>{ node.textContent='???'; });
+    wrap.querySelectorAll?.('.rz-monster-drop small').forEach(node=>{
+      for(const child of node.childNodes){
+        if(child.nodeType!==Node.TEXT_NODE) continue;
+        const txt=String(child.nodeValue||'');
+        if(/^\s*n\/a\b/i.test(txt)) child.nodeValue=txt.replace(/^\s*n\/a\b/i,'???');
+        break;
+      }
+    });
+  }
+
+  function fixSkillRates(wrap){
+    // Skill use percentages are server AI data and are not present in the supplied client.
+    // Keep skill name + confirmed level only.
+    wrap.querySelectorAll?.('.rz-monster-skill-grid small').forEach(node=>{
+      if(/%\s*$/.test(String(node.textContent||''))) node.remove();
+    });
+  }
+
+  function fixMemorialFrame(wrap){
+    const monster=monsterForWrap(wrap);
+    if(!monster || !/^MD_/i.test(String(monster.internalName||''))) return;
+    wrap.classList.remove('rz-monster-sheet-wrap-mvp');
+    wrap.classList.add('rz-monster-sheet-wrap-memorial');
+    wrap.dataset.rzMemorial='1';
+  }
+
+  function fixDropIcons(wrap){
+    // Monster sheets are rendered asynchronously after the generic item-icon pass.
+    // Run it again once their drop links actually exist.
+    queueMicrotask(()=>window.RZ_DECORATE_ITEM_ICONS?.(wrap));
+    requestAnimationFrame(()=>window.RZ_DECORATE_ITEM_ICONS?.(wrap));
+  }
+
+  function decorate(root=document){
+    root.querySelectorAll?.('.rz-monster-sheet-wrap').forEach(wrap=>{
+      fixUnknowns(wrap);
+      fixSkillRates(wrap);
+      fixMemorialFrame(wrap);
+      fixDropIcons(wrap);
+    });
+  }
+
+  if(!document.getElementById(STYLE_ID)){
+    const style=document.createElement('style');
+    style.id=STYLE_ID;
+    style.textContent=`
+      .rz-monster-sheet-wrap-memorial{position:relative;border:3px solid #8057ad!important;border-radius:4px;padding:2px;background:linear-gradient(135deg,#f7f0ff 0,#a982cf 18%,#eee0ff 38%,#744a9d 58%,#e6d2fa 78%,#8c62b7 100%)!important;box-shadow:0 0 0 1px #5a367d,0 3px 12px rgba(74,42,105,.24)!important}
+      .rz-monster-sheet-wrap-memorial>.rz-monster-sheet{border-color:#8057ad!important;box-shadow:inset 0 0 0 1px #d8c0ef!important}
+      .rz-monster-sheet-wrap-memorial .rz-monster-title{background:linear-gradient(#eee1fb,#c9ace4)!important;color:#44275f!important;border-color:#8057ad!important}
+      .rz-monster-sheet-wrap-memorial .rz-monster-title a{color:#44275f!important}
+    `;
+    document.head.appendChild(style);
+  }
+
+  window.RZ_DECORATE_MONSTER_FINAL=decorate;
+  const run=()=>decorate(document);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else queueMicrotask(run);
+  window.addEventListener('hashchange',()=>requestAnimationFrame(run));
+  const observer=new MutationObserver(mutations=>{
+    if(mutations.some(m=>m.addedNodes?.length)) requestAnimationFrame(run);
+  });
+  const observe=()=>observer.observe(document.querySelector('.main-content')||document.body,{childList:true,subtree:true});
+  if(document.body)observe();else document.addEventListener('DOMContentLoaded',observe,{once:true});
+})();
