@@ -6,12 +6,18 @@
   const num=value=>value==null||value===''?null:(Number.isFinite(Number(value))?Number(value):null);
 
   function pagerHtml(page,pages,total,pageSize){
-    const start=total?(page-1)*pageSize+1:0,end=Math.min(page*pageSize,total),buttons=[];
+    const start=total?(page-1)*pageSize+1:0;
+    const end=Math.min(page*pageSize,total);
+    const buttons=[];
     const push=(p,label,disabled=false,current=false)=>buttons.push(`<button class="button rz-db-page${current?' current':''}" data-page="${p}" ${disabled?'disabled':''}>${label}</button>`);
     push(Math.max(1,page-1),'‹',page<=1);
     const candidates=new Set([1,pages,page-2,page-1,page,page+1,page+2].filter(p=>p>=1&&p<=pages));
     let prev=0;
-    for(const p of [...candidates].sort((a,b)=>a-b)){if(prev&&p>prev+1)buttons.push('<span class="rz-db-ellipsis">…</span>');push(p,String(p),false,p===page);prev=p;}
+    for(const p of [...candidates].sort((a,b)=>a-b)){
+      if(prev&&p>prev+1)buttons.push('<span class="rz-db-ellipsis">…</span>');
+      push(p,String(p),false,p===page);
+      prev=p;
+    }
     push(Math.min(pages,page+1),'›',page>=pages);
     return `<div class="rz-db-pager"><span class="rz-db-range">${start.toLocaleString()}–${end.toLocaleString()} / ${total.toLocaleString()}</span><div class="rz-db-pages">${buttons.join('')}</div></div>`;
   }
@@ -45,33 +51,50 @@
     return rows.sort(nameSort);
   }
 
+  function decorateVisible(output){
+    // Only the HTML currently inside the paginated result container is touched.
+    // No whole-document scan and no background MutationObserver.
+    window.RZ_COLOR_MONSTER_ELEMENTS?.(output);
+    window.RZ_DECORATE_MONSTER_SPRITES?.(output);
+    window.RZ_DECORATE_MONSTER_MVP?.(output);
+    window.RZ_DECORATE_MONSTER_FINAL?.(output);
+  }
+
   function wire(type){
     if(type!=='monsters'||typeof window.RZ_MONSTER_SHEET_HTML!=='function')return false;
     ensureStyles();
     const source=Array.isArray(window.RO_DATA?.monsters)?window.RO_DATA.monsters:[];
-    const search=document.getElementById('list-search'),raceFilter=document.getElementById('list-filter'),count=document.getElementById('result-count');
-    const output=document.getElementById('list-results')||document.getElementById('list-output'),filters=search?.closest('.filters');
+    const search=document.getElementById('list-search');
+    const raceFilter=document.getElementById('list-filter');
+    const count=document.getElementById('result-count');
+    const output=document.getElementById('list-results')||document.getElementById('list-output');
+    const filters=search?.closest('.filters');
     if(!search||!count||!output||!filters)return false;
     const state={page:1,pageSize:DEFAULT_PAGE_SIZE,sort:'name-asc'};
 
     let sortSelect=document.getElementById('rz-monster-sort');
     if(!sortSelect){
-      const field=document.createElement('div');field.className='form-field rz-monster-sort-field';
+      const field=document.createElement('div');
+      field.className='form-field rz-monster-sort-field';
       field.innerHTML=`<label>${langFr()?'Trier par':'Sort by'}</label><select id="rz-monster-sort" class="select"><option value="name-asc">${langFr()?'Nom A → Z':'Name A → Z'}</option><option value="name-desc">${langFr()?'Nom Z → A':'Name Z → A'}</option><option value="level-asc">${langFr()?'Niveau croissant':'Level low → high'}</option><option value="level-desc">${langFr()?'Niveau décroissant':'Level high → low'}</option><option value="id-asc">Mob-ID ↑</option><option value="id-desc">Mob-ID ↓</option></select>`;
-      filters.appendChild(field);sortSelect=field.querySelector('select');
+      filters.appendChild(field);
+      sortSelect=field.querySelector('select');
     }
 
     let sizeSelect=document.getElementById('rz-monster-page-size');
     if(!sizeSelect){
-      const field=document.createElement('div');field.className='form-field rz-monster-page-size-field';
+      const field=document.createElement('div');
+      field.className='form-field rz-monster-page-size-field';
       field.innerHTML=`<label>${langFr()?'Monstres par page':'Monsters per page'}</label><select id="rz-monster-page-size" class="select">${PAGE_SIZES.map(v=>`<option value="${v}" ${v===DEFAULT_PAGE_SIZE?'selected':''}>${v}</option>`).join('')}</select>`;
-      filters.appendChild(field);sizeSelect=field.querySelector('select');
+      filters.appendChild(field);
+      sizeSelect=field.querySelector('select');
     }
 
     let bossCheck=document.getElementById('rz-monster-boss-filter');
     let mvpCheck=document.getElementById('rz-monster-mvp-filter');
     if(!bossCheck||!mvpCheck){
-      const field=document.createElement('div');field.className='form-field rz-monster-rank-field';
+      const field=document.createElement('div');
+      field.className='form-field rz-monster-rank-field';
       field.innerHTML=`<label>${langFr()?'Type spécial':'Special type'}</label><div class="rz-monster-rank-options"><label><input type="checkbox" id="rz-monster-boss-filter"> Boss</label><label><input type="checkbox" id="rz-monster-mvp-filter"> MVP</label></div>`;
       filters.appendChild(field);
       bossCheck=field.querySelector('#rz-monster-boss-filter');
@@ -79,11 +102,17 @@
     }
 
     let pager=document.getElementById('rz-monster-pager-host');
-    if(!pager){pager=document.createElement('div');pager.id='rz-monster-pager-host';output.insertAdjacentElement('afterend',pager);}
+    if(!pager){
+      pager=document.createElement('div');
+      pager.id='rz-monster-pager-host';
+      output.insertAdjacentElement('afterend',pager);
+    }
 
     const refresh=()=>{
-      const q=(search.value||'').trim().toLowerCase(),race=raceFilter?.value||'';
-      const wantBoss=!!bossCheck.checked,wantMvp=!!mvpCheck.checked;
+      const q=(search.value||'').trim().toLowerCase();
+      const race=raceFilter?.value||'';
+      const wantBoss=!!bossCheck.checked;
+      const wantMvp=!!mvpCheck.checked;
       let rows=source.filter(m=>{
         const maps=Array.isArray(m.maps)?m.maps.map(x=>`${x.mapName||''} ${x.mapId||''}`).join(' '):'';
         const haystack=`${m.name||''} ${m.internalName||''} ${m.id||''} ${m.clientId||''} ${m.race||''} ${m.size||''} ${m.level||''} ${m.element||''} ${maps}`.toLowerCase();
@@ -91,26 +120,39 @@
         return (!q||haystack.includes(q))&&(!race||m.race===race)&&rankMatch;
       });
       sortRows(rows,state.sort);
-      const pages=Math.max(1,Math.ceil(rows.length/state.pageSize));state.page=Math.min(Math.max(1,state.page),pages);
-      const start=(state.page-1)*state.pageSize,visible=rows.slice(start,start+state.pageSize);
+      const pages=Math.max(1,Math.ceil(rows.length/state.pageSize));
+      state.page=Math.min(Math.max(1,state.page),pages);
+      const start=(state.page-1)*state.pageSize;
+      const visible=rows.slice(start,start+state.pageSize);
+
       count.textContent=`${rows.length.toLocaleString()} ${langFr()?'résultats':'results'}`;
       output.innerHTML=`<div class="rz-monster-db-results">${visible.map(m=>window.RZ_MONSTER_SHEET_HTML(m)).join('')}</div>`;
       pager.innerHTML=pagerHtml(state.page,pages,rows.length,state.pageSize);
-      requestAnimationFrame(()=>{
-        window.RZ_COLOR_MONSTER_ELEMENTS?.(output);
-        window.RZ_DECORATE_MONSTER_SPRITES?.(output);
-      });
-      pager.querySelectorAll('[data-page]').forEach(btn=>btn.addEventListener('click',()=>{state.page=Number(btn.dataset.page)||1;refresh();filters.scrollIntoView({block:'start'});}));
+
+      // Synchronous, scoped pass: only the current page's 5/10/25/50 records.
+      decorateVisible(output);
+
+      pager.querySelectorAll('[data-page]').forEach(btn=>btn.addEventListener('click',()=>{
+        state.page=Number(btn.dataset.page)||1;
+        refresh();
+        filters.scrollIntoView({block:'start'});
+      }));
     };
 
     let searchTimer=0;
-    search.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{state.page=1;refresh();},120);});
+    search.addEventListener('input',()=>{
+      clearTimeout(searchTimer);
+      searchTimer=setTimeout(()=>{state.page=1;refresh();},120);
+    });
     raceFilter?.addEventListener('change',()=>{state.page=1;refresh();});
     bossCheck.addEventListener('change',()=>{state.page=1;refresh();});
     mvpCheck.addEventListener('change',()=>{state.page=1;refresh();});
     sortSelect.addEventListener('change',()=>{state.sort=sortSelect.value;state.page=1;refresh();});
     sizeSelect.addEventListener('change',()=>{state.pageSize=Number(sizeSelect.value)||DEFAULT_PAGE_SIZE;state.page=1;refresh();});
-    refresh();return true;
+
+    refresh();
+    return true;
   }
+
   window.RZ_MONSTER_DB_OPT={wire};
 })();
