@@ -48,8 +48,8 @@
       fixSkillRates(wrap);
       fixMemorialFrame(wrap);
     }
-    // One scoped pass for the current rendered page instead of one full-page
-    // scan per monster and per icon insertion.
+    // Strictly scoped to the rendered monster sheet(s) supplied by the caller.
+    // No DOM watcher: pagination/detail renderers explicitly call this once.
     window.RZ_DECORATE_ITEM_ICONS?.(root);
   }
 
@@ -69,20 +69,4 @@
   }
 
   window.RZ_DECORATE_MONSTER_FINAL=decorate;
-  const run=()=>decorate(document);
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-  window.addEventListener('hashchange',()=>queueMicrotask(run));
-
-  const observer=new MutationObserver(mutations=>{
-    for(const mutation of mutations){
-      for(const node of mutation.addedNodes||[]){
-        if(node.nodeType!==Node.ELEMENT_NODE) continue;
-        if(node.matches?.('.rz-monster-sheet-wrap') || node.querySelector?.('.rz-monster-sheet-wrap')){
-          decorate(node);
-        }
-      }
-    }
-  });
-  const observe=()=>observer.observe(document.querySelector('.main-content')||document.body,{childList:true,subtree:true});
-  if(document.body)observe();else document.addEventListener('DOMContentLoaded',observe,{once:true});
 })();
