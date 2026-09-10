@@ -56,6 +56,13 @@ jobs:
           const rows=(audit.incomplete||[]).filter(x=>x.category==='normal'&&(x.missing||[]).some(f=>core.has(f)));
           console.log(JSON.stringify({count:rows.length,monsters:rows.map(x=>({id:x.id,internalName:x.internalName,name:x.name,missing:(x.missing||[]).filter(f=>core.has(f))}))},null,2));
           NODE
+      - name: List normal monsters missing drops
+        run: |
+          node - <<'NODE'
+          const audit=require('./audit/monster-data-audit.json');
+          const rows=(audit.incomplete||[]).filter(x=>x.category==='normal'&&(x.missing||[]).includes('Drops'));
+          console.log(JSON.stringify({count:rows.length,monsters:rows.map(x=>({id:x.id,internalName:x.internalName,name:x.name,missing:x.missing}))},null,2));
+          NODE
       - uses: actions/upload-artifact@v4
         if: always()
         with:
