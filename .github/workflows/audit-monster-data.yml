@@ -10,6 +10,7 @@ on:
       - 'assets/client-monster-navigation-current.js'
       - 'assets/client-monster-roster.js'
       - 'assets/monster-roster-classification.js'
+      - 'assets/monster-verified-skill-associations.js'
       - 'assets/monster-zero-stats.js'
       - 'assets/monster-zero-consensus.js'
       - 'assets/rms-monster-behavior.js'
