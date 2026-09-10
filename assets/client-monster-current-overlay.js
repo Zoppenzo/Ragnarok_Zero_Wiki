@@ -71,8 +71,16 @@
     if (Number.isFinite(id) && !byId.has(id)) byId.set(id, monster);
   }
 
+  const rosterIdCounts = new Map();
+  for (const entry of roster) {
+    const id = Number(entry?.[0]);
+    if (Number.isFinite(id)) rosterIdCounts.set(id, (rosterIdCounts.get(id) || 0) + 1);
+  }
+
   let inserted = 0;
   let navApplied = 0;
+  let navMissing = 0;
+  let navIdMismatch = 0;
 
   for (const entry of roster) {
     if (!Array.isArray(entry) || entry.length < 3) continue;
@@ -89,14 +97,15 @@
       inserted += 1;
     }
 
+    // The NPCIdentity/JobName/sprite roster is the authoritative identity layer.
     monster.clientRosterPresent = true;
     monster.clientIdentityVerified = true;
     monster.clientSpriteVerified = true;
     monster.clientVerified = true;
     monster.clientId = id;
     monster.spriteId = id;
-    monster.clientSpriteKey = spriteKey || monster.clientSpriteKey || internal;
-    if (!monster.internalName) monster.internalName = internal;
+    monster.internalName = internal;
+    monster.clientSpriteKey = spriteKey || internal;
     if (!monster.name) monster.name = pretty(internal);
     if (/^MD_/.test(internal)) monster.memorial = true;
 
@@ -107,17 +116,28 @@
       const [,level,raceCode,sizeCode,propertyCode,type,rawMaps] = current;
       const elementIndex = ((Number(propertyCode) % 20) + 20) % 20;
       const elementLevel = Math.floor(Number(propertyCode) / 20);
+      const navType = Number(type) || null;
 
-      monster.internalName = internal;
       monster.level = Number.isFinite(Number(level)) ? Number(level) : monster.level;
       monster.race = races[Number(raceCode)] || monster.race || null;
       monster.size = sizes[Number(sizeCode)] || monster.size || null;
       monster.element = elements[elementIndex] || monster.element || null;
       monster.elementLevel = elementLevel > 0 ? elementLevel : monster.elementLevel;
       monster.propertyCode = Number.isFinite(Number(propertyCode)) ? Number(propertyCode) : monster.propertyCode;
-      monster.clientNavigationType = Number(type) || null;
-      monster.clientBossType = Number(type) === 301;
+      monster.clientNavigationType = navType;
+      monster.clientBossType = navType === 301;
 
+      // Navigation type is also client data. Replace only the old type labels;
+      // preserve behavioral modes coming from Zero databases.
+      const modes = (Array.isArray(monster.modes) ? monster.modes : [])
+        .filter(mode => mode !== 'Normal Type' && mode !== 'Boss Type');
+      if (navType === 301) modes.unshift('Boss Type');
+      else if (navType === 300) modes.unshift('Normal Type');
+      monster.modes = modes;
+
+      // This is the only automatic client navigation source allowed to populate
+      // maps. It is keyed by the exact internal identity, never by the obsolete
+      // pseudo-ID field from the old Navi table.
       monster.maps = (Array.isArray(rawMaps) ? rawMaps : []).map(pair => {
         const mapId = String(pair?.[0] || '').trim();
         const amount = Number(pair?.[1]);
@@ -136,28 +156,47 @@
       monster.clientNavigationCurrent = true;
       navApplied += 1;
     } else {
-      // Remove only old navigation-derived positions. Explicit Zero, screenshot,
-      // Memorial and hand-verified maps remain untouched.
+      // No current Navi entry for this exact client identity. Never fall back to
+      // the old pseudo-ID map table. Preserve only maps supplied by another
+      // explicit Zero/screenshot/Memorial source.
       monster.maps = (Array.isArray(monster.maps) ? monster.maps : []).filter(m => {
         if (m?.source === 'client-navigation' || m?.source === 'client-navigation-legacy') return false;
         return !(m?.clientVerified === true && m?.verified === true && !m?.source);
       });
       monster.clientNavigationRecovered = false;
       monster.clientNavigationCurrent = false;
+      if (!Array.isArray(current)) navMissing += 1;
+      else navIdMismatch += 1;
     }
   }
 
-  // Remove pollution created by the obsolete pseudo-ID Navi fallback.
+  // Absolute safety net: no position tagged as coming from the obsolete map
+  // pipeline is allowed to survive, even for rows outside the sprite roster.
   for (const monster of rows) {
-    monster.maps = (Array.isArray(monster.maps) ? monster.maps : []).filter(m => m?.source !== 'client-navigation');
+    monster.maps = (Array.isArray(monster.maps) ? monster.maps : []).filter(m =>
+      m?.source !== 'client-navigation' && m?.source !== 'client-navigation-legacy'
+    );
   }
+
+  const duplicateRosterIds = [...rosterIdCounts.entries()].filter(([,count]) => count > 1).map(([id,count]) => ({id,count}));
+  const rosterMissingFromRuntime = roster.filter(entry => !byId.has(Number(entry?.[0]))).map(entry => Number(entry?.[0])).filter(Number.isFinite);
+  const legacyMapsRemaining = rows.reduce((count, monster) => count + (Array.isArray(monster.maps) ? monster.maps.filter(m =>
+    m?.source === 'client-navigation' || m?.source === 'client-navigation-legacy'
+  ).length : 0), 0);
 
   rows.sort((a,b)=>String(a.name||a.internalName||'').localeCompare(String(b.name||b.internalName||''),'en',{sensitivity:'base'}));
   window.RZ_CLIENT_MONSTERS = rows;
   window.RZ_CLIENT_MONSTER_CURRENT_AUDIT = {
     rosterCount:roster.length,
+    uniqueRosterIds:rosterIdCounts.size,
+    duplicateRosterIds,
     inserted,
     currentNavigationEntries:Object.keys(nav).length,
-    currentNavigationApplied:navApplied
+    currentNavigationApplied:navApplied,
+    currentNavigationMissing:navMissing,
+    currentNavigationIdMismatch:navIdMismatch,
+    rosterMissingFromRuntime,
+    legacyMapsRemaining,
+    legacyMapsDisabled:window.RZ_CLIENT_MONSTER_LEGACY_MAPS_DISABLED === true
   };
 })();
