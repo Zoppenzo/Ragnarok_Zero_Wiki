@@ -42,6 +42,93 @@ jobs:
         run: node .github/scripts/audit_monster_completeness.js
       - name: Apply conservative classification overrides
         run: node .github/scripts/refine_monster_classification.js
+      - name: Count verification provenance tiers
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const vm=require('vm');
+          const path=require('path');
+          const sandbox={console,setTimeout,clearTimeout};
+          sandbox.window=sandbox;
+          sandbox.globalThis=sandbox;
+          sandbox.RO_DATA={monsters:[],items:[],maps:[]};
+          const ctx=vm.createContext(sandbox);
+          const files=[
+            'assets/client-monsters-data.js',
+            'assets/client-monster-disable-legacy-maps.js',
+            'assets/client-monster-identity.js',
+            'assets/client-monster-navigation-current.js',
+            'assets/client-monster-roster.js',
+            'assets/monster-zero-stats.js',
+            'assets/monster-zero-consensus.js',
+            'assets/rms-monster-behavior.js',
+            'assets/client-monsters.js',
+            'assets/monster-client-corrections.js',
+            'assets/monster-audit-20260909.js',
+            'assets/client-monster-current-overlay.js',
+            'assets/monster-verified-skill-associations.js',
+            'assets/monster-instance-maps.js'
+          ];
+          for(const rel of files){
+            vm.runInContext(fs.readFileSync(path.resolve(rel),'utf8'),ctx,{filename:rel});
+          }
+          const roster=Array.isArray(sandbox.RZ_CLIENT_MONSTER_ROSTER)?sandbox.RZ_CLIENT_MONSTER_ROSTER:[];
+          const monsters=Array.isArray(sandbox.RO_DATA?.monsters)?sandbox.RO_DATA.monsters:[];
+          const zeroStats=sandbox.RZ_MONSTER_ZERO_STATS||{};
+          const consensus=sandbox.RZ_MONSTER_ZERO_CONSENSUS||{};
+          const skillAssoc=sandbox.RZ_MONSTER_VERIFIED_SKILL_ASSOCIATIONS||{};
+          const byId=new Map(monsters.map(m=>[Number(m?.clientId??m?.id),m]));
+          if(roster.length!==598) throw new Error(`Expected 598 roster identities, got ${roster.length}`);
+
+          const client=[];
+          const external=[];
+          const unverified=[];
+          const externalEvidenceCounts={ragnadexVerified:0,twrozOrProntera:0,zeroSpawn:0,verifiedSkillAssociation:0};
+          for(const row of roster){
+            const id=Number(row?.[0]);
+            const internalName=String(row?.[1]||'');
+            const monster=byId.get(id);
+            if(monster?.clientNavigationCurrent===true){
+              client.push({id,internalName,name:monster?.name||internalName});
+              continue;
+            }
+            const key=String(id);
+            const c=consensus[key]||{};
+            const availability=c.sourceAvailability||{};
+            const hasRagnaDexVerified=!!zeroStats[key] && Object.keys(zeroStats[key]).length>0;
+            const hasTwrozOrProntera=availability.TWRoZ===true || availability.Prontera===true;
+            const hasZeroSpawn=Array.isArray(monster?.maps) && monster.maps.some(x=>String(x?.source||'').startsWith('zero-'));
+            const hasVerifiedSkill=Array.isArray(skillAssoc[key]) && skillAssoc[key].some(x=>x?.associationVerified===true);
+            const isExternal=hasRagnaDexVerified||hasTwrozOrProntera||hasZeroSpawn||hasVerifiedSkill;
+            if(isExternal){
+              external.push({id,internalName,name:monster?.name||internalName,evidence:{ragnadexVerified:hasRagnaDexVerified,twrozOrProntera:hasTwrozOrProntera,zeroSpawn:hasZeroSpawn,verifiedSkillAssociation:hasVerifiedSkill}});
+              if(hasRagnaDexVerified) externalEvidenceCounts.ragnadexVerified++;
+              if(hasTwrozOrProntera) externalEvidenceCounts.twrozOrProntera++;
+              if(hasZeroSpawn) externalEvidenceCounts.zeroSpawn++;
+              if(hasVerifiedSkill) externalEvidenceCounts.verifiedSkillAssociation++;
+            }else{
+              unverified.push({id,internalName,name:monster?.name||internalName});
+            }
+          }
+          const result={
+            roster:roster.length,
+            clientVerifiedExactNavi:client.length,
+            externallyVerifiedZero:external.length,
+            notYetVerified:unverified.length,
+            total:client.length+external.length+unverified.length,
+            externalEvidenceCounts,
+            definitions:{
+              client:'Current client identity + sprite + exact internal-name match in current Navi.',
+              external:'No exact current Navi match, but at least one Zero-specific external proof: RagnaDex zero_felder, TWRoZ/Prontera resolved page, Zero spawn, or explicitly verified Zero skill association.',
+              unverified:'Present in current client identity/sprite roster, but no exact current Navi match and no qualifying external Zero proof yet.'
+            },
+            unverified
+          };
+          if(result.total!==598) throw new Error(`Tier total mismatch: ${result.total}`);
+          fs.mkdirSync('audit',{recursive:true});
+          fs.writeFileSync('audit/monster-verification-tiers.json',JSON.stringify(result,null,2));
+          console.log(JSON.stringify(result,null,2));
+          NODE
       - name: List normal monsters missing maps
         run: |
           node - <<'NODE'
