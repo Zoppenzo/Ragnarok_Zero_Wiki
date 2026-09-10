@@ -6,17 +6,21 @@ const root=path.resolve(__dirname,'../..');
 const sandbox={console, setTimeout, clearTimeout};
 sandbox.window=sandbox;
 sandbox.globalThis=sandbox;
-sandbox.RO_DATA={monsters:[],items:[]};
+sandbox.RO_DATA={monsters:[],items:[],maps:[]};
 const ctx=vm.createContext(sandbox);
 const files=[
   'assets/client-monsters-data.js',
+  'assets/client-monster-disable-legacy-maps.js',
   'assets/client-monster-identity.js',
+  'assets/client-monster-navigation-current.js',
+  'assets/client-monster-roster.js',
   'assets/monster-zero-stats.js',
   'assets/monster-zero-consensus.js',
   'assets/rms-monster-behavior.js',
   'assets/client-monsters.js',
   'assets/monster-client-corrections.js',
   'assets/monster-audit-20260909.js',
+  'assets/client-monster-current-overlay.js',
   'assets/monster-instance-maps.js'
 ];
 for(const rel of files){
@@ -27,15 +31,20 @@ for(const rel of files){
 
 const monsters=Array.isArray(sandbox.RO_DATA.monsters)?sandbox.RO_DATA.monsters:[];
 const identity=sandbox.RZ_CLIENT_MONSTER_IDENTITY||{};
+const roster=Array.isArray(sandbox.RZ_CLIENT_MONSTER_ROSTER)?sandbox.RZ_CLIENT_MONSTER_ROSTER:[];
+const nav=sandbox.RZ_CLIENT_MONSTER_NAV_CURRENT||{};
+const navAudit=sandbox.RZ_CLIENT_MONSTER_CURRENT_AUDIT||{};
 const races=['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'];
 const sizes=['Small','Medium','Large'];
 const elements=['Neutral','Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
 const known=v=>v!==null&&v!==undefined&&v!==''&&!/^n\/?a$/i.test(String(v).trim())&&String(v).trim()!=='—';
 const pairKnown=(a,b)=>known(a)||known(b);
+const byId=id=>monsters.find(m=>Number(m?.clientId??m?.id)===Number(id));
+const mapIds=m=>(Array.isArray(m?.maps)?m.maps:[]).map(x=>String(x?.mapId||''));
 const useful=m=>[
   m.hp,m.level,m.race,m.element,m.size,m.hit,m.flee,m.walkSpeed,m.def,m.mdef,m.baseExp,m.jobExp
 ].some(known)||pairKnown(m.attackMin,m.attackMax)||pairKnown(m.magicAttackMin,m.magicAttackMax)||
-(Array.isArray(m.maps)&&m.maps.length)||(Array.isArray(m.drops)&&m.drops.length)||(Array.isArray(m.skills)&&m.skills.length)||(Array.isArray(m.modes)&&m.modes.length);
+(Array.isArray(m.maps)&&m.maps.length)||(Array.isArray(m.drops)&&m.drops.length)||(Array.isArray(m.skills)&&m.skills.length)||(Array.isArray(m.modes)&&m.modes.length)||m.clientRosterPresent;
 
 function missing(m){
   const out=[];
@@ -53,6 +62,46 @@ function missing(m){
   if(!(Array.isArray(m.drops)&&m.drops.length))out.push('Drops');
   if(!(Array.isArray(m.skills)&&m.skills.length))out.push('Skills');
   return out;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Current-client navigation invariants. These are hard failures because they
+// guard against the obsolete Navi pseudo-ID bug (e.g. #1275 Explosion vs Alice).
+// ────────────────────────────────────────────────────────────────────────────
+if(sandbox.RZ_CLIENT_MONSTER_LEGACY_MAPS_DISABLED!==true){
+  throw new Error('Legacy pseudo-ID map source was not disabled before monster construction');
+}
+if(roster.length!==598){
+  throw new Error(`Expected 598 sprite-backed client identities, got ${roster.length}`);
+}
+if(navAudit.rosterCount!==598 || navAudit.rosterMissingFromRuntime?.length){
+  throw new Error(`Full client roster was not preserved in runtime: ${JSON.stringify(navAudit)}`);
+}
+if(navAudit.legacyMapsRemaining!==0){
+  throw new Error(`Obsolete client-navigation maps survived: ${navAudit.legacyMapsRemaining}`);
+}
+if(navAudit.currentNavigationIdMismatch!==0){
+  throw new Error(`Current Navi/internal identity Mob-ID mismatches: ${navAudit.currentNavigationIdMismatch}`);
+}
+
+const alice=byId(1275);
+if(!alice || alice.internalName!=='ALICE') throw new Error('Mob-ID 1275 must resolve to ALICE');
+const aliceMaps=mapIds(alice);
+if(!aliceMaps.length || aliceMaps.some(x=>!/^gl_/i.test(x))){
+  throw new Error(`Alice must use only current Glast Heim Navi maps, got ${aliceMaps.join(',')}`);
+}
+if(!aliceMaps.includes('gl_cas01') || !aliceMaps.includes('gl_knt01')){
+  throw new Error(`Alice current Navi sample maps missing: ${aliceMaps.join(',')}`);
+}
+
+const abyss=byId(1219);
+if(!abyss || abyss.internalName!=='KNIGHT_OF_ABYSS') throw new Error('Mob-ID 1219 must resolve to KNIGHT_OF_ABYSS');
+const abyssMaps=mapIds(abyss);
+if(!abyssMaps.length || abyssMaps.some(x=>!/^gl/i.test(x))){
+  throw new Error(`Abysmal Knight must use only Glast Heim current Navi maps, got ${abyssMaps.join(',')}`);
+}
+if(!abyssMaps.includes('gl_knt01') || !abyssMaps.includes('gl_knt02') || !abyssMaps.includes('gl_cas02')){
+  throw new Error(`Abysmal Knight current Navi sample maps missing: ${abyssMaps.join(',')}`);
 }
 
 const visible=monsters.filter(useful);
@@ -86,8 +135,21 @@ for(const m of visible){
 }
 contradictions.sort((a,b)=>a.id-b.id);
 
-const summary={generatedAt:new Date().toISOString(),totalRuntime:monsters.length,totalVisible:visible.length,totalIncomplete:incomplete.length,totalClientContradictions:contradictions.length};
-const out={summary,incomplete,contradictions};
+const summary={
+  generatedAt:new Date().toISOString(),
+  totalRuntime:monsters.length,
+  totalVisible:visible.length,
+  totalIncomplete:incomplete.length,
+  totalClientContradictions:contradictions.length,
+  rosterCount:roster.length,
+  currentNavigationEntries:Object.keys(nav).length,
+  currentNavigationApplied:navAudit.currentNavigationApplied||0,
+  currentNavigationMissing:navAudit.currentNavigationMissing||0,
+  legacyMapsRemaining:navAudit.legacyMapsRemaining||0,
+  aliceMaps,
+  abysmalKnightMaps:abyssMaps
+};
+const out={summary,navigationAudit:navAudit,incomplete,contradictions};
 fs.mkdirSync(path.join(root,'audit'),{recursive:true});
 fs.writeFileSync(path.join(root,'audit/monster-data-audit.json'),JSON.stringify(out,null,2));
 
@@ -95,9 +157,17 @@ const lines=[
   '# Monster data audit','',
   `Generated: ${summary.generatedAt}`,'',
   `- Runtime monster rows: **${summary.totalRuntime}**`,
+  `- Sprite-backed client roster: **${summary.rosterCount}**`,
+  `- Current Navi entries: **${summary.currentNavigationEntries}**`,
+  `- Current Navi entries applied to roster: **${summary.currentNavigationApplied}**`,
+  `- Roster identities without current Navi: **${summary.currentNavigationMissing}**`,
+  `- Legacy maps remaining: **${summary.legacyMapsRemaining}**`,
   `- Rows with useful data (visible): **${summary.totalVisible}**`,
   `- Visible rows still incomplete: **${summary.totalIncomplete}**`,
   `- Direct contradictions with client identity table: **${summary.totalClientContradictions}**`,'',
+  '## Navigation regression checks','',
+  `- **#1275 Alice** — ${aliceMaps.join(', ')}`,
+  `- **#1219 Abysmal Knight** — ${abyssMaps.join(', ')}`,'',
   '## Client contradictions',''
 ];
 if(!contradictions.length)lines.push('None.');
