@@ -9,6 +9,7 @@ on:
       - 'assets/client-monster-identity.js'
       - 'assets/client-monster-navigation-current.js'
       - 'assets/client-monster-roster.js'
+      - 'assets/monster-roster-classification.js'
       - 'assets/monster-zero-stats.js'
       - 'assets/monster-zero-consensus.js'
       - 'assets/rms-monster-behavior.js'
@@ -18,6 +19,7 @@ on:
       - 'assets/client-monster-current-overlay.js'
       - 'assets/monster-instance-maps.js'
       - '.github/scripts/audit_monster_completeness.js'
+      - '.github/scripts/refine_monster_classification.js'
       - '.github/scripts/debug_monster_nav.js'
       - '.github/workflows/audit-monster-data.yml'
   workflow_dispatch:
@@ -37,6 +39,8 @@ jobs:
         run: node .github/scripts/debug_monster_nav.js
       - name: Build audit and run navigation regressions
         run: node .github/scripts/audit_monster_completeness.js
+      - name: Apply conservative classification overrides
+        run: node .github/scripts/refine_monster_classification.js
       - name: List normal monsters missing maps
         run: |
           node - <<'NODE'
