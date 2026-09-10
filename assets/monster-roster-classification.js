@@ -33,6 +33,16 @@ window.RZ_MONSTER_ROSTER_CLASSIFICATION_OVERRIDES={
     internalName:"RUNAWAY_BOOK",
     reason:"Rebirth quest target; not an ordinary world-grinding monster"
   },
+  "20166":{
+    category:"variant",
+    internalName:"FLAME_GHOST",
+    reason:"Older alternate Flame Ghost identity retained in the client; the announced Jan 2027 Global Glast Heim Dungeon Flame Ghost uses Mob-ID 20380"
+  },
+  "20167":{
+    category:"variant",
+    internalName:"ICE_GHOST",
+    reason:"Older alternate Ice Ghost identity retained in the client; the announced Jan 2027 Global Glast Heim Dungeon Ice Ghost uses Mob-ID 20379"
+  },
   "20175":{
     category:"upcoming",
     internalName:"EXTRA_JOKER",
