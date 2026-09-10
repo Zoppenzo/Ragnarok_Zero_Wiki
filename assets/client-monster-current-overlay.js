@@ -80,7 +80,7 @@
   let inserted = 0;
   let navApplied = 0;
   let navMissing = 0;
-  let navIdMismatch = 0;
+  let legacyNumericIdMismatch = 0;
 
   for (const entry of roster) {
     if (!Array.isArray(entry) || entry.length < 3) continue;
@@ -97,7 +97,8 @@
       inserted += 1;
     }
 
-    // The NPCIdentity/JobName/sprite roster is the authoritative identity layer.
+    // NPCIdentity + JobName + the actual SPR roster is the authoritative Mob-ID
+    // and internal-identity layer.
     monster.clientRosterPresent = true;
     monster.clientIdentityVerified = true;
     monster.clientSpriteVerified = true;
@@ -109,11 +110,16 @@
     if (!monster.name) monster.name = pretty(internal);
     if (/^MD_/.test(internal)) monster.memorial = true;
 
+    // IMPORTANT: the first numeric field in the Navi row is NOT a reliable
+    // current Mob-ID. The only valid join key is the exact internal identity.
     const current = nav[internal];
-    const navId = Array.isArray(current) ? Number(current[0]) : NaN;
 
-    if (Array.isArray(current) && current.length >= 7 && navId === id) {
-      const [,level,raceCode,sizeCode,propertyCode,type,rawMaps] = current;
+    if (Array.isArray(current) && current.length >= 7) {
+      const [legacyNumericId,level,raceCode,sizeCode,propertyCode,type,rawMaps] = current;
+      if (Number.isFinite(Number(legacyNumericId)) && Number(legacyNumericId) !== id) {
+        legacyNumericIdMismatch += 1;
+      }
+
       const elementIndex = ((Number(propertyCode) % 20) + 20) % 20;
       const elementLevel = Math.floor(Number(propertyCode) / 20);
       const navType = Number(type) || null;
@@ -127,17 +133,14 @@
       monster.clientNavigationType = navType;
       monster.clientBossType = navType === 301;
 
-      // Navigation type is also client data. Replace only the old type labels;
-      // preserve behavioral modes coming from Zero databases.
       const modes = (Array.isArray(monster.modes) ? monster.modes : [])
         .filter(mode => mode !== 'Normal Type' && mode !== 'Boss Type');
       if (navType === 301) modes.unshift('Boss Type');
       else if (navType === 300) modes.unshift('Normal Type');
       monster.modes = modes;
 
-      // This is the only automatic client navigation source allowed to populate
-      // maps. It is keyed by the exact internal identity, never by the obsolete
-      // pseudo-ID field from the old Navi table.
+      // Exact internal-name join. Never join these maps through the legacy
+      // numeric field above.
       monster.maps = (Array.isArray(rawMaps) ? rawMaps : []).map(pair => {
         const mapId = String(pair?.[0] || '').trim();
         const amount = Number(pair?.[1]);
@@ -157,7 +160,7 @@
       navApplied += 1;
     } else {
       // No current Navi entry for this exact client identity. Never fall back to
-      // the old pseudo-ID map table. Preserve only maps supplied by another
+      // the obsolete pseudo-ID map table. Preserve only maps supplied by another
       // explicit Zero/screenshot/Memorial source.
       monster.maps = (Array.isArray(monster.maps) ? monster.maps : []).filter(m => {
         if (m?.source === 'client-navigation' || m?.source === 'client-navigation-legacy') return false;
@@ -165,13 +168,11 @@
       });
       monster.clientNavigationRecovered = false;
       monster.clientNavigationCurrent = false;
-      if (!Array.isArray(current)) navMissing += 1;
-      else navIdMismatch += 1;
+      navMissing += 1;
     }
   }
 
-  // Absolute safety net: no position tagged as coming from the obsolete map
-  // pipeline is allowed to survive, even for rows outside the sprite roster.
+  // Absolute safety net: obsolete automatic map positions can never survive.
   for (const monster of rows) {
     monster.maps = (Array.isArray(monster.maps) ? monster.maps : []).filter(m =>
       m?.source !== 'client-navigation' && m?.source !== 'client-navigation-legacy'
@@ -194,7 +195,7 @@
     currentNavigationEntries:Object.keys(nav).length,
     currentNavigationApplied:navApplied,
     currentNavigationMissing:navMissing,
-    currentNavigationIdMismatch:navIdMismatch,
+    legacyNumericIdMismatch,
     rosterMissingFromRuntime,
     legacyMapsRemaining,
     legacyMapsDisabled:window.RZ_CLIENT_MONSTER_LEGACY_MAPS_DISABLED === true
