@@ -32,6 +32,71 @@
   // Keep it as a hint only so these future client records are not exposed as live spawns.
   [20076,20077,20078,20079,20080].forEach(id=>setLabel(id,'Ant Hell · Memorial','1@ant01'));
 
+  // TWRoZ fallback maps. Current-client Navi always wins. These records are only
+  // allowed to fill an otherwise empty map list for an identity with no exact-name
+  // Navi entry; estimated population/respawn values are deliberately not imported.
+  const consensus=window.RZ_MONSTER_ZERO_CONSENSUS&&typeof window.RZ_MONSTER_ZERO_CONSENSUS==='object'
+    ?window.RZ_MONSTER_ZERO_CONSENSUS:{};
+  const mapLabels=Array.isArray(window.RZ_CLIENT_MONSTER_MAP_LABELS)?window.RZ_CLIENT_MONSTER_MAP_LABELS:[];
+  const mapIndex=window.RZ_CLIENT_MONSTER_MAP_INDEX&&typeof window.RZ_CLIENT_MONSTER_MAP_INDEX==='object'
+    ?window.RZ_CLIENT_MONSTER_MAP_INDEX:{};
+  const wikiMaps=Array.isArray(window.RO_DATA?.maps)?window.RO_DATA.maps:[];
+  const labelMap=mapId=>{
+    const direct=wikiMaps.find(m=>String(m?.internalName||'')===mapId||String(m?.id||'')===mapId);
+    if(direct?.name) return direct.name;
+    const idx=mapIndex[mapId];
+    return Number.isInteger(idx)&&mapLabels[idx]?mapLabels[idx]:mapId;
+  };
+
+  let sourceMonsters=0;
+  let appliedMonsters=0;
+  let mapsApplied=0;
+  let naviProtected=0;
+  let skippedExistingMaps=0;
+  for(const monster of rows){
+    const id=Number(monster?.clientId??monster?.id);
+    if(!Number.isFinite(id)) continue;
+    const spawns=Array.isArray(consensus[String(id)]?.spawns)?consensus[String(id)].spawns:[];
+    if(!spawns.length) continue;
+    sourceMonsters+=1;
+    if(monster.clientNavigationCurrent===true){
+      naviProtected+=1;
+      continue;
+    }
+    if(Array.isArray(monster.maps)&&monster.maps.length){
+      skippedExistingMaps+=1;
+      continue;
+    }
+    const seen=new Set();
+    monster.maps=spawns.map(spawn=>{
+      const mapId=String(spawn?.mapId||'').trim();
+      if(!mapId||seen.has(mapId)) return null;
+      seen.add(mapId);
+      return {
+        mapId,
+        mapName:labelMap(mapId),
+        amount:null,
+        respawn:null,
+        verified:true,
+        zeroVerified:true,
+        source:'zero-spawn-twroz'
+      };
+    }).filter(Boolean);
+    if(monster.maps.length){
+      appliedMonsters+=1;
+      mapsApplied+=monster.maps.length;
+      monster.zeroSpawnFallbackApplied=true;
+    }
+  }
+
+  const naviFallbackViolations=rows.filter(monster=>
+    monster?.clientNavigationCurrent===true&&Array.isArray(monster.maps)&&monster.maps.some(map=>map?.source==='zero-spawn-twroz')
+  ).map(monster=>Number(monster?.clientId??monster?.id)).filter(Number.isFinite);
+  if(naviFallbackViolations.length){
+    throw new Error(`TWRoZ fallback attempted to override current Navi: ${naviFallbackViolations.join(',')}`);
+  }
+  window.RZ_MONSTER_ZERO_SPAWN_AUDIT={sourceMonsters,appliedMonsters,mapsApplied,naviProtected,skippedExistingMaps,naviFallbackViolations};
+
   // The audit runs this file in Node without a DOM. Data mutations above still apply.
   if(typeof document==='undefined') return;
 
