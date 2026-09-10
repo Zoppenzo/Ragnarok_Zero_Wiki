@@ -46,6 +46,23 @@ const useful=m=>[
 ].some(known)||pairKnown(m.attackMin,m.attackMax)||pairKnown(m.magicAttackMin,m.magicAttackMax)||
 (Array.isArray(m.maps)&&m.maps.length)||(Array.isArray(m.drops)&&m.drops.length)||(Array.isArray(m.skills)&&m.skills.length)||(Array.isArray(m.modes)&&m.modes.length)||m.clientRosterPresent;
 
+function classifyInternalName(value){
+  const key=String(value||'').trim().toUpperCase();
+  if(!key)return 'unknown';
+
+  // Deliberately conservative. These are workflow buckets, not claims that a
+  // monster is absent from the live server. Nothing is hidden or deleted here.
+  if(/^(?:S_)?DUMMY_/.test(key)||/^TESTMON$/.test(key)||/^HIDDEN_MOB\d*$/.test(key)||key==='GUILD_SKILL_FLAG')return 'placeholder';
+  if(/_BULLET$/.test(key))return 'projectile';
+  if(/^(?:MQ_|QE_|TUTO_)/.test(key))return 'quest';
+  if(/^MD_/.test(key))return 'instance';
+  if(/^(?:ZG_E_|ZTW_|GP_|E_)/.test(key))return 'event';
+  if(/^CLB_/.test(key))return 'club';
+  if(/^(?:G_|C[1-5]_|R_|B_)/.test(key)||/_MJ$/.test(key))return 'variant';
+  if(/^\d/.test(key))return 'special';
+  return 'normal';
+}
+
 function missing(m){
   const out=[];
   if(!known(m.hp))out.push('HP');
@@ -108,13 +125,34 @@ if(!abyssMaps.includes('gl_knt01') || !abyssMaps.includes('gl_knt02') || !abyssM
   throw new Error(`Abysmal Knight current Navi sample maps missing: ${abyssMaps.join(',')}`);
 }
 
+const rosterClassification=roster.map(row=>({
+  id:Number(row?.[0]),
+  internalName:String(row?.[1]||''),
+  sprite:String(row?.[2]||''),
+  category:classifyInternalName(row?.[1])
+}));
+const classificationCounts=rosterClassification.reduce((acc,row)=>{
+  acc[row.category]=(acc[row.category]||0)+1;
+  return acc;
+},{});
+if(rosterClassification.length!==598 || Object.values(classificationCounts).reduce((a,b)=>a+b,0)!==598){
+  throw new Error('Roster classification must account for all 598 sprite-backed identities');
+}
+
 const visible=monsters.filter(useful);
 const incomplete=visible.map(m=>({
   id:Number(m.clientId||m.id),internalName:m.internalName||'',name:m.name||'',missing:missing(m),
+  category:classifyInternalName(m.internalName),
   memorial:/^MD_/i.test(String(m.internalName||'')),
   instanceLabel:m.instanceLabel||null,
   dwarf:/BOULDERDWARF|NORDIUM|PORING_GEM|APARGREL/i.test(String(m.internalName||''))
 })).filter(x=>x.missing.length).sort((a,b)=>b.missing.length-a.missing.length||a.id-b.id);
+
+const incompleteByCategory=incomplete.reduce((acc,row)=>{
+  acc[row.category]=(acc[row.category]||0)+1;
+  return acc;
+},{});
+const normalIncomplete=incomplete.filter(x=>x.category==='normal');
 
 const contradictions=[];
 for(const m of visible){
@@ -144,8 +182,11 @@ const summary={
   totalRuntime:monsters.length,
   totalVisible:visible.length,
   totalIncomplete:incomplete.length,
+  totalNormalIncomplete:normalIncomplete.length,
   totalClientContradictions:contradictions.length,
   rosterCount:roster.length,
+  rosterClassification:classificationCounts,
+  incompleteByCategory,
   currentNavigationEntries:Object.keys(nav).length,
   currentNavigationApplied:navAudit.currentNavigationApplied||0,
   currentNavigationMissing:navAudit.currentNavigationMissing||0,
@@ -154,10 +195,12 @@ const summary={
   aliceMaps,
   abysmalKnightMaps:abyssMaps
 };
-const out={summary,navigationAudit:navAudit,incomplete,contradictions};
+const out={summary,navigationAudit:navAudit,rosterClassification,incomplete,contradictions};
 fs.mkdirSync(path.join(root,'audit'),{recursive:true});
 fs.writeFileSync(path.join(root,'audit/monster-data-audit.json'),JSON.stringify(out,null,2));
 
+const categoryOrder=['normal','variant','instance','quest','event','club','placeholder','projectile','special','unknown'];
+const categoryLines=categoryOrder.filter(k=>classificationCounts[k]).map(k=>`- ${k}: **${classificationCounts[k]}**${incompleteByCategory[k]?` · incomplete: **${incompleteByCategory[k]}**`:''}`);
 const lines=[
   '# Monster data audit','',
   `Generated: ${summary.generatedAt}`,'',
@@ -170,7 +213,11 @@ const lines=[
   `- Legacy maps remaining: **${summary.legacyMapsRemaining}**`,
   `- Rows with useful data (visible): **${summary.totalVisible}**`,
   `- Visible rows still incomplete: **${summary.totalIncomplete}**`,
+  `- Normal/world candidates still incomplete: **${summary.totalNormalIncomplete}**`,
   `- Direct contradictions with client identity table: **${summary.totalClientContradictions}**`,'',
+  '## Roster classification','',
+  ...categoryLines,'',
+  '> Classification is conservative workflow metadata only. It does not hide, delete, or claim that a client identity is absent from the live server.','',
   '## Navigation regression checks','',
   `- **#1275 Alice** — ${aliceMaps.join(', ')}`,
   `- **#1219 Abysmal Knight** — ${abyssMaps.join(', ')}`,'',
@@ -179,6 +226,6 @@ const lines=[
 if(!contradictions.length)lines.push('None.');
 else contradictions.forEach(x=>lines.push(`- **#${x.id} ${x.name} (${x.internalName})** — ${Object.entries(x.diff).map(([k,v])=>`${k}: wiki=${v.wiki}, client=${v.client}`).join('; ')}`));
 lines.push('','## Incomplete visible monsters','');
-incomplete.forEach(x=>lines.push(`- **#${x.id} ${x.name} (${x.internalName})** — ${x.missing.join(', ')}${x.instanceLabel?` · instance: ${x.instanceLabel}`:''}`));
+incomplete.forEach(x=>lines.push(`- **#${x.id} ${x.name} (${x.internalName})** [${x.category}] — ${x.missing.join(', ')}${x.instanceLabel?` · instance: ${x.instanceLabel}`:''}`));
 fs.writeFileSync(path.join(root,'audit/monster-data-audit.md'),lines.join('\n')+'\n');
 console.log(JSON.stringify(summary,null,2));
