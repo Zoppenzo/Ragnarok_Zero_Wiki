@@ -7,7 +7,7 @@ import urllib.request
 from html.parser import HTMLParser
 from pathlib import Path
 
-IDENTITY = Path('assets/client-monster-identity.js')
+ROSTER = Path('assets/client-monster-roster.js')
 OUT = Path('assets/rms-monster-behavior.js')
 RATHENA_URL = 'https://raw.githubusercontent.com/rathena/rathena/master/db/re/mob_db.yml'
 RMS_URL = 'https://ratemyserver.net/index.php?mob_id={id}&page=re_mob_db'
@@ -26,10 +26,10 @@ class TextExtractor(HTMLParser):
 
 
 def load_ids() -> list[int]:
-    text = IDENTITY.read_text(encoding='utf-8')
-    ids = sorted({int(x) for x in re.findall(r'\[\s*(\d{3,6})\s*,', text)})
-    if len(ids) < 200:
-        raise RuntimeError(f'Only found {len(ids)} client Mob-IDs')
+    text = ROSTER.read_text(encoding='utf-8')
+    ids = sorted({int(x) for x in re.findall(r'\[\s*(\d{2,6})\s*,\s*"', text)})
+    if len(ids) != 598:
+        raise RuntimeError(f'Expected 598 sprite-backed client Mob-IDs, found {len(ids)}')
     return ids
 
 
@@ -101,10 +101,13 @@ def parse_rms_page(mob_id: int, raw: str) -> dict[str, object] | None:
 
 
 def fill_missing_from_rms(rows: dict[str, dict[str, object]], ids: list[int]) -> list[int]:
-    # Query RMS directly only for IDs not covered by the bulk source.
+    # Query RMS directly only for legacy-range Mob-IDs missing from the bulk
+    # database. High custom/Zero IDs and technical variants are left unknown
+    # instead of hammering RMS with entries it does not contain.
     missing = [mob_id for mob_id in ids if str(mob_id) not in rows]
-    unresolved: list[int] = []
-    for mob_id in missing:
+    fallback_ids = [mob_id for mob_id in missing if mob_id < 10000]
+    unresolved: list[int] = [mob_id for mob_id in missing if mob_id >= 10000]
+    for mob_id in fallback_ids:
         try:
             parsed = parse_rms_page(mob_id, fetch_text(RMS_URL.format(id=mob_id), 'text/html'))
         except Exception as exc:
@@ -114,7 +117,7 @@ def fill_missing_from_rms(rows: dict[str, dict[str, object]], ids: list[int]) ->
             rows[str(mob_id)] = parsed
         else:
             unresolved.append(mob_id)
-    return unresolved
+    return sorted(unresolved)
 
 
 def main() -> None:
@@ -124,7 +127,10 @@ def main() -> None:
     unresolved = fill_missing_from_rms(rows, ids)
 
     complete = [mob_id for mob_id, row in rows.items() if row.get('walkSpeed') is not None]
-    minimum = max(240, int(len(ids) * 0.95))
+    # The full sprite roster deliberately includes Zero-only/event/quest/test
+    # identities that RateMyServer/rAthena may not know. Guard against a real
+    # regression without requiring impossible 95% coverage of those entries.
+    minimum = 300
     if len(complete) < minimum:
         raise RuntimeError(
             f'RMS Walk Speed overlay incomplete: {len(complete)}/{len(ids)} complete rows; '
@@ -158,6 +164,7 @@ def main() -> None:
         'matched': len(rows),
         'complete': len(complete),
         'requested': len(ids),
+        'rosterPolicy': 'all 598 sprite-backed client identities',
         'unresolvedIds': unresolved,
     }
     payload = json.dumps(rows, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
@@ -170,8 +177,8 @@ def main() -> None:
         encoding='utf-8',
     )
     print(
-        f'Wrote Walk Speed for {len(rows)} rows ({len(complete)} complete) for {len(ids)} client Mob-IDs; '
-        f'unresolved={unresolved}'
+        f'Wrote Walk Speed for {len(rows)} rows ({len(complete)} complete) for {len(ids)} roster Mob-IDs; '
+        f'unresolved={len(unresolved)}'
     )
 
 
