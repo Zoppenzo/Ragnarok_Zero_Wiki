@@ -18,6 +18,7 @@ on:
       - 'assets/client-monster-current-overlay.js'
       - 'assets/monster-instance-maps.js'
       - '.github/scripts/audit_monster_completeness.js'
+      - '.github/scripts/debug_monster_nav.js'
       - '.github/workflows/audit-monster-data.yml'
   workflow_dispatch:
 
@@ -32,9 +33,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Write navigation diagnostics
+        run: node .github/scripts/debug_monster_nav.js
       - name: Build audit and run navigation regressions
         run: node .github/scripts/audit_monster_completeness.js
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: monster-data-audit
           path: audit/
