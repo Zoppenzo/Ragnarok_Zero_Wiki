@@ -7,6 +7,7 @@ on:
       - '.github/scripts/apply_client_monsters.py'
       - '.github/scripts/build_monster_zero_overlay.py'
       - '.github/scripts/build_zero_monster_consensus.py'
+      - '.github/scripts/augment_zero_monster_spawns.py'
       - '.github/scripts/build_rms_monster_behavior.py'
       - '.github/scripts/audit_monster_completeness.js'
       - 'assets/client-monsters-data.js'
@@ -47,6 +48,9 @@ jobs:
 
       - name: Build Zero-only cross-database consensus
         run: python .github/scripts/build_zero_monster_consensus.py
+
+      - name: Build TWRoZ map fallback
+        run: python .github/scripts/augment_zero_monster_spawns.py
 
       - name: Build RateMyServer Walk Speed overlay
         run: python .github/scripts/build_rms_monster_behavior.py
@@ -97,6 +101,8 @@ jobs:
           grep -q 'window.RZ_MONSTER_RMS_BEHAVIOR=' assets/rms-monster-behavior.js
           grep -q 'RZ_CLIENT_MONSTER_LEGACY_MAPS_DISABLED' assets/client-monster-disable-legacy-maps.js
           grep -q "source:'client-navigation-current'" assets/client-monster-current-overlay.js
+          grep -q "source:'zero-spawn-twroz'" assets/monster-instance-maps.js
+          grep -q 'naviFallbackViolations' assets/monster-instance-maps.js
           grep -q 'zeroConsensus' assets/client-monsters.js
           grep -q 'const rmsBehavior' assets/client-monsters.js
           grep -q 'walkSpeed:rms.walkSpeed??null' assets/client-monsters.js
@@ -162,6 +168,9 @@ jobs:
           assert meta['coverage']['attackMin'] >= 200, meta
           assert meta['coverage']['magicAttackMin'] >= 200, meta
           assert meta['coverage']['hit'] >= 200, meta
+          assert meta['spawnTargetsWithoutNavi'] == 199, meta
+          assert meta['spawnMonsters'] >= 1, meta
+          assert meta['spawnMaps'] >= meta['spawnMonsters'], meta
           p=consensus['1002']
           assert p['fields']['hp']['value'] == 55
           assert p['fields']['attackMin']['value'] == 13
@@ -176,6 +185,11 @@ jobs:
           card=next(x for x in p['drops'] if x.get('itemId')==4001)
           assert card['conflict'] is True, card
 
+          baph={x['mapId'] for x in consensus['1039']['spawns']}
+          doppel={x['mapId'] for x in consensus['1046']['spawns']}
+          assert 'b_maz_d03' in baph, baph
+          assert 'b_gef_d01' in doppel, doppel
+
           rms_text=Path('assets/rms-monster-behavior.js').read_text(encoding='utf-8')
           rms_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR=',1)[1].split(';\nwindow.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[0]
           rms_meta_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[1].rstrip().rstrip(';')
@@ -187,7 +201,7 @@ jobs:
           assert all(set(row).issubset(allowed) for row in rms.values())
 
           html=Path('index.html').read_text(encoding='utf-8')
-          order=['assets/client-monsters-data.js','assets/client-monster-disable-legacy-maps.js','assets/client-monster-identity.js','assets/client-monster-navigation-current.js','assets/client-monster-roster.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-current-overlay.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-db-optimized.js']
+          order=['assets/client-monsters-data.js','assets/client-monster-disable-legacy-maps.js','assets/client-monster-identity.js','assets/client-monster-navigation-current.js','assets/client-monster-roster.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-current-overlay.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-instance-maps.js','assets/monster-db-optimized.js']
           positions=[html.index(x) for x in order]
           assert positions == sorted(positions)
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
@@ -203,5 +217,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js assets/rms-monster-behavior.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy authoritative monster Navi"
+          git commit -m "Deploy authoritative monster Navi and Zero spawns"
           git push
