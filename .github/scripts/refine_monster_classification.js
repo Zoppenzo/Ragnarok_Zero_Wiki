@@ -6,13 +6,16 @@ const root=path.resolve(__dirname,'../..');
 const auditPath=path.join(root,'audit/monster-data-audit.json');
 const mdPath=path.join(root,'audit/monster-data-audit.md');
 const overridesPath=path.join(root,'assets/monster-roster-classification.js');
+const skillsPath=path.join(root,'assets/monster-verified-skill-associations.js');
 if(!fs.existsSync(auditPath)) throw new Error('Run audit_monster_completeness.js first');
 if(!fs.existsSync(overridesPath)) throw new Error('Missing monster roster classification overrides');
 
-const sandbox={window:{}};
+const sandbox={window:{RO_DATA:{monsters:[]}}};
 vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(overridesPath,'utf8'),sandbox,{filename:'monster-roster-classification.js'});
+if(fs.existsSync(skillsPath)) vm.runInContext(fs.readFileSync(skillsPath,'utf8'),sandbox,{filename:'monster-verified-skill-associations.js'});
 const overrides=sandbox.window.RZ_MONSTER_ROSTER_CLASSIFICATION_OVERRIDES||{};
+const verifiedSkills=sandbox.window.RZ_MONSTER_VERIFIED_SKILL_ASSOCIATIONS||{};
 const audit=JSON.parse(fs.readFileSync(auditPath,'utf8'));
 const requiredFields=['HP','ATK','MATK','DEF','MDEF','HIT','FLEE','Base EXP','Job EXP','Walk Speed','Maps','Drops','Skills'];
 
@@ -33,7 +36,17 @@ for(const row of audit.rosterClassification||[]){
 for(const row of audit.incomplete||[]){
   const o=overrideFor(row);
   if(o){ row.category=o.category; row.classificationReason=o.reason||null; row.classificationOverride=true; }
+  const extra=verifiedSkills[String(row?.id??'')];
+  if(Array.isArray(extra)&&extra.length&&Array.isArray(row.missing)){
+    row.missing=row.missing.filter(field=>field!=='Skills');
+    row.verifiedSkillAssociations=extra.map(skill=>({
+      internalName:skill.internalName||null,
+      name:skill.name||skill.internalName||null,
+      source:skill.source||null
+    }));
+  }
 }
+audit.incomplete=(audit.incomplete||[]).filter(row=>(row.missing||[]).length);
 
 const countBy=(rows,key)=>rows.reduce((acc,row)=>{ const v=row[key]||'unknown'; acc[v]=(acc[v]||0)+1; return acc; },{});
 const classificationCounts=countBy(audit.rosterClassification||[],'category');
@@ -53,6 +66,7 @@ const normalOnlyExpMissing=normalIncomplete.filter(x=>(x.missing||[]).length>0&&
 Object.assign(audit.summary,{
   rosterClassification:classificationCounts,
   incompleteByCategory,
+  totalIncomplete:(audit.incomplete||[]).length,
   totalNormalIncomplete:normalIncomplete.length,
   totalNormalComplete:normalCount-normalIncomplete.length,
   totalNormalFullyBlank:normalFullyBlank.length,
@@ -60,12 +74,14 @@ Object.assign(audit.summary,{
   totalNormalOnlyExpMissing:normalOnlyExpMissing.length,
   normalMissingFieldCounts,
   normalMissingDistribution,
-  classificationOverridesApplied:Object.keys(overrides).length
+  classificationOverridesApplied:Object.keys(overrides).length,
+  verifiedSkillAssociationMonsters:Object.keys(verifiedSkills).length
 });
 audit.normalFullyBlank=normalFullyBlank;
 audit.normalNearlyComplete=normalNearlyComplete;
 audit.normalOnlyExpMissing=normalOnlyExpMissing;
 audit.classificationOverrides=overrides;
+audit.verifiedSkillAssociations=verifiedSkills;
 fs.writeFileSync(auditPath,JSON.stringify(audit,null,2));
 
 if(fs.existsSync(mdPath)){
@@ -90,12 +106,16 @@ if(fs.existsSync(mdPath)){
     md=md.replace(re,`$1 [${o.category}]`);
   }
   md += `\n## Classification overrides\n\n` + Object.entries(overrides).map(([id,o])=>`- **#${id} ${o.internalName}** → ${o.category} — ${o.reason}`).join('\n') + '\n';
+  if(Object.keys(verifiedSkills).length){
+    md += `\n## Verified skill associations\n\n` + Object.entries(verifiedSkills).map(([id,skills])=>`- **#${id}** — ${skills.map(s=>s.name||s.internalName).join(', ')}`).join('\n') + '\n';
+  }
   fs.writeFileSync(mdPath,md);
 }
 
 const normalMissingMaps=normalIncomplete.filter(x=>(x.missing||[]).includes('Maps'));
 console.log(JSON.stringify({
   overridesApplied:Object.keys(overrides).length,
+  verifiedSkillAssociationMonsters:Object.keys(verifiedSkills).length,
   normalCount,
   normalIncomplete:normalIncomplete.length,
   normalComplete:audit.summary.totalNormalComplete,
