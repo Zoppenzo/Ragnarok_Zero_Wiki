@@ -10,12 +10,12 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from html.parser import HTMLParser
 from pathlib import Path
 
-IDENTITY = Path('assets/client-monster-identity.js')
+ROSTER = Path('assets/client-monster-roster.js')
 OUT = Path('assets/monster-zero-consensus.js')
 RAGNADEX_URL = 'https://ragnadex.com/api/monsters.json'
 TWROZ_URL = 'https://ragnarokzero.net/database/monsters/{id}'
 PRONTERA_URL = 'https://roz.prontera.info/mobs/{slug}'
-UA = 'Ragnarok-Zero-Wiki/2.1 (+https://github.com/Zoppenzo/Ragnarok_Zero_Wiki)'
+UA = 'Ragnarok-Zero-Wiki/2.2 (+https://github.com/Zoppenzo/Ragnarok_Zero_Wiki)'
 
 
 class VisibleTextParser(HTMLParser):
@@ -36,7 +36,6 @@ class VisibleTextParser(HTMLParser):
             self.parts.append('\n')
     def handle_data(self, data):
         if not self.skip:
-            # Keep sibling inline spans separated: <span>HP</span><span>55</span> -> "HP 55".
             self.parts.append(' ' + data + ' ')
     def text(self) -> str:
         raw=''.join(self.parts)
@@ -143,7 +142,6 @@ def first(pattern: str, text: str, flags=0):
 
 
 def label_number(text: str, label: str):
-    # Values can be on the same line or the next line depending on the site's markup.
     return num(first(rf'(?im)^\s*{label}\s+([\d,]+|—)\b',text))
 
 
@@ -162,13 +160,16 @@ SLUG_ALIASES={
 }
 
 
-def parse_identity_ids() -> set[int]:
-    s=IDENTITY.read_text(encoding='utf-8')
-    m=re.search(r'window\.RZ_CLIENT_MONSTER_IDENTITY=(\{.*?\});',s,re.S)
+def parse_roster_ids() -> set[int]:
+    s=ROSTER.read_text(encoding='utf-8')
+    m=re.search(r'window\.RZ_CLIENT_MONSTER_ROSTER=(\[.*?\]);',s,re.S)
     if not m:
-        raise SystemExit('Could not parse client monster identity')
-    obj=json.loads(m.group(1))
-    return {int(v[0]) for v in obj.values() if isinstance(v,list) and v and str(v[0]).isdigit()}
+        raise SystemExit('Could not parse client monster roster')
+    rows=json.loads(m.group(1))
+    ids={int(row[0]) for row in rows if isinstance(row,list) and row and str(row[0]).isdigit()}
+    if len(ids)!=598:
+        raise SystemExit(f'Expected 598 sprite-backed roster Mob-IDs, got {len(ids)}')
+    return ids
 
 
 def parse_range(value: str | None):
@@ -377,7 +378,6 @@ def merge_drops(ragna: dict, tw: dict, pro: dict) -> list[dict]:
         k=f'id:{int(iid)}' if iid is not None else existing_by_name.get(normalize_name(name))
         if k in by_key:
             add_source_rate(by_key[k],'RagnaDex',d.get('rate'))
-        # Never create a RagnaDex-only drop: its non-Zero fallback can be Renewal.
 
     out=[]
     for b in by_key.values():
@@ -416,7 +416,7 @@ def prontera_candidates(name: str, aegis: str) -> list[str]:
     return candidates
 
 
-ids=parse_identity_ids()
+ids=parse_roster_ids()
 raw=fetch(RAGNADEX_URL,timeout=45)
 if not raw: raise SystemExit('RagnaDex API unavailable')
 ragna_rows=json.loads(raw)
@@ -428,12 +428,15 @@ def fetch_one(mid: int):
     tw_raw=fetch(TWROZ_URL.format(id=mid))
     tw=parse_twroz(mid,tw_raw) if tw_raw else {}
     pro={}
-    for slug in prontera_candidates(str(r.get('name') or r.get('aegis') or mid),str(r.get('aegis') or '')):
-        p_raw=fetch(PRONTERA_URL.format(slug=slug))
-        if p_raw:
-            parsed=parse_prontera(mid,p_raw)
-            if parsed:
-                pro=parsed; pro['_slug']=slug; break
+    # Prontera lookup needs a trustworthy name/aegis slug. For custom client
+    # IDs absent from RagnaDex, do not issue meaningless numeric-slug requests.
+    if r:
+        for slug in prontera_candidates(str(r.get('name') or r.get('aegis') or mid),str(r.get('aegis') or '')):
+            p_raw=fetch(PRONTERA_URL.format(slug=slug))
+            if p_raw:
+                parsed=parse_prontera(mid,p_raw)
+                if parsed:
+                    pro=parsed; pro['_slug']=slug; break
     return mid,tw,pro
 
 
@@ -442,7 +445,7 @@ with ThreadPoolExecutor(max_workers=5) as ex:
     futs={ex.submit(fetch_one,mid):mid for mid in sorted(ids)}
     for i,fut in enumerate(as_completed(futs),1):
         mid,tw,pro=fut.result(); fetched[mid]=(tw,pro)
-        if i%40==0: print(f'Fetched {i}/{len(futs)} Zero monster pages')
+        if i%40==0: print(f'Fetched {i}/{len(futs)} roster monster pages')
 
 fields=['hp','baseExp','jobExp','attackMin','attackMax','magicAttackMin','magicAttackMax','def','mdef','hit','flee','str','agi','vit','int','dex','luk','attackRange','moveSpeedMs']
 consensus={}; coverage=Counter(); conflicts=Counter(); pro_hits=0; tw_hits=0
@@ -481,9 +484,20 @@ card=next((d for d in p.get('drops',[]) if d.get('itemId')==4001),None)
 assert card and card.get('rate')==0.2 and card.get('conflict') is True, card
 assert len(p.get('skills') or []) >= 2, p.get('skills')
 
-meta={'sources':['RagnaDex','RagnarokZero.net / TWRoZ','Prontera.Info ROZ'],'policy':'Zero databases only; client and verified Global/Zero fields first, then Zero-source consensus, with conflicts preserved','monsters':len(consensus),'twrozPages':tw_hits,'pronteraPages':pro_hits,'coverage':dict(coverage),'conflicts':dict(conflicts)}
+meta={
+    'sources':['RagnaDex','RagnarokZero.net / TWRoZ','Prontera.Info ROZ'],
+    'policy':'Zero databases only; client and verified Global/Zero fields first, then Zero-source consensus, with conflicts preserved',
+    'rosterPolicy':'all 598 sprite-backed current-client identities',
+    'requestedRoster':len(ids),
+    'monsters':len(consensus),
+    'twrozPages':tw_hits,
+    'pronteraPages':pro_hits,
+    'coverage':dict(coverage),
+    'conflicts':dict(conflicts)
+}
 OUT.write_text(
     '// Cross-database Ragnarok Zero monster consensus. No Renewal/iRO/RateMyServer fallback is imported.\n'
+    + '// The builder scans every sprite-backed identity in the supplied current client roster.\n'
     + 'window.RZ_MONSTER_ZERO_CONSENSUS=' + json.dumps(consensus,ensure_ascii=False,separators=(',',':'),sort_keys=True) + ';\n'
     + 'window.RZ_MONSTER_ZERO_CONSENSUS_META=' + json.dumps(meta,ensure_ascii=False,separators=(',',':'),sort_keys=True) + ';\n',
     encoding='utf-8'
