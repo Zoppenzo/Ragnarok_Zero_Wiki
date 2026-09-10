@@ -64,24 +64,28 @@ function missing(m){
   return out;
 }
 
-// ────────────────────────────────────────────────────────────────────────────
-// Current-client navigation invariants. These are hard failures because they
-// guard against the obsolete Navi pseudo-ID bug (e.g. #1275 Explosion vs Alice).
-// ────────────────────────────────────────────────────────────────────────────
+// Current-client navigation invariants. The Navi row's first numeric value is
+// deliberately NOT used as a Mob-ID. Exact internal identity is the join key.
 if(sandbox.RZ_CLIENT_MONSTER_LEGACY_MAPS_DISABLED!==true){
   throw new Error('Legacy pseudo-ID map source was not disabled before monster construction');
 }
 if(roster.length!==598){
   throw new Error(`Expected 598 sprite-backed client identities, got ${roster.length}`);
 }
-if(navAudit.rosterCount!==598 || navAudit.rosterMissingFromRuntime?.length){
+if(navAudit.rosterCount!==598 || navAudit.uniqueRosterIds!==598 || navAudit.rosterMissingFromRuntime?.length){
   throw new Error(`Full client roster was not preserved in runtime: ${JSON.stringify(navAudit)}`);
 }
 if(navAudit.legacyMapsRemaining!==0){
   throw new Error(`Obsolete client-navigation maps survived: ${navAudit.legacyMapsRemaining}`);
 }
-if(navAudit.currentNavigationIdMismatch!==0){
-  throw new Error(`Current Navi/internal identity Mob-ID mismatches: ${navAudit.currentNavigationIdMismatch}`);
+if((navAudit.currentNavigationApplied||0)+(navAudit.currentNavigationMissing||0)!==roster.length){
+  throw new Error(`Every roster identity must be accounted for by exact-name Navi join or explicit no-Navi state: ${JSON.stringify(navAudit)}`);
+}
+// With the supplied current client extraction, 399 of the 400 Navi identities
+// are present in the 598 sprite-backed roster. Do not regress below that known
+// coverage. Numeric mismatches are expected and are reported separately.
+if((navAudit.currentNavigationApplied||0)<399){
+  throw new Error(`Current internal-name Navi coverage regressed: ${navAudit.currentNavigationApplied}`);
 }
 
 const alice=byId(1275);
@@ -145,6 +149,7 @@ const summary={
   currentNavigationEntries:Object.keys(nav).length,
   currentNavigationApplied:navAudit.currentNavigationApplied||0,
   currentNavigationMissing:navAudit.currentNavigationMissing||0,
+  legacyNumericIdMismatch:navAudit.legacyNumericIdMismatch||0,
   legacyMapsRemaining:navAudit.legacyMapsRemaining||0,
   aliceMaps,
   abysmalKnightMaps:abyssMaps
@@ -159,8 +164,9 @@ const lines=[
   `- Runtime monster rows: **${summary.totalRuntime}**`,
   `- Sprite-backed client roster: **${summary.rosterCount}**`,
   `- Current Navi entries: **${summary.currentNavigationEntries}**`,
-  `- Current Navi entries applied to roster: **${summary.currentNavigationApplied}**`,
+  `- Current Navi entries applied by exact internal name: **${summary.currentNavigationApplied}**`,
   `- Roster identities without current Navi: **${summary.currentNavigationMissing}**`,
+  `- Navi numeric-field mismatches intentionally ignored: **${summary.legacyNumericIdMismatch}**`,
   `- Legacy maps remaining: **${summary.legacyMapsRemaining}**`,
   `- Rows with useful data (visible): **${summary.totalVisible}**`,
   `- Visible rows still incomplete: **${summary.totalIncomplete}**`,
