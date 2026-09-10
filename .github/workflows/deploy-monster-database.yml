@@ -7,6 +7,7 @@ on:
       - '.github/scripts/apply_client_monsters.py'
       - '.github/scripts/build_monster_zero_overlay.py'
       - '.github/scripts/build_zero_monster_consensus.py'
+      - '.github/scripts/augment_ragnaplace_rozg_exp.py'
       - '.github/scripts/augment_zero_monster_spawns.py'
       - '.github/scripts/build_rms_monster_behavior.py'
       - '.github/scripts/audit_monster_completeness.js'
@@ -22,6 +23,7 @@ on:
       - 'assets/monster-client-corrections.js'
       - 'assets/monster-audit-20260909.js'
       - 'assets/client-monster-current-overlay.js'
+      - 'assets/monster-verified-skill-associations.js'
       - 'assets/client-monster-sprites.js'
       - 'assets/monster-detail-rms.js'
       - 'assets/monster-element-colors.js'
@@ -49,6 +51,9 @@ jobs:
       - name: Build Zero-only cross-database consensus
         run: python .github/scripts/build_zero_monster_consensus.py
 
+      - name: Augment Zero Global EXP from RagnaPlace
+        run: python .github/scripts/augment_ragnaplace_rozg_exp.py
+
       - name: Build TWRoZ map fallback
         run: python .github/scripts/augment_zero_monster_spawns.py
 
@@ -70,6 +75,7 @@ jobs:
           test -s assets/rms-monster-behavior.js
           test -s assets/client-monsters.js
           test -s assets/client-monster-current-overlay.js
+          test -s assets/monster-verified-skill-associations.js
           test -s assets/client-monster-sprites.js
           test -s assets/monster-detail-rms.js
           test -s assets/monster-element-colors.js
@@ -80,6 +86,7 @@ jobs:
           grep -q 'assets/client-monster-navigation-current.js' index.html
           grep -q 'assets/client-monster-roster.js' index.html
           grep -q 'assets/client-monster-current-overlay.js' index.html
+          grep -q 'assets/monster-verified-skill-associations.js' index.html
           grep -q 'assets/monster-zero-stats.js' index.html
           grep -q 'assets/monster-zero-consensus.js' index.html
           grep -q 'assets/rms-monster-behavior.js' index.html
@@ -168,6 +175,16 @@ jobs:
           assert meta['coverage']['attackMin'] >= 200, meta
           assert meta['coverage']['magicAttackMin'] >= 200, meta
           assert meta['coverage']['hit'] >= 200, meta
+          assert meta['ragnaplaceRozgPages'] >= 30, meta
+          assert meta['ragnaplaceRozgRows'] >= 580, meta
+          assert meta['ragnaplaceRozgRosterMatches'] >= 300, meta
+          assert meta['ragnaplaceRozgAppliedBaseExp'] + meta['ragnaplaceRozgAppliedJobExp'] > 0, meta
+          assert meta['ragnaplaceRozgSamples']['2398']['baseExp'] == 24, meta['ragnaplaceRozgSamples']
+          assert meta['ragnaplaceRozgSamples']['2398']['jobExp'] == 4, meta['ragnaplaceRozgSamples']
+          assert meta['ragnaplaceRozgSamples']['1155']['baseExp'] == 14167, meta['ragnaplaceRozgSamples']
+          assert meta['ragnaplaceRozgSamples']['1155']['jobExp'] is None, meta['ragnaplaceRozgSamples']
+          assert meta['ragnaplaceRozgSamples']['1053']['baseExp'] is None, meta['ragnaplaceRozgSamples']
+          assert meta['ragnaplaceRozgSamples']['1053']['jobExp'] is None, meta['ragnaplaceRozgSamples']
           assert meta['spawnTargetsWithoutNavi'] == 199, meta
           assert meta['spawnMonsters'] >= 1, meta
           assert meta['spawnMaps'] >= meta['spawnMonsters'], meta
@@ -201,7 +218,7 @@ jobs:
           assert all(set(row).issubset(allowed) for row in rms.values())
 
           html=Path('index.html').read_text(encoding='utf-8')
-          order=['assets/client-monsters-data.js','assets/client-monster-disable-legacy-maps.js','assets/client-monster-identity.js','assets/client-monster-navigation-current.js','assets/client-monster-roster.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-current-overlay.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-instance-maps.js','assets/monster-db-optimized.js']
+          order=['assets/client-monsters-data.js','assets/client-monster-disable-legacy-maps.js','assets/client-monster-identity.js','assets/client-monster-navigation-current.js','assets/client-monster-roster.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-current-overlay.js','assets/monster-verified-skill-associations.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-instance-maps.js','assets/monster-db-optimized.js']
           positions=[html.index(x) for x in order]
           assert positions == sorted(positions)
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
@@ -217,5 +234,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js assets/rms-monster-behavior.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy authoritative monster Navi and Zero spawns"
+          git commit -m "Deploy monster Navi, Zero spawns and ROZg EXP"
           git push
