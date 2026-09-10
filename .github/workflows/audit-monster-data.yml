@@ -37,6 +37,13 @@ jobs:
         run: node .github/scripts/debug_monster_nav.js
       - name: Build audit and run navigation regressions
         run: node .github/scripts/audit_monster_completeness.js
+      - name: List normal monsters missing maps
+        run: |
+          node - <<'NODE'
+          const audit=require('./audit/monster-data-audit.json');
+          const rows=(audit.incomplete||[]).filter(x=>x.category==='normal'&&(x.missing||[]).includes('Maps'));
+          console.log(JSON.stringify({count:rows.length,monsters:rows.map(x=>({id:x.id,internalName:x.internalName,name:x.name,missing:x.missing}))},null,2));
+          NODE
       - uses: actions/upload-artifact@v4
         if: always()
         with:
