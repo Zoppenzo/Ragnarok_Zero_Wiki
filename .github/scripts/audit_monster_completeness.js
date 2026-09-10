@@ -37,6 +37,7 @@ const navAudit=sandbox.RZ_CLIENT_MONSTER_CURRENT_AUDIT||{};
 const races=['Formless','Undead','Brute','Plant','Insect','Fish','Demon','Demi-Human','Angel','Dragon'];
 const sizes=['Small','Medium','Large'];
 const elements=['Neutral','Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
+const requiredFields=['HP','ATK','MATK','DEF','MDEF','HIT','FLEE','Base EXP','Job EXP','Walk Speed','Maps','Drops','Skills'];
 const known=v=>v!==null&&v!==undefined&&v!==''&&!/^n\/?a$/i.test(String(v).trim())&&String(v).trim()!=='—';
 const pairKnown=(a,b)=>known(a)||known(b);
 const byId=id=>monsters.find(m=>Number(m?.clientId??m?.id)===Number(id));
@@ -79,6 +80,16 @@ function missing(m){
   if(!(Array.isArray(m.drops)&&m.drops.length))out.push('Drops');
   if(!(Array.isArray(m.skills)&&m.skills.length))out.push('Skills');
   return out;
+}
+
+function countMissingFields(rows){
+  const counts=Object.fromEntries(requiredFields.map(k=>[k,0]));
+  for(const row of rows){
+    for(const field of row.missing||[]){
+      counts[field]=(counts[field]||0)+1;
+    }
+  }
+  return counts;
 }
 
 // Current-client navigation invariants. The Navi row's first numeric value is
@@ -153,6 +164,17 @@ const incompleteByCategory=incomplete.reduce((acc,row)=>{
   return acc;
 },{});
 const normalIncomplete=incomplete.filter(x=>x.category==='normal');
+const missingFieldCounts=countMissingFields(incomplete);
+const normalMissingFieldCounts=countMissingFields(normalIncomplete);
+const normalComplete=(classificationCounts.normal||0)-normalIncomplete.length;
+const normalFullyBlank=normalIncomplete.filter(x=>x.missing.length===requiredFields.length);
+const normalNearlyComplete=normalIncomplete.filter(x=>x.missing.length<=2);
+const normalOnlyExpMissing=normalIncomplete.filter(x=>x.missing.length>0&&x.missing.every(f=>f==='Base EXP'||f==='Job EXP'));
+const normalMissingDistribution=normalIncomplete.reduce((acc,row)=>{
+  const n=row.missing.length;
+  acc[n]=(acc[n]||0)+1;
+  return acc;
+},{});
 
 const contradictions=[];
 for(const m of visible){
@@ -183,10 +205,17 @@ const summary={
   totalVisible:visible.length,
   totalIncomplete:incomplete.length,
   totalNormalIncomplete:normalIncomplete.length,
+  totalNormalComplete:normalComplete,
+  totalNormalFullyBlank:normalFullyBlank.length,
+  totalNormalNearlyComplete:normalNearlyComplete.length,
+  totalNormalOnlyExpMissing:normalOnlyExpMissing.length,
   totalClientContradictions:contradictions.length,
   rosterCount:roster.length,
   rosterClassification:classificationCounts,
   incompleteByCategory,
+  missingFieldCounts,
+  normalMissingFieldCounts,
+  normalMissingDistribution,
   currentNavigationEntries:Object.keys(nav).length,
   currentNavigationApplied:navAudit.currentNavigationApplied||0,
   currentNavigationMissing:navAudit.currentNavigationMissing||0,
@@ -195,12 +224,13 @@ const summary={
   aliceMaps,
   abysmalKnightMaps:abyssMaps
 };
-const out={summary,navigationAudit:navAudit,rosterClassification,incomplete,contradictions};
+const out={summary,navigationAudit:navAudit,rosterClassification,incomplete,normalFullyBlank,normalNearlyComplete,normalOnlyExpMissing,contradictions};
 fs.mkdirSync(path.join(root,'audit'),{recursive:true});
 fs.writeFileSync(path.join(root,'audit/monster-data-audit.json'),JSON.stringify(out,null,2));
 
 const categoryOrder=['normal','variant','instance','quest','event','club','placeholder','projectile','special','unknown'];
 const categoryLines=categoryOrder.filter(k=>classificationCounts[k]).map(k=>`- ${k}: **${classificationCounts[k]}**${incompleteByCategory[k]?` · incomplete: **${incompleteByCategory[k]}**`:''}`);
+const fieldLines=requiredFields.map(k=>`- ${k}: **${missingFieldCounts[k]||0}** missing overall · **${normalMissingFieldCounts[k]||0}** missing among normal/world candidates`);
 const lines=[
   '# Monster data audit','',
   `Generated: ${summary.generatedAt}`,'',
@@ -213,8 +243,14 @@ const lines=[
   `- Legacy maps remaining: **${summary.legacyMapsRemaining}**`,
   `- Rows with useful data (visible): **${summary.totalVisible}**`,
   `- Visible rows still incomplete: **${summary.totalIncomplete}**`,
+  `- Normal/world candidates complete: **${summary.totalNormalComplete}/${classificationCounts.normal||0}**`,
   `- Normal/world candidates still incomplete: **${summary.totalNormalIncomplete}**`,
+  `- Normal/world candidates with all ${requiredFields.length} tracked fields missing: **${summary.totalNormalFullyBlank}**`,
+  `- Normal/world candidates missing only 1-2 fields: **${summary.totalNormalNearlyComplete}**`,
+  `- Normal/world candidates missing only Base/Job EXP: **${summary.totalNormalOnlyExpMissing}**`,
   `- Direct contradictions with client identity table: **${summary.totalClientContradictions}**`,'',
+  '## Missing-field counts','',
+  ...fieldLines,'',
   '## Roster classification','',
   ...categoryLines,'',
   '> Classification is conservative workflow metadata only. It does not hide, delete, or claim that a client identity is absent from the live server.','',
