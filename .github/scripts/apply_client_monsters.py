@@ -4,9 +4,10 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260910-monster-walkspeed-only1'
+version='20260910-monster-current-navi2'
 script_paths=[
     'assets/client-monsters-data.js',
+    'assets/client-monster-disable-legacy-maps.js',
     'assets/client-monster-identity.js',
     'assets/client-monster-navigation-current.js',
     'assets/client-monster-roster.js',
@@ -27,6 +28,7 @@ script_paths=[
 ]
 legacy_sprite_paths=[f'assets/client-monster-sprite-data-{i:02d}.js' for i in range(1,12)]
 legacy_nav_paths=[f'assets/client-monster-navigation-current-{i:02d}.js' for i in range(1,5)]
+legacy_map_kill='assets/client-monster-disable-legacy-maps.js'
 for path in script_paths+legacy_sprite_paths+legacy_nav_paths:
     s=re.sub(rf'\s*<script src="{re.escape(path)}(?:\?v=[^"]+)?"></script>\s*','\n',s)
 scripts=[f'<script src="{path}?v={version}"></script>' for path in script_paths]
@@ -59,4 +61,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Current client monster roster and exact Navi Mob-ID/map/count data wired. Legacy pseudo-ID navigation is not loaded into the final map layer.')
+print('Current client monster roster and exact internal-name Navi data wired. Obsolete pseudo-ID maps are disabled before runtime monster construction.')
