@@ -71,6 +71,14 @@ jobs:
           const rows=(audit.incomplete||[]).filter(x=>x.category==='normal'&&(x.missing||[]).includes('Skills'));
           console.log(JSON.stringify({count:rows.length,monsters:rows.map(x=>({id:x.id,internalName:x.internalName,name:x.name,missing:x.missing}))},null,2));
           NODE
+      - name: List normal monsters missing experience
+        run: |
+          node - <<'NODE'
+          const audit=require('./audit/monster-data-audit.json');
+          const exp=new Set(['Base EXP','Job EXP']);
+          const rows=(audit.incomplete||[]).filter(x=>x.category==='normal'&&(x.missing||[]).some(f=>exp.has(f)));
+          console.log(JSON.stringify({count:rows.length,monsters:rows.map(x=>({id:x.id,internalName:x.internalName,name:x.name,missing:(x.missing||[]).filter(f=>exp.has(f))}))},null,2));
+          NODE
       - uses: actions/upload-artifact@v4
         if: always()
         with:
