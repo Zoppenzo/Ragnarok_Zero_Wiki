@@ -14,16 +14,17 @@
     Ghost:{label:'Ghost',fg:'#3f72a3',bg:'#f0f7ff',border:'#89aed0'},
     Undead:{label:'Undead',fg:'#55694c',bg:'#f1f5ef',border:'#99aa90'}
   };
+  const FALLBACK_ELEMENT_NAMES=['Neutral','Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
   const STYLE_ID='rz-monster-element-colors-style';
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   function parseElement(value){
     const raw=String(value||'').trim();
     if(!raw)return null;
-    const match=raw.match(/^([A-Za-z]+)(?:\s+(\d+))?$/);
+    const match=raw.match(/^([A-Za-z]+)(?:\s+(?:Lv\.?\s*)?(\d+))?$/i);
     if(!match)return null;
-    const requested=/^dark$/i.test(match[1])?'Dark':match[1];
-    const key=Object.keys(ELEMENTS).find(k=>k.toLowerCase()===requested.toLowerCase())||null;
+    const requested=/^dark$/i.test(match[1])?'Shadow':match[1];
+    const key=Object.keys(ELEMENTS).find(k=>k!=='Dark'&&k.toLowerCase()===requested.toLowerCase())||null;
     if(!key)return null;
     return {key,level:match[2]||''};
   }
@@ -31,7 +32,7 @@
   function badge(value){
     const parsed=parseElement(value);
     if(!parsed)return esc(value);
-    const e=ELEMENTS[parsed.key];
+    const e=ELEMENTS[parsed.key]||ELEMENTS.Shadow;
     const suffix=parsed.level?` ${esc(parsed.level)}`:'';
     return `<span class="rz-element-badge rz-element-${parsed.key.toLowerCase()}" data-rz-element="${esc(parsed.key)}"${parsed.level?` data-rz-element-level="${esc(parsed.level)}"`:''}>${esc(e.label)}${suffix}</span>`;
   }
@@ -49,6 +50,66 @@
       .rz-monster-property-badge{text-align:center!important;padding:6px!important}
     `;
     document.head.appendChild(style);
+  }
+
+  function matrixNames(){
+    try{return (typeof ELEMENT_NAMES!=='undefined'&&Array.isArray(ELEMENT_NAMES))?ELEMENT_NAMES:FALLBACK_ELEMENT_NAMES;}catch(_){return FALLBACK_ELEMENT_NAMES;}
+  }
+  function matrixForLevel(level){
+    try{return (typeof ELEMENT_TABLES_IRO!=='undefined'&&ELEMENT_TABLES_IRO&&Array.isArray(ELEMENT_TABLES_IRO[level]))?ELEMENT_TABLES_IRO[level]:null;}catch(_){return null;}
+  }
+  function monsterForSheet(sheet){
+    const link=sheet.querySelector('.rz-monster-title a[href^="#/monsters/"]');
+    if(!link||!Array.isArray(window.RO_DATA?.monsters))return null;
+    const token=decodeURIComponent(String(link.getAttribute('href')||'').replace(/^#\/monsters\//,''));
+    return window.RO_DATA.monsters.find(x=>String(x.id)===token||String(x.clientId)===token)||null;
+  }
+  function monsterElementLevel(monster){
+    let level=Number(monster?.elementLevel);
+    if(level>=1&&level<=4)return level;
+    const parsed=parseElement(monster?.element);
+    level=Number(parsed?.level);
+    if(level>=1&&level<=4)return level;
+    const propertyCode=Number(monster?.propertyCode);
+    if(Number.isFinite(propertyCode)){
+      level=Math.floor(propertyCode/20);
+      if(level>=1&&level<=4)return level;
+    }
+    return null;
+  }
+
+  // Single source of truth for monster elemental modifiers:
+  // use the same ELEMENT_TABLES_IRO matrix rendered on the wiki Elements page.
+  // Matrix orientation is source[defendingElement][attackingElement].
+  function applyWikiElementMatrix(root=document){
+    const names=matrixNames();
+    root.querySelectorAll?.('.rz-monster-sheet').forEach(sheet=>{
+      const monster=monsterForSheet(sheet);
+      if(!monster)return;
+      const defender=canonical(monster.element);
+      const level=monsterElementLevel(monster);
+      if(!defender||!level)return;
+      const matrix=matrixForLevel(level);
+      const defenderIndex=names.indexOf(defender);
+      if(!matrix||defenderIndex<0||!Array.isArray(matrix[defenderIndex]))return;
+      const signature=`${defender}:${level}`;
+      const rows=sheet.querySelectorAll('.rz-monster-elements .rz-monster-subtable tbody tr');
+      rows.forEach(row=>{
+        const th=row.querySelector('th');
+        const td=row.querySelector('td');
+        if(!th||!td)return;
+        const attacker=canonical(th.textContent);
+        const attackerIndex=names.indexOf(attacker);
+        if(attackerIndex<0)return;
+        const value=matrix[defenderIndex][attackerIndex];
+        if(!Number.isFinite(Number(value)))return;
+        td.textContent=`${Number(value)}%`;
+        td.removeAttribute('data-rz-resistance-decorated');
+        td.classList.remove('rz-element-more','rz-element-less','rz-element-neutral');
+        td.dataset.rzElementMatrix=`${signature}:${attacker}`;
+      });
+      sheet.dataset.rzElementMatrixApplied=signature;
+    });
   }
 
   function decorateResistanceValues(root=document){
@@ -91,13 +152,23 @@
   }
 
   function decorate(root=document){
+    applyWikiElementMatrix(root);
     decorateResistanceValues(root);
     decorateMonsterProperty(root);
     decorateElementPage(root);
   }
   window.RZ_COLOR_MONSTER_ELEMENTS=decorate;
+  window.RZ_APPLY_MONSTER_ELEMENT_MATRIX=applyWikiElementMatrix;
 
-  const schedule=()=>requestAnimationFrame(()=>decorate(document));
+  let scheduled=false;
+  const schedule=()=>{
+    if(scheduled)return;
+    scheduled=true;
+    requestAnimationFrame(()=>{scheduled=false;decorate(document);});
+  };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
-  window.addEventListener('hashchange',()=>requestAnimationFrame(()=>requestAnimationFrame(()=>decorate(document))));
+  window.addEventListener('hashchange',()=>requestAnimationFrame(schedule));
+  new MutationObserver(mutations=>{
+    if(mutations.some(m=>m.addedNodes&&m.addedNodes.length))schedule();
+  }).observe(document.documentElement,{childList:true,subtree:true});
 })();
