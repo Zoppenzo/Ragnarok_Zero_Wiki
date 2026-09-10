@@ -8,16 +8,25 @@ on:
       - '.github/scripts/build_monster_zero_overlay.py'
       - '.github/scripts/build_zero_monster_consensus.py'
       - '.github/scripts/build_rms_monster_behavior.py'
+      - '.github/scripts/audit_monster_completeness.js'
       - 'assets/client-monsters-data.js'
+      - 'assets/client-monster-disable-legacy-maps.js'
       - 'assets/client-monster-identity.js'
+      - 'assets/client-monster-navigation-current.js'
+      - 'assets/client-monster-roster.js'
       - 'assets/monster-zero-stats.js'
       - 'assets/monster-zero-consensus.js'
       - 'assets/rms-monster-behavior.js'
       - 'assets/client-monsters.js'
+      - 'assets/monster-client-corrections.js'
+      - 'assets/monster-audit-20260909.js'
+      - 'assets/client-monster-current-overlay.js'
       - 'assets/client-monster-sprites.js'
       - 'assets/monster-detail-rms.js'
       - 'assets/monster-element-colors.js'
       - 'assets/monster-mvp-style.js'
+      - 'assets/monster-final-fixes.js'
+      - 'assets/monster-instance-maps.js'
       - 'assets/monster-db-optimized.js'
   workflow_dispatch:
 
@@ -48,17 +57,25 @@ jobs:
       - name: Validate monster database
         run: |
           test -s assets/client-monsters-data.js
+          test -s assets/client-monster-disable-legacy-maps.js
           test -s assets/client-monster-identity.js
+          test -s assets/client-monster-navigation-current.js
+          test -s assets/client-monster-roster.js
           test -s assets/monster-zero-stats.js
           test -s assets/monster-zero-consensus.js
           test -s assets/rms-monster-behavior.js
           test -s assets/client-monsters.js
+          test -s assets/client-monster-current-overlay.js
           test -s assets/client-monster-sprites.js
           test -s assets/monster-detail-rms.js
           test -s assets/monster-element-colors.js
           test -s assets/monster-mvp-style.js
           test -s assets/monster-db-optimized.js
+          grep -q 'assets/client-monster-disable-legacy-maps.js' index.html
           grep -q 'assets/client-monster-identity.js' index.html
+          grep -q 'assets/client-monster-navigation-current.js' index.html
+          grep -q 'assets/client-monster-roster.js' index.html
+          grep -q 'assets/client-monster-current-overlay.js' index.html
           grep -q 'assets/monster-zero-stats.js' index.html
           grep -q 'assets/monster-zero-consensus.js' index.html
           grep -q 'assets/rms-monster-behavior.js' index.html
@@ -66,12 +83,20 @@ jobs:
           grep -q 'assets/monster-element-colors.js' index.html
           grep -q 'assets/monster-mvp-style.js' index.html
           grep -q 'assets/monster-db-optimized.js' index.html
+          ! grep -q 'assets/client-monster-navigation-current-01.js' index.html
+          ! grep -q 'assets/client-monster-navigation-current-02.js' index.html
+          ! grep -q 'assets/client-monster-navigation-current-03.js' index.html
+          ! grep -q 'assets/client-monster-navigation-current-04.js' index.html
           grep -q 'KNIGHT_OF_ABYSS.*1219,122,7,2,87' assets/client-monster-identity.js
           grep -q 'ALARM.*1193,88,0,1,60' assets/client-monster-identity.js
           grep -q 'PORING.*1002,1,3,1,21' assets/client-monster-identity.js
+          grep -q '"ALICE":\[1275,100,7,1,60,300' assets/client-monster-navigation-current.js
+          grep -q '"KNIGHT_OF_ABYSS":\[1219,122,7,2,87,300' assets/client-monster-navigation-current.js
           grep -q 'window.RZ_MONSTER_ZERO_STATS=' assets/monster-zero-stats.js
           grep -q 'window.RZ_MONSTER_ZERO_CONSENSUS=' assets/monster-zero-consensus.js
           grep -q 'window.RZ_MONSTER_RMS_BEHAVIOR=' assets/rms-monster-behavior.js
+          grep -q 'RZ_CLIENT_MONSTER_LEGACY_MAPS_DISABLED' assets/client-monster-disable-legacy-maps.js
+          grep -q "source:'client-navigation-current'" assets/client-monster-current-overlay.js
           grep -q 'zeroConsensus' assets/client-monsters.js
           grep -q 'const rmsBehavior' assets/client-monsters.js
           grep -q 'walkSpeed:rms.walkSpeed??null' assets/client-monsters.js
@@ -111,6 +136,7 @@ jobs:
           grep -q 'Mob-ID#' assets/monster-detail-rms.js
           grep -q 'On Maps' assets/monster-detail-rms.js
           grep -q 'Monster Skills' assets/monster-detail-rms.js
+          node .github/scripts/audit_monster_completeness.js
           python - <<'PY'
           import json
           from pathlib import Path
@@ -161,7 +187,7 @@ jobs:
           assert all(set(row).issubset(allowed) for row in rms.values())
 
           html=Path('index.html').read_text(encoding='utf-8')
-          order=['assets/client-monsters-data.js','assets/client-monster-identity.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-db-optimized.js']
+          order=['assets/client-monsters-data.js','assets/client-monster-disable-legacy-maps.js','assets/client-monster-identity.js','assets/client-monster-navigation-current.js','assets/client-monster-roster.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-current-overlay.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-db-optimized.js']
           positions=[html.index(x) for x in order]
           assert positions == sorted(positions)
           renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
@@ -177,5 +203,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js assets/rms-monster-behavior.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy simplified monster sheet"
+          git commit -m "Deploy authoritative monster Navi"
           git push
