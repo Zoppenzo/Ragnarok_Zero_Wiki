@@ -8,8 +8,7 @@ on:
       - '.github/scripts/build_monster_zero_overlay.py'
       - '.github/scripts/build_zero_monster_consensus.py'
       - '.github/scripts/augment_zero_monster_spawns.py'
-      - '.github/scripts/build_rms_monster_behavior.py'
-      - '.github/scripts/audit_monster_completeness.js'
+      - '.github/scripts/enforce_strict_monster_verification.py'
       - 'assets/client-monsters-data.js'
       - 'assets/client-monster-disable-legacy-maps.js'
       - 'assets/client-monster-identity.js'
@@ -17,19 +16,19 @@ on:
       - 'assets/client-monster-roster.js'
       - 'assets/monster-zero-stats.js'
       - 'assets/monster-zero-consensus.js'
-      - 'assets/rms-monster-behavior.js'
       - 'assets/client-monsters.js'
       - 'assets/monster-client-corrections.js'
       - 'assets/monster-audit-20260909.js'
       - 'assets/client-monster-current-overlay.js'
       - 'assets/monster-verified-skill-associations.js'
+      - 'assets/monster-strict-verification.js'
       - 'assets/client-monster-sprites.js'
       - 'assets/monster-detail-rms.js'
       - 'assets/monster-element-colors.js'
-      - 'assets/monster-mvp-style.js'
       - 'assets/monster-final-fixes.js'
       - 'assets/monster-instance-maps.js'
       - 'assets/monster-db-optimized.js'
+      - 'assets/item-monster-drops.js'
   workflow_dispatch:
 
 permissions:
@@ -44,183 +43,101 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build verified Zero monster overlay
+      - name: Build RagnaDex Zero evidence
         run: python .github/scripts/build_monster_zero_overlay.py
 
-      - name: Build Zero-only cross-database consensus
+      - name: Build Zero database comparison set
         run: python .github/scripts/build_zero_monster_consensus.py
 
-      - name: Build TWRoZ map fallback
+      - name: Build candidate TWRoZ map data
         run: python .github/scripts/augment_zero_monster_spawns.py
 
-      - name: Build RateMyServer Walk Speed overlay
-        run: python .github/scripts/build_rms_monster_behavior.py
+      - name: Enforce strict multi-database verification
+        run: python .github/scripts/enforce_strict_monster_verification.py
 
-      - name: Wire monster client data
+      - name: Wire strict monster and item data
         run: python .github/scripts/apply_client_monsters.py
 
-      - name: Validate monster database
+      - name: Validate strict monster database
         run: |
           test -s assets/client-monsters-data.js
-          test -s assets/client-monster-disable-legacy-maps.js
           test -s assets/client-monster-identity.js
           test -s assets/client-monster-navigation-current.js
           test -s assets/client-monster-roster.js
-          test -s assets/monster-zero-stats.js
           test -s assets/monster-zero-consensus.js
-          test -s assets/rms-monster-behavior.js
-          test -s assets/client-monsters.js
-          test -s assets/client-monster-current-overlay.js
-          test -s assets/monster-verified-skill-associations.js
-          test -s assets/client-monster-sprites.js
-          test -s assets/monster-detail-rms.js
-          test -s assets/monster-element-colors.js
-          test -s assets/monster-mvp-style.js
-          test -s assets/monster-db-optimized.js
-          grep -q 'assets/client-monster-disable-legacy-maps.js' index.html
-          grep -q 'assets/client-monster-identity.js' index.html
-          grep -q 'assets/client-monster-navigation-current.js' index.html
-          grep -q 'assets/client-monster-roster.js' index.html
-          grep -q 'assets/client-monster-current-overlay.js' index.html
-          grep -q 'assets/monster-verified-skill-associations.js' index.html
-          grep -q 'assets/monster-zero-stats.js' index.html
-          grep -q 'assets/monster-zero-consensus.js' index.html
-          grep -q 'assets/rms-monster-behavior.js' index.html
-          grep -q 'assets/client-monster-sprites.js' index.html
-          grep -q 'assets/monster-element-colors.js' index.html
-          grep -q 'assets/monster-mvp-style.js' index.html
-          grep -q 'assets/monster-db-optimized.js' index.html
-          ! grep -q 'assets/client-monster-navigation-current-01.js' index.html
-          ! grep -q 'assets/client-monster-navigation-current-02.js' index.html
-          ! grep -q 'assets/client-monster-navigation-current-03.js' index.html
-          ! grep -q 'assets/client-monster-navigation-current-04.js' index.html
-          grep -q 'KNIGHT_OF_ABYSS.*1219,122,7,2,87' assets/client-monster-identity.js
-          grep -q 'ALARM.*1193,88,0,1,60' assets/client-monster-identity.js
-          grep -q 'PORING.*1002,1,3,1,21' assets/client-monster-identity.js
-          grep -q '"ALICE":\[1275,100,7,1,60,300' assets/client-monster-navigation-current.js
-          grep -q '"KNIGHT_OF_ABYSS":\[1219,122,7,2,87,300' assets/client-monster-navigation-current.js
-          grep -q 'window.RZ_MONSTER_ZERO_STATS=' assets/monster-zero-stats.js
-          grep -q 'window.RZ_MONSTER_ZERO_CONSENSUS=' assets/monster-zero-consensus.js
-          grep -q 'window.RZ_MONSTER_RMS_BEHAVIOR=' assets/rms-monster-behavior.js
-          grep -q 'RZ_CLIENT_MONSTER_LEGACY_MAPS_DISABLED' assets/client-monster-disable-legacy-maps.js
-          grep -q "source:'client-navigation-current'" assets/client-monster-current-overlay.js
-          grep -q "source:'zero-spawn-twroz'" assets/monster-instance-maps.js
-          grep -q 'naviFallbackViolations' assets/monster-instance-maps.js
-          grep -q 'zeroConsensus' assets/client-monsters.js
-          grep -q 'const rmsBehavior' assets/client-monsters.js
-          grep -q 'walkSpeed:rms.walkSpeed??null' assets/client-monsters.js
-          grep -q 'skills:visibleMonsterSkills(consensus.skills)' assets/client-monsters.js
-          grep -q "internal==='NPC_EMOTION'" assets/client-monsters.js
-          grep -q "id:3810,internalName:'MD_KING_PORING'" assets/client-monsters.js
-          grep -q "id:25327,internalName:'BOULDERDWARF_HAMMER_MJ'" assets/client-monsters.js
-          grep -q 'magicAttackMin' assets/client-monsters.js
-          grep -q 'fieldMeta:fields' assets/client-monsters.js
-          grep -q 'elementLevel:elementLevel' assets/client-monsters.js
-          grep -q 'window.RO_DATA.monsters = rows' assets/client-monsters.js
-          grep -q 'spriteId:id' assets/client-monsters.js
-          grep -q "KNIGHT_OF_ABYSS:'Abysmal Knight'" assets/client-monsters.js
-          grep -q 'const MVP_IDS = new Set' assets/client-monsters.js
-          grep -q 'boss:isBoss, mvp:isMvp' assets/client-monsters.js
-          grep -q 'RZ_MONSTER_SPRITE_HTML' assets/monster-detail-rms.js
-          grep -q 'RZ_DECORATE_MONSTER_SPRITES' assets/monster-detail-rms.js
-          grep -q 'rz-monster-conflict' assets/monster-detail-rms.js
-          grep -q 'Magic Atk' assets/monster-detail-rms.js
-          grep -q '<th>Walk Speed</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Atk Delay</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Atk Range</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Spell Range</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Sight Range</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Delay After Hit</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Str</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Agi</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Vit</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Int</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Dex</th>' assets/monster-detail-rms.js
-          ! grep -q '<th>Luk</th>' assets/monster-detail-rms.js
-          grep -q 'RZ_ELEMENT_BADGE' assets/monster-element-colors.js
+          test -s assets/monster-strict-verification.js
+          test -s assets/item-monster-drops.js
+          grep -q 'assets/monster-strict-verification.js?v=20260911-strict-verified1' index.html
+          grep -q 'assets/item-monster-drops.js?v=20260911-strict-verified1' index.html
+          ! grep -q 'assets/monster-ragnaplace-exp.js' index.html
           grep -q 'WIKI_ELEMENT_TABLES' assets/monster-element-colors.js
           grep -q '\[100,150,150,150,150,0,75,75,75,75\]' assets/monster-element-colors.js
-          grep -q 'rz-monster-mvp-emblem' assets/monster-mvp-style.js
-          grep -q 'const DEFAULT_PAGE_SIZE=10' assets/monster-db-optimized.js
-          grep -q 'rz-monster-boss-filter' assets/monster-db-optimized.js
-          grep -q 'rz-monster-mvp-filter' assets/monster-db-optimized.js
-          grep -q 'Mob-ID#' assets/monster-detail-rms.js
-          grep -q 'On Maps' assets/monster-detail-rms.js
-          grep -q 'Monster Skills' assets/monster-detail-rms.js
-          node .github/scripts/audit_monster_completeness.js
+          node .github/scripts/debug_monster_nav.js
           python - <<'PY'
           import json
           from pathlib import Path
 
-          overlay_text=Path('assets/monster-zero-stats.js').read_text(encoding='utf-8')
-          payload=overlay_text.split('window.RZ_MONSTER_ZERO_STATS=',1)[1].split(';\nwindow.RZ_MONSTER_ZERO_STATS_META=',1)[0]
-          overlay=json.loads(payload)
-          assert len(overlay) >= 400
-          poring=overlay['1002']
-          assert poring['hp'] == 55
-          assert poring['def'] == 2
-          assert poring['mdef'] == 5
-          assert poring['baseExp'] == 150
-          assert poring['elementModifiers']['Water'] == 25
-
-          ctext=Path('assets/monster-zero-consensus.js').read_text(encoding='utf-8')
-          cpayload=ctext.split('window.RZ_MONSTER_ZERO_CONSENSUS=',1)[1].split(';\nwindow.RZ_MONSTER_ZERO_CONSENSUS_META=',1)[0]
-          mpayload=ctext.split('window.RZ_MONSTER_ZERO_CONSENSUS_META=',1)[1].rstrip().rstrip(';')
-          consensus=json.loads(cpayload); meta=json.loads(mpayload)
-          assert len(consensus) >= 230, len(consensus)
-          assert meta['twrozPages'] >= 200, meta
-          assert meta['pronteraPages'] >= 80, meta
-          assert meta['coverage']['attackMin'] >= 200, meta
-          assert meta['coverage']['magicAttackMin'] >= 200, meta
-          assert meta['coverage']['hit'] >= 200, meta
-          assert meta['spawnTargetsWithoutNavi'] == 199, meta
-          assert meta['spawnMonsters'] >= 1, meta
-          assert meta['spawnMaps'] >= meta['spawnMonsters'], meta
-          p=consensus['1002']
-          assert p['fields']['hp']['value'] == 55
-          assert p['fields']['attackMin']['value'] == 13
-          assert p['fields']['attackMax']['value'] == 17
-          assert p['fields']['magicAttackMin']['value'] == 2
-          assert p['fields']['magicAttackMax']['value'] == 4
-          assert p['fields']['hit']['value'] == 203
-          assert p['fields']['flee']['value'] == 178
-          assert len(p['skills']) >= 2
-          j=next(x for x in p['drops'] if x.get('itemId')==909)
-          assert j['rate'] == 70 and not j['conflict']
-          card=next(x for x in p['drops'] if x.get('itemId')==4001)
-          assert card['conflict'] is True, card
-
-          baph={x['mapId'] for x in consensus['1039']['spawns']}
-          doppel={x['mapId'] for x in consensus['1046']['spawns']}
-          assert 'b_maz_d03' in baph, baph
-          assert 'b_gef_d01' in doppel, doppel
-
-          rms_text=Path('assets/rms-monster-behavior.js').read_text(encoding='utf-8')
-          rms_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR=',1)[1].split(';\nwindow.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[0]
-          rms_meta_payload=rms_text.split('window.RZ_MONSTER_RMS_BEHAVIOR_META=',1)[1].rstrip().rstrip(';')
-          rms=json.loads(rms_payload); rms_meta=json.loads(rms_meta_payload)
-          assert rms['1002']['walkSpeed'] == 'Very Slow'
-          assert rms['1193']['walkSpeed'] == 'Slow'
-          assert rms_meta['fields'] == ['walkSpeed'], rms_meta
-          allowed={'walkSpeed','walkSpeedMs'}
-          assert all(set(row).issubset(allowed) for row in rms.values())
-
-          html=Path('index.html').read_text(encoding='utf-8')
-          order=['assets/client-monsters-data.js','assets/client-monster-disable-legacy-maps.js','assets/client-monster-identity.js','assets/client-monster-navigation-current.js','assets/client-monster-roster.js','assets/monster-zero-stats.js','assets/monster-zero-consensus.js','assets/rms-monster-behavior.js','assets/client-monsters.js','assets/client-monster-current-overlay.js','assets/monster-verified-skill-associations.js','assets/client-monster-sprites.js','assets/monster-detail-rms.js','assets/monster-element-colors.js','assets/monster-mvp-style.js','assets/monster-instance-maps.js','assets/monster-db-optimized.js']
-          positions=[html.index(x) for x in order]
-          assert positions == sorted(positions)
-          renderer=html.split('function monsterDetail(id)',1)[1].split('function itemDetail(id, cardRoute=false)',1)[0]
-          assert 'rz-monster-rms-pending' in renderer
-          assert 'RZ_RENDER_RMS_MONSTER_DETAIL' in renderer
-          list_view=html.split('function listView(type)',1)[1].split('function wireList(type)',1)[0]
-          assert 'RZ_MONSTER_DB_OPT?.wire(type)' in list_view
+          text=Path('assets/monster-zero-consensus.js').read_text(encoding='utf-8')
+          payload=text.split('window.RZ_MONSTER_ZERO_CONSENSUS=',1)[1].split(';\nwindow.RZ_MONSTER_ZERO_CONSENSUS_META=',1)[0]
+          meta_payload=text.split('window.RZ_MONSTER_ZERO_CONSENSUS_META=',1)[1].rstrip().rstrip(';')
+          data=json.loads(payload); meta=json.loads(meta_payload)
+          assert 'STRICT:' in meta['policy'], meta
+          assert meta['skillsPolicy'].startswith('No monster->skill association'), meta
+          assert meta['mapsPolicy'].startswith('Only current-client Navi'), meta
+          for mid,row in data.items():
+              assert not row.get('skills'), (mid,row.get('skills'))
+              assert not row.get('spawns'), (mid,row.get('spawns'))
+              for field,fmeta in (row.get('fields') or {}).items():
+                  assert fmeta.get('status')=='strict-consensus', (mid,field,fmeta)
+                  assert len(set(fmeta.get('verifiedSources') or []))>=2, (mid,field,fmeta)
+              for drop in row.get('drops') or []:
+                  assert drop.get('relationVerified') is True, (mid,drop)
+                  assert len(set(drop.get('verifiedSources') or []))>=2, (mid,drop)
+          print(json.dumps(meta,indent=2))
           PY
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm'),path=require('path');
+          const sandbox={console,setTimeout,clearTimeout};
+          sandbox.window=sandbox; sandbox.globalThis=sandbox;
+          sandbox.RO_DATA={monsters:[],items:[],maps:[]};
+          const ctx=vm.createContext(sandbox);
+          const files=[
+            'assets/client-monsters-data.js',
+            'assets/client-monster-disable-legacy-maps.js',
+            'assets/client-monster-identity.js',
+            'assets/client-monster-navigation-current.js',
+            'assets/client-monster-roster.js',
+            'assets/monster-zero-stats.js',
+            'assets/monster-zero-consensus.js',
+            'assets/rms-monster-behavior.js',
+            'assets/client-monsters.js',
+            'assets/monster-client-corrections.js',
+            'assets/monster-audit-20260909.js',
+            'assets/client-monster-current-overlay.js',
+            'assets/monster-verified-skill-associations.js',
+            'assets/monster-instance-maps.js',
+            'assets/monster-strict-verification.js'
+          ];
+          for(const rel of files)vm.runInContext(fs.readFileSync(path.resolve(rel),'utf8'),ctx,{filename:rel});
+          const monsters=sandbox.RO_DATA.monsters||[];
+          if(!monsters.length)throw new Error('No runtime monsters');
+          for(const m of monsters){
+            if(!m.strictVerificationApplied)throw new Error(`Strict layer missing on #${m.id}`);
+            const badMap=(m.maps||[]).find(x=>x?.clientVerified!==true&&String(x?.source||'')!=='client-navigation-current');
+            if(badMap)throw new Error(`Unverified map survived on #${m.id}: ${JSON.stringify(badMap)}`);
+            const badDrop=(m.drops||[]).find(x=>x?.relationVerified!==true);
+            if(badDrop)throw new Error(`Unverified drop survived on #${m.id}: ${JSON.stringify(badDrop)}`);
+          }
+          const amer=monsters.find(m=>Number(m.clientId||m.id)===3812);
+          if(amer&&amer.clientVerified===false&&amer.level!==null)throw new Error('Manual Amering level survived without exact client identity');
+          console.log({runtime:monsters.length,strict:true});
+          NODE
 
       - name: Commit deployment
         run: |
           git config user.name "Ragnarok Zero Wiki Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js assets/rms-monster-behavior.js
+          git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy monster Navi and Zero spawns"
+          git commit -m "Deploy strict verified monster data"
           git push
