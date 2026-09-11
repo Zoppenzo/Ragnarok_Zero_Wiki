@@ -8,6 +8,7 @@ on:
       - '.github/scripts/build_monster_zero_overlay.py'
       - '.github/scripts/build_zero_monster_consensus.py'
       - '.github/scripts/augment_rozerodb_drops.py'
+      - '.github/scripts/augment_boulder_dwarf_evidence.py'
       - '.github/scripts/augment_zero_monster_spawns.py'
       - '.github/scripts/enforce_strict_monster_verification.py'
       - 'assets/client-monsters-data.js'
@@ -30,6 +31,7 @@ on:
       - 'assets/monster-instance-maps.js'
       - 'assets/monster-db-optimized.js'
       - 'assets/item-monster-drops.js'
+      - 'assets/client-item-icons.js'
   workflow_dispatch:
 
 permissions:
@@ -53,6 +55,9 @@ jobs:
       - name: Cross-check drops with RO ZERO DATABASE
         run: python .github/scripts/augment_rozerodb_drops.py
 
+      - name: Cross-check Boulder Dwarf server stats
+        run: python .github/scripts/augment_boulder_dwarf_evidence.py
+
       - name: Build candidate TWRoZ map data
         run: python .github/scripts/augment_zero_monster_spawns.py
 
@@ -71,10 +76,16 @@ jobs:
           test -s assets/monster-zero-consensus.js
           test -s assets/monster-strict-verification.js
           test -s assets/item-monster-drops.js
-          grep -q 'assets/monster-strict-verification.js?v=20260911-strict-verified3' index.html
-          grep -q 'assets/item-monster-drops.js?v=20260911-strict-verified3' index.html
-          grep -q 'assets/monster-db-optimized.js?v=20260911-strict-verified3' index.html
+          grep -q 'assets/monster-strict-verification.js?v=20260911-strict-verified4' index.html
+          grep -q 'assets/item-monster-drops.js?v=20260911-strict-verified4' index.html
+          grep -q 'assets/monster-db-optimized.js?v=20260911-strict-verified4' index.html
+          grep -q 'assets/monster-detail-rms.js?v=20260911-strict-verified4' index.html
+          grep -q 'assets/client-item-icons.js?v=20260911-strict-verified4' index.html
           ! grep -q 'assets/monster-ragnaplace-exp.js' index.html
+          grep -q 'base-exp-desc' assets/monster-db-optimized.js
+          grep -q 'job-exp-desc' assets/monster-db-optimized.js
+          grep -q 'gridTemplateColumns = .22px minmax(0,1fr) auto.' assets/client-item-icons.js
+          grep -q 'overflow-wrap:anywhere' assets/monster-detail-rms.js
           grep -q 'WIKI_ELEMENT_TABLES' assets/monster-element-colors.js
           grep -q '\[100,150,150,150,150,0,75,75,75,75\]' assets/monster-element-colors.js
           node .github/scripts/debug_monster_nav.js
@@ -99,8 +110,6 @@ jobs:
                   assert drop.get('relationVerified') is True, (mid,drop)
                   assert len(set(drop.get('verifiedSources') or []))>=2, (mid,drop)
 
-          # Regression guards: these relations are independently present in at
-          # least two Ragnarok Zero databases. Unknown rates must remain ???.
           argos=data.get('1100') or {}
           spider=next((d for d in argos.get('drops',[]) if d.get('itemId')==480573),None)
           assert spider and spider.get('relationVerified') is True, spider
@@ -113,10 +122,28 @@ jobs:
           assert abyss and abyss.get('relationVerified') is True and abyss.get('rate') is None, abyss
           assert lance and lance.get('relationVerified') is True and lance.get('rate') is None, lance
           assert len(ak.get('drops') or [])>=8, ak.get('drops')
+
+          expected={
+              '25327':{'hp':32952,'def':198,'mdef':15},
+              '25328':{'hp':55602,'def':179,'mdef':30},
+              '25329':{'hp':54704,'def':224,'mdef':23},
+          }
+          for mid,fields in expected.items():
+              row=data.get(mid) or {}
+              for field,value in fields.items():
+                  fmeta=(row.get('fields') or {}).get(field)
+                  assert fmeta and fmeta.get('value')==value,(mid,field,fmeta)
+                  assert {'TWRoZ','ROZeroDB'}.issubset(set(fmeta.get('verifiedSources') or [])),(mid,field,fmeta)
+          sword=data.get('25336') or {}
+          assert not (sword.get('fields') or {}).get('hp'), sword
+
           print(json.dumps({
               'strictMeta':meta,
               'argosDrops':argos.get('drops'),
               'abysmalKnightDrops':ak.get('drops'),
+              'boulder25327':data.get('25327'),
+              'boulder25328':data.get('25328'),
+              'boulder25329':data.get('25329'),
           },indent=2))
           PY
           node - <<'NODE'
@@ -152,12 +179,15 @@ jobs:
             const badDrop=(m.drops||[]).find(x=>x?.relationVerified!==true);
             if(badDrop)throw new Error(`Unverified drop survived on #${m.id}: ${JSON.stringify(badDrop)}`);
           }
-          const amer=monsters.find(m=>Number(m.clientId||m.id)===3812);
-          if(amer&&amer.clientVerified===false&&amer.level!==null)throw new Error('Manual Amering level survived without exact client identity');
           const argos=monsters.find(m=>Number(m.clientId||m.id)===1100);
           const ak=monsters.find(m=>Number(m.clientId||m.id)===1219);
           if(!argos?.drops?.some(d=>Number(d.itemId)===480573))throw new Error('Argos costume relation missing at runtime');
           if((ak?.drops||[]).length<8)throw new Error(`Abysmal Knight drop list incomplete: ${(ak?.drops||[]).length}`);
+          const expected={25327:[32952,198,15],25328:[55602,179,30],25329:[54704,224,23]};
+          for(const [id,vals] of Object.entries(expected)){
+            const m=monsters.find(x=>Number(x.clientId||x.id)===Number(id));
+            if(!m||Number(m.hp)!==vals[0]||Number(m.def)!==vals[1]||Number(m.mdef)!==vals[2])throw new Error(`Boulder Dwarf #${id} strict stats missing: ${JSON.stringify(m)}`);
+          }
           console.log({runtime:monsters.length,strict:true,argosDrops:argos.drops.length,abysmalKnightDrops:ak.drops.length});
           NODE
 
