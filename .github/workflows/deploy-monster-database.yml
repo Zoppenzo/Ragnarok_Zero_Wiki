@@ -67,8 +67,8 @@ jobs:
           test -s assets/monster-zero-consensus.js
           test -s assets/monster-strict-verification.js
           test -s assets/item-monster-drops.js
-          grep -q 'assets/monster-strict-verification.js?v=20260911-strict-verified1' index.html
-          grep -q 'assets/item-monster-drops.js?v=20260911-strict-verified1' index.html
+          grep -q 'assets/monster-strict-verification.js?v=20260911-strict-verified2' index.html
+          grep -q 'assets/item-monster-drops.js?v=20260911-strict-verified2' index.html
           ! grep -q 'assets/monster-ragnaplace-exp.js' index.html
           grep -q 'WIKI_ELEMENT_TABLES' assets/monster-element-colors.js
           grep -q '\[100,150,150,150,150,0,75,75,75,75\]' assets/monster-element-colors.js
