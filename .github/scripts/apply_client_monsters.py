@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260911-monster-skills1'
+version='20260911-monster-exp1'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-disable-legacy-maps.js',
@@ -18,6 +18,7 @@ script_paths=[
     'assets/monster-client-corrections.js',
     'assets/monster-audit-20260909.js',
     'assets/client-monster-current-overlay.js',
+    'assets/monster-ragnaplace-exp.js',
     'assets/monster-verified-skill-associations.js',
     'assets/client-monster-sprites.js',
     'assets/monster-detail-rms.js',
@@ -62,4 +63,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Current client monster roster, exact internal-name Navi data, and verified Zero skill associations wired. Obsolete pseudo-ID maps are disabled before runtime monster construction.')
+print('Current client monster roster, exact internal-name Navi data, verified Zero EXP, and verified Zero skill associations wired. Obsolete pseudo-ID maps are disabled before runtime monster construction.')
