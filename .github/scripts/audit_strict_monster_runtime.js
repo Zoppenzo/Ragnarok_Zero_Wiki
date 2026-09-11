@@ -37,6 +37,7 @@ const monsters=Array.isArray(sandbox.RO_DATA?.monsters)?sandbox.RO_DATA.monsters
 const overrides=sandbox.RZ_MONSTER_ROSTER_CLASSIFICATION_OVERRIDES||{};
 if(roster.length!==598)throw new Error(`Expected 598 roster entries, got ${roster.length}`);
 const byId=new Map(monsters.map(m=>[Number(m?.clientId??m?.id),m]));
+const rosterIds=new Set(roster.map(r=>Number(r[0])));
 const required=['HP','ATK','MATK','DEF','MDEF','HIT','FLEE','Base EXP','Job EXP','Walk Speed','Maps','Drops','Skills'];
 const known=v=>v!==null&&v!==undefined&&v!==''&&!/^n\/?a$/i.test(String(v).trim())&&String(v).trim()!=='—';
 const pair=(a,b)=>known(a)||known(b);
@@ -71,6 +72,20 @@ function missing(m){
   if(!(Array.isArray(m?.skills)&&m.skills.length))out.push('Skills');
   return out;
 }
+function fieldCounts(subset){
+  return Object.fromEntries(required.map(f=>[f,subset.filter(r=>r.missing.includes(f)).length]));
+}
+function snapshot(m){
+  return {
+    id:Number(m?.clientId??m?.id), internalName:m?.internalName||'', name:m?.name||'',
+    hp:m?.hp??null, level:m?.level??null, attackMin:m?.attackMin??null, attackMax:m?.attackMax??null,
+    magicAttackMin:m?.magicAttackMin??null, magicAttackMax:m?.magicAttackMax??null,
+    def:m?.def??null, mdef:m?.mdef??null, hit:m?.hit??null, flee:m?.flee??null,
+    baseExp:m?.baseExp??null, jobExp:m?.jobExp??null, walkSpeed:m?.walkSpeed??null,
+    maps:Array.isArray(m?.maps)?m.maps.length:0, drops:Array.isArray(m?.drops)?m.drops.length:0,
+    skills:Array.isArray(m?.skills)?m.skills.length:0
+  };
+}
 
 const rows=roster.map(r=>{
   const id=Number(r[0]),internalName=String(r[1]||''),m=byId.get(id);
@@ -78,11 +93,26 @@ const rows=roster.map(r=>{
   if(!m.strictVerificationApplied)throw new Error(`Strict layer missing on #${id}`);
   return {id,internalName,name:m.name||internalName,category:category(id,internalName),missing:missing(m)};
 });
+const allIncomplete=rows.filter(r=>r.missing.length);
 const normal=rows.filter(r=>r.category==='normal');
 const normalIncomplete=normal.filter(r=>r.missing.length);
-const counts=Object.fromEntries(required.map(f=>[f,normalIncomplete.filter(r=>r.missing.includes(f)).length]));
+
+const categoryNames=[...new Set(rows.map(r=>r.category))].sort();
+const categories={};
+for(const cat of categoryNames){
+  const subset=rows.filter(r=>r.category===cat);
+  const incomplete=subset.filter(r=>r.missing.length);
+  categories[cat]={
+    total:subset.length,
+    complete:subset.length-incomplete.length,
+    incomplete:incomplete.length,
+    missingFieldCounts:fieldCounts(incomplete)
+  };
+}
+if(Object.values(categories).reduce((sum,x)=>sum+x.total,0)!==598)throw new Error('Category totals do not equal roster');
+
 const consensus=sandbox.RZ_MONSTER_ZERO_CONSENSUS||{};
-let strictFields=0,strictDrops=0;
+let strictFields=0,strictDrops=0,strictDropsWithRate=0,strictDropsUnknownRate=0;
 for(const [id,rec] of Object.entries(consensus)){
   for(const [field,meta] of Object.entries(rec.fields||{})){
     if(meta?.status!=='strict-consensus'||new Set(meta?.verifiedSources||[]).size<2)throw new Error(`Non-strict field ${id}/${field}`);
@@ -91,21 +121,62 @@ for(const [id,rec] of Object.entries(consensus)){
   for(const drop of rec.drops||[]){
     if(drop?.relationVerified!==true||new Set(drop?.verifiedSources||[]).size<2)throw new Error(`Non-strict drop relation ${id}`);
     strictDrops++;
+    if(drop.rate===null||drop.rate===undefined)strictDropsUnknownRate++; else strictDropsWithRate++;
   }
 }
+
+const digitPrefixed=rows.filter(r=>/^\d/.test(r.internalName)).map(r=>({id:r.id,internalName:r.internalName,name:r.name}));
+const extraRuntime=monsters.filter(m=>!rosterIds.has(Number(m?.clientId??m?.id))).map(snapshot);
+const boulders=[25327,25328,25329,25336].map(id=>snapshot(byId.get(id)));
+const argos=byId.get(1100),ak=byId.get(1219);
+const regressions={
+  argos:{drops:Array.isArray(argos?.drops)?argos.drops.length:0,hasSpiderWings:Boolean(argos?.drops?.some(d=>Number(d.itemId)===480573))},
+  abysmalKnight:{drops:Array.isArray(ak?.drops)?ak.drops.length:0,hasAbyssHelm:Boolean(ak?.drops?.some(d=>Number(d.itemId)===401072)),hasLance:Boolean(ak?.drops?.some(d=>Number(d.itemId)===630036))},
+  boulderDwarfs:boulders
+};
+if(!regressions.argos.hasSpiderWings)throw new Error('Argos Spider Wings regression');
+if(regressions.abysmalKnight.drops<8||!regressions.abysmalKnight.hasAbyssHelm||!regressions.abysmalKnight.hasLance)throw new Error('Abysmal Knight drops regression');
+const expectedBoulders={25327:[32952,198,15],25328:[55602,179,30],25329:[54704,224,23]};
+for(const [id,vals] of Object.entries(expectedBoulders)){
+  const m=byId.get(Number(id));
+  if(Number(m?.hp)!==vals[0]||Number(m?.def)!==vals[1]||Number(m?.mdef)!==vals[2])throw new Error(`Boulder Dwarf #${id} verified stats regression`);
+}
+const sword=byId.get(25336);
+if(known(sword?.hp)||known(sword?.def)||known(sword?.mdef))throw new Error('Boulder Dwarf Swordmaster must remain unknown for HP/DEF/MDEF');
+
 const result={
   generatedAt:new Date().toISOString(),
   policy:'client exact identity/Navi + at least two independent Ragnarok Zero databases for server data',
+  runtimeMonsters:monsters.length,
   roster:rows.length,
+  extraRuntime,
+  complete:rows.length-allIncomplete.length,
+  incomplete:allIncomplete.length,
+  allMissingFieldCounts:fieldCounts(allIncomplete),
+  categories,
   normal:normal.length,
   normalComplete:normal.length-normalIncomplete.length,
   normalIncomplete:normalIncomplete.length,
-  normalMissingFieldCounts:counts,
+  normalMissingFieldCounts:fieldCounts(normalIncomplete),
   strictExternalMonsters:Object.keys(consensus).length,
   strictExternalFields:strictFields,
   strictDropRelations:strictDrops,
-  incomplete:normalIncomplete
+  strictDropRelationsWithVerifiedRate:strictDropsWithRate,
+  strictDropRelationsWithUnknownRate:strictDropsUnknownRate,
+  digitPrefixedSpecialCount:digitPrefixed.length,
+  digitPrefixedSpecial:digitPrefixed,
+  regressions,
+  incompleteRows:allIncomplete
 };
 fs.mkdirSync(path.join(root,'audit'),{recursive:true});
 fs.writeFileSync(path.join(root,'audit/monster-strict-audit.json'),JSON.stringify(result,null,2));
-console.log(JSON.stringify({...result,incomplete:undefined},null,2));
+console.log(JSON.stringify({
+  generatedAt:result.generatedAt,policy:result.policy,runtimeMonsters:result.runtimeMonsters,roster:result.roster,
+  complete:result.complete,incomplete:result.incomplete,allMissingFieldCounts:result.allMissingFieldCounts,
+  categories:result.categories,normal:result.normal,normalComplete:result.normalComplete,normalIncomplete:result.normalIncomplete,
+  normalMissingFieldCounts:result.normalMissingFieldCounts,strictExternalMonsters:result.strictExternalMonsters,
+  strictExternalFields:result.strictExternalFields,strictDropRelations:result.strictDropRelations,
+  strictDropRelationsWithVerifiedRate:result.strictDropRelationsWithVerifiedRate,
+  strictDropRelationsWithUnknownRate:result.strictDropRelationsWithUnknownRate,
+  digitPrefixedSpecialCount:result.digitPrefixedSpecialCount,regressions:result.regressions
+},null,2));
