@@ -7,6 +7,7 @@ on:
       - '.github/scripts/apply_client_monsters.py'
       - '.github/scripts/build_monster_zero_overlay.py'
       - '.github/scripts/build_zero_monster_consensus.py'
+      - '.github/scripts/augment_rozerodb_drops.py'
       - '.github/scripts/augment_zero_monster_spawns.py'
       - '.github/scripts/enforce_strict_monster_verification.py'
       - 'assets/client-monsters-data.js'
@@ -49,6 +50,9 @@ jobs:
       - name: Build Zero database comparison set
         run: python .github/scripts/build_zero_monster_consensus.py
 
+      - name: Cross-check drops with RO ZERO DATABASE
+        run: python .github/scripts/augment_rozerodb_drops.py
+
       - name: Build candidate TWRoZ map data
         run: python .github/scripts/augment_zero_monster_spawns.py
 
@@ -67,8 +71,9 @@ jobs:
           test -s assets/monster-zero-consensus.js
           test -s assets/monster-strict-verification.js
           test -s assets/item-monster-drops.js
-          grep -q 'assets/monster-strict-verification.js?v=20260911-strict-verified2' index.html
-          grep -q 'assets/item-monster-drops.js?v=20260911-strict-verified2' index.html
+          grep -q 'assets/monster-strict-verification.js?v=20260911-strict-verified3' index.html
+          grep -q 'assets/item-monster-drops.js?v=20260911-strict-verified3' index.html
+          grep -q 'assets/monster-db-optimized.js?v=20260911-strict-verified3' index.html
           ! grep -q 'assets/monster-ragnaplace-exp.js' index.html
           grep -q 'WIKI_ELEMENT_TABLES' assets/monster-element-colors.js
           grep -q '\[100,150,150,150,150,0,75,75,75,75\]' assets/monster-element-colors.js
@@ -93,7 +98,26 @@ jobs:
               for drop in row.get('drops') or []:
                   assert drop.get('relationVerified') is True, (mid,drop)
                   assert len(set(drop.get('verifiedSources') or []))>=2, (mid,drop)
-          print(json.dumps(meta,indent=2))
+
+          # Regression guards: these relations are independently present in at
+          # least two Ragnarok Zero databases. Unknown rates must remain ???.
+          argos=data.get('1100') or {}
+          spider=next((d for d in argos.get('drops',[]) if d.get('itemId')==480573),None)
+          assert spider and spider.get('relationVerified') is True, spider
+          assert len(set(spider.get('verifiedSources') or []))>=2, spider
+          assert spider.get('rate') is None, spider
+
+          ak=data.get('1219') or {}
+          abyss=next((d for d in ak.get('drops',[]) if d.get('itemId')==401072),None)
+          lance=next((d for d in ak.get('drops',[]) if d.get('itemId')==630036),None)
+          assert abyss and abyss.get('relationVerified') is True and abyss.get('rate') is None, abyss
+          assert lance and lance.get('relationVerified') is True and lance.get('rate') is None, lance
+          assert len(ak.get('drops') or [])>=8, ak.get('drops')
+          print(json.dumps({
+              'strictMeta':meta,
+              'argosDrops':argos.get('drops'),
+              'abysmalKnightDrops':ak.get('drops'),
+          },indent=2))
           PY
           node - <<'NODE'
           const fs=require('fs'),vm=require('vm'),path=require('path');
@@ -130,7 +154,11 @@ jobs:
           }
           const amer=monsters.find(m=>Number(m.clientId||m.id)===3812);
           if(amer&&amer.clientVerified===false&&amer.level!==null)throw new Error('Manual Amering level survived without exact client identity');
-          console.log({runtime:monsters.length,strict:true});
+          const argos=monsters.find(m=>Number(m.clientId||m.id)===1100);
+          const ak=monsters.find(m=>Number(m.clientId||m.id)===1219);
+          if(!argos?.drops?.some(d=>Number(d.itemId)===480573))throw new Error('Argos costume relation missing at runtime');
+          if((ak?.drops||[]).length<8)throw new Error(`Abysmal Knight drop list incomplete: ${(ak?.drops||[]).length}`);
+          console.log({runtime:monsters.length,strict:true,argosDrops:argos.drops.length,abysmalKnightDrops:ak.drops.length});
           NODE
 
       - name: Commit deployment
