@@ -12,6 +12,7 @@ const files=[
   'assets/client-monsters-data.js',
   'assets/client-monster-disable-legacy-maps.js',
   'assets/client-monster-identity.js',
+  'assets/client-monster-navigation-metadata.js',
   'assets/client-monster-navigation-current.js',
   'assets/client-monster-roster.js',
   'assets/monster-zero-stats.js',
@@ -78,7 +79,9 @@ function fieldCounts(subset){
 function snapshot(m){
   return {
     id:Number(m?.clientId??m?.id), internalName:m?.internalName||'', name:m?.name||'',
-    hp:m?.hp??null, level:m?.level??null, attackMin:m?.attackMin??null, attackMax:m?.attackMax??null,
+    level:m?.level??null, race:m?.race??null, size:m?.size??null,
+    element:m?.element??null, elementLevel:m?.elementLevel??null, propertyCode:m?.propertyCode??null,
+    hp:m?.hp??null, attackMin:m?.attackMin??null, attackMax:m?.attackMax??null,
     magicAttackMin:m?.magicAttackMin??null, magicAttackMax:m?.magicAttackMax??null,
     def:m?.def??null, mdef:m?.mdef??null, hit:m?.hit??null, flee:m?.flee??null,
     baseExp:m?.baseExp??null, jobExp:m?.jobExp??null, walkSpeed:m?.walkSpeed??null,
@@ -136,10 +139,24 @@ const regressions={
 };
 if(!regressions.argos.hasSpiderWings)throw new Error('Argos Spider Wings regression');
 if(regressions.abysmalKnight.drops<8||!regressions.abysmalKnight.hasAbyssHelm||!regressions.abysmalKnight.hasLance)throw new Error('Abysmal Knight drops regression');
-const expectedBoulders={25327:[32952,198,15],25328:[55602,179,30],25329:[54704,224,23]};
-for(const [id,vals] of Object.entries(expectedBoulders)){
+
+const expectedBoulderServer={25327:[32952,198,15],25328:[55602,179,30],25329:[54704,224,23]};
+for(const [id,vals] of Object.entries(expectedBoulderServer)){
   const m=byId.get(Number(id));
   if(Number(m?.hp)!==vals[0]||Number(m?.def)!==vals[1]||Number(m?.mdef)!==vals[2])throw new Error(`Boulder Dwarf #${id} verified stats regression`);
+}
+const expectedBoulderClient={
+  25327:{level:64,race:'Demi-Human',size:'Medium',element:'Earth',elementLevel:2,propertyCode:42},
+  25328:{level:65,race:'Demi-Human',size:'Medium',element:'Earth',elementLevel:2,propertyCode:42},
+  25329:{level:64,race:'Demi-Human',size:'Medium',element:'Earth',elementLevel:3,propertyCode:62},
+  25336:{level:64,race:'Demi-Human',size:'Medium',element:'Earth',elementLevel:3,propertyCode:62}
+};
+for(const [id,expected] of Object.entries(expectedBoulderClient)){
+  const m=byId.get(Number(id));
+  for(const [field,value] of Object.entries(expected)){
+    if(m?.[field]!==value)throw new Error(`Boulder Dwarf #${id} client Navi ${field} regression: expected ${value}, got ${m?.[field]}`);
+  }
+  if(m?.clientVerified!==true)throw new Error(`Boulder Dwarf #${id} is not marked client verified`);
 }
 const sword=byId.get(25336);
 if(known(sword?.hp)||known(sword?.def)||known(sword?.mdef))throw new Error('Boulder Dwarf Swordmaster must remain unknown for HP/DEF/MDEF');
