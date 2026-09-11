@@ -71,4 +71,22 @@
     }
     monster.skills=skills;
   }
+
+  // The main sheet renderer uses "No Result" for an empty array. Replace that
+  // label only when the current Mob-ID has an explicit verified AI count of 0.
+  function decorateVerifiedEmptySkills(){
+    const match=location.hash.match(/^#\/monsters\/([^?#]+)/i);
+    if(!match)return;
+    const token=decodeURIComponent(match[1]);
+    const monster=monsters.find(x=>String(x?.id)===token||String(x?.clientId)===token);
+    if(!monster?.skillsVerifiedEmpty)return;
+    const title=[...document.querySelectorAll('.rz-monster-wide-title')].find(x=>String(x.textContent||'').trim()==='Monster Skills');
+    const body=title?.closest('tr')?.nextElementSibling?.querySelector('.rz-monster-wide-body');
+    if(!body)return;
+    body.innerHTML='<div class="rz-monster-empty-section"><span class="rz-monster-no-skills">No Skills</span></div>';
+  }
+  const scheduleDecoration=()=>setTimeout(decorateVerifiedEmptySkills,0);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleDecoration,{once:true});
+  else scheduleDecoration();
+  window.addEventListener('hashchange',scheduleDecoration);
 })();
