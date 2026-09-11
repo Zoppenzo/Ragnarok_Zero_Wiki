@@ -65,7 +65,7 @@ def strict_field(mid: str, field: str, meta: dict, ragna_verified: dict) -> dict
             rvalue = (ragna_verified.get(mid) or {}).get(target)
             if rvalue is None or not same_number(rvalue, value):
                 continue
-        elif source not in {'TWRoZ', 'Prontera'}:
+        elif source not in {'TWRoZ', 'Prontera', 'ROZeroDB'}:
             continue
         usable[source] = value
 
@@ -91,9 +91,6 @@ def strict_field(mid: str, field: str, meta: dict, ragna_verified: dict) -> dict
 
 
 def strict_drop(drop: dict) -> dict | None:
-    # Drop relations may be validated by any two independent Ragnarok Zero
-    # databases. RagnaDex drop rows are still excluded because its drop records
-    # do not carry the same Zero verification marker used for its stat fields.
     sources = drop.get('sources') or {}
     allowed = {'TWRoZ', 'Prontera', 'ROZeroDB'}
     usable = {k: v for k, v in sources.items() if k in allowed}
@@ -103,9 +100,6 @@ def strict_drop(drop: dict) -> dict | None:
     per_source = {source: source_value_candidates(value) for source, value in usable.items()}
     numeric_sources = {source: values for source, values in per_source.items() if values}
 
-    # A numeric rate is displayed only when at least two Zero databases give the
-    # same numeric rate. Two databases agreeing on the relation but not the rate
-    # still validate monster->item, while the rate remains ???.
     votes = defaultdict(list)
     for source, values in numeric_sources.items():
         for value in values:
@@ -155,10 +149,6 @@ def main():
                 drops.append(accepted)
                 drop_count += 1
 
-        # The current builder has per-source provenance for fields and drops, but
-        # not per-mode provenance, and monster skills currently come only from
-        # TWRoZ. Therefore modes, skills and TWRoZ-only spawn fallbacks are not
-        # eligible under the strict multi-database policy yet.
         out = {
             'fields': fields,
             'drops': drops,
