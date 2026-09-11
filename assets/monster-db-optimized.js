@@ -59,13 +59,21 @@
   }
 
   function sortRows(rows,mode){
+    // Client-only/special identities such as 4_MYSTCASE and 8W_SOLDIER must
+    // remain searchable, but they should never occupy the top of the normal
+    // monster database simply because their internal name starts with a digit.
+    const digitInternal=m=>/^\d/.test(String(m?.internalName||'').trim());
+    const specialLast=(a,b)=>{
+      const ad=digitInternal(a), bd=digitInternal(b);
+      return ad===bd?0:(ad?1:-1);
+    };
     const nameSort=(a,b)=>String(a.name||'').localeCompare(String(b.name||''),'en',{sensitivity:'base'});
-    if(mode==='name-desc')return rows.sort((a,b)=>-nameSort(a,b));
-    if(mode==='level-asc')return rows.sort((a,b)=>(num(a.level)??Infinity)-(num(b.level)??Infinity)||nameSort(a,b));
-    if(mode==='level-desc')return rows.sort((a,b)=>(num(b.level)??-Infinity)-(num(a.level)??-Infinity)||nameSort(a,b));
-    if(mode==='id-asc')return rows.sort((a,b)=>(num(a.clientId||a.id)??Infinity)-(num(b.clientId||b.id)??Infinity));
-    if(mode==='id-desc')return rows.sort((a,b)=>(num(b.clientId||b.id)??-Infinity)-(num(a.clientId||a.id)??-Infinity));
-    return rows.sort(nameSort);
+    if(mode==='name-desc')return rows.sort((a,b)=>specialLast(a,b)||-nameSort(a,b));
+    if(mode==='level-asc')return rows.sort((a,b)=>specialLast(a,b)||(num(a.level)??Infinity)-(num(b.level)??Infinity)||nameSort(a,b));
+    if(mode==='level-desc')return rows.sort((a,b)=>specialLast(a,b)||(num(b.level)??-Infinity)-(num(a.level)??-Infinity)||nameSort(a,b));
+    if(mode==='id-asc')return rows.sort((a,b)=>specialLast(a,b)||(num(a.clientId||a.id)??Infinity)-(num(b.clientId||b.id)??Infinity)||nameSort(a,b));
+    if(mode==='id-desc')return rows.sort((a,b)=>specialLast(a,b)||(num(b.clientId||b.id)??-Infinity)-(num(a.clientId||a.id)??-Infinity)||nameSort(a,b));
+    return rows.sort((a,b)=>specialLast(a,b)||nameSort(a,b));
   }
 
   function decorateVisible(output){
