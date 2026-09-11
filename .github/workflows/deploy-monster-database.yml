@@ -7,7 +7,6 @@ on:
       - '.github/scripts/apply_client_monsters.py'
       - '.github/scripts/build_monster_zero_overlay.py'
       - '.github/scripts/build_zero_monster_consensus.py'
-      - '.github/scripts/augment_ragnaplace_rozg_exp.py'
       - '.github/scripts/augment_zero_monster_spawns.py'
       - '.github/scripts/build_rms_monster_behavior.py'
       - '.github/scripts/audit_monster_completeness.js'
@@ -50,9 +49,6 @@ jobs:
 
       - name: Build Zero-only cross-database consensus
         run: python .github/scripts/build_zero_monster_consensus.py
-
-      - name: Augment Zero Global EXP from RagnaPlace
-        run: python .github/scripts/augment_ragnaplace_rozg_exp.py
 
       - name: Build TWRoZ map fallback
         run: python .github/scripts/augment_zero_monster_spawns.py
@@ -142,6 +138,8 @@ jobs:
           ! grep -q '<th>Dex</th>' assets/monster-detail-rms.js
           ! grep -q '<th>Luk</th>' assets/monster-detail-rms.js
           grep -q 'RZ_ELEMENT_BADGE' assets/monster-element-colors.js
+          grep -q 'WIKI_ELEMENT_TABLES' assets/monster-element-colors.js
+          grep -q '\[100,150,150,150,150,0,75,75,75,75\]' assets/monster-element-colors.js
           grep -q 'rz-monster-mvp-emblem' assets/monster-mvp-style.js
           grep -q 'const DEFAULT_PAGE_SIZE=10' assets/monster-db-optimized.js
           grep -q 'rz-monster-boss-filter' assets/monster-db-optimized.js
@@ -175,16 +173,6 @@ jobs:
           assert meta['coverage']['attackMin'] >= 200, meta
           assert meta['coverage']['magicAttackMin'] >= 200, meta
           assert meta['coverage']['hit'] >= 200, meta
-          assert meta['ragnaplaceRozgPages'] >= 30, meta
-          assert meta['ragnaplaceRozgRows'] >= 580, meta
-          assert meta['ragnaplaceRozgRosterMatches'] >= 300, meta
-          assert meta['ragnaplaceRozgAppliedBaseExp'] + meta['ragnaplaceRozgAppliedJobExp'] > 0, meta
-          assert meta['ragnaplaceRozgSamples']['2398']['baseExp'] == 24, meta['ragnaplaceRozgSamples']
-          assert meta['ragnaplaceRozgSamples']['2398']['jobExp'] == 4, meta['ragnaplaceRozgSamples']
-          assert meta['ragnaplaceRozgSamples']['1155']['baseExp'] == 14167, meta['ragnaplaceRozgSamples']
-          assert meta['ragnaplaceRozgSamples']['1155']['jobExp'] is None, meta['ragnaplaceRozgSamples']
-          assert meta['ragnaplaceRozgSamples']['1053']['baseExp'] is None, meta['ragnaplaceRozgSamples']
-          assert meta['ragnaplaceRozgSamples']['1053']['jobExp'] is None, meta['ragnaplaceRozgSamples']
           assert meta['spawnTargetsWithoutNavi'] == 199, meta
           assert meta['spawnMonsters'] >= 1, meta
           assert meta['spawnMaps'] >= meta['spawnMonsters'], meta
@@ -234,5 +222,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html assets/monster-zero-stats.js assets/monster-zero-consensus.js assets/rms-monster-behavior.js
           git diff --cached --quiet && exit 0
-          git commit -m "Deploy monster Navi, Zero spawns and ROZg EXP"
+          git commit -m "Deploy monster Navi and Zero spawns"
           git push
