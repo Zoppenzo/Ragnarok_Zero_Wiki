@@ -16,6 +16,7 @@ vm.runInContext(fs.readFileSync(overridesPath,'utf8'),sandbox,{filename:'monster
 if(fs.existsSync(skillsPath)) vm.runInContext(fs.readFileSync(skillsPath,'utf8'),sandbox,{filename:'monster-verified-skill-associations.js'});
 const overrides=sandbox.window.RZ_MONSTER_ROSTER_CLASSIFICATION_OVERRIDES||{};
 const verifiedSkills=sandbox.window.RZ_MONSTER_VERIFIED_SKILL_ASSOCIATIONS||{};
+const verifiedSkillEmpty=sandbox.window.RZ_MONSTER_VERIFIED_SKILL_EMPTY||{};
 const audit=JSON.parse(fs.readFileSync(auditPath,'utf8'));
 const requiredFields=['HP','ATK','MATK','DEF','MDEF','HIT','FLEE','Base EXP','Job EXP','Walk Speed','Maps','Drops','Skills'];
 
@@ -36,7 +37,9 @@ for(const row of audit.rosterClassification||[]){
 for(const row of audit.incomplete||[]){
   const o=overrideFor(row);
   if(o){ row.category=o.category; row.classificationReason=o.reason||null; row.classificationOverride=true; }
-  const extra=verifiedSkills[String(row?.id??'')];
+
+  const id=String(row?.id??'');
+  const extra=verifiedSkills[id];
   if(Array.isArray(extra)&&extra.length&&Array.isArray(row.missing)){
     row.missing=row.missing.filter(field=>field!=='Skills');
     row.verifiedSkillAssociations=extra.map(skill=>({
@@ -44,6 +47,19 @@ for(const row of audit.incomplete||[]){
       name:skill.name||skill.internalName||null,
       source:skill.source||null
     }));
+  }
+
+  const empty=verifiedSkillEmpty[id];
+  if(empty&&Array.isArray(row.missing)){
+    if(empty.internalName&&String(row?.internalName||'')!==String(empty.internalName)){
+      throw new Error(`Verified-empty skill identity mismatch for #${id}: expected ${empty.internalName}, got ${row?.internalName}`);
+    }
+    row.missing=row.missing.filter(field=>field!=='Skills');
+    row.verifiedSkillEmpty={
+      internalName:empty.internalName||row.internalName||null,
+      source:empty.source||null,
+      aiCount:Number(empty.aiCount??0)
+    };
   }
 }
 audit.incomplete=(audit.incomplete||[]).filter(row=>(row.missing||[]).length);
@@ -75,13 +91,15 @@ Object.assign(audit.summary,{
   normalMissingFieldCounts,
   normalMissingDistribution,
   classificationOverridesApplied:Object.keys(overrides).length,
-  verifiedSkillAssociationMonsters:Object.keys(verifiedSkills).length
+  verifiedSkillAssociationMonsters:Object.keys(verifiedSkills).length,
+  verifiedSkillEmptyMonsters:Object.keys(verifiedSkillEmpty).length
 });
 audit.normalFullyBlank=normalFullyBlank;
 audit.normalNearlyComplete=normalNearlyComplete;
 audit.normalOnlyExpMissing=normalOnlyExpMissing;
 audit.classificationOverrides=overrides;
 audit.verifiedSkillAssociations=verifiedSkills;
+audit.verifiedSkillEmpty=verifiedSkillEmpty;
 fs.writeFileSync(auditPath,JSON.stringify(audit,null,2));
 
 if(fs.existsSync(mdPath)){
@@ -109,15 +127,21 @@ if(fs.existsSync(mdPath)){
   if(Object.keys(verifiedSkills).length){
     md += `\n## Verified skill associations\n\n` + Object.entries(verifiedSkills).map(([id,skills])=>`- **#${id}** — ${skills.map(s=>s.name||s.internalName).join(', ')}`).join('\n') + '\n';
   }
+  if(Object.keys(verifiedSkillEmpty).length){
+    md += `\n## Verified empty skill AI\n\n` + Object.entries(verifiedSkillEmpty).map(([id,row])=>`- **#${id} ${row.internalName||''}** — Monster AI (0) · ${row.source||'Zero source'}`).join('\n') + '\n';
+  }
   fs.writeFileSync(mdPath,md);
 }
 
 const normalMissingMaps=normalIncomplete.filter(x=>(x.missing||[]).includes('Maps'));
+const normalMissingSkills=normalIncomplete.filter(x=>(x.missing||[]).includes('Skills'));
 console.log(JSON.stringify({
   overridesApplied:Object.keys(overrides).length,
   verifiedSkillAssociationMonsters:Object.keys(verifiedSkills).length,
+  verifiedSkillEmptyMonsters:Object.keys(verifiedSkillEmpty).length,
   normalCount,
   normalIncomplete:normalIncomplete.length,
   normalComplete:audit.summary.totalNormalComplete,
-  normalMissingMaps:normalMissingMaps.map(x=>({id:x.id,internalName:x.internalName,name:x.name,missing:x.missing}))
+  normalMissingMaps:normalMissingMaps.map(x=>({id:x.id,internalName:x.internalName,name:x.name,missing:x.missing})),
+  normalMissingSkills:normalMissingSkills.map(x=>({id:x.id,internalName:x.internalName,name:x.name,missing:x.missing}))
 },null,2));
