@@ -15,6 +15,62 @@
     Undead:{label:'Undead',fg:'#55694c',bg:'#f1f5ef',border:'#99aa90'}
   };
   const FALLBACK_ELEMENT_NAMES=['Neutral','Water','Earth','Fire','Wind','Poison','Holy','Shadow','Ghost','Undead'];
+
+  // Exact copy of the element matrices used by the wiki Elements page.
+  // Rows = defending element, columns = attacking element.
+  // This local copy is required because index.html keeps its table in a lexical scope
+  // that is not guaranteed to be visible from this external runtime script.
+  const WIKI_ELEMENT_TABLES={
+    1:[
+      [100,100,100,100,100,100,100,100,90,100],
+      [100,25,100,90,150,150,100,100,100,100],
+      [100,100,25,150,90,150,100,100,100,100],
+      [100,150,90,25,100,150,100,100,100,90],
+      [100,90,150,100,25,150,100,100,100,100],
+      [100,150,150,150,150,0,75,75,75,75],
+      [100,100,100,100,100,75,0,125,90,125],
+      [100,100,100,100,100,75,125,0,90,0],
+      [90,100,100,100,100,75,100,100,125,100],
+      [100,100,100,125,100,75,125,0,100,0]
+    ],
+    2:[
+      [100,100,100,100,100,100,100,100,70,100],
+      [100,0,100,80,175,150,100,100,100,100],
+      [100,100,0,175,80,150,100,100,100,100],
+      [100,175,80,0,100,150,100,100,100,80],
+      [100,80,175,100,0,150,100,100,100,100],
+      [100,150,150,150,150,0,75,75,75,50],
+      [100,100,100,100,100,75,0,150,80,150],
+      [100,100,100,100,100,75,150,0,80,0],
+      [70,100,100,100,100,75,100,100,150,125],
+      [100,100,100,150,100,50,150,0,125,0]
+    ],
+    3:[
+      [100,100,100,100,100,100,100,100,50,100],
+      [100,0,100,70,200,125,100,100,100,100],
+      [100,100,0,200,70,125,100,100,100,100],
+      [100,200,70,0,100,125,100,100,100,70],
+      [100,70,200,100,0,125,100,100,100,100],
+      [100,125,125,125,125,0,50,50,50,25],
+      [100,100,100,100,100,50,0,175,70,175],
+      [100,100,100,100,100,50,175,0,70,0],
+      [50,100,100,100,100,50,100,100,175,150],
+      [100,100,100,175,100,25,175,0,150,0]
+    ],
+    4:[
+      [100,100,100,100,100,100,100,100,0,100],
+      [100,0,100,60,200,125,100,100,100,100],
+      [100,100,0,200,60,125,100,100,100,100],
+      [100,200,60,0,100,125,100,100,100,60],
+      [100,60,200,100,0,125,100,100,100,100],
+      [100,125,125,125,125,0,50,50,50,0],
+      [100,100,100,100,100,50,0,200,60,200],
+      [100,100,100,100,100,50,200,0,60,0],
+      [0,100,100,100,100,50,100,100,200,175],
+      [100,100,100,200,100,0,200,0,175,0]
+    ]
+  };
+
   const STYLE_ID='rz-monster-element-colors-style';
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -53,10 +109,13 @@
   }
 
   function matrixNames(){
-    try{return (typeof ELEMENT_NAMES!=='undefined'&&Array.isArray(ELEMENT_NAMES))?ELEMENT_NAMES:FALLBACK_ELEMENT_NAMES;}catch(_){return FALLBACK_ELEMENT_NAMES;}
+    if(Array.isArray(window.RZ_ELEMENT_NAMES)&&window.RZ_ELEMENT_NAMES.length===10)return window.RZ_ELEMENT_NAMES;
+    return FALLBACK_ELEMENT_NAMES;
   }
   function matrixForLevel(level){
-    try{return (typeof ELEMENT_TABLES_IRO!=='undefined'&&ELEMENT_TABLES_IRO&&Array.isArray(ELEMENT_TABLES_IRO[level]))?ELEMENT_TABLES_IRO[level]:null;}catch(_){return null;}
+    const globalTable=window.RZ_ELEMENT_TABLES_IRO?.[level];
+    if(Array.isArray(globalTable)&&globalTable.length===10)return globalTable;
+    return WIKI_ELEMENT_TABLES[level]||null;
   }
   function monsterForSheet(sheet){
     const link=sheet.querySelector('.rz-monster-title a[href^="#/monsters/"]');
@@ -78,9 +137,8 @@
     return null;
   }
 
-  // Single source of truth for monster elemental modifiers:
-  // use the same ELEMENT_TABLES_IRO matrix rendered on the wiki Elements page.
-  // Matrix orientation is source[defendingElement][attackingElement].
+  // Single source of truth for monster elemental modifiers: same values as the Elements page.
+  // Matrix orientation: source[defendingElement][attackingElement].
   function applyWikiElementMatrix(root=document){
     const names=matrixNames();
     root.querySelectorAll?.('.rz-monster-sheet').forEach(sheet=>{
@@ -159,6 +217,13 @@
   }
   window.RZ_COLOR_MONSTER_ELEMENTS=decorate;
   window.RZ_APPLY_MONSTER_ELEMENT_MATRIX=applyWikiElementMatrix;
+  window.RZ_MONSTER_ELEMENT_TABLES=WIKI_ELEMENT_TABLES;
+
+  // Runtime assertion for the exact case that exposed the bug.
+  const p=WIKI_ELEMENT_TABLES[1][FALLBACK_ELEMENT_NAMES.indexOf('Poison')];
+  if(JSON.stringify(p)!==JSON.stringify([100,150,150,150,150,0,75,75,75,75])){
+    console.error('[RZ] Poison Lv.1 element matrix mismatch',p);
+  }
 
   let scheduled=false;
   const schedule=()=>{
