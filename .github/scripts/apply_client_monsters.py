@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260911-strict-verified2'
+version='20260911-strict-verified3'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-disable-legacy-maps.js',
