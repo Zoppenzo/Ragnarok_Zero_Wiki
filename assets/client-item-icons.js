@@ -33,8 +33,6 @@
   }
 
   function anchorDisplayName(anchor) {
-    // Monster drops keep the item name in their direct <span>; using the whole
-    // anchor text would incorrectly include the trailing "???" / drop rate.
     const directName = anchor.querySelector?.(':scope > span')?.textContent;
     return String(directName || anchor.dataset.rzDropItemName || anchor.textContent || '').trim();
   }
@@ -44,8 +42,6 @@
     const byName = lookup.byName.get(normaliseName(displayName)) || null;
     const explicit = anchor.dataset.rzDropItemId;
 
-    // Some monster-drop sources still carry an old/non-Zero item ID. Prefer the
-    // official client item with the same display name before synthesising an ID.
     if (explicit && /^\d+$/.test(explicit)) {
       if (lookup.byId.has(explicit)) return lookup.byId.get(explicit);
       if (byName) return byName;
@@ -81,7 +77,6 @@
       if(!fallbackUsed && img.dataset.fallback){fallbackUsed=true;img.src=img.dataset.fallback;return;}
       img.remove();
     });
-    // Immediate only for the currently rendered pagination slice.
     img.src = ZERO_ICON(id);
     return img;
   }
@@ -96,9 +91,22 @@
       const icon = makeIcon(item, 22, 'auto');
       if (!icon) continue;
       a.dataset.rzItemIcon = '1';
-      a.style.display = 'inline-flex';
-      a.style.alignItems = 'center';
-      a.style.gap = '5px';
+
+      if (a.classList.contains('rz-monster-drop')) {
+        // Monster drops have three independent pieces: icon, wrapping item name,
+        // and a non-wrapping rate. Keeping explicit columns prevents a long
+        // costume/equipment name from spilling into the neighbouring drop cell.
+        a.style.display = 'grid';
+        a.style.gridTemplateColumns = '22px minmax(0,1fr) auto';
+        a.style.width = '100%';
+        a.style.minWidth = '0';
+        a.style.alignItems = 'center';
+        a.style.gap = '5px';
+      } else {
+        a.style.display = 'inline-flex';
+        a.style.alignItems = 'center';
+        a.style.gap = '5px';
+      }
       a.insertBefore(icon, a.firstChild);
     }
   }
