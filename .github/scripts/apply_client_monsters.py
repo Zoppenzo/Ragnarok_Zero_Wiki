@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260911-strict-verified3'
+version='20260911-strict-verified4'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-disable-legacy-maps.js',
@@ -39,6 +39,15 @@ marker='<script src="assets/client-items.js"></script>'
 if marker not in s:
     raise SystemExit('client-items.js marker not found in index.html')
 s=s.replace(marker,marker+'\n'+'\n'.join(scripts),1)
+
+# client-item-icons.js is part of the older common item bundle and therefore is
+# not moved with the monster bundle above. Still bump it whenever the monster
+# database is deployed so drop-layout fixes cannot be hidden by browser cache.
+s=re.sub(
+    r'<script src="assets/client-item-icons\.js(?:\?v=[^"]+)?"></script>',
+    f'<script src="assets/client-item-icons.js?v={version}"></script>',
+    s,
+)
 
 monster_wire="    setTimeout(() => { if (window.RZ_MONSTER_DB_OPT?.wire(type)) return; if (!window.RZ_ITEM_DB_OPT?.wire(type)) wireList(type); }, 0);"
 item_wire="    setTimeout(() => { if (!window.RZ_ITEM_DB_OPT?.wire(type)) wireList(type); }, 0);"
