@@ -4,7 +4,7 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260911-monster-exp1'
+version='20260911-strict-verified1'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-disable-legacy-maps.js',
@@ -18,20 +18,20 @@ script_paths=[
     'assets/monster-client-corrections.js',
     'assets/monster-audit-20260909.js',
     'assets/client-monster-current-overlay.js',
-    'assets/monster-ragnaplace-exp.js',
     'assets/monster-verified-skill-associations.js',
+    'assets/monster-final-fixes.js',
+    'assets/monster-instance-maps.js',
+    'assets/monster-strict-verification.js',
     'assets/client-monster-sprites.js',
     'assets/monster-detail-rms.js',
     'assets/monster-element-colors.js',
     'assets/monster-mvp-style.js',
-    'assets/monster-final-fixes.js',
-    'assets/monster-instance-maps.js',
     'assets/monster-db-optimized.js',
+    'assets/item-monster-drops.js',
 ]
 legacy_sprite_paths=[f'assets/client-monster-sprite-data-{i:02d}.js' for i in range(1,12)]
 legacy_nav_paths=[f'assets/client-monster-navigation-current-{i:02d}.js' for i in range(1,5)]
-legacy_map_kill='assets/client-monster-disable-legacy-maps.js'
-for path in script_paths+legacy_sprite_paths+legacy_nav_paths:
+for path in script_paths+legacy_sprite_paths+legacy_nav_paths+['assets/monster-ragnaplace-exp.js']:
     s=re.sub(rf'\s*<script src="{re.escape(path)}(?:\?v=[^"]+)?"></script>\s*','\n',s)
 scripts=[f'<script src="{path}?v={version}"></script>' for path in script_paths]
 
@@ -63,4 +63,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Current client monster roster, exact internal-name Navi data, verified Zero EXP, and verified Zero skill associations wired. Obsolete pseudo-ID maps are disabled before runtime monster construction.')
+print('Strict verified-only monster data wired: exact current-client identity/Navi plus two-source Ragnarok Zero server consensus. Item pages receive the inverse verified monster-drop index.')
