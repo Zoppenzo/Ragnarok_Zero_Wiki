@@ -1,5 +1,6 @@
 name: Audit monster data
 
+# Strict verification audit: client data + multi-database Ragnarok Zero consensus.
 on:
   push:
     branches: [main]
