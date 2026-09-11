@@ -91,27 +91,35 @@ def strict_field(mid: str, field: str, meta: dict, ragna_verified: dict) -> dict
 
 
 def strict_drop(drop: dict) -> dict | None:
-    # RagnaDex drop rows are not marked by zero_felder, so under the strict policy
-    # they are not used as independent Zero evidence. A drop relation must be
-    # present in both TWRoZ and Prontera.
+    # Drop relations may be validated by any two independent Ragnarok Zero
+    # databases. RagnaDex drop rows are still excluded because its drop records
+    # do not carry the same Zero verification marker used for its stat fields.
     sources = drop.get('sources') or {}
-    usable = {k: v for k, v in sources.items() if k in {'TWRoZ', 'Prontera'}}
+    allowed = {'TWRoZ', 'Prontera', 'ROZeroDB'}
+    usable = {k: v for k, v in sources.items() if k in allowed}
     if len(usable) < 2:
         return None
 
     per_source = {source: source_value_candidates(value) for source, value in usable.items()}
-    common = None
-    for values in per_source.values():
-        if common is None:
-            common = set(values)
-        else:
-            common &= values
-    common = common or set()
-    chosen = sorted(common)[0] if common else None
-    if isinstance(chosen, float) and chosen.is_integer():
-        chosen = int(chosen)
+    numeric_sources = {source: values for source, values in per_source.items() if values}
 
-    all_rates = set().union(*per_source.values()) if per_source else set()
+    # A numeric rate is displayed only when at least two Zero databases give the
+    # same numeric rate. Two databases agreeing on the relation but not the rate
+    # still validate monster->item, while the rate remains ???.
+    votes = defaultdict(list)
+    for source, values in numeric_sources.items():
+        for value in values:
+            votes[value].append(source)
+    winners = [(value, srcs) for value, srcs in votes.items() if len(set(srcs)) >= 2]
+    chosen = None
+    rate_sources = []
+    if winners:
+        winners.sort(key=lambda x: (-len(set(x[1])), x[0]))
+        chosen, rate_sources = winners[0]
+        if isinstance(chosen, float) and chosen.is_integer():
+            chosen = int(chosen)
+
+    all_rates = set().union(*numeric_sources.values()) if numeric_sources else set()
     return {
         'itemId': drop.get('itemId'),
         'name': drop.get('name') or '',
@@ -120,6 +128,7 @@ def strict_drop(drop: dict) -> dict | None:
         'conflict': len(all_rates) > 1,
         'sources': usable,
         'verifiedSources': sorted(usable),
+        'rateVerifiedSources': sorted(set(rate_sources)),
         'relationVerified': True,
     }
 
@@ -162,11 +171,12 @@ def main():
             strict[mid] = out
 
     meta = {
-        'sources': ['RagnaDex zero_felder', 'RagnarokZero.net / TWRoZ', 'Prontera.Info ROZ'],
+        'sources': ['RagnaDex zero_felder', 'RagnarokZero.net / TWRoZ', 'Prontera.Info ROZ', 'RO ZERO DATABASE / RoZeroDB'],
         'policy': 'STRICT: client data is accepted separately; server data is displayed only when at least two independent Ragnarok Zero databases agree. Unknown stays ???.',
         'monsters': len(strict),
         'verifiedFields': field_count,
         'verifiedDrops': drop_count,
+        'dropsPolicy': 'Monster->item requires at least two independent Zero databases. Drop rate requires two matching numeric Zero sources; otherwise rate is ???.',
         'skillsPolicy': 'No monster->skill association is displayed until at least two Zero databases confirm it.',
         'mapsPolicy': 'Only current-client Navi maps are displayed until external maps have two-source Zero confirmation.',
     }
