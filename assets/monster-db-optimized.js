@@ -59,18 +59,21 @@
   }
 
   function sortRows(rows,mode){
-    // Client-only/special identities such as 4_MYSTCASE and 8W_SOLDIER must
-    // remain searchable, but they should never occupy the top of the normal
-    // monster database simply because their internal name starts with a digit.
     const digitInternal=m=>/^\d/.test(String(m?.internalName||'').trim());
     const specialLast=(a,b)=>{
-      const ad=digitInternal(a), bd=digitInternal(b);
+      const ad=digitInternal(a),bd=digitInternal(b);
       return ad===bd?0:(ad?1:-1);
     };
     const nameSort=(a,b)=>String(a.name||'').localeCompare(String(b.name||''),'en',{sensitivity:'base'});
+    const asc=(key,a,b)=>(num(a[key])??Infinity)-(num(b[key])??Infinity)||nameSort(a,b);
+    const desc=(key,a,b)=>(num(b[key])??-Infinity)-(num(a[key])??-Infinity)||nameSort(a,b);
     if(mode==='name-desc')return rows.sort((a,b)=>specialLast(a,b)||-nameSort(a,b));
-    if(mode==='level-asc')return rows.sort((a,b)=>specialLast(a,b)||(num(a.level)??Infinity)-(num(b.level)??Infinity)||nameSort(a,b));
-    if(mode==='level-desc')return rows.sort((a,b)=>specialLast(a,b)||(num(b.level)??-Infinity)-(num(a.level)??-Infinity)||nameSort(a,b));
+    if(mode==='level-asc')return rows.sort((a,b)=>specialLast(a,b)||asc('level',a,b));
+    if(mode==='level-desc')return rows.sort((a,b)=>specialLast(a,b)||desc('level',a,b));
+    if(mode==='base-exp-asc')return rows.sort((a,b)=>specialLast(a,b)||asc('baseExp',a,b));
+    if(mode==='base-exp-desc')return rows.sort((a,b)=>specialLast(a,b)||desc('baseExp',a,b));
+    if(mode==='job-exp-asc')return rows.sort((a,b)=>specialLast(a,b)||asc('jobExp',a,b));
+    if(mode==='job-exp-desc')return rows.sort((a,b)=>specialLast(a,b)||desc('jobExp',a,b));
     if(mode==='id-asc')return rows.sort((a,b)=>specialLast(a,b)||(num(a.clientId||a.id)??Infinity)-(num(b.clientId||b.id)??Infinity)||nameSort(a,b));
     if(mode==='id-desc')return rows.sort((a,b)=>specialLast(a,b)||(num(b.clientId||b.id)??-Infinity)-(num(a.clientId||a.id)??-Infinity)||nameSort(a,b));
     return rows.sort((a,b)=>specialLast(a,b)||nameSort(a,b));
@@ -79,6 +82,7 @@
   function decorateVisible(output){
     window.RZ_COLOR_MONSTER_ELEMENTS?.(output);
     window.RZ_DECORATE_MONSTER_SPRITES?.(output);
+    window.RZ_DECORATE_ITEM_ICONS?.(output);
     window.RZ_DECORATE_MONSTER_MVP?.(output);
     window.RZ_DECORATE_MONSTER_FINAL?.(output);
   }
@@ -86,9 +90,6 @@
   function wire(type){
     if(type!=='monsters'||typeof window.RZ_MONSTER_SHEET_HTML!=='function')return false;
     ensureStyles();
-    // Every monster with a real client monster sprite remains searchable, even
-    // when the server-side values are still unknown. Non-client placeholders
-    // still need meaningful data before they are shown.
     const source=(Array.isArray(window.RO_DATA?.monsters)?window.RO_DATA.monsters:[])
       .filter(m=>m?.clientRosterPresent===true||hasMeaningfulData(m));
     const search=document.getElementById('list-search');
@@ -103,7 +104,17 @@
     if(!sortSelect){
       const field=document.createElement('div');
       field.className='form-field rz-monster-sort-field';
-      field.innerHTML=`<label>${langFr()?'Trier par':'Sort by'}</label><select id="rz-monster-sort" class="select"><option value="name-asc">${langFr()?'Nom A → Z':'Name A → Z'}</option><option value="name-desc">${langFr()?'Nom Z → A':'Name Z → A'}</option><option value="level-asc">${langFr()?'Niveau croissant':'Level low → high'}</option><option value="level-desc">${langFr()?'Niveau décroissant':'Level high → low'}</option><option value="id-asc">Mob-ID ↑</option><option value="id-desc">Mob-ID ↓</option></select>`;
+      field.innerHTML=`<label>${langFr()?'Trier par':'Sort by'}</label><select id="rz-monster-sort" class="select">
+        <option value="name-asc">${langFr()?'Nom A → Z':'Name A → Z'}</option>
+        <option value="name-desc">${langFr()?'Nom Z → A':'Name Z → A'}</option>
+        <option value="level-asc">${langFr()?'Niveau croissant':'Level low → high'}</option>
+        <option value="level-desc">${langFr()?'Niveau décroissant':'Level high → low'}</option>
+        <option value="base-exp-desc">${langFr()?'Base EXP décroissante':'Base EXP high → low'}</option>
+        <option value="base-exp-asc">${langFr()?'Base EXP croissante':'Base EXP low → high'}</option>
+        <option value="job-exp-desc">${langFr()?'Job EXP décroissante':'Job EXP high → low'}</option>
+        <option value="job-exp-asc">${langFr()?'Job EXP croissante':'Job EXP low → high'}</option>
+        <option value="id-asc">Mob-ID ↑</option><option value="id-desc">Mob-ID ↓</option>
+      </select>`;
       filters.appendChild(field);
       sortSelect=field.querySelector('select');
     }
