@@ -8,6 +8,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 CONSENSUS = Path('assets/monster-zero-consensus.js')
+ROSTER = Path('assets/client-monster-roster.js')
 ROZERODB_URL = 'https://rozerodb.com/monsters/{id}'
 UA = 'Ragnarok-Zero-Wiki/2.5 (+https://github.com/Zoppenzo/Ragnarok_Zero_Wiki)'
 
@@ -72,11 +73,19 @@ def fetch(url: str) -> str:
 
 
 def numeric_label(text: str, label: str):
-    # ROZeroDB renders values both in summary cards and in Core Statistics.
     m = re.search(rf'(?im)(?:^|\b){re.escape(label)}\s*([\d,]+)\b', text)
     if not m:
         return None
     return int(m.group(1).replace(',', ''))
+
+
+def load_roster() -> dict[str, str]:
+    text = ROSTER.read_text(encoding='utf-8')
+    match = re.search(r'window\.RZ_CLIENT_MONSTER_ROSTER=(\[.*\]);', text, re.S)
+    if not match:
+        raise SystemExit('Could not parse current client monster roster')
+    rows = json.loads(match.group(1))
+    return {str(row[0]): str(row[1]) for row in rows if isinstance(row, list) and len(row) >= 2}
 
 
 def load_consensus():
@@ -102,16 +111,19 @@ def save_consensus(data: dict, meta: dict):
 
 def main():
     data, meta = load_consensus()
+    roster = load_roster()
     verified = {}
 
     for mid, spec in EXPECTED.items():
+        # Identity comes from the user's current client roster. Do not depend on
+        # a website's HTML exposing the internal Aegis name consistently.
+        if roster.get(mid) != spec['internalName']:
+            raise SystemExit(f'Client identity mismatch for #{mid}: expected {spec["internalName"]}, got {roster.get(mid)}')
+
         raw = fetch(ROZERODB_URL.format(id=mid))
         parser = VisibleTextParser()
         parser.feed(raw)
         text = parser.text()
-
-        if f'#{mid}' not in text or spec['internalName'] not in text:
-            raise SystemExit(f'ROZeroDB identity mismatch for #{mid} {spec["internalName"]}')
 
         record = data.get(mid)
         if not record:
@@ -124,8 +136,6 @@ def main():
         }
 
         if not spec['fields']:
-            # No fabricated fallback for Swordmaster. Its current ROZeroDB page
-            # explicitly has these server fields unknown, so it stays ???.
             if any(rz_values.values()):
                 raise SystemExit(f'Unexpected new Swordmaster core stats found: {rz_values}')
             verified[mid] = {'keptUnknown': True}
