@@ -3,6 +3,7 @@
 
   const normalize = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'');
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const numericRate = value => value!==null&&value!==undefined&&value!==''&&Number.isFinite(Number(value));
 
   function buildIndex(){
     const items = Array.isArray(window.RO_DATA?.items) ? window.RO_DATA.items : [];
@@ -21,8 +22,7 @@
       const monsterId=String(monster?.clientId??monster?.id??'');
       if(!monsterId)continue;
       for(const drop of (Array.isArray(monster?.drops)?monster.drops:[])){
-        // The strict monster layer only exposes verified relations, but keep this
-        // guard so an old/unfiltered record can never leak into item pages.
+        // Only strict two-database relations may reach item pages.
         if(drop?.relationVerified!==true && drop?.status!=='strict-consensus')continue;
         let item=null;
         if(drop?.itemId!==null&&drop?.itemId!==undefined)item=itemsById.get(String(drop.itemId))||null;
@@ -30,12 +30,13 @@
         if(!item)continue;
         const list=Array.isArray(item.droppedBy)?item.droppedBy:(item.droppedBy=[]);
         if(list.some(row=>String(row.monsterId)===monsterId))continue;
+        const hasRate=numericRate(drop?.rate);
         list.push({
           monsterId,
           monsterName:monster?.name||monster?.internalName||`Mob ${monsterId}`,
-          rate:Number.isFinite(Number(drop?.rate))?Number(drop.rate):null,
+          rate:hasRate?Number(drop.rate):null,
           relationVerified:true,
-          rateVerified:Number.isFinite(Number(drop?.rate)),
+          rateVerified:hasRate,
         });
       }
     }
@@ -79,9 +80,15 @@
 
   function refresh(){
     buildIndex();
-    setTimeout(render,0);
-    setTimeout(render,80);
+    if(typeof setTimeout==='function'){
+      setTimeout(render,0);
+      setTimeout(render,80);
+    }
   }
+
+  // Build the inverse database immediately so every item object has droppedBy,
+  // even outside the visible item-detail route.
+  buildIndex();
 
   if(typeof document!=='undefined'){
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refresh,{once:true});
