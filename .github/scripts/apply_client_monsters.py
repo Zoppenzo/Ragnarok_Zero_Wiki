@@ -4,11 +4,12 @@ import re
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
 
-version='20260911-strict-verified4'
+version='20260911-strict-verified5'
 script_paths=[
     'assets/client-monsters-data.js',
     'assets/client-monster-disable-legacy-maps.js',
     'assets/client-monster-identity.js',
+    'assets/client-monster-navigation-metadata.js',
     'assets/client-monster-navigation-current.js',
     'assets/client-monster-roster.js',
     'assets/monster-zero-stats.js',
@@ -72,4 +73,4 @@ if count!=1:
     raise SystemExit(f'Expected exactly one monsterDetail renderer, replaced {count}')
 
 p.write_text(s,encoding='utf-8')
-print('Strict verified-only monster data wired: exact current-client identity/Navi plus two-source Ragnarok Zero server consensus. Item pages receive the inverse verified monster-drop index.')
+print('Strict verified-only monster data wired: exact current-client identity/Navi metadata plus two-source Ragnarok Zero server consensus. Item pages receive the inverse verified monster-drop index.')
